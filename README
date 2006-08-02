@@ -1,0 +1,28 @@
+The source is licensed fully under GPL.
+See LICENSE for details.
+
+To build:
+
+copy build_config.py.dist to build_config.py and edit the file
+to have correct paths etc. for your system.
+
+Release build:
+just run scons
+Debug build:
+run scons debug=yes
+
+For building scons is needed:
+http://www.scons.org/
+Stand-alone Windows build available also:
+https://developer.berlios.de/project/showfiles.php?group_id=2672
+
+When built, you can create an installation executable with
+Inno Setup using install/installer.iss script.
+
+For needed libraries and other installation details, see also:
+http://revolt.speedweek.net/rv_house/index.php?section=sources
+
+
+Arto Jalkanen
+ajalkane@gmail.com
+

@@ -1,0 +1,127 @@
+RV House change log
+
+Version 0.83.0 (??.07.2006)
+- Connecting to DHT/P2P is now much faster.
+- Preliminary flood control on main chat.
+- The default size of user listing view slightly increased.
+- Changed DHT -> P2P as it is better known acronym?
+- Directed to router/firewall help if P2P not working
+- Language files have a version now which is displayed in the about dialog (in .def).
+
+Version 0.81.0 (25.06.2006)
+- Shows in room the basic information (laps, players, pickups)
+- Reconnects to server automatically when disconnected
+- Unreliable DHT operation fixed
+- A special icon for private message window
+
+Version 0.80.2 (17.06.2006)
+- Again private message bug fix: two windows opened when sending message
+
+Version 0.80.1 (17.06.2006)
+- Bug fix: private message windows to more than one can be opened
+
+Version 0.80.0 (17.06.2006)
+- Private messaging
+- Fixed a memory leak in Room window
+- Bug fix: Clicking on empty area could open a window
+- Language comparison to help translators
+
+Version 0.70.1 (13.06.2006)
+- Multilanguage fixes
+- More comments in english.lang to aid translators
+
+Version 0.70.0 (12.06.2006)
+- Clickable URLs
+- Multilanguage support
+- Added some keyboard short-cuts to dialogs
+- Unnecessary confirmation dialog after successfull login removed
+- Some users problems with 100% CPU usage hopefully fixed
+- In login window, pressing enter logs in directly
+
+Version 0.61.2 (27.04.2006)
+- Invalid password / Full room bug fixed
+- Full IPs not displayed for privacy
+
+Version 0.61.0 final (23.04.2006)
+- Bug fix release.
+
+Version 0.60.0 beta (06.04.2006)
+- Rewrite of decentralized communication to support NAT better.
+- Support for NAT keepalive in centralized communication.
+- Now when user is exiting, sends a notification packet
+- Support for sharing tracks using Track Manager
+- Shows how many minutes user has been playing or away
+- Version update window lists new features from used version to current version
+
+Version 0.54.9 beta (22.03.2006)
+- Login bug fixed.
+- Register bug fixed (24.03.2006)
+
+Version 0.54.8 beta (21.03.2006)
+- Fixed a bug that caused app to make immediate exit
+- Compiled against new versions of KadC and ACE libraries
+- Fixed operation if login server not available to make it possible to play
+
+Version 0.54.7 beta (19.03.2006)
+- Fixed a fatal memory corruption bug. Upgrading strongly recommended.
+- Additional code added so that RV House can be compiled in Linux
+
+Version 0.54.3 beta (15.03.2006)
+- Room closed bug fixed
+- Mopman/Jumex crashing bug fixed? (NAT related)
+- Some centralized client bugs corrected
+- Removed all places where user's password might have been written to log
+- rvleague address changed to www.rvleague.com in Info dialog
+
+Version 0.54 beta (12.03.2006)
+- Users grouped by their status
+- Away icon
+- DHT operation refined
+- Register did not work correctly in 0.53, fixed.
+
+Version 0.53 beta (09.03.2006)
+- Fixed many crash causing bugs
+- Improved the decentralized operation
+- When playing, decentralized searching of new players
+  is done less frequently (hopefully fixes FPS problems
+  some users experience)
+- Displays in user tooltip if the user's connection is
+  NATted, and the connectivity status of decentralized and
+  centralized
+- Indicates with colors the connectivity status of users.
+  (green=connected to centralized, light blue=connected to
+   decentralized, dark blue=connected to both, b
+   rownish=user behind NAT)
+- Some URLs are clickable (not in chat)
+- Automatically detects newest version and provides a link
+  to download.
+
+Version 0.52.1 beta (02.03.2006)
+- Fixed some crash causing bugs: one that happened when joining,
+  one that could happen when new players joined.
+- Fixed the Jumex bug (multiple names displayed)
+- Fixed password bug
+- Fixed one crash causing bug from DHT lib
+- New icons
+- Shows in users list if user is in room or creating room
+- User pop-up shows also if creating a room
+- A small list of some big Re-Volt sites in the info
+dialog
+
+Version 0.52 beta (28.02.2006)
+- Room window on top
+- A few seconds pause before launching joining game
+- More retries with smaller timeout with UDP
+- Shows number of laps in the room
+- Shows in the users list a little playing icon if user playing
+- RV House icon is in the installer and application
+- New toolbar icons by ADX
+
+
+Version 0.51 beta (25.02.2006)
+- RV House logo by Pigasque
+- Minor configuration changes
+
+Version 0.50 beta (22.02.2006)
+- First release
+

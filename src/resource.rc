@@ -1,0 +1,3 @@
+#include "resource.h"
+
+IDI_RVHICON ICON "../img/rv_house.ico"

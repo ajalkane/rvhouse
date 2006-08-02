@@ -1,0 +1,251 @@
+[common]
+ok_button       = " &OK "
+cancel_button   = " &Cancel "
+
+[login_win]
+title           = Login
+user_id         = &User ID:
+password        = &Password:
+uses_rvzt_login = Uses RVZT login
+login           = &Login
+register        = &Register
+quit            = &Quit
+
+login_err_topic = Can't login
+fill_user       = Fill in your User ID
+fill_pass       = Fill in your password
+invalid_user    = Invalid User ID, must be 3 to 20 characters and can contain characters a-z, A-Z and _
+invalid_pass    = Invalid password, must be 3 or more characters and have only characters a-z, A-Z and _
+server_down     = Login server could not be contacted, your user id has not been authenticated. Do you want to continue anyway?
+validation_err  = Invalid user ID or password
+
+
+[register_win]
+title           = Register User
+user_id         = &User ID:
+password        = &Password:
+repassword      = &Re-type password:
+email           = &E-mail:
+register        = Register
+cancel          = &Cancel
+
+reg_err_topic   = Can't register user
+reg_ok_topic    = Registered
+fill_user       = Fill in your User ID
+fill_pass       = Fill in your password
+pass_mismatch   = Passwords don't match!
+invalid_user    = Invalid User ID, must be 3 to 20 characters and can contain characters a-z, A-Z and _
+invalid_pass    = Invalid password, must be 3 or more characters and have only characters a-z, A-Z and _
+invalid_email   = Invalid E-mail address
+server_down     = Could not contact server, can't register
+user_reserved   = The User ID you tried to register is reserved, please choose another one
+reg_ok          = Registered successfully, you can login now with your User ID and password
+
+
+[about_win]
+title         = About
+# \1 is replace with the license. Example: Released under GPL
+license       = Released under \1
+# \1 is replaced by the author of used icons. Icons by ADX
+icons_by      = Icons by \1
+# \1 is replaced by the author of RV House icon. RV House icon by Pigasque
+house_icon_by = RV House icon by \1
+other_sites   = Some popular, useful RV sites for online community:
+using         = Using:
+# \1 is replaced by the library name, \2 by library author
+# ACE network library (by Douglas C. Schmidt)
+using_lib     = \1 (by \2)
+translations  = Translations:
+# \1 is replaced by the language name, \2 by author of translation
+# \3 by translation authors name \4 by the version of translation
+# Example:
+# Spanish by ADX <the.adx@gmail.com> for v0.81
+translation   = \1 by \2 <\3> for v\4
+
+[app]
+rv_not_found_title = "Re-Volt installed?"
+rv_not_found       = "Re-Volt not found from registry\nHave you installed and run it\nbefore starting this application?"
+rv_house_running   = "RV House is already running!"
+join_room_full     = Room is full!
+join_invalid_pass  = Invalid password given!
+join_refused       = Host refused joining room
+join_err_topic     = Could not join room
+dht_connect_err1   = "Could not connect to decentralized network"
+dht_connect_err2   = This is probably because your router or firewall
+dht_connect_err3   = "is not setup correctly.\n"
+dht_connect_err4   = Correcting this up is important because
+dht_connect_err5   = otherwise you might not see all players.
+dht_connect_err6   = Also, this part of RV House is central to my
+dht_connect_err7   = university thesis so I'd appreciate it a lot if
+dht_connect_err8   = "you can fix it :).\n"
+dht_connect_err9   = When you press OK, you will be directed
+dht_connect_err10  = to a router/firewall settings help page.
+dht_connect_err_title = "Error connecting"
+
+[new_version_win]
+title     = New RV House version
+force_msg = You MUST upgrade RV House! Old version is not compatible!
+# \1 is replaced by latest RV House version number, \2 by
+# users RV House version.
+msg       = RV House version \1 available, your version is \2
+new_since = New since your version:
+download  = Download new version from here:
+
+[rvtm_err]
+title     = Failed to launch RV Track Manager
+not_found = "Could not find RV Track Manager.\nTo be able to share and download tracks\nfrom others, you need at least\nversion 1.5.0 of RV Track Manager\nYou can download it from here:"
+running   = RV Track Manager has already been launched
+other     = Could not launch RV Track manager
+
+[message_box]
+ok     = "&OK"
+cancel = "&Cancel"
+yes    = "&Yes"
+no     = "&No"
+quit   = "&Quit"
+save   = "&Save"
+
+[main_win]
+exit        = Exit
+create_room = Create Room
+join_room   = Join Room
+refresh     = Refresh
+cancel      = Cancel
+about       = About
+
+ask_room_pass_title = Password protected room
+ask_room_pass       = Enter password
+
+joining_room  = Joining room
+
+dht_connecting        = P2P connecting
+dht_connected         = P2P connected
+dht_disconnecting     = P2P disconnecting
+dht_disconnected      = P2P disconnected
+dht_upding_contacts   = P2P updating contact nodes...
+dht_upd_contacts      = P2P contact nodes updated
+dht_upd_contacts_fail = P2P could not update contact nodes
+dht_joining           = P2P joining
+dht_joined            = P2P joined
+dht_leaving           = P2P leaving
+dht_left              = P2P left
+dht_searching         = P2P searching users
+dht_announcing        = P2P announcing
+
+ctz_connecting        = Centralized connecting
+ctz_connected         = Centralized connected
+ctz_disconnecting     = Centralized disconnecting
+ctz_disconnected      = Centralized disconnected
+
+# \1 is replacedwith the site where user's IP is fetched from
+ip_detecting = Detecting IP from: \1
+# \1 is replaced with the IP obtained
+ip_detected  = Detected IP: \1
+# \1 is replaced with the error reason
+ip_failed    = Detecting IP failed: \1
+
+[chat]
+# \1 is replaced with user name
+user_entered = \1 has entered
+user_exited  = \1 has exited
+# \1 is replaced with room name
+room_created = New room created (\1)
+room_closed  = Room closed (\1)
+
+host_kicked_host = Dumbass host kicked himself from room \1
+host_kicks_user  = Host is kicking \1 from the room
+host_kicks_you   = Host kicked you from the room \1
+
+# \1 is replaced with user name
+user_joined_room         = \1 has joined the room
+user_exited_room         = \1 has exited the room
+user_shares_tracks       = \1 is sharing tracks
+user_shares_tracks_stops = \1 stopped sharing tracks
+user_dloads_tracks       = \1 is downloading tracks
+user_dloads_tracks_stops = \1 stopped downloading tracks
+
+# \1 = the message that was refused/not received.
+# Caused because of user is playing so no windows
+# are wanted to be opened.
+private_msg_refused      = User refused your message: \1
+
+flood_control = Flood control
+
+[room_settings_win]
+title       = Room settings
+topic       = &Topic:
+password    = &Password:
+pickups     = P&ickups
+laps        = &Laps:
+players     = Pl&ayers:
+
+error_title    = Room settings error
+topic_missing  = Fill in room topic
+
+[room_win]
+leave         = Leave room
+settings      = Edit room settings
+launch        = Launch game
+share_tracks  = Share custom tracks with others
+dload_tracks  = Download custom tracks from host
+
+host_launched = Host has launched Re-Volt. Your game will be automatically started in few seconds
+
+[private_message_win]
+close = Close chat
+
+[rv_launch]
+title_err = Failed to launch game
+not_found = Could not find Re-Volt. Please install (and run once) Re-Volt and restart application
+other     = Could not launch Re-Volt
+
+title     = Launching game
+text      = Click OK when you want to return.
+
+
+[words]
+topic   = Topic
+host    = Host
+# For example, Note: room is password protected
+note    = Note
+players = Players
+laps    = Laps
+pickups = Pickups
+user_id = User ID
+warning = Warning
+status  = Status
+room    = Room
+yes     = Yes
+no      = No
+creating = Creating
+
+minutes_short = mins
+dht           = P2P
+ctz           = Centralized
+connected     = Connected
+disconnected  = Disconnected
+
+
+[users_view]
+shares_tracks = User is sharing custom tracks
+dloads_tracks = User is getting custom tracks
+dht_not_found = Not found from decentralized network
+natted        = User's connection seems to be behind NAT
+
+[user_popup]
+user_name     = User Name
+share_tracks  = Share tracks
+dload_tracks  = Download tracks
+kick          = Kick
+private_msg   = Send Private Message
+
+[status]
+chatting      = Chatting
+waiting       = Waiting in room
+playing       = Playing
+away          = Away
+unknown       = Unknown
+
+[misc]
+user_not_validated = User ID untrusted (not validated)
+pass_needed        = Password required
