@@ -1,0 +1,64 @@
+If you intend to participate in the development
+of this project, read this carefully.
+
+The coding style adopted by this project follows
+closely modern C++ style that is used for example
+by standard C++ library STL and the boost library.
+
+In particular this means, regarding naming:
+- all namespace, class, and function names are
+  in lower case. Words are separated by underscores
+  example: class my_class
+- Template parameters use upper case.
+  example: template <class DataType>
+
+For this project several other conventions have been
+chosen:
+
+- Indentation is done by spaces only, no tabs should
+  be used. I would prefer indentation by tabs
+  and alignment with spaces, but the unfortunate 
+  reality is that if multiple people of varying knowledge
+  participate in the project it's unlikely to work.
+
+- Private variables are prepended by underscore.
+  Example:
+  class test_class {
+  private:
+      int _my_private_var;
+  public:
+      int my_public_var;
+  };
+  
+- Curlybraces are directly after the function/if/while etc.
+  UNLESS the parameters extend more than one line.
+  Examples:
+  // Curly brace on same line
+  if (value1 == true) {
+      value = false;
+  }
+  // Curly brace on the following line
+  if (value1 == true  &&
+      value2 == false &&
+      value3 == true)
+  {
+      value = false;
+  }
+  This style allows compact formatting when possible, but
+  also clarity when there are several lines of text
+
+- When dividing for example function parameters on several
+  lines there are two possible alternatives. An example
+  shows this the best:
+  void function_with_many_pars(int parameter1,
+                               int parameter2,
+                               int parameter3)
+  {
+  }
+  // Alternative form, useful often if the function name is longish
+  void function_with_many_pars(
+      int parameter1,
+      int parameter2,
+      int parameter3
+  ) {
+  }
