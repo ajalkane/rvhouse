@@ -15,7 +15,7 @@ class watched_window : public watched_object{
 public:
     watched_window();
     // watched_window(FXWindow *self);
-    virtual ~watched_window();
+    virtual ~watched_window();  
     void create(FXWindow *self);
 };
 

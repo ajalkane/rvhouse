@@ -6,10 +6,10 @@
 #include "message.h"
 
 class message_login : public message {
-public:
-    message_login(int msg_type, const std::string &u, const std::string &p);
+public:     
+    message_login(int msg_type, const std::string &u, const std::string &p);    
     virtual message *duplicate();
-
+    
     inline const std::string &user() const;
     inline const std::string &pass() const;
 private:

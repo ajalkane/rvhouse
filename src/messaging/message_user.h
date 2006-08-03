@@ -8,11 +8,11 @@
 
 class message_user : public message_grouped {
     chat_gaming::user _user;
-public:
-    message_user(int msg_type, const chat_gaming::user &u,
-                 unsigned seq, int group_base);
+public: 
+    message_user(int msg_type, const chat_gaming::user &u, 
+                 unsigned seq, int group_base); 
     virtual message *duplicate();
-
+    
     inline const chat_gaming::user &user() const;
 };
 

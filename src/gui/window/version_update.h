@@ -7,7 +7,7 @@
 
 namespace gui {
 namespace window {
-
+    
 class version_update : public modal_dialog_guard {
     message_version *_msg;
 protected:

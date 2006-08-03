@@ -16,11 +16,11 @@ class manager {
 public:
     manager();
     virtual ~manager();
-
+    
     void init(const std::string &lang_dir);
-
+    
     inline const std::list<info> &lang_infos() { return _infos; }
-
+    
     // Creates a language mapper... name is the language to use
     // and def is the default language to use for the mapper.
     void mapper_init(mapper &m, const std::string &name, const std::string &def);

@@ -1,9 +1,9 @@
 #include "message_send_room.h"
 
 message_send_room::message_send_room(
-    int t,
+    int t, 
     const std::string &str,
-    const chat_gaming::user::id_type &uid,
+    const chat_gaming::user::id_type &uid, 
     const chat_gaming::room::id_type &rid,
     unsigned s,
     int gb

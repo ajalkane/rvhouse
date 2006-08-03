@@ -13,24 +13,24 @@
 namespace gui {
 namespace window {
 
-class register_user
-            : public FXDialogBox,
-            public message_handler,
-            public watched_window
+class register_user 
+  : public FXDialogBox, 
+    public message_handler,
+    public watched_window 
 {
     FXDECLARE(register_user)
-
+    
     FXTextField *_user_field;
     FXTextField *_pass_field;
     FXTextField *_pas2_field;
     FXTextField *_mail_field;
-
+    
     FXButton    *_reg_button;
-
+    
     FXHorizontalFrame *_toolbar;
 
     ::message *_register_message();
-
+    
 protected:
     register_user() {}
 
@@ -38,11 +38,11 @@ public:
     enum {
         ID_REGISTER = FXDialogBox::ID_LAST,
     };
-
+    
     register_user(FXWindow *owner);
     virtual void create();
-
-    long on_network_command(FXObject *from, FXSelector sel, void *);
+    
+    long on_network_command(FXObject *from, FXSelector sel, void *);    
     void handle_message(::message *msg);
 };
 

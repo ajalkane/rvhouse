@@ -1,9 +1,9 @@
 #include "message_channel.h"
 
 message_channel::message_channel(
-    int t,
+    int t, 
     const std::string &str,
-    const chat_gaming::user::id_type &uid,
+    const chat_gaming::user::id_type &uid, 
     const std::string &channel,
     unsigned seq,
     int gb

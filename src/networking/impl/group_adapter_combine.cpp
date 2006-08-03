@@ -18,9 +18,9 @@ group_adapter_combine::group_adapter_combine(
         _gas.push_back(new group_adapter_centralized(r));
     else
         _report_disabled.push_back(message::ctz_group_base);
-
+        
     if (!net_conf()->get<bool>("net_serverless", "disable", false))
-        _gas.push_back(new group_adapter_serverless (r));
+        _gas.push_back(new group_adapter_serverless (r));   
     else
         _report_disabled.push_back(message::dht_group_base);
 }
@@ -38,16 +38,16 @@ void group_adapter_combine::init() {
 }
 
 int group_adapter_combine::connect(const chat_gaming::user &self) {
-    net_report()->user_self(self);
+    net_report()->user_self(self);  
     while (_report_disabled.size() > 0) {
         net_report()->disabled(_report_disabled.front());
         _report_disabled.pop_front();
     }
-
+    
     _group_adapters_type::iterator i = _gas.begin();
     for (; i != _gas.end(); i++)
         (*i)->connect(self);
-
+        
     return 0;
 }
 
@@ -56,7 +56,7 @@ int group_adapter_combine::disconnect() {
     _group_adapters_type::iterator i = _gas.begin();
     for (; i != _gas.end(); i++)
         (*i)->disconnect();
-
+        
     return 0;
 }
 
@@ -75,7 +75,7 @@ group_adapter_combine::send(const std::string &msg, const std::string &channel, 
 }
 
 int
-group_adapter_combine::send_room(const std::string &msg,
+group_adapter_combine::send_room(const std::string &msg, 
                                  const chat_gaming::room::id_type &rid,
                                  unsigned seq)
 {
@@ -83,7 +83,7 @@ group_adapter_combine::send_room(const std::string &msg,
     for (; i != _gas.end(); i++)
         (*i)->send_room(msg, rid, seq);
     return 0;
-
+    
 }
 
 void
@@ -122,7 +122,7 @@ group_adapter_combine::join_rsp(const chat_gaming::user::id_type &r, int rsp, un
 }
 
 void
-group_adapter_combine::room_command(const chat_gaming::room::id_type &rid,
+group_adapter_combine::room_command(const chat_gaming::room::id_type &rid, 
                                     int command,
                                     unsigned seq)
 {
@@ -131,11 +131,11 @@ group_adapter_combine::room_command(const chat_gaming::room::id_type &rid,
         (*i)->room_command(rid, command, seq);
 }
 
-void
+void 
 group_adapter_combine::handle_message(message *msg) {
     _group_adapters_type::iterator i = _gas.begin();
     for (; i != _gas.end(); i++)
-        (*i)->handle_message(msg);
+        (*i)->handle_message(msg);  
 }
 
 

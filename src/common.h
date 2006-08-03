@@ -14,26 +14,26 @@ inline const char *langstr(const char *key) {
 }
 
 inline std::string langstr(
-    const char *key,
-    const char *r1,
-    const char *r2 = NULL,
-    const char *r3 = NULL,
-    const char *r4 = NULL
-)
+  const char *key, 
+  const char *r1,
+  const char *r2 = NULL,
+  const char *r3 = NULL,
+  const char *r4 = NULL
+) 
 {
     return lang_mapper.get(key, r1, r2, r3, r4);
 }
 
 inline std::string langstr_range(
-    const char *key,
-    size_t start,
-    size_t end,
-    const char *separator,
-    const char *r1 = NULL,
-    const char *r2 = NULL,
-    const char *r3 = NULL,
-    const char *r4 = NULL
-)
+  const char *key, 
+  size_t start,
+  size_t end,
+  const char *separator,
+  const char *r1 = NULL,
+  const char *r2 = NULL,
+  const char *r3 = NULL,
+  const char *r4 = NULL
+) 
 {
     return lang_mapper.get_range(key, start, end, separator, r1, r2, r3, r4);
 }

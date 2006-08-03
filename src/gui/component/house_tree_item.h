@@ -13,13 +13,13 @@ class house_tree_item : public FXTreeItem {
     FXIcon *_extra_icon;
 public:
     house_tree_item();
-
+    
     inline void color(FXColor c) { _color = c; }
     inline void extra_icon(FXIcon *i) { _extra_icon = i; }
-
+    
 protected:
     // Overrides the base class version of draw()
-    virtual void draw(const FXTreeList* list,FXDC& dc,FXint xx,FXint yy,FXint,FXint hh) const;
+    virtual void draw(const FXTreeList* list,FXDC& dc,FXint xx,FXint yy,FXint,FXint hh) const;  
 };
 
 } // ns component

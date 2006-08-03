@@ -16,7 +16,7 @@ group_adapter_centralized::group_adapter_centralized(
               net_conf()->get("net_centralized", "port");
 
     ACE_DEBUG((LM_DEBUG, "group_adapter_centralized: group id: %s\n",
-               _grp_id.c_str()));
+              _grp_id.c_str()));              
 }
 
 group_adapter_centralized::~group_adapter_centralized() {
@@ -25,7 +25,7 @@ group_adapter_centralized::~group_adapter_centralized() {
 netcomgrp::group  *
 group_adapter_centralized::create_group() {
     _cgrp = new netcomgrp::centralized::client::group;
-
+    
     return _cgrp;
 }
 
@@ -45,21 +45,21 @@ group_adapter_centralized::create_handler(netcomgrp::group *g) {
 void
 group_adapter_centralized::group_error(int err, const char *desc) {
     ACE_DEBUG((LM_DEBUG, "group_adapter_centralized::group_error: " \
-               "received error (%d) %s\n", err, desc));
-
+              "received error (%d) %s\n", err, desc));
+              
     switch (err) {
     case netcomgrp::group::err_timeout_connect:
     case netcomgrp::group::err_connect:
-        {
-            message_string *m = new message_string(
-                                    message::ctz_group_server_unreachable,
-                                    _grp_id
-                                );
-            ACE_DEBUG((LM_DEBUG, "group_adapter_centralized: _grp_id %s, msg str: %s\n",
-                       _grp_id.c_str(), m->str().c_str()));
-
-            gui_messenger()->send_msg(m);
-        }
+    {
+        message_string *m = new message_string(
+          message::ctz_group_server_unreachable,
+          _grp_id
+        );
+        ACE_DEBUG((LM_DEBUG, "group_adapter_centralized: _grp_id %s, msg str: %s\n",
+                  _grp_id.c_str(), m->str().c_str()));
+                  
+        gui_messenger()->send_msg(m);
+    }
         break;
     }
 }

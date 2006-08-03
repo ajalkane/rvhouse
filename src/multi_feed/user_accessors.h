@@ -25,16 +25,16 @@ class user_value_by_id_accessor_fobj {
     ValueAccessor _acc;
 public:
     inline user_value_by_id_accessor_fobj(
-        ValueAccessor accessor
+      ValueAccessor accessor
     ) : _acc(accessor) {}
-
+    
     std::string operator()(const chat_gaming::user::id_type &uid, int grp) {
-        model::house::house_type::user_iterator ui =
-            house_model()->user_find(uid, grp);
+        model::house::house_type::user_iterator ui = 
+          house_model()->user_find(uid, grp);
         if (ui == house_model()->user_end()) return std::string();
         const model::house::user_type &u = *ui;
         const std::string &s = _acc(u, grp);
-        ACE_DEBUG((LM_DEBUG, "multi_feed::user_value_accessor::value: %d value: '%s'\n",
+        ACE_DEBUG((LM_DEBUG, "multi_feed::user_value_accessor::value: %d value: '%s'\n", 
                    grp, s.c_str()));
         return s;
     }
@@ -46,10 +46,10 @@ class user_value_accessor_by_ptr_fobj {
     AccRet (chat_gaming::user::*_acc)() const;
 public:
     inline user_value_accessor_by_ptr_fobj(
-        AccRet (chat_gaming::user::*accessor)() const
+      AccRet (chat_gaming::user::*accessor)() const
     ) : _acc(accessor) {}
 
-    inline
+    inline 
     AccRet operator()(const chat_gaming::user &u) {
         return (u.*_acc)();
     }
@@ -57,7 +57,7 @@ public:
 
 class user_room_id_accessor_fobj {
 public:
-    inline
+    inline 
     std::string operator()(const chat_gaming::user &u) {
         return u.room_id();
     }
@@ -65,49 +65,49 @@ public:
 
 class user_id_accessor_fobj {
 public:
-    inline
+    inline 
     const chat_gaming::user::id_type &operator()(const chat_gaming::user &u) {
         return u.id();
     }
 };
 
-template <class RetTrans>
+template <class RetTrans> 
 inline
 user_value_by_id_accessor_fobj<
-value_to_string_fobj<
-chat_gaming::user,
-self_accessor<chat_gaming::user>,
-RetTrans
->
+    value_to_string_fobj<
+        chat_gaming::user, 
+        self_accessor<chat_gaming::user>,
+        RetTrans
+    >
 >
 user_accessor(
     RetTrans trans
 ) {
-    typedef
+    typedef 
     value_to_string_fobj<
-    chat_gaming::user,
-    self_accessor<chat_gaming::user>,
-    RetTrans
+        chat_gaming::user, 
+        self_accessor<chat_gaming::user>,
+        RetTrans
     > accessor_fobj;
-
-    return
-        user_value_by_id_accessor_fobj<accessor_fobj>(
-            accessor_fobj(
-                self_accessor<chat_gaming::user>(),
-                trans
-            )
-        );
+    
+    return 
+    user_value_by_id_accessor_fobj<accessor_fobj>(
+        accessor_fobj(
+            self_accessor<chat_gaming::user>(),         
+            trans
+        )
+    );
 }
 
 #if 0
-template <class AccRet>
+template <class AccRet> 
 inline
 user_value_by_id_accessor_fobj<
-value_to_string_fobj<
-chat_gaming::user,
-user_value_accessor_by_ptr_fobj<AccRet>,
-dummy_string_to_string
->
+    value_to_string_fobj<
+        chat_gaming::user, 
+        user_value_accessor_by_ptr_fobj<AccRet>,
+        dummy_string_to_string
+    >
 >
 user_accessor(
     AccRet (chat_gaming::user::*accessor)() const
@@ -116,45 +116,45 @@ user_accessor(
 }
 #endif
 
-template <class AccRet, class RetTrans>
+template <class AccRet, class RetTrans> 
 inline
 user_value_by_id_accessor_fobj<
-value_to_string_fobj<
-chat_gaming::user,
-user_value_accessor_by_ptr_fobj<AccRet>,
-RetTrans
->
+    value_to_string_fobj<
+        chat_gaming::user, 
+        user_value_accessor_by_ptr_fobj<AccRet>,
+        RetTrans
+    >
 >
 user_value_accessor(
     AccRet (chat_gaming::user::*accessor)() const,
     RetTrans trans
 ) {
-    typedef
+    typedef 
     value_to_string_fobj<
-    chat_gaming::user,
-    user_value_accessor_by_ptr_fobj<AccRet>,
-    RetTrans
+        chat_gaming::user, 
+        user_value_accessor_by_ptr_fobj<AccRet>,
+        RetTrans
     > accessor_fobj;
-
-    return
-        user_value_by_id_accessor_fobj<accessor_fobj>(
-            accessor_fobj(
-                user_value_accessor_by_ptr_fobj<AccRet>(
-                    accessor
-                ),
-                trans
-            )
-        );
+    
+    return 
+    user_value_by_id_accessor_fobj<accessor_fobj>(
+        accessor_fobj(
+            user_value_accessor_by_ptr_fobj<AccRet>(
+                accessor
+            ),
+            trans
+        )
+    );
 }
 
-template <class AccRet>
+template <class AccRet> 
 inline
 user_value_by_id_accessor_fobj<
-value_to_string_fobj<
-chat_gaming::user,
-user_value_accessor_by_ptr_fobj<AccRet>,
-dummy_string_to_string
->
+    value_to_string_fobj<
+        chat_gaming::user, 
+        user_value_accessor_by_ptr_fobj<AccRet>,
+        dummy_string_to_string
+    >
 >
 user_value_accessor(
     AccRet (chat_gaming::user::*accessor)() const
@@ -162,60 +162,60 @@ user_value_accessor(
     return user_value_accessor(accessor, dummy_string_to_string());
 }
 
-template <class RetTrans>
+template <class RetTrans> 
 inline
 user_value_by_id_accessor_fobj<
-value_to_string_fobj<
-chat_gaming::user,
-user_room_id_accessor_fobj,
-RetTrans
->
+    value_to_string_fobj<
+        chat_gaming::user, 
+        user_room_id_accessor_fobj,
+        RetTrans
+    >
 >
 user_room_id_accessor(
     RetTrans trans
 ) {
-    typedef
+    typedef 
     value_to_string_fobj<
-    chat_gaming::user,
-    user_room_id_accessor_fobj,
-    RetTrans
+        chat_gaming::user, 
+        user_room_id_accessor_fobj,
+        RetTrans
     > accessor_fobj;
-
-    return
-        user_value_by_id_accessor_fobj<accessor_fobj>(
-            accessor_fobj(
-                user_room_id_accessor_fobj(),
-                trans
-            )
-        );
+    
+    return 
+    user_value_by_id_accessor_fobj<accessor_fobj>(
+        accessor_fobj(
+            user_room_id_accessor_fobj(),
+            trans
+        )
+    );
 }
 
-template <class RetTrans>
+template <class RetTrans> 
 inline
 user_value_by_id_accessor_fobj<
-value_to_string_fobj<
-chat_gaming::user,
-user_id_accessor_fobj,
-RetTrans
->
+    value_to_string_fobj<
+        chat_gaming::user, 
+        user_id_accessor_fobj,
+        RetTrans
+    >
 >
 user_id_accessor(
     RetTrans trans
 ) {
-    typedef
+    typedef 
     value_to_string_fobj<
-    chat_gaming::user,
-    user_id_accessor_fobj,
-    RetTrans
+        chat_gaming::user, 
+        user_id_accessor_fobj,
+        RetTrans
     > accessor_fobj;
-
-    return
-        user_value_by_id_accessor_fobj<accessor_fobj>(
-            accessor_fobj(
-                user_id_accessor_fobj(),
-                trans
-            )
-        );
+    
+    return 
+    user_value_by_id_accessor_fobj<accessor_fobj>(
+        accessor_fobj(
+            user_id_accessor_fobj(),
+            trans
+        )
+    );
 }
 
 } // multi_feed

@@ -22,29 +22,29 @@ namespace gui {
 namespace window {
 
 FXDEFMAP(room_settings) room_settings_map[]= {
-            FXMAPFUNC(SEL_COMMAND,
-                      room_settings::ID_MY_ACCEPT,
-                      room_settings::on_command),
-            FXMAPFUNC(SEL_COMMAND,
-                      room_settings::ID_MY_CANCEL,
-                      room_settings::on_command)
-
-        };
+    FXMAPFUNC(SEL_COMMAND, 
+              room_settings::ID_MY_ACCEPT,
+              room_settings::on_command),
+    FXMAPFUNC(SEL_COMMAND, 
+              room_settings::ID_MY_CANCEL,
+              room_settings::on_command)
+              
+};
 
 FXIMPLEMENT(room_settings, FXDialogBox, room_settings_map, ARRAYNUMBER(room_settings_map));
 // FXIMPLEMENT(room_settings, FXDialogBox, NULL, 0);
 
-room_settings::room_settings(FXWindow *owner)
-        : FXDialogBox(owner, langstr("room_settings_win/title"))
+room_settings::room_settings(FXWindow *owner) 
+    : FXDialogBox(owner, langstr("room_settings_win/title"))
 {
     FXMatrix *m = new FXMatrix(this, 2, MATRIX_BY_COLUMNS);
-
+    
     new FXLabel(m, langstr("room_settings_win/topic"));
     _topic_field = new FXTextField(m, 25);
     new FXLabel(m, langstr("room_settings_win/password"));
     _pass_field  = new FXTextField(m, 25, NULL, 0,
                                    TEXTFIELD_PASSWD|FRAME_SUNKEN|FRAME_THICK);
-
+        
     new FXSeparator(this);
     _pickups_check = new FXCheckButton(this, langstr("room_settings_win/pickups"));
     m = new FXMatrix(this, 2, MATRIX_BY_COLUMNS);
@@ -55,12 +55,12 @@ room_settings::room_settings(FXWindow *owner)
     _players_field = new FXSpinner(m,3,NULL,0,SPIN_NORMAL|FRAME_SUNKEN|FRAME_THICK);
     _players_field->setRange(2, 12);
 
-    new FXSeparator(this);
+    new FXSeparator(this);  
     FXHorizontalFrame *bframe = new FXHorizontalFrame(this, LAYOUT_CENTER_X);
     new FXButton(bframe, langstr("common/ok_button"), NULL, this, ID_MY_ACCEPT);
     new FXButton(bframe, langstr("common/cancel_button"), NULL, this, ID_MY_CANCEL);
-
-    /* Room initialization, settings taken from existing room.*/
+    
+    /* Room initialization, settings taken from existing room.*/    
     chat_gaming::room &r = self_model()->hosting_room();
     _registry_to_room(r);
     _room_id_prev = r.id();
@@ -69,13 +69,13 @@ room_settings::room_settings(FXWindow *owner)
         // New room branch
         r.owner_id(self_model()->user().id());
         r.generate_id();
-
+    
         // Set the user to be in this room and send an update
         self_model()->user().room_id(r.id());
         self_model()->user_send();
     }
-
-    getAccelTable()->addAccel(MKUINT(KEY_F4,ALTMASK),this,FXSEL(SEL_COMMAND,ID_MY_CANCEL));
+    
+    getAccelTable()->addAccel(MKUINT(KEY_F4,ALTMASK),this,FXSEL(SEL_COMMAND,ID_MY_CANCEL));     
 }
 
 void
@@ -119,18 +119,18 @@ room_settings::_room_to_registry(const chat_gaming::room &r) const
     game_registry()->set("Pickups", r.pickups() ? 1 : 0);
 }
 
-long
+long 
 room_settings::on_command(FXObject *from, FXSelector sel, void *ptr) {
     ::message *msg = NULL;
     FXSelector nsel = 0;
-
+    
     switch (FXSELID(sel)) {
     case ID_MY_ACCEPT:
-        {
-            msg = _room_message();
-            if (msg) nsel = FXSEL(FXSELTYPE(sel), ID_ACCEPT);
-            break;
-        }
+    {
+        msg = _room_message();
+        if (msg) nsel = FXSEL(FXSELTYPE(sel), ID_ACCEPT);
+        break;      
+    }
     case ID_MY_CANCEL:
         // Set the user to be in the room he was before the call
         // (this done only when new room)
@@ -144,17 +144,17 @@ room_settings::on_command(FXObject *from, FXSelector sel, void *ptr) {
     }
 
     if (msg) net_messenger()->send_msg(msg);
-
+    
     if (nsel) {
         this->handle(from, nsel, ptr);
     }
-    return 1;
+    return 1;       
 }
 
 ::message *
 room_settings::_room_message() {
     if (_topic_field->getText().trim().empty()) {
-        FXMessageBox::error(this, FX::MBOX_OK,
+        FXMessageBox::error(this, FX::MBOX_OK, 
                             langstr("room_settings_win/error_title"),
                             langstr("room_settings_win/topic_missing"));
         return NULL;
@@ -162,12 +162,12 @@ room_settings::_room_message() {
 
     _form_to_room(self_model()->hosting_room());
     _room_to_registry(self_model()->hosting_room());
-
+    
     return self_model()->hosting_room_as_message();
 #if 0
     new message_room(
-        ::message::room,
-        self_model()->hosting_room(),
+        ::message::room, 
+        self_model()->hosting_room(), 
         self_model()->sequence(),
         0
     );

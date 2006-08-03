@@ -15,12 +15,12 @@ class ace_messenger : public messenger {
     ACE_Reactor       *_reactor;
     ACE_Event_Handler *_handler;
     ACE_Reactor_Mask   _mask;
-
+    
 protected:
     virtual void wake_target();
-
+    
 public:
-    ace_messenger(ACE_Reactor *r, ACE_Event_Handler *h = NULL,
+    ace_messenger(ACE_Reactor *r, ACE_Event_Handler *h = NULL, 
                   ACE_Reactor_Mask m = ACE_Event_Handler::EXCEPT_MASK);
 };
 

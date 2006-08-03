@@ -9,11 +9,11 @@
 #include "watched_object.h"
 
 namespace gui {
-
-class modal_dialog_guard :
-            public FXObject,
-            public message_handler,
-            public watched_object
+    
+class modal_dialog_guard : 
+    public FXObject,
+    public message_handler, 
+    public watched_object
 {
 protected:
     FXDECLARE(modal_dialog_guard)
@@ -23,7 +23,7 @@ protected:
     virtual bool can_display();
 
     virtual bool display_if_possible();
-
+    
     // Display is called when the dialog should be shown
     // Inherited classes must implement this
     // The class is deleted after display() returns.
@@ -34,7 +34,7 @@ public:
     // Returns true if was shown immediately
     virtual bool show_when_possible();
 
-    void handle_message    (::message *msg);
+    void handle_message    (::message *msg);    
 };
 
 } // ns gui

@@ -8,8 +8,8 @@
 
 namespace multi_feed {
 namespace config {
-extern bool always_display_feeds;
-} // ns config
+    extern bool always_display_feeds;
+} // ns config  
 } // ns multi_feed
 
 #endif /*_MULTI_FEED_CONFIG_H_*/

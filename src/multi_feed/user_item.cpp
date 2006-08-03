@@ -2,7 +2,7 @@
 #include "user_accessors.h"
 
 namespace multi_feed {
-
+    
 std::string
 user_item::unambiguous_display_id() const {
     feed_value_map_type user_ids;
@@ -13,7 +13,7 @@ user_item::unambiguous_display_id() const {
     }
     if (user_id.empty())
         user_id = "?";
-
+    
     return user_id;
 }
 

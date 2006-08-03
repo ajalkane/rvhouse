@@ -11,11 +11,11 @@
  * network that are used to gather usually overlapping information
  */
 namespace multi_feed {
-class room_item : public item<chat_gaming::room::id_type> {
-public:
-    typedef item<chat_gaming::room::id_type> super;
-    typedef chat_gaming::room room_type;
-};
+    class room_item : public item<chat_gaming::room::id_type> {
+    public:
+        typedef item<chat_gaming::room::id_type> super;
+        typedef chat_gaming::room room_type;        
+    };
 
 } // ns multi_feed
 

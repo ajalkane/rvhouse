@@ -7,14 +7,14 @@
 
 namespace gui {
 namespace window {
-
+    
 class about : public FXDialogBox {
     FXDECLARE(about)
-
+        
 protected:
     about() {}
 
-public:
+public: 
     about(FXWindow *owner);
     virtual void create();
 };

@@ -9,8 +9,8 @@ namespace chat_gaming {
 
 const netcomgrp::addr_inet_type user::_addr_none = netcomgrp::addr_inet_type();
 
-class ip_mask
-            : public std::unary_function<std::string::value_type,std::string::value_type>
+class ip_mask 
+  : public std::unary_function<std::string::value_type,std::string::value_type>
 {
     int _dot_count;
 public:
@@ -25,17 +25,17 @@ public:
     }
 };
 
-void
+void 
 user::generate_id() {
     std::ostringstream user_id;
     user_id << time(NULL) << ":"
-    << login_id() << ":"
-    << (authenticated() ? "1" : "0");
+            << login_id() << ":"
+            << (authenticated() ? "1" : "0");
 
     user_key new_id(id());
     new_id.id_str(user_id.str());
     id(new_id);
-    _init_extra_vars();
+    _init_extra_vars(); 
 }
 
 void
@@ -47,15 +47,15 @@ user::_init_extra_vars() {
         const netcomgrp::addr_inet_type &a = id().node()->addr();
         _local.ip_as_string = a.get_host_addr();
     }
-
+    
     _local.display_id = login_id();
     ACE_DEBUG((LM_DEBUG, "chat_gaming::user::_init_extra_vars: "
-               "display_id/login_id/ip/time_delta: %s/%s/%s/%d\n",
-               _local.display_id.c_str(),
-               _login_id.c_str(),
-               _local.ip_as_string.c_str(),
-               _local.user_us_time_delta));
-
+              "display_id/login_id/ip/time_delta: %s/%s/%s/%d\n", 
+              _local.display_id.c_str(),
+              _login_id.c_str(),
+              _local.ip_as_string.c_str(),
+              _local.user_us_time_delta));
+              
     // TODO maybe not show the whole IP but mask part of it?
     if (_local.display_id.empty()) {
         _local.display_id = ip_as_string();
@@ -74,7 +74,7 @@ user::status_to_string(int s) {
     case status_playing:  return langstr("status/playing");
     case status_away:     return langstr("status/away");
     }
-
+    
     return langstr("status/unknown");
 }
 

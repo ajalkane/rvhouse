@@ -6,7 +6,7 @@ namespace app_functionality {
 class base {
 public:
     virtual ~base();
-    virtual void run() = 0;
+    virtual void run() = 0; 
 };
 
 } // ns app_functionality

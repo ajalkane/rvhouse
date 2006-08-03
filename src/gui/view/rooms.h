@@ -23,18 +23,18 @@ public:
 private:
     multi_feed::room_item      _room_feed;
     chat_gaming::room::id_type _room_id;
-
+    
     FXString  _tip_str;
-
+    
     bool _resolve_columns();
     bool _resolve_tip();
     std::string _tip_participants();
     inline std::string _tip(const std::string &s) {
-        return (s.empty()
-                ? std::string()
+        return (s.empty() 
+                ? std::string() 
                 : s + '\n');
     }
-
+    
 public:
     room_item(const chat_gaming::room::id_type &rid);
 
@@ -45,12 +45,12 @@ public:
 
     // Returns true if the room should be removed for good from list
     bool room_remove(const chat_gaming::room::id_type &id, int grp);
-
+    
     // Returns true if the (visible) room state has changed in a way
     // that needs redrawing
     bool resolve_room_state();
 
-
+    
     long on_query_tip(FXObject *sender,FXSelector sel,void *ptr);
 protected:
     room_item();
@@ -65,7 +65,7 @@ class rooms : public FXIconList, public users::observer {
         void       *ptr;
         inline _handler_target_type() : target(NULL),sel(0),ptr(NULL) {}
     };
-
+      
     _handler_target_type _handler_item_doubleclicked;
 
 public:
@@ -79,35 +79,35 @@ public:
         ID_STATUS_PLAYING,
         ID_LAST,
     };
-
+    
     class observer {
     public:
         virtual void room_added(const chat_gaming::room &r)   {}
         virtual void room_removed(const chat_gaming::room &u) {}
     };
     inline void observer_set(observer *o) { _observer = o; }
-
-    rooms(FXComposite *c, FXObject *tgt=NULL,
-          FXSelector sel=0,
-          FXuint opts=LAYOUT_FILL_X|LAYOUT_FILL_Y|
-                      ICONLIST_DETAILED|ICONLIST_EXTENDEDSELECT,
-          FXint x=0, FXint y=0, FXint w=0, FXint h=0);
+    
+    rooms(FXComposite *c, FXObject *tgt=NULL, 
+               FXSelector sel=0, 
+               FXuint opts=LAYOUT_FILL_X|LAYOUT_FILL_Y|
+                           ICONLIST_DETAILED|ICONLIST_EXTENDEDSELECT,
+               FXint x=0, FXint y=0, FXint w=0, FXint h=0);
     virtual void create();
-
-    void handle_message(::message *msg);
+    
+    void handle_message(::message *msg);    
 
     inline void target_item_doubleclicked(FXObject *t, FXSelector sel) {
         _handler_item_doubleclicked.target = t;
         _handler_item_doubleclicked.sel    = sel;
         _handler_item_doubleclicked.ptr    = NULL;
     }
-
+    
     long on_query_tip       (FXObject *sender,FXSelector sel,void *ptr);
     long on_room_doubleclick(FXObject *sender,FXSelector sel,void *ptr);
-
+    
     int selected_item_index() const;
 
-    inline const room_item *item_at(int ndx) const {
+    inline const room_item *item_at(int ndx) const { 
         return dynamic_cast<const room_item *>(getItem(ndx));
     }
 
@@ -116,7 +116,7 @@ public:
         if (!item) return chat_gaming::room::id_type();
         return _room_item_map.find_key(const_cast<room_item *>(item));
     }
-
+    
     inline void removeItem(FXIconItem *i, FXbool notify = FALSE) {
         item_to_index_call<void>(&super::removeItem, notify, i);
     }
@@ -139,7 +139,7 @@ public:
             (this->*method)(i);
         }
     }
-
+    
     template <class RetVal>
     void
     item_to_index_call(RetVal (super::*method)(FXint,FXbool), FXbool v, FXIconItem *item) {
@@ -149,9 +149,9 @@ public:
             (this->*method)(i, v);
         }
     }
-
+    
     template <class RetVal>
-    void
+    void 
     item_to_index_call(RetVal (super::*method)(FXint) const, FXIconItem *item) {
         int i = super::findItemByData(item);
         ACE_DEBUG((LM_DEBUG, "rooms::item_to_index_call item search index %d\n", i));
@@ -159,21 +159,21 @@ public:
             (this->*method)(i);
         }
     }
-
+    
 protected:
     rooms() {}
-private:
+private:    
     observer *_observer;
 
     // Maps a room to the list item displaying it.
     multi_feed::room_map<item_type> _room_item_map;
 
-    void _handle_user_update(::message *msg);
-
+    void _handle_user_update(::message *msg);   
+    
     void _update_room(const chat_gaming::room &r, int grp_base);
     void _update_room(const chat_gaming::room::id_type &rid, int grp_base);
     void _update_room_state(item_type *item);
-
+    
     void _remove_room(const chat_gaming::room &r, int grp_base);
     void _new_room   (const chat_gaming::room &r, int grp_base);
     void _remove_dropped();

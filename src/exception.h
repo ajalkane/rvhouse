@@ -22,7 +22,7 @@ private:
     int         _code;
 public:
     exception(int code, const char *reason) :
-    _str(reason), _code(code) {
+      _str(reason), _code(code) {
     }
     virtual ~exception() throw();
     virtual const char *what() const throw() { return _str; }
@@ -32,20 +32,20 @@ public:
 class exceptionf : public ::exception {
 private:
     char _str_store[256];
-
+    
 public:
-    exceptionf(int code, const char *format, ...)
-            : exception(code, format) {
+    exceptionf(int code, const char *format, ...) 
+        : exception(code, format) {
         va_list a;
         va_start(a, format);
-        vsnprintf(_str_store, sizeof(_str_store)/sizeof(_str_store[0]),
+        vsnprintf(_str_store, sizeof(_str_store)/sizeof(_str_store[0]), 
                   format, a);
         va_end(a);
 
-        ACE_ERROR((LM_ERROR, "exception: %s\n", _str_store));
+        ACE_ERROR((LM_ERROR, "exception: %s\n", _str_store));           
     }
     virtual ~exceptionf() throw();
     virtual const char *what() const throw() { return _str_store; }
 };
-
+ 
 #endif //_EXCEPTION_H_

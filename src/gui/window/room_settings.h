@@ -24,11 +24,11 @@ class room_settings : public FXDialogBox {
     FXSpinner   *_laps_field;
     FXSpinner   *_players_field;
     FXCheckButton *_pickups_check;
-
+    
     FXHorizontalFrame *_toolbar;
-
+    
     chat_gaming::room::id_type _room_id_prev;
-
+    
     void _room_to_form(const chat_gaming::room &r);
     void _form_to_room(chat_gaming::room &r) const;
     void _registry_to_room(chat_gaming::room &r) const;
@@ -47,8 +47,8 @@ public:
 
     room_settings(FXWindow *owner);
     virtual void create();
-
-    long on_command(FXObject *from, FXSelector sel, void *);
+        
+    long on_command(FXObject *from, FXSelector sel, void *);    
 };
 
 } // ns window

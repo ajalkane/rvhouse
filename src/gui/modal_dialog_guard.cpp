@@ -12,7 +12,7 @@ modal_dialog_guard::modal_dialog_guard() {
     ACE_DEBUG((LM_DEBUG, "modal_dialog_guard::ctor\n"));
     watched_object::create(this);
 }
-
+    
 modal_dialog_guard::~modal_dialog_guard() {
     ACE_DEBUG((LM_DEBUG, "modal_dialog_guard::dtor\n"));
 }
@@ -20,19 +20,19 @@ modal_dialog_guard::~modal_dialog_guard() {
 void
 modal_dialog_guard::display() {
     // Must implement by derived classes
-    assert(0);
-}
+    assert(0);  
+    }
 
 
-bool
+bool 
 modal_dialog_guard::can_display() {
     ACE_DEBUG((LM_DEBUG, "modal_dialog_guard::can_display\n"));
     if (::app()->getModalWindow()) {
-        ACE_DEBUG((LM_DEBUG, "gui_dialog_guard::can_display: not because modal window\n"));
+        ACE_DEBUG((LM_DEBUG, "gui_dialog_guard::can_display: not because modal window\n"));     
         return false;
     }
     if (self_model()->user().status() == chat_gaming::user::status_playing) {
-        ACE_DEBUG((LM_DEBUG, "gui_dialog_guard::can_display: not because playing\n"));
+        ACE_DEBUG((LM_DEBUG, "gui_dialog_guard::can_display: not because playing\n"));              
         return false;
     }
     ACE_DEBUG((LM_DEBUG, "gui_dialog_guard::can_display: yes\n"));
@@ -58,7 +58,7 @@ modal_dialog_guard::show_when_possible() {
 
 void
 modal_dialog_guard::handle_message(::message *msg) {
-    ACE_DEBUG((LM_DEBUG, "modal_dialog_guard::handle_message\n"));
+    ACE_DEBUG((LM_DEBUG, "modal_dialog_guard::handle_message\n"));  
     display_if_possible();
 }
 

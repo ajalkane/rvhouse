@@ -5,21 +5,21 @@
 
 // Forward declarations
 namespace model {
-class house;
-class self;
+    class house;
+    class self;
 };
 
 namespace executable {
-class launcher;
+    class launcher;
 }
 
 namespace lang {
-class mapper;
-class manager;
+    class mapper;
+    class manager;
 }
 
 namespace gui {
-class house_app;
+    class house_app;
 }
 
 extern accessor<class gui::house_app *>    app;

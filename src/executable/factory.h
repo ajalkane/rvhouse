@@ -7,7 +7,7 @@ namespace executable {
 
 class factory {
 public:
-    class launcher *create_launcher(const std::string &app_id);
+    class launcher *create_launcher(const std::string &app_id);     
 };
 
 }

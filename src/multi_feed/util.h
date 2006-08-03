@@ -28,11 +28,11 @@ std::string header_value(
     std::string val = feed_item.values(vals, acc);
 
     if (config::always_display_feeds) return header_value(hdr, vals);
-
-    return (val.empty() == false || vals.size() == 0
+        
+    return (val.empty() == false || vals.size() == 0 
             ? header_value(hdr, val)
             : header_value(hdr, vals));
-}
+}   
 
 template <class FeedItem, class Accessor>
 std::string header_non_empty_value(
@@ -44,14 +44,14 @@ std::string header_non_empty_value(
     std::string val = feed_item.values(vals, acc);
 
     if (!val.empty()) {
-        if (config::always_display_feeds) return header_value(hdr, vals);
+        if (config::always_display_feeds) return header_value(hdr, vals);   
         return header_value(hdr, val); // "user hasn't validated!");
     }
     else if (vals.size() > 0) {
         return header_value(hdr, vals);
     }
     return std::string();
-}
+}   
 
 template <class FeedItem, class Accessor>
 inline
@@ -60,7 +60,7 @@ std::string value(
     Accessor acc
 ) {
     return header_value(feed_item, std::string(), acc);
-}
+}   
 
 // Returns a unique value
 template <class FeedItem, class Accessor>
@@ -70,12 +70,12 @@ std::string uniq_value(
 ) {
     multi_feed::feed_value_map_type vals;
     std::string val = feed_item.values(vals, acc);
-
+        
     if (val.empty() == false || vals.size() == 0)
         return val;
     else
         return vals.begin()->second;
-}
+}   
 
 } // ns multi_feed
 

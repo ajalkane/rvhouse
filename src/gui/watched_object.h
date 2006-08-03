@@ -15,7 +15,7 @@ protected:
 public:
     watched_object();
     // watched_window(FXWindow *self);
-    virtual ~watched_object();
+    virtual ~watched_object();  
     void create(FXObject *self);
 };
 

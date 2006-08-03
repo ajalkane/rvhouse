@@ -20,11 +20,11 @@ protected:
     _msgs_type _msgs;
     FXMutex    _lock;
 
-    virtual void wake_target() = 0;
+    virtual void wake_target() = 0;     
 public:
     messenger();
     virtual ~messenger();
-
+    
     // TODO should rather provide some sort of stream interface
     // for reading / writing messages
     template<typename OutIter> void collect_msgs(OutIter i);
@@ -35,7 +35,7 @@ public:
 template<typename OutIter> void
 messenger::collect_msgs(OutIter i) {
     FXMutexLock guard(_lock);
-
+    
     std::copy(_msgs.begin(),
               _msgs.end(),
               i);
@@ -48,7 +48,7 @@ messenger::send_msg(message *m) {
     FXMutexLock guard(_lock);
 
     ACE_DEBUG((LM_DEBUG, "messenger: appending to message queue\n"));
-
+    
     _msgs.insert(_msgs.end(), m);
     wake_target();
 }

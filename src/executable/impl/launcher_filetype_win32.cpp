@@ -4,12 +4,12 @@
 
 namespace executable {
 
-launcher_filetype_win32::launcher_filetype_win32() {
+launcher_filetype_win32::launcher_filetype_win32() {    
 }
 
 launcher_filetype_win32::~launcher_filetype_win32() {
 }
-
+    
 int
 launcher_filetype_win32::start(const std::string &app) {
     int ret = (int)ShellExecute(NULL,"open",app.c_str(),NULL,NULL,SW_SHOWNORMAL);
@@ -17,7 +17,7 @@ launcher_filetype_win32::start(const std::string &app) {
                ret, app.c_str()));
     // Returns value > 32 if successfull
     if (ret > 32) return 0;
-
+    
     // Otherwise an error
     switch (ret) {
     case ERROR_FILE_NOT_FOUND:
@@ -26,7 +26,7 @@ launcher_filetype_win32::start(const std::string &app) {
     case 0:
         return err_could_not_launch;
     }
-
+    
     return err_other;
 }
 

@@ -15,7 +15,7 @@
  */
 template <class Target, class Src>
 inline Target *dynamic_ptr_cast(Src *src) {
-    // A little trickery here, dynamic cast throws an exception with
+    // A little trickery here, dynamic cast throws an exception with 
     // non-castable types when references are used
     Target &t = dynamic_cast<Target &>(*src);
     return &t;
@@ -29,7 +29,7 @@ class delete_ptr {
 public:
     inline void operator()(T *ptr) {
         delete ptr;
-    }
+    }   
 };
 
 /**
@@ -40,12 +40,12 @@ template <class T>
 class element_replace {
     T _f, _r;
 public:
-    inline element_replace(const T &find, const T &replace_with)
-            : _f(find), _r(replace_with) {}
-
+    inline element_replace(const T &find, const T &replace_with) 
+      : _f(find), _r(replace_with) {}
+    
     inline const T operator()(const T &e) {
-        return (e == _f ? _r : e);
-    }
+        return (e == _f ? _r : e); 
+    }   
 };
 
 /**
@@ -61,7 +61,7 @@ public:
     inline ~variable_guard() {
         if (!_released) _var = _val;
     }
-inline T &release() { _released = true; return _var; }
+    inline T &release() { _released = true; return _var; }
 };
 
 // Dummy implementation, maybe do more general when time
@@ -72,11 +72,11 @@ inline std::string rot13(const std::string &s) {
         unsigned char c = *i + 13;
         // Force the resulting range to be between 32 - 122
         c %= 123;
-        if (c < 32) c += 32;
+        if (c < 32) c += 32;    
         result += c; // (*i + 13);
     }
     // ACE_DEBUG((LM_DEBUG, "rot13: %s -> %s\n", s.c_str(), result.c_str()));
-    return result;
+    return result;                         
 }
 
 // Dummy implementation, maybe do more general when time
@@ -89,9 +89,9 @@ inline std::string derot13(const std::string &s) {
         if (c < 32) c = 123 - (32 - c);
         result += c;
     }
-
+    
     // ACE_DEBUG((LM_DEBUG, "derot13: %s -> %s\n", s.c_str(), result.c_str()));
-    return result;
+    return result;                         
 }
 
 #endif //_UTIL_H_

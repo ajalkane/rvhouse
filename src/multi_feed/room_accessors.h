@@ -25,16 +25,16 @@ class room_value_by_id_accessor_fobj {
     ValueAccessor _acc;
 public:
     inline room_value_by_id_accessor_fobj(
-        ValueAccessor accessor
+      ValueAccessor accessor
     ) : _acc(accessor) {}
-
+    
     std::string operator()(const chat_gaming::room::id_type &rid, int grp) {
-        model::house::house_type::room_iterator ri =
-            house_model()->room_find(rid, grp);
+        model::house::house_type::room_iterator ri = 
+          house_model()->room_find(rid, grp);
         if (ri == house_model()->room_end()) return std::string();
         const model::house::room_type &r = *ri;
         const std::string &s = _acc(r, grp);
-        ACE_DEBUG((LM_DEBUG, "multi_feed::room_value_accessor::value: %d value: '%s'\n",
+        ACE_DEBUG((LM_DEBUG, "multi_feed::room_value_accessor::value: %d value: '%s'\n", 
                    grp, s.c_str()));
         return s;
     }
@@ -46,10 +46,10 @@ class room_value_accessor_by_ptr_fobj {
     AccRet (chat_gaming::room::*_acc)() const;
 public:
     inline room_value_accessor_by_ptr_fobj(
-        AccRet (chat_gaming::room::*accessor)() const
+      AccRet (chat_gaming::room::*accessor)() const
     ) : _acc(accessor) {}
 
-    inline
+    inline 
     AccRet operator()(const chat_gaming::room &r) {
         return (r.*_acc)();
     }
@@ -57,51 +57,51 @@ public:
 
 class room_owner_id_accessor_fobj {
 public:
-    inline
+    inline 
     const chat_gaming::user::id_type &operator()(const chat_gaming::room &r) {
         return r.owner_id();
     }
 };
 
-template <class AccRet, class RetTrans>
+template <class AccRet, class RetTrans> 
 inline
 room_value_by_id_accessor_fobj<
-value_to_string_fobj<
-chat_gaming::room,
-room_value_accessor_by_ptr_fobj<AccRet>,
-RetTrans
->
+    value_to_string_fobj<
+        chat_gaming::room, 
+        room_value_accessor_by_ptr_fobj<AccRet>,
+        RetTrans
+    >
 >
 room_value_accessor(
     AccRet (chat_gaming::room::*accessor)() const,
     RetTrans trans
 ) {
-    typedef
+    typedef 
     value_to_string_fobj<
-    chat_gaming::room,
-    room_value_accessor_by_ptr_fobj<AccRet>,
-    RetTrans
+        chat_gaming::room, 
+        room_value_accessor_by_ptr_fobj<AccRet>,
+        RetTrans
     > accessor_fobj;
-
-    return
-        room_value_by_id_accessor_fobj<accessor_fobj>(
-            accessor_fobj(
-                room_value_accessor_by_ptr_fobj<AccRet>(
-                    accessor
-                ),
-                trans
-            )
-        );
+    
+    return 
+    room_value_by_id_accessor_fobj<accessor_fobj>(
+        accessor_fobj(
+            room_value_accessor_by_ptr_fobj<AccRet>(
+                accessor
+            ),
+            trans
+        )
+    );
 }
 
-template <class AccRet>
+template <class AccRet> 
 inline
 room_value_by_id_accessor_fobj<
-value_to_string_fobj<
-chat_gaming::room,
-room_value_accessor_by_ptr_fobj<AccRet>,
-dummy_string_to_string
->
+    value_to_string_fobj<
+        chat_gaming::room, 
+        room_value_accessor_by_ptr_fobj<AccRet>,
+        dummy_string_to_string
+    >
 >
 room_value_accessor(
     AccRet (chat_gaming::room::*accessor)() const
@@ -109,32 +109,32 @@ room_value_accessor(
     return room_value_accessor(accessor, dummy_string_to_string());
 }
 
-template <class RetTrans>
+template <class RetTrans> 
 inline
 room_value_by_id_accessor_fobj<
-value_to_string_fobj<
-chat_gaming::room,
-room_owner_id_accessor_fobj,
-RetTrans
->
+    value_to_string_fobj<
+        chat_gaming::room, 
+        room_owner_id_accessor_fobj,
+        RetTrans
+    >
 >
 room_owner_id_accessor(
     RetTrans trans
 ) {
-    typedef
+    typedef 
     value_to_string_fobj<
-    chat_gaming::room,
-    room_owner_id_accessor_fobj,
-    RetTrans
+        chat_gaming::room, 
+        room_owner_id_accessor_fobj,
+        RetTrans
     > accessor_fobj;
-
-    return
-        room_value_by_id_accessor_fobj<accessor_fobj>(
-            accessor_fobj(
-                room_owner_id_accessor_fobj(),
-                trans
-            )
-        );
+    
+    return 
+    room_value_by_id_accessor_fobj<accessor_fobj>(
+        accessor_fobj(
+            room_owner_id_accessor_fobj(),
+            trans
+        )
+    );
 }
 
 } // multi_feed

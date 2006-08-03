@@ -17,10 +17,10 @@ class fox_messenger : public messenger {
     FXObject    *_target;
     FXSelector   _sel;
     FXGUISignal *_fox_signal;
-
+    
 protected:
     virtual void wake_target();
-
+    
 public:
     fox_messenger(FXApp *a, FXObject *target, FXSelector sel);
     virtual ~fox_messenger();

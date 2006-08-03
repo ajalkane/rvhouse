@@ -9,15 +9,15 @@
 
 class message_send : public message_grouped {
     std::string _str;
-public:
-    message_send(int msg_type,
+public: 
+    message_send(int msg_type, 
                  const std::string &str,
-                 const chat_gaming::user::id_type &uid,
+                 const chat_gaming::user::id_type &uid, 
                  unsigned seq,
                  int group_base);
-
+                 
     virtual message *duplicate();
-
+    
     inline const std::string &str() const {
         return _str;
     }

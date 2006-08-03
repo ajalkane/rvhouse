@@ -9,10 +9,10 @@
 
 namespace networking {
 namespace kadc {
-
+    
 dht_operation::dht_operation(dht_target *t)
-        : ::networking::dht_operation(t), _dht_client(NULL),
-        _updating_contacts(false), _connect_after_update(false)
+  : ::networking::dht_operation(t), _dht_client(NULL),
+    _updating_contacts(false), _connect_after_update(false)
 {
     std::string logfile = conf<std::string>("logfile", std::string());
     ACE_DEBUG((LM_DEBUG, "kadc::dht_operation: logfile '%s'\n", logfile.c_str()));
@@ -23,7 +23,7 @@ dht_operation::dht_operation(dht_target *t)
     }
 }
 
-std::string
+std::string 
 dht_operation::conf_kadc_ini() {
     return conf<std::string>("kadc_inifile", std::string());
     // return net_conf()->get("net_serverless_kadc", "kadc_inifile");
@@ -35,20 +35,20 @@ dht_operation::conf_contacts_server() {
     // return net_conf()->get("net_serverless_kadc","contacts_server");
 }
 
-std::string
+std::string 
 dht_operation::conf_contacts_dload() {
     return conf<std::string>("contacts_dload", std::string());
     // return net_conf()->get("net_serverless_kadc","contacts_dload");
 }
 
 dht_operation::~dht_operation() {
-    // Causes probs, disabled... kadC deinitialisation is too slow to wait
-    /*	if (_dht_client) {
-    		_dht_client->deinit();
-    		delete _dht_client;
-    		_dht_client = NULL;
-    	}
-    	*/
+// Causes probs, disabled... kadC deinitialisation is too slow to wait
+/*  if (_dht_client) {
+        _dht_client->deinit();
+        delete _dht_client;
+        _dht_client = NULL;
+    }
+    */
 }
 
 dht::client *
@@ -61,7 +61,7 @@ dht_operation::prepare_connect() {
     if (get_node() && get_node()->in_state() == dht::client::disconnected) {
         // Make sure the node is deleted before doing a new connect
         ACE_DEBUG((LM_DEBUG, "kadc::dht_operation::prepare_connect: " \
-                   "deleting kadc DHT node\n"));
+                  "deleting kadc DHT node\n"));
         delete _dht_client;
         _dht_client = NULL;
     }
@@ -72,11 +72,11 @@ dht_operation::prepare_connect() {
         if (!file_exists(kfile)) {
             _connect_after_update = true;
             ACE_DEBUG((LM_DEBUG, "%s kadc file not found, trying to retrieve " \
-                       "a fresh copy\n", kfile.c_str()));
+                      "a fresh copy\n", kfile.c_str()));
             update_contacts();
             return 0;
         }
-        dht::name_value_map dht_conf;
+        dht::name_value_map dht_conf;       
         dht_conf.set("init_file", kfile);
         _dht_client = new dht::kadc::client;
         _dht_client->init(dht_conf);
@@ -84,14 +84,14 @@ dht_operation::prepare_connect() {
         _dht_client->find_duration (conf<size_t>("find_duration",  0));
         _dht_client->store_threads (conf<size_t>("store_threads",  0));
         _dht_client->store_duration(conf<size_t>("store_duration", 0));
-
+        
         set_node(_dht_client);
         ACE_DEBUG((LM_DEBUG, "dht_operation calling dht_ready_to_connect\n"));
         _target->dht_ready_to_connect();
         ACE_DEBUG((LM_DEBUG, "dht_operation::prepare_connect returning\n"));
         return 0;
     }
-
+    
     return ::networking::dht_operation::prepare_connect();
 }
 
@@ -100,15 +100,15 @@ dht_operation::prepare_disconnect() {
     _connect_after_update = false;
     return ::networking::dht_operation::prepare_disconnect();
 }
-
+    
 void
 dht_operation::update_contacts() {
     ACE_DEBUG((LM_DEBUG, "kadc::dht_operation: " \
-               "update contacts\n"));
-
+              "update contacts\n"));
+    
     if (_updating_contacts) {
         ACE_DEBUG((LM_DEBUG, "kadc::dht_operation: " \
-                   "contacts already being updated, nothing done\n"));
+                             "contacts already being updated, nothing done\n"));
         return;
     }
     // Since udpate_contacts() needs to destroy the old _dht_client and
@@ -123,29 +123,29 @@ dht_operation::handle_exception(ACE_HANDLE) {
     ACE_DEBUG((LM_DEBUG, "kadc::dht_operation handle_exception called\n"));
     if (_updating_contacts) {
         ACE_DEBUG((LM_DEBUG, "kadc::dht_operation doing preparing to " \
-                   "update contacts\n"));
+                  "update contacts\n"));
         if (_dht_client && _dht_client->in_state() != dht::client::disconnected) {
             ACE_DEBUG((LM_ERROR, "kadc::dht_operation trying to " \
-                       "update contacts but dht_client is in state %s\n",
-                       _dht_client->in_state_str()));
+                      "update contacts but dht_client is in state %s\n",
+                      _dht_client->in_state_str()));
             _updating_contacts = false;
         }
         ACE_DEBUG((LM_DEBUG, "kadc::dht_operation destroying old _dht_client\n"));
         delete _dht_client;
         _dht_client = NULL;
-
+        
         gui_messenger()->send_msg(new message(message::dht_upd_nodes));
-
+        
         std::string url = conf_contacts_server();
         std::string fil = app_rel_path(conf_contacts_dload());
-
-        try {
+        
+        try {                                                
             _remote_file_saver.fetch(url, fil, this);
         } catch (const std::exception &e) {
             ACE_DEBUG((LM_DEBUG, "Updating server nodes failed with: '%s'. " \
-                       "Used url '%s' and local file '%s'",
-                       e.what(), url.c_str(), fil.c_str()));
-
+                                "Used url '%s' and local file '%s'",
+                                e.what(), url.c_str(), fil.c_str()));
+            
             /*throw exceptionf(0, "Updating server nodes failed with: '%s'. " \
                                 "Used url '%s' and local file '%s'",
                                 e.what(), url.c_str(), fil.c_str());*/
@@ -154,9 +154,9 @@ dht_operation::handle_exception(ACE_HANDLE) {
 
             // throw e;
         }
-
+        
     }
-    return 0;
+    return 0;   
 }
 
 /*
@@ -166,7 +166,7 @@ dht_operation::handle_exception(ACE_HANDLE) {
 void
 dht_operation::saver_done(int status, const char *extra) {
     _updating_contacts = false;
-
+    
     if (status == remote_file_saver::status_error) {
         ACE_DEBUG((LM_ERROR, "server nodes update failed: %s\n", extra));
         gui_messenger()->send_msg(new message(message::dht_upd_nodes_fail));
@@ -186,7 +186,7 @@ dht_operation::saver_done(int status, const char *extra) {
 
         overnet.close();
         kadcini.close();
-
+        
         if (contacts > 0) {
             gui_messenger()->send_msg(new message(message::dht_upd_nodes_done));
             _target->dht_update_server_nodes_done(0);
@@ -204,14 +204,14 @@ dht_operation::saver_done(int status, const char *extra) {
     }
 }
 
-int
+int 
 dht_operation::state_changed(int dht_state) {
     ACE_DEBUG((LM_DEBUG, "dht_operation:: " \
-               "dht state change received (%s)\n", get_node()->state_str(dht_state)));
+    "dht state change received (%s)\n", get_node()->state_str(dht_state)));
 
     if (dht_state == dht::client::disconnected) {
         ACE_DEBUG((LM_DEBUG, "kadc::dht_operation dht disconnect received, " \
-                   "deleting node %d\n", _dht_client));
+                  "deleting node %d\n", _dht_client));
         // Can't delete node from here since this callback is called
         // from within _dht_client.
         // delete _dht_client;

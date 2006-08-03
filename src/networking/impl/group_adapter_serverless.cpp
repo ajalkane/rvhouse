@@ -17,17 +17,17 @@ namespace networking {
 group_adapter_serverless::group_adapter_serverless(
     ACE_Reactor *r
 ) : group_adapter_base(r), _dht_oper(NULL), _sgrp(NULL),
-        _external_ip_fetching(false),
-        _self(NULL),
-        _connect_try(0)
+    _external_ip_fetching(false), 
+    _self(NULL),
+    _connect_try(0)
 {
     // TODO needs global config.h or from fxsettings
     _grp_id = net_conf()->get<std::string>(
-                  "net_serverless", "group_id", "house://1.0/re-volt"
-              );
+        "net_serverless", "group_id", "house://1.0/re-volt"
+    );
     ACE_DEBUG((LM_DEBUG, "group_adapter_serverless::ctor group_id %s\n",
-               _grp_id.c_str()));
-
+              _grp_id.c_str()));
+              
     // _dht_user_connecting = 0;
 
     _dht_oper = new kadc::dht_operation(this);
@@ -41,11 +41,11 @@ group_adapter_serverless::~group_adapter_serverless() {
 netcomgrp::group  *
 group_adapter_serverless::create_group() {
     _sgrp = new netcomgrp::serverless::group;
-
+    
     _sgrp->observer_attach(
         this, netcomgrp::serverless::event_observer::mask_extra_state_changed
     );
-
+    
     // Deannouncing is quite a slow operation so for now disable it when
     // leaving
     _sgrp->opts_disable(netcomgrp::serverless::group::opt_deannounce_with_leave);
@@ -75,11 +75,11 @@ void group_adapter_serverless::dht_ready_to_connect() {
 int group_adapter_serverless::connect(const chat_gaming::user &self) {
     if (_sgrp->in_state() != netcomgrp::group::not_joined) {
         ACE_DEBUG((LM_WARNING, "group_adapter_serverless: " \
-                   "in state (%s) != not_joined, can't connect\n",
-                   _sgrp->in_state_str()));
+                  "in state (%s) != not_joined, can't connect\n",
+                  _sgrp->in_state_str()));
         return -1;
     }
-
+    
     _connect_try = 0;
     _self        = self;
     _self.id(self.id());
@@ -94,15 +94,15 @@ group_adapter_serverless::update(const chat_gaming::user &u) {
             _sgrp->active_mode(netcomgrp::serverless::group::active_lazy);
         }
     } else {
-        _sgrp->active_mode(netcomgrp::serverless::group::active_normal);
+        _sgrp->active_mode(netcomgrp::serverless::group::active_normal);    
     }
-
+    
     group_adapter_base::update(u);
 }
 
 int group_adapter_serverless::_connect() {
     if (!_cond_group_join()) return 0;
-
+    
     // variable_guard<int> g(_dht_user_connecting);
     // _dht_user_connecting++; //  = true;
     if (!_dht_oper->prepare_connect()) {
@@ -111,9 +111,9 @@ int group_adapter_serverless::_connect() {
         // used while announcing our presence.
         _external_ip_fetch();
         ACE_DEBUG((LM_DEBUG, "group_adapter_serverless: " \
-                   "returned from _external_ip_fetch\n"));
+                  "returned from _external_ip_fetch\n"));
     }
-
+    
     return 0;
 }
 
@@ -121,53 +121,53 @@ int
 group_adapter_serverless::_cond_group_join() {
     int _dht_ok    = 0;
     int _ext_ip_ok = 0;
-
+    
     if (_dht_oper->get_node() &&
-            _dht_oper->get_node()->in_state() == dht::client::connected)
+        _dht_oper->get_node()->in_state() == dht::client::connected) 
     {
         _dht_ok = 1;
     }
-
+    
     if (_external_ip != netcomgrp::addr_inet_type())
         _ext_ip_ok = 1;
-
+        
     if (!_dht_ok && !_ext_ip_ok) return -1;
     if (_dht_ok ^ _ext_ip_ok) {
         ACE_DEBUG((LM_DEBUG, "group_adapter_serverless: " \
-                   "can't join group yet as dht (%d) or external ip (%d) not "\
-                   "ready yet\n", (int)_dht_ok, (int)_ext_ip_ok));
+                  "can't join group yet as dht (%d) or external ip (%d) not "\
+                  "ready yet\n", (int)_dht_ok, (int)_ext_ip_ok));
         return -1;
     }
-
+    
     ACE_DEBUG((LM_DEBUG, "group_adapter_serverless: joining group\n"));
     _sgrp->dht_client(_dht_oper->get_node());
     _sgrp->addr_announce(_external_ip);
     return group_adapter_base::connect(_self);
 }
 
-void
+void 
 group_adapter_serverless::_external_ip_fetch() {
     if (_external_ip != netcomgrp::addr_inet_type()) {
         ACE_DEBUG((LM_DEBUG, "group_adapter_serverless: " \
-                   "external IP known: %s:%d\n",
-                   _external_ip.get_host_addr(),
-                   _external_ip.get_port_number()));
+                  "external IP known: %s:%d\n",
+                  _external_ip.get_host_addr(), 
+                  _external_ip.get_port_number()));
         return;
     }
     if (_external_ip_fetching) {
         ACE_DEBUG((LM_DEBUG, "group_adapter_serverless: " \
-                   "external IP is being fetched\n"));
+                  "external IP is being fetched\n"));
         return;
     }
 
     std::string ip      = net_conf()->get("net_serverless", "ip");
     std::string ip_site = net_conf()->get("net_serverless", "ip_site");
-
+    
     if (!ip.empty()) {
         _external_ip_set(ip);
         return;
     }
-
+    
     // Finally, try figuring out our IP from an external site
     // TODO there's something fishy in here... if the fetch throws
     // an exception due to not being able to resolve the address
@@ -176,7 +176,7 @@ group_adapter_serverless::_external_ip_fetch() {
     try {
         ACE_DEBUG((LM_DEBUG, "group_adapter_serverless::fetching external ip\n"));
         // throw exceptionf(0, "Could not resolve address");
-
+        
         // http::url testurl;
         // testurl.parse(ip_site);
         // _external_ip_fetcher.fetch(testurl, this);
@@ -185,80 +185,80 @@ group_adapter_serverless::_external_ip_fetch() {
         // fetch may throw an error if for example the site URL can
         // not be resolved.
         ACE_ERROR((LM_ERROR, "group_adapter_serverless::_external_ip_fetch exception '%s'\n",
-                   e.what()));
-
+                  e.what()));
+        
         gui_messenger()->send_msg(
-            new message_string(message::external_ip_fetch_fail, e.what()));
+           new message_string(message::external_ip_fetch_fail, e.what()));
         error = true;
     }
 
     if (!error) {
-        _external_ip_fetching = true;
+        _external_ip_fetching = true;       
         gui_messenger()->send_msg(new message_string(message::external_ip_fetching,
-                                  ip_site));
-    }
+                                            ip_site));
+    }                                               
 }
 
 void
 group_adapter_serverless::_external_ip_set(const std::string &ip) {
     ACE_DEBUG((LM_DEBUG, "group_adapter_serverless: " \
-               "parsing IP: %s\n", ip.c_str()));
+              "parsing IP: %s\n", ip.c_str()));
     u_short port = net_conf()->get<int>("net_serverless", "port", 0);
     _external_ip.set(port, ip.c_str());
 
     ACE_DEBUG((LM_DEBUG, "group_adapter_serverless: " \
-               "got parsed external IP: %s:%d\n",
-               _external_ip.get_host_addr(),
-               _external_ip.get_port_number()));
-
+              "got parsed external IP: %s:%d\n",
+              _external_ip.get_host_addr(), 
+              _external_ip.get_port_number()));
+              
     if (_external_ip.get_port_number() <= 0 ||
-            _external_ip.get_ip_address() == INADDR_ANY ||
-            _external_ip.get_ip_address() == INADDR_NONE)
+        _external_ip.get_ip_address() == INADDR_ANY ||
+        _external_ip.get_ip_address() == INADDR_NONE)
     {
-        throw exceptionf(0,
+        throw exceptionf(0, 
                          "Could not parse IP address from %s:%s, " \
                          "got: %s:%d (ip:port)",
-                         ip.c_str(),
+                         ip.c_str(), 
                          net_conf()->get("net_serverless", "port").c_str(),
-                         _external_ip.get_host_addr(),
-                         _external_ip.get_port_number());
+                          _external_ip.get_host_addr(), 
+                          _external_ip.get_port_number());
     }
 }
 
 // http::handler interface
-int
+int 
 group_adapter_serverless::handle_response(const http::response &resp) {
     FXRex ip_rex("\\d{1,3}(\\.\\d{1,3}){3}", REX_NEWLINE);
     FXint beg, end;
-
+    
     ACE_DEBUG((LM_DEBUG, "group_adapter_serverless: trying to find " \
-               "IP address from response: \n%s\n", resp.content()));
-
+              "IP address from response: \n%s\n", resp.content()));
+                        
     if (ip_rex.match(resp.content(), &beg, &end)) {
         std::string ipstr;
         ipstr.assign(resp.content() + beg, end - beg);
         ACE_DEBUG((LM_DEBUG, "Got ip string: %s\n", ipstr.c_str()));
         _external_ip_set(ipstr);
         gui_messenger()->send_msg(new message_string(message::external_ip_fetch_done,
-                                  ipstr));
-
+                                                ipstr));    
+                
     } else {
         gui_messenger()->send_msg(new message_string(message::external_ip_fetch_fail,
-                                  "no suitable IP found from response"));
+                             "no suitable IP found from response"));            
     }
-
+    
     _cond_group_join();
     return 0;
 }
 
-int
+int 
 group_adapter_serverless::handle_error(int reason, const char *details) {
     gui_messenger()->send_msg(new message_string(message::external_ip_fetch_fail,
-                              details));
+                                            details));
     return 0;
 }
 
-int
+int 
 group_adapter_serverless::handle_close() {
     _external_ip_fetching = false;
     return 0;
@@ -267,7 +267,7 @@ group_adapter_serverless::handle_close() {
 void group_adapter_serverless::dht_ready_to_disconnect() {
     ACE_DEBUG((LM_DEBUG, "group_adapter_serverless: disconnecting DHT\n"));
     // if (!_dht_user_connecting)
-    _dht_oper->get_node()->disconnect();
+    _dht_oper->get_node()->disconnect();    
 }
 
 int group_adapter_serverless::disconnect() {
@@ -277,17 +277,17 @@ int group_adapter_serverless::disconnect() {
         ACE_DEBUG((LM_DEBUG, "group_adapter_serverless: leaving group\n"));
         return group_adapter_base::disconnect();
     }
-
+    
     if (_dht_oper->prepare_disconnect())
         ACE_DEBUG((LM_WARNING, "group_adapter_serverless: prepare disconnect failed\n"));
-
+        
     // dht will be disconnected after group has been left.
     return 0;
 }
 
 void
 group_adapter_serverless::update_server_nodes() {
-    _dht_oper->update_contacts();
+    _dht_oper->update_contacts();   
 }
 
 void
@@ -298,7 +298,7 @@ group_adapter_serverless::dht_update_server_nodes_done(int err) {
     }
 }
 
-int
+int 
 group_adapter_serverless::state_changed(int dht_state) {
     switch(dht_state) {
     case dht::client::connected:
@@ -309,7 +309,7 @@ group_adapter_serverless::state_changed(int dht_state) {
         // if (_dht_user_connecting == 1) {
         if (_connect_try == 1) {
             ACE_DEBUG((LM_DEBUG, "DHT disconnect received without " \
-                       "explicit disconnect request, assuming timeout\n"));
+                      "explicit disconnect request, assuming timeout\n"));
             ACE_DEBUG((LM_DEBUG, "Trying to update possible server nodes\n"));
             update_server_nodes();
         } else {
@@ -317,15 +317,15 @@ group_adapter_serverless::state_changed(int dht_state) {
         }
         break;
     }
-
+    
     return 0;
 }
 
-int
-group_adapter_serverless::extra_state_changed(int estate) {
+int 
+group_adapter_serverless::extra_state_changed(int estate) { 
     ACE_DEBUG((LM_DEBUG, "group_adapter_serverless::extra_state_changed " \
-               "called with state %d\n", estate));
-
+              "called with state %d\n", estate));
+    
     message *msg = NULL;
     switch (estate) {
     case netcomgrp::serverless::group::peers_find_start:
@@ -337,15 +337,15 @@ group_adapter_serverless::extra_state_changed(int estate) {
     case netcomgrp::serverless::group::announce_stop:
         msg = new message(message::dht_announce_stop); break;
     }
-
+    
     if (msg) gui_messenger()->send_msg(msg);
-    return 0;
+    return 0; 
 }
 
 void
 group_adapter_serverless::group_state_changed(int state) {
     ACE_DEBUG((LM_DEBUG, "group_adapter_serverless::group_state_changed " \
-               "called with state %d (%s)\n", state, _sgrp->state_str(state)));
+              "called with state %d (%s)\n", state, _sgrp->state_str(state)));
     // ACE_DEBUG((LM_DEBUG, "group_adapter_serverless: dht_user_connecting: %d\n",
     //          _dht_user_connecting));
     switch (state) {
@@ -353,7 +353,7 @@ group_adapter_serverless::group_state_changed(int state) {
         ACE_DEBUG((LM_DEBUG, "group_adapter_serverless: disconnecting\n"));
         // Now that group has been left, can disconnect the dht for real
         disconnect();
-        break;
+        break;  
     }
 }
 

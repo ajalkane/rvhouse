@@ -6,13 +6,13 @@
 #include "message_login.h"
 
 class message_register : public message_login {
-public:
-    message_register(int msg_type,
-                     const std::string &u,
+public:     
+    message_register(int msg_type, 
+                     const std::string &u, 
                      const std::string &p,
-                     const std::string &m);
+                     const std::string &m); 
     virtual message *duplicate();
-
+    
     inline const std::string &mail() const;
 private:
     std::string _mail;

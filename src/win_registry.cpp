@@ -4,11 +4,11 @@
 
 win_registry::win_registry(const std::string &full_path) : _open(false)
 {
-    throw exception(0, "win_registry::full path ctor not implemented");
+    throw exception(0, "win_registry::full path ctor not implemented"); 
 }
 
 win_registry::win_registry(
-    shortcut_id id,
+    shortcut_id id, 
     const std::string &vendor,
     const std::string &app,
     const std::string &version
@@ -30,16 +30,16 @@ win_registry::win_registry(
     default:
         throw exceptionf(0, "win_registry::ctor unrecognized id %d", id);
     }
-
+    
     LONG res = RegOpenKeyEx(
-                   root_key,
-                   path.c_str(),
-                   0, KEY_QUERY_VALUE | KEY_SET_VALUE, &_parent
-               );
+        root_key,
+        path.c_str(),
+        0, KEY_QUERY_VALUE | KEY_SET_VALUE, &_parent
+    );
 
     if(res != ERROR_SUCCESS) {
         ACE_DEBUG((LM_DEBUG, "win_registry::ctor failed to open for "
-                   "query/set access the key %s\n", path.c_str()));
+                  "query/set access the key %s\n", path.c_str()));      
     } else {
         _open = true;
     }

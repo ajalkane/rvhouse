@@ -1,8 +1,8 @@
 #include "message_room_join.h"
 
 message_room_join::message_room_join(
-    int t,
-    const chat_gaming::room::id_type &rid,
+    int t, 
+    const chat_gaming::room::id_type &rid, 
     const std::string &pass,
     const chat_gaming::user::id_type &uid,
     unsigned seq,

@@ -21,7 +21,7 @@ house_tree_item::house_tree_item(
 #define HALFBOX_SIZE        4   // Half box size
 #define BOX_FUDGE           3   // Fudge border around box
 
-void
+void 
 house_tree_item::draw(const FXTreeList* list,FXDC& dc,FXint xx,FXint yy,FXint,FXint hh) const {
     register FXIcon *icon=(state&OPENED)?openIcon:closedIcon;
     register FXFont *font=list->getFont();
@@ -63,14 +63,14 @@ house_tree_item::draw(const FXTreeList* list,FXDC& dc,FXint xx,FXint yy,FXint,FX
     if (_extra_icon){
         if (!label.empty())
             xx += font->getTextWidth(label.text());
-
+        
         iw=_extra_icon->getWidth();
         ih=_extra_icon->getHeight();
         dc.drawIcon(_extra_icon,xx,yy+(hh-ih)/2);
         xx+=ICON_SPACING+iw;
     }
 #endif
-
+    
 }
 
 } // ns component

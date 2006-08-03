@@ -14,7 +14,7 @@ namespace executable {
 launcher *
 factory::create_launcher(const std::string &app_id) {
     launcher *l = NULL;
-
+    
 #ifdef WIN32
     if (app_id == "Re-Volt")
         l = new launcher_dx7("Re-Volt");
@@ -30,11 +30,11 @@ factory::create_launcher(const std::string &app_id) {
     else if (app_id == "Track Share")
         l = new launcher_dummy;
 #endif
-
-    if (!l)
+    
+    if (!l) 
         throw exceptionf(0, "loppy_app::factory::create_launcher: "
-                         "not found for app id '%s'", app_id.c_str());
-
+        "not found for app id '%s'", app_id.c_str());
+    
     return l;
 };
 

@@ -19,7 +19,7 @@ public:
         reg_err,
         reg_done,
         reg_fail,
-
+        
         dht_connecting,
         dht_connected,
         dht_disconnecting,
@@ -29,7 +29,7 @@ public:
         dht_upd_nodes_fail,
         dht_peers_find_start,
         dht_peers_find_stop,
-        dht_announce_start,
+        dht_announce_start,     
         dht_announce_stop,
 
         group_base,
@@ -51,24 +51,24 @@ public:
         ctz_group_joined,
         ctz_group_leaving,
         ctz_group_not_joined,
-
+        
         // Comes as message string holding the server name that could
         // not be reached.
         ctz_group_server_unreachable,
-
-        // These come as message_string :
+        
+        // These come as message_string : 
         // fetching - the site address
         // done     - the detected ip
         // fail     - the failure reason
-        external_ip_fetching,
+        external_ip_fetching,       
         external_ip_fetch_done,
         external_ip_fetch_fail,
-
+        
         user,
         user_left,
         // user_room,
         // user_room_left,
-
+        
         room,
         room_remove,
         room_launch,
@@ -78,31 +78,31 @@ public:
         room_join_full,
         room_join_ack,
         room_join_nack,
-
+        
         worker_exception,
-
+        
         send,
         send_room,
         send_private,
         private_refused,
-
+        
         refresh,
-
+        
         version,
         version_force,
         version_fetch,
-
+        
         rvtm_exited,
-
+        
         last
     };
-
+    
     message(int msg_id);
     virtual ~message();
-
+    
     inline int id() const;
     inline int id(int i);
-
+    
     virtual message *duplicate();
 };
 

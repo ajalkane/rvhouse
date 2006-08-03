@@ -9,8 +9,8 @@ namespace regexp {
 bool match(const char *pattern, const char *subject) {
     // For now using Fox's regexp facilities
     FXRex rex(pattern);
-    // ACE_DEBUG((LM_DEBUG, "regexp::match2: %s to %s\n", pattern, subject));
-    ACE_DEBUG((LM_DEBUG, "regexp::match2: %s\n", pattern));
+    // ACE_DEBUG((LM_DEBUG, "regexp::match2: %s to %s\n", pattern, subject));   
+    ACE_DEBUG((LM_DEBUG, "regexp::match2: %s\n", pattern)); 
     return rex.match(subject, strlen(subject));
 }
 

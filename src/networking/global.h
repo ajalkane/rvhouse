@@ -9,12 +9,12 @@ namespace networking {
 
 // Forward declaration
 namespace reporter {
-class client;
+    class client;
 }
 
 extern accessor<class config_file *>    net_conf;
 extern accessor<class reporter::client *> net_report;
-
+    
 
 }
 

@@ -13,20 +13,20 @@ namespace gui {
 namespace window {
 
 FXDEFMAP(login) login_map[]= {
-                                 FXMAPFUNCS(SEL_COMMAND, login::ID_LOGIN,
-                                            login::ID_REGISTER,
-                                            login::on_network_command),
-                             };
+    FXMAPFUNCS(SEL_COMMAND, login::ID_LOGIN, 
+                            login::ID_REGISTER,
+                            login::on_network_command),
+};
 
 FXIMPLEMENT(login, FXDialogBox, login_map, ARRAYNUMBER(login_map));
 // FXIMPLEMENT(login, FXMainWindow, NULL, 0);
 
-login::login(FXWindow *owner)
-        : FXDialogBox(owner, langstr("login_win/title")),
-        _user_validated(false)
+login::login(FXWindow *owner) 
+    : FXDialogBox(owner, langstr("login_win/title")),
+      _user_validated(false)
 {
     FXMatrix *m = new FXMatrix(this, 2, MATRIX_BY_COLUMNS);
-
+    
     new FXLabel(m, langstr("login_win/user_id")); // "User ID:");
     _user_field = new FXTextField(m, 16);
     new FXLabel(m, langstr("login_win/password"));
@@ -36,21 +36,21 @@ login::login(FXWindow *owner)
     FXLabel *l = new FXLabel(f, langstr("login_win/uses_rvzt_login"), NULL, LABEL_NORMAL,
                              0,0,0,0, 0,0,0,0); // , NULL, JUSTIFY_CENTER_X|ICON_BEFORE_TEXT);
     l->disable();
-
+    
     _connect_check = new FXCheckButton(this, "Auto connect");
     _connect_check->setCheck(true);
     // Hide for now, always connect automatically until disconnect/connect
     // functionality is implemented
     _connect_check->hide();
-
+    
     new FXSeparator(this);
     FXHorizontalFrame *bframe = new FXHorizontalFrame(this, LAYOUT_CENTER_X);
     _log_button = new FXButton(bframe, langstr("login_win/login"),    NULL, this, ID_LOGIN, BUTTON_NORMAL|BUTTON_INITIAL|BUTTON_DEFAULT);
     _reg_button = new FXButton(bframe, langstr("login_win/register"), NULL, this, ID_REGISTER);
     new FXButton(bframe, langstr("login_win/quit"), NULL, this, ID_CANCEL);
-
+    
     _log_button->setFocus();
-
+    
     getAccelTable()->addAccel(MKUINT(KEY_F4,ALTMASK),this,FXSEL(SEL_COMMAND,ID_CANCEL));
 }
 
@@ -58,7 +58,7 @@ void
 login::create() {
     ACE_DEBUG((LM_DEBUG, "login::create2\n"));
     FXDialogBox::create();
-    watched_window::create(this);
+    watched_window::create(this);   
 }
 
 login::~login() {
@@ -103,7 +103,7 @@ login::auto_connect() const {
     return _connect_check->getCheck();
 }
 
-long
+long 
 login::on_network_command(FXObject *from, FXSelector sel, void *) {
     ::message *msg = NULL;
 
@@ -119,28 +119,28 @@ login::on_network_command(FXObject *from, FXSelector sel, void *) {
         }
         break;
     case ID_REGISTER:
-        {
-            ACE_DEBUG((LM_DEBUG, "Register window message received\n"));
-            // Deleted automatically by house_app as is watched_window type
-            register_user *reg_win = new register_user(this);
-            reg_win->show(PLACEMENT_SCREEN);
-            if (!reg_win->execute(PLACEMENT_SCREEN)) {
-                ACE_DEBUG((LM_DEBUG, "Reg cancel\n"));
-            }
-            delete reg_win;
+    {
+        ACE_DEBUG((LM_DEBUG, "Register window message received\n"));
+        // Deleted automatically by house_app as is watched_window type     
+        register_user *reg_win = new register_user(this);
+        reg_win->show(PLACEMENT_SCREEN);
+        if (!reg_win->execute(PLACEMENT_SCREEN)) {
+            ACE_DEBUG((LM_DEBUG, "Reg cancel\n"));
         }
+        delete reg_win;
+    }
         break;
     }
-
+    
     if (msg) net_messenger()->send_msg(msg);
 
-    return 1;
+    return 1;       
 }
 
 ::message *
 login::_login_message() {
     if (_user_field->getText().empty()) {
-        FXMessageBox::error(this, FX::MBOX_OK,
+        FXMessageBox::error(this, FX::MBOX_OK, 
                             langstr("login_win/login_err_topic"),
                             langstr("login_win/fill_user"));
         return NULL;
@@ -150,7 +150,7 @@ login::_login_message() {
                             langstr("login_win/fill_pass"));
         return NULL;
     }
-
+    
     if (!validate_user_id(_user_field->getText().text())) {
         FXMessageBox::error(this, FX::MBOX_OK, langstr("login_win/login_err_topic"),
                             langstr("login_win/invalid_user"));
@@ -161,7 +161,7 @@ login::_login_message() {
                             langstr("login_win/invalid_pass"));
         return NULL;
     }
-
+            
     return new message_login(::message::login,
                              _user_field->getText().text(),
                              _pass_field->getText().text());
@@ -170,37 +170,37 @@ login::_login_message() {
 void
 login::handle_message(::message *msg) {
     ACE_DEBUG((LM_DEBUG, "login: received msg id %d\n", msg->id()));
-
+    
     switch (msg->id()) {
     case ::message::login_err:
-        {
-            int ret = FXMessageBox::error(this, FX::MBOX_YES_NO,
-                                          langstr("login_win/login_err_topic"),
-                                          langstr("login_win/server_down"));
-            _log_button->enable();
-            _reg_button->enable();
-            if (ret == MBOX_CLICKED_YES) {
-                handle(this, FXSEL(SEL_COMMAND, ID_ACCEPT), NULL);
-            }
+    {
+        int ret = FXMessageBox::error(this, FX::MBOX_YES_NO, 
+                  langstr("login_win/login_err_topic"),
+                  langstr("login_win/server_down"));
+        _log_button->enable();
+        _reg_button->enable();
+        if (ret == MBOX_CLICKED_YES) {
+            handle(this, FXSEL(SEL_COMMAND, ID_ACCEPT), NULL);      
         }
+    }
         break;
     case ::message::login_fail:
-        FXMessageBox::error(this, FX::MBOX_OK,
+        FXMessageBox::error(this, FX::MBOX_OK, 
                             langstr("login_win/login_err_topic"),
                             langstr("login_win/validation_err"));
         _log_button->enable();
         _reg_button->enable();
         break;
     case ::message::login_done:
-        {
-            message_login *m = dynamic_ptr_cast<message_login>(msg);
-            _log_button->enable();
-            _reg_button->enable();
-            _user           = m->user();
-            _user_validated = true;
-            handle(this, FXSEL(SEL_COMMAND, ID_ACCEPT), NULL);
-
-        }
+    {
+        message_login *m = dynamic_ptr_cast<message_login>(msg);
+        _log_button->enable();
+        _reg_button->enable();
+        _user           = m->user();
+        _user_validated = true;
+        handle(this, FXSEL(SEL_COMMAND, ID_ACCEPT), NULL);
+        
+    }
         break;
     }
 }

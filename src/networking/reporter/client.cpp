@@ -17,28 +17,28 @@ namespace reporter {
 client::client(ACE_Reactor *r) : _reactor(r)
 {
     ACE_DEBUG((LM_DEBUG, "reporter::client ctor\n"));
-
+    
     if (!_reactor) _reactor = ACE_Reactor::instance();
-    ACE_INET_Addr server_addr(REPORTER_SERVER_PORT, REPORTER_SERVER_ADDR);
+    ACE_INET_Addr server_addr(REPORTER_SERVER_PORT, REPORTER_SERVER_ADDR); 
     _handler = new handler(_reactor, this);
 
-    _connector =
+    _connector = 
         new ACE_Connector<handler, ACE_SOCK_CONNECTOR>(
             _reactor);
 
     ACE_Synch_Options conn_opts(ACE_Synch_Options::USE_REACTOR |
                                 ACE_Synch_Options::USE_TIMEOUT,
                                 ACE_Time_Value(30));
-    ACE_OS::last_error(0);
+    ACE_OS::last_error(0);  
     if (_connector->connect(_handler, server_addr, conn_opts) == -1 &&
-            ACE_OS::last_error() != EWOULDBLOCK)
+        ACE_OS::last_error() != EWOULDBLOCK)
     {
         ACE_ERROR((LM_ERROR, "%p\n", "reporter::client"));
         _handler->state = handler::disconnected;
     } else {
         _handler->state = handler::connecting;
     }
-
+    
 }
 
 client::~client() {
@@ -47,15 +47,15 @@ client::~client() {
     delete _handler;
 }
 
-void
+void 
 client::new_user(const chat_gaming::user &u, int grp) {
 #if 0
     _send_user_report(u, grp);
 #endif
 }
 
-void
-client::user_updated(const chat_gaming::user &oldu,
+void 
+client::user_updated(const chat_gaming::user &oldu, 
                      const chat_gaming::user &newu, int grp)
 {
     // Only send the first user update (presumably when user's login id
@@ -66,58 +66,58 @@ client::user_updated(const chat_gaming::user &oldu,
     }
 }
 
-void
+void 
 client::user_removed(const chat_gaming::user &u, int grp) {
     // ur = user removed
     _send_user_report("ur", u, grp);
 }
 
-void
+void 
 client::connected(int grp) {
     // cf = connect finished
     _send_connect_report("cf", grp);
 }
 
-void
+void 
 client::disconnected(int grp) {
     // dd = disconnected
     _send_connect_report("dd", grp);
 }
 
-void
+void 
 client::disabled(int grp) {
     // cf = connect disabled
-    _send_connect_report("cd", grp);
+    _send_connect_report("cd", grp);    
 }
 
 void
 client::_send_user_report(const char *code, const chat_gaming::user &u, int grp) {
     if (!_handler) {
         ACE_DEBUG((LM_WARNING, "reporter::client::send_user_report "
-                   " not connected, report not sent\n"));
+                  " not connected, report not sent\n"));
         return;
     }
     std::ostringstream str;
     if (u.node()) {
         str << u.node()->addr().get_host_addr() << ":"
-        << u.node()->addr().get_port_number()
-        << SEP;
+            << u.node()->addr().get_port_number()
+            << SEP;
     } else {
         str << "NULL" << SEP;
     }
-
+        
     str << APP_VERSION_ONLY
-    << SEP << _self.id().id_str()
-    << SEP << code
-    << SEP << (grp == message::dht_group_base ? 'd' : 'c')
-    << SEP << u.id().node()->addr().get_host_addr()
-    << ":" << u.id().node()->addr().get_port_number()
-    << SEP << u.id().id_str()
-    << std::endl;
-
-    ACE_DEBUG((LM_DEBUG, "%t reporter::client: sending report of size %d:\n%s",
-               str.str().size(), str.str().c_str()));
-
+        << SEP << _self.id().id_str()
+        << SEP << code
+        << SEP << (grp == message::dht_group_base ? 'd' : 'c')
+        << SEP << u.id().node()->addr().get_host_addr()
+        << ":" << u.id().node()->addr().get_port_number()
+        << SEP << u.id().id_str()
+        << std::endl;
+    
+    ACE_DEBUG((LM_DEBUG, "%t reporter::client: sending report of size %d:\n%s", 
+              str.str().size(), str.str().c_str()));
+              
     _handler->send(str.str());
 }
 
@@ -125,38 +125,38 @@ void
 client::_send_connect_report(const char *code, int grp) {
     if (!_handler) {
         ACE_DEBUG((LM_WARNING, "reporter::client::send_connect_report "
-                   " not connected, report not sent\n"));
+                  " not connected, report not sent\n"));
         return;
     }
 
     std::ostringstream str;
 
     str << APP_VERSION_ONLY
-    << SEP << _self.id().id_str()
-    << SEP << code
-    << SEP << (grp == message::dht_group_base ? 'd' : 'c')
-    << std::endl;
-
-    ACE_DEBUG((LM_DEBUG, "%t reporter::client: sending report of size %d:\n%s",
-               str.str().size(), str.str().c_str()));
-
+        << SEP << _self.id().id_str()
+        << SEP << code
+        << SEP << (grp == message::dht_group_base ? 'd' : 'c')
+        << std::endl;
+    
+    ACE_DEBUG((LM_DEBUG, "%t reporter::client: sending report of size %d:\n%s", 
+              str.str().size(), str.str().c_str()));
+              
     _handler->send(str.str());
 }
-
+   
 
 /**********************************
  * HANDLER
  **********************************/
 client::handler::handler(ACE_Reactor *r, client *owner)
-        : super(NULL, NULL, r),
-        _owner(owner),
-        _notifier(NULL, this, ACE_Event_Handler::WRITE_MASK)
+    : super(NULL, NULL, r), 
+      _owner(owner), 
+      _notifier(NULL, this, ACE_Event_Handler::WRITE_MASK)
 {}
 
-client::handler::handler() :
-        _owner(NULL),
-        _notifier(NULL, this, ACE_Event_Handler::WRITE_MASK)
-
+client::handler::handler() : 
+  _owner(NULL),
+  _notifier(NULL, this, ACE_Event_Handler::WRITE_MASK)
+  
 {
     ACE_DEBUG((LM_DEBUG, "reporter::client::handler ctor should not happen!\n"));
 }
@@ -175,7 +175,7 @@ client::handler::_release_blocks() {
     while (-1 != this->getq(mb, &nowait)) {
         ACE_DEBUG((LM_DEBUG, "client::handler releasing msg block %d\n", mb));
         mb->release();
-    }
+    }   
 }
 
 void
@@ -206,19 +206,19 @@ client::handler::open(void *p) {
     // added to the queue
     this->msg_queue()->notification_strategy(&this->_notifier);
     state = connected;
-
+    
     if (!this->msg_queue ()->is_empty()) {
         ACE_DEBUG((LM_DEBUG, "reporter::client: reports queued, notify to write\n"));
         _notifier.notify();
     }
-
+        
     return 0;
 }
 
-int
+int 
 client::handler::handle_input(ACE_HANDLE fd) {
     ACE_DEBUG((LM_DEBUG, "reporter::client: handle_input\n",
-               _owner));
+        _owner));
     char buf[64];
     // Basically just see if connection was closed
     ACE_OS::last_error(0);
@@ -231,14 +231,14 @@ client::handler::handle_input(ACE_HANDLE fd) {
     return 0;
 }
 
-int
+int 
 client::handler::handle_output(ACE_HANDLE fd) {
     ACE_Message_Block *mb = NULL;
     ACE_Time_Value nowait(ACE_OS::gettimeofday());
     ACE_DEBUG((LM_DEBUG, "%t reporter::client:handle_output for %d\n", fd));
     if (state != connected) {
         ACE_DEBUG((LM_DEBUG, "reporter::client:handle_output skipped because not connected yet\n"));
-        return 0;
+        return 0;       
     }
     while (-1 != this->getq(mb, &nowait)) {
         ACE_DEBUG((LM_DEBUG, "reporter::client: sending data, mb: %d\n", mb));
@@ -248,7 +248,7 @@ client::handler::handle_output(ACE_HANDLE fd) {
             ACE_ERROR((LM_ERROR, "(%P|%t) %p\n", "reporter_client::send"));
         else
             mb->rd_ptr (ACE_static_cast (size_t, send_cnt));
-
+            
         if (mb->length() > 0) {
             this->ungetq (mb);
             break;
@@ -261,11 +261,11 @@ client::handler::handle_output(ACE_HANDLE fd) {
         this->reactor()->cancel_wakeup(this, ACE_Event_Handler::WRITE_MASK);
     } else {
         this->reactor()->schedule_wakeup(this, ACE_Event_Handler::WRITE_MASK);
-    }
-    return 0;
+    }       
+    return 0;   
 }
 
-int
+int 
 client::handler::handle_timeout(const ACE_Time_Value &tv, const void *p) {
     ACE_DEBUG((LM_DEBUG, "reporter::client::handler::handle_timeout\n"));
     return super::handle_timeout(tv, p);
@@ -276,7 +276,7 @@ client::handler::handle_close (ACE_HANDLE handle, ACE_Reactor_Mask close_mask) {
     ACE_DEBUG((LM_DEBUG, "reporter::client::handler::handle_close\n"));
 
     state = disconnected;
-
+    
     return super::handle_close(handle, close_mask);
 }
 

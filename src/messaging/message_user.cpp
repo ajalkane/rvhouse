@@ -1,11 +1,11 @@
 #include "message_user.h"
 
-message_user::message_user(int t, const chat_gaming::user &u,
-                           unsigned seq,int gb)
-        : message_grouped(t, u.id(), seq, gb), _user(u)
+message_user::message_user(int t, const chat_gaming::user &u, 
+unsigned seq,int gb) 
+  : message_grouped(t, u.id(), seq, gb), _user(u) 
 {
     // Set user's sequence from the passed seq also
-    _user.sequence(seq);
+    _user.sequence(seq);  
 }
 
 message *

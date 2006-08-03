@@ -25,14 +25,14 @@ public:
     launcher();
     launcher(const std::string &default_app);
     virtual ~launcher();
-
+    
     virtual int start();
     virtual int start(const std::string &app) = 0;
     virtual int start_host();
     virtual int start_host(const std::string &app) = 0;
     virtual int start_client(const std::string &host_id);
     virtual int start_client(const std::string &app, const std::string &host_id) = 0;
-
+    
 };
 
 } // ns executable

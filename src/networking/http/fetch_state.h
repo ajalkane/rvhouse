@@ -10,18 +10,18 @@
 
 namespace networking {
 namespace http {
-
-/**
- * Internal type used by fetcher to keep track of the received and
- * sent data.
- */
-struct fetch_state {
-    ACE_Message_Block buf_send;
-    ACE_Message_Block buf_recv;
-
-    ACE_HANDLE handle;
-    handler   *fetch_handler;
-};
+    
+    /**
+     * Internal type used by fetcher to keep track of the received and
+     * sent data.
+     */
+    struct fetch_state {
+        ACE_Message_Block buf_send;
+        ACE_Message_Block buf_recv;
+        
+        ACE_HANDLE handle;
+        handler   *fetch_handler;
+    };
 
 } // ns http
 } // ns networking

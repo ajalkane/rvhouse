@@ -13,13 +13,13 @@
  * network that are used to gather usually overlapping information
  */
 namespace multi_feed {
-class user_item : public item<chat_gaming::user::id_type> {
-public:
-    typedef item<chat_gaming::user::id_type> super;
-    typedef chat_gaming::user user_type;
-
-    std::string unambiguous_display_id() const;
-};
+    class user_item : public item<chat_gaming::user::id_type> {
+    public:
+        typedef item<chat_gaming::user::id_type> super;
+        typedef chat_gaming::user user_type;
+        
+        std::string unambiguous_display_id() const;
+    };
 
 } // ns multi_feed
 

@@ -3,7 +3,7 @@
 #include "config_file.h"
 
 app_options::app_options()
-        : _debug(false)
+  : _debug(false)
 {
 }
 

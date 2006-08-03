@@ -10,13 +10,13 @@ house::house(int argc, char **argv) {
     ACE_DEBUG((LM_DEBUG, "init_fox_app\n"));
     app.instance(new gui::house_app);
     app()->init(argc, argv);
-    new FXToolTip(app());
+    new FXToolTip(app());   
 }
 
 void
 house::run() {
     app()->create();
-    app()->start();
+    app()->start(); 
 }
 
 } // ns

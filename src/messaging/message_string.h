@@ -7,10 +7,10 @@
 
 class message_string : public message {
     std::string _str;
-public:
-    message_string(int msg_type, const std::string &s);
+public: 
+    message_string(int msg_type, const std::string &s); 
     virtual message *duplicate();
-
+    
     inline const std::string &str() const;
 };
 

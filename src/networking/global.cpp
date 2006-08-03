@@ -6,7 +6,7 @@
 #include "global.h"
 
 namespace networking {
-
+    
 accessor<config_file *>      net_conf(NULL);
 accessor<reporter::client *> net_report(NULL);
 
