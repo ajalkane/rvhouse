@@ -2,7 +2,7 @@
 #define _APP_VERSION_H_
 
 #define APP_NAME    "RV House (Blue Ghost Edition)"
-#define APP_VERSION_ONLY "0.83.0"
+#define APP_VERSION_ONLY "0.83.2"
 #define APP_VERSION APP_VERSION_ONLY
 
 // Returns negative if version a is less than version b

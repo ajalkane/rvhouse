@@ -64,34 +64,7 @@ public:
     inline T &release() { _released = true; return _var; }
 };
 
-// Dummy implementation, maybe do more general when time
-inline std::string rot13(const std::string &s) {
-    std::string result;
-    std::string::const_iterator i = s.begin();
-    for (; i != s.end(); i++) {
-        unsigned char c = *i + 13;
-        // Force the resulting range to be between 32 - 122
-        c %= 123;
-        if (c < 32) c += 32;    
-        result += c; // (*i + 13);
-    }
-    // ACE_DEBUG((LM_DEBUG, "rot13: %s -> %s\n", s.c_str(), result.c_str()));
-    return result;                         
-}
-
-// Dummy implementation, maybe do more general when time
-inline std::string derot13(const std::string &s) {
-    std::string result;
-    std::string::const_iterator i = s.begin();
-    for (; i != s.end(); i++) {
-        unsigned char c = *i - 13;
-        // Force the resulting range to be between 32 - 122
-        if (c < 32) c = 123 - (32 - c);
-        result += c;
-    }
-    
-    // ACE_DEBUG((LM_DEBUG, "derot13: %s -> %s\n", s.c_str(), result.c_str()));
-    return result;                         
-}
+std::string rot13(const std::string &s);
+std::string derot13(const std::string &s);
 
 #endif //_UTIL_H_

@@ -79,7 +79,8 @@ login_manager_rvzt::_fetch_handler::handle_response(const http::response &resp)
     const char *str = resp.content();
     std::vector<std::string> res(2);
     
-    if (regexp::match("^([a-zA-Z0-9_]{3,20}):(.*)", str, res.begin())) {
+    if (regexp::match("^([^:]{3,20}):(.*)", str, res.begin())) {
+    // if (regexp::match("^([a-zA-Z0-9_]{3,20}):(.*)", str, res.begin())) {
         const std::string &user = res[0];
         const std::string &stat = res[1];
         

@@ -1,6 +1,11 @@
 RV House change log
 
-Version 0.83.0 (??.07.2006)
+Version 0.83.2 (17.08.2006)
+- Allow additional characters in usernames: =-[]
+- German translation included
+- Fixed a bug with login dialog if password included letter 'n'
+
+Version 0.83.0 (24.07.2006)
 - Connecting to DHT/P2P is now much faster.
 - Preliminary flood control on main chat.
 - The default size of user listing view slightly increased.

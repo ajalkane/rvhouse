@@ -2,4 +2,7 @@
 language = English
 author   = Arto Jalkanen
 email    = ajalkane@gmail.com
+# An example, if you are doing a translation
+# fill here the latest version you've done
+# the translation for
 version  = 0.82
