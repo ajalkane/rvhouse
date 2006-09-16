@@ -11,7 +11,7 @@ namespace gui {
  * Reports back stuff to the main application of the window's state
  */
 class watched_window : public watched_object{
-    FXWindow *_self;
+    // FXWindow *_self;
 public:
     watched_window();
     // watched_window(FXWindow *self);

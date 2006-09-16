@@ -17,7 +17,7 @@ watched_window::~watched_window() {
 void 
 watched_window::create(FXWindow *self)
 {
-    assert(_self == NULL);
+    // assert(_self == NULL);
     watched_object::create(self);
     //_self = self;
     //app()->handle(_self, FXSEL(SEL_COMMAND, house_app::ID_WINDOW_CREATE), NULL); 

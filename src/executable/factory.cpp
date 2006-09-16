@@ -27,12 +27,12 @@ factory::create_launcher(const std::string &app_id) {
         l = new launcher_dummy;
     else if (app_id == "File")
         l = new launcher_filetype_unix;
-    else if (app_id == "Track Share")
+    else if (app_id == "RVTM")
         l = new launcher_dummy;
 #endif
     
     if (!l) 
-        throw exceptionf(0, "loppy_app::factory::create_launcher: "
+        throw exceptionf(0, "executable::factory::create_launcher: "
         "not found for app id '%s'", app_id.c_str());
     
     return l;
