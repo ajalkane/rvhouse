@@ -1,5 +1,8 @@
 RV House change log
 
+Version 0.87.0 (10.10.2006)
+- Bug fix: first status change did not work
+
 Version 0.87.0 (09.10.2006)
 - Menus and some shortcuts
 - Extra help easily available

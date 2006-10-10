@@ -700,7 +700,7 @@ users::on_status_change(FXObject *sender,FXSelector sel,void *ptr) {
 
     // Restrict status changing so that it can be done only once in a 
     // second
-    static time_t last_change = time(NULL);
+    static time_t last_change = 0;
     time_t now = time(NULL);
     if (now - last_change < 1) return 1;
     
