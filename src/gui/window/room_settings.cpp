@@ -15,6 +15,7 @@
 #include "../../win_registry.h"
 
 #include "../house_app.h"
+#include "../util/util.h"
 
 #include "room_settings.h"
 
@@ -57,9 +58,32 @@ room_settings::room_settings(FXWindow *owner)
 
     new FXSeparator(this);  
     FXHorizontalFrame *bframe = new FXHorizontalFrame(this, LAYOUT_CENTER_X);
+
+    util::create_default_button(
+        bframe, langstr("common/ok_button"), this, ID_MY_ACCEPT
+    );
+    util::create_button(
+        bframe, langstr("common/cancel_button"), this, ID_MY_CANCEL
+    );
+  /*
+    new FXButton(
+        closebox,langstr("common/ok_button"),
+        NULL,this,FXTopWindow::ID_CLOSE,
+        BUTTON_INITIAL|BUTTON_DEFAULT|LAYOUT_RIGHT|
+        FRAME_RAISED|FRAME_THICK,
+        0,0,0,0,20,20
+    );
+    new FXButton(
+        closebox,langstr("common/cancel_button"),
+        NULL,this,FXTopWindow::ID_CLOSE,
+        BUTTON_INITIAL|BUTTON_DEFAULT|LAYOUT_RIGHT|
+        FRAME_RAISED|FRAME_THICK,
+        0,0,0,0,20,20
+    );
+    
     new FXButton(bframe, langstr("common/ok_button"), NULL, this, ID_MY_ACCEPT);
     new FXButton(bframe, langstr("common/cancel_button"), NULL, this, ID_MY_CANCEL);
-    
+    */
     /* Room initialization, settings taken from existing room.*/    
     chat_gaming::room &r = self_model()->hosting_room();
     _registry_to_room(r);

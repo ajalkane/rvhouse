@@ -28,6 +28,7 @@ namespace chat_gaming {
             status_chatting = 1,
             status_playing,
             status_away,
+            status_dont_disturb,
         };
     private:
         const static int field_sharing_tracks = 0x1;
@@ -169,11 +170,6 @@ namespace chat_gaming {
         _init_extra_vars();
       }
 
-/*  user::user(const user &o) : super(o) {
-        ACE_DEBUG((LM_DEBUG, "user::copy constructor robot node %s\n", _node));
-        *this = o;
-    }
-*/
     inline const std::string &
     user::login_id(const std::string &s) { return _login_id = s; }
     inline const std::string &
@@ -193,28 +189,6 @@ namespace chat_gaming {
         if (!id().node()) return _addr_none;
         return id().node()->addr();
     }
-
-/*
-    inline user &
-    user::operator=(const user &o) {
-        ACE_DEBUG((LM_DEBUG, "user::operator= node (%d/%d)\n", _node, o._node));
-        super::operator=(o);        
-        // chat::user::operator=(o);
-        // User info can be updated from deserialized answer,
-        // in that case the node pointer does not come, so it is
-        // NULL... prepare for such a case by not keeping the
-        // old node pointer then:
-        if (o._node) {
-            ACE_DEBUG((LM_DEBUG, "user::operator= node (%d/%d)\n", _node, o._node));
-            if (_node) delete _node;
-            _node = o._node->duplicate();
-        }
-        _login_id   = o._login_id;
-        _validation = o._validation;
-        
-        return *this;
-    }   
-*/
 
 } // ns chat_gaming
 

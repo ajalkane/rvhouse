@@ -7,7 +7,10 @@
 #include "../../messaging/message_user.h"
 #include "../../messaging/message_room.h"
 #include "../../messaging/message_send.h"
+#include "../../messaging/message_channel.h"
+#include "../../executable/launcher.h"
 #include "../../util.h"
+#include "../../os_util.h"
 #include "../../model/house.h"
 #include "../../model/self.h"
 #include "../../icon_store.h"
@@ -17,6 +20,7 @@
 #include "../util/util.h"
 #include "about.h"
 #include "room_settings.h"
+#include "settings.h"
 #include "router_fw_help.h"
 #include "house.h"
 
@@ -27,6 +31,9 @@ FXDEFMAP(house) house_map[]= {
   FXMAPFUNCS(SEL_COMMAND, house::ID_CONNECT, 
                           house::ID_DISCONNECT,
                           house::on_network_command),
+  FXMAPFUNCS(SEL_COMMAND, house::ID_WWW_START,
+                          house::ID_WWW_END,
+                          house::on_www),
   FXMAPFUNC(SEL_COMMAND,  house::ID_SEND_MSG, 
                           house::on_send_message),
   FXMAPFUNC(SEL_COMMAND,  house::ID_ROOM_CREATE, 
@@ -41,6 +48,12 @@ FXDEFMAP(house) house_map[]= {
                           house::on_refresh_enable),
   FXMAPFUNC(SEL_COMMAND,  house::ID_ABOUT,
                           house::on_about),
+  FXMAPFUNC(SEL_COMMAND,  house::ID_SETTINGS,
+                          house::on_settings),
+  FXMAPFUNC(SEL_MINIMIZE, 0,
+                          house::on_minimize),
+  FXMAPFUNC(SEL_RESTORE,  0,
+                          house::on_restore),
   FXMAPFUNC(SEL_TIMEOUT,  house::ID_RECONNECT,
                           house::on_reconnect),
   FXMAPFUNC(SEL_TIMEOUT,  house::ID_DHT_DISCONNECTED,
@@ -62,91 +75,183 @@ house::house(FXApp *a)
     _flood_control(0),
     _conn_tries(0),
     _ctz_disconnected(true),
-    _last_dht_status_message_id(0)
+    _last_dht_status_message_id(0),
+    _router_fw_help_showed(false)
 {
-    FXVerticalFrame *c = new FXVerticalFrame(this, LAYOUT_FILL_X|LAYOUT_FILL_Y);
-
     setIcon(app_icons()->get("rv_house"));
     setMiniIcon(app_icons()->get("rv_house"));
-    
-    _toolbar  = new FXHorizontalFrame(c);
 
+    // Make menu bar
+    _menubar = new FXMenuBar(this,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|FRAME_RAISED);
+    // File menu
+    _menufile = new FXMenuPane(this);
+    new FXMenuTitle(_menubar, langstr("menu_file/title"), NULL, _menufile);
+    // Edit menu
+    _menuedit = new FXMenuPane(this);
+    new FXMenuTitle(_menubar, langstr("menu_edit/title"), NULL, _menuedit);
+    // Player menu
+    _menuplayer = new FXMenuPane(this);
+    new FXMenuTitle(_menubar, langstr("menu_player/title"), NULL, _menuplayer);
+    // Competitions menu
+    _menucomp = new FXMenuPane(this);
+    new FXMenuTitle(_menubar, langstr("menu_comp/title"), NULL, _menucomp);
+    // Help menu
+    _menuhelp = new FXMenuPane(this);
+    new FXMenuTitle(_menubar, langstr("menu_help/title"), NULL, _menuhelp);
+
+    
+    FXVerticalFrame *c = new FXVerticalFrame(
+        this, LAYOUT_FILL_X|LAYOUT_FILL_Y,
+        0,0,0,0, 0,0,0,0, 0,0
+    );    
+    FXComposite *toolbarcontainer = new FXHorizontalFrame(
+        c, LAYOUT_SIDE_TOP|LAYOUT_FILL_X,
+        0,0,0,0, 0,0,0,0, 0,0
+    );
+    new FXToolBarTab(toolbarcontainer,NULL,0,FRAME_RAISED);
+    FXComposite *toolbar = new FXToolBar(
+        toolbarcontainer,
+        FRAME_RAISED|PACK_UNIFORM_WIDTH|
+        LAYOUT_SIDE_TOP|LAYOUT_FILL_X,
+        0,0,0,0, 4,4,4,4, 0,0
+    );
+    
     int button_opts = ICON_ABOVE_TEXT|BUTTON_TOOLBAR|FRAME_RAISED;
     /* No connect/disconnect things for now
-    new FXButton(_toolbar, "Connect",    NULL, this, ID_CONNECT);
-    new FXButton(_toolbar, "Disconnect", NULL, this, ID_DISCONNECT);
+    new FXButton(toolbar, "Connect",    NULL, this, ID_CONNECT);
+    new FXButton(toolbar, "Disconnect", NULL, this, ID_DISCONNECT);
     */
-    // new FXButton(_toolbar, "Exit",       NULL, getApp(), FXApp::ID_QUIT);
-    // new FXButton(_toolbar, "Exit", NULL, this, ID_CLOSE,
+    // new FXButton(toolbar, "Exit",       NULL, getApp(), FXApp::ID_QUIT);
+    // new FXButton(toolbar, "Exit", NULL, this, ID_CLOSE,
     //             button_opts);
     
     
-    new FXButton(_toolbar, 
+    new FXButton(toolbar, 
                  util::button_text(NULL, langstr("main_win/exit")),
                  app_icons()->get("exit"), this, ID_CLOSE,
                  button_opts);
 
-    new FXVerticalSeparator(_toolbar);
+    new FXVerticalSeparator(toolbar);
     
     _room_create_button = 
-      new FXButton(_toolbar, 
+      new FXButton(toolbar, 
                    util::button_text(NULL, langstr("main_win/create_room")),
                    app_icons()->get("room_create"), 
                    this, ID_ROOM_CREATE, button_opts);
     _room_join_button = 
-      new FXButton(_toolbar, 
+      new FXButton(toolbar, 
                    util::button_text(NULL, langstr("main_win/join_room")),
                    app_icons()->get("room_join"), 
                    this, ID_ROOM_JOIN, button_opts);
     _refresh_button = 
-      new FXButton(_toolbar, 
+      new FXButton(toolbar, 
                    util::button_text(NULL, langstr("main_win/refresh")), 
                    app_icons()->get("refresh"), 
                    this, ID_REFRESH, button_opts);
     
     _interrupt_button = 
-      new FXButton(_toolbar, 
+      new FXButton(toolbar, 
                    util::button_text(NULL, langstr("main_win/cancel")), 
                    app_icons()->get("cancel"),
                    this, ID_INTERRUPT, button_opts);
 
-    new FXVerticalSeparator(_toolbar);
+    new FXVerticalSeparator(toolbar);
 
-    new FXButton(_toolbar, 
+    new FXButton(toolbar, 
                  util::button_text(NULL, langstr("main_win/about")), 
                  app_icons()->get("about"), 
                  this, ID_ABOUT, button_opts);
     
-    FXSplitter *house     = new FXSplitter(c, SPLITTER_HORIZONTAL |
-                                                 SPLITTER_REVERSED   |
-                                                 LAYOUT_FILL_X |
-                                                 LAYOUT_FILL_Y);
-    FXSplitter *sections  = new FXSplitter(house, LAYOUT_FILL_X | 
-                                                  LAYOUT_FILL_Y |
-                                                  SPLITTER_VERTICAL);
-    _users_view = new view::users(house, NULL); // , 0, FRAME_SUNKEN|FRAME_THICK);
-    new FXFrame(_users_view);
-    // new FXLabel(house, "Users View", NULL, FRAME_SUNKEN|FRAME_THICK);    
-    _rooms_view = new view::rooms(sections);
+    FXSplitter *house = new FXSplitter(
+        c, 
+        SPLITTER_HORIZONTAL|
+        SPLITTER_REVERSED  |
+        LAYOUT_FILL_X |
+        LAYOUT_FILL_Y
+    );
+    FXSplitter *sections  = new FXSplitter(
+        house, 
+        SPLITTER_VERTICAL |
+        LAYOUT_FILL_X | 
+        LAYOUT_FILL_Y
+    );
+
+    _users_view = new view::users(util::framed_container(house), NULL);
+    _rooms_view = new view::rooms(util::framed_container(sections));
     _rooms_view->target_item_doubleclicked(this, FXSEL(SEL_COMMAND, ID_ROOM_JOIN));
     
-    // new FXLabel(sections, "Rooms View", NULL, FRAME_SUNKEN|FRAME_THICK);
-    _chat_view = new view::chat(sections);
-    // new FXLabel(sections, "Chat Window View", NULL, FRAME_SUNKEN|FRAME_THICK);
-    _msg_field = new FXTextField(c, 0,  this, ID_SEND_MSG, 
+    _chat_view = new view::chat(util::framed_container(sections));
+    FXVerticalFrame *b = new FXVerticalFrame(
+        c, LAYOUT_FILL_X,
+        0,0,0,0,
+        0,0);
+    _msg_field = new FXTextField(b, 0,  this, ID_SEND_MSG, 
                                  FRAME_SUNKEN|FRAME_THICK|
-                                 LAYOUT_FILL_X|TEXTFIELD_ENTER_ONLY);                      
+                                 LAYOUT_FILL_X|TEXTFIELD_ENTER_ONLY);
     _msg_field->setFocus();
     
     _status   = new FXStatusBar(c, LAYOUT_FILL_X);
 
-    _update_status();
-    // _status->getStatusLine()->setNormalText("Waiting...");
+    new FXMenuCommand(_menufile,langstr("menu_file/quit"),NULL,this,ID_CLOSE);
+    new FXMenuCommand(_menuedit,langstr("menu_edit/settings"),NULL,this,ID_SETTINGS);
 
-    _rooms_view->setHeight(150);
-    _users_view->setWidth(150);
+    (new FXMenuCommand(_menuplayer,langstr("menu_player/status"),NULL,NULL,0))->disable();
+    new FXMenuSeparator(_menuplayer);
+    _menu_status_map[chat_gaming::user::status_chatting] = new FXMenuRadio(
+        _menuplayer,
+        langstr("menu_player/chatting"),
+        _users_view, view::users::ID_STATUS_CHATTING
+    );
+    _menu_status_map[chat_gaming::user::status_playing] = new FXMenuRadio(
+        _menuplayer,
+        langstr("menu_player/playing"),
+        _users_view, view::users::ID_STATUS_PLAYING
+    );
+    _menu_status_map[chat_gaming::user::status_away] = new FXMenuRadio(
+        _menuplayer,
+        langstr("menu_player/away"),
+        _users_view, view::users::ID_STATUS_AWAY
+    );
+    _menu_status_map[chat_gaming::user::status_dont_disturb] = new FXMenuRadio(
+        _menuplayer,
+        langstr("menu_player/dont_disturb"),
+        _users_view, view::users::ID_STATUS_DONT_DISTURB
+    );
+    new FXMenuSeparator(_menuplayer);
+    _room_create_menu = 
+        new FXMenuCommand(_menuplayer,langstr("menu_player/create_room"), NULL, this, ID_ROOM_CREATE);
+    _room_join_menu = 
+        new FXMenuCommand(_menuplayer,langstr("menu_player/join_room"), NULL, this, ID_ROOM_JOIN);
+    _room_join_menu->hide();
+    
+    (new FXMenuCommand(_menucomp,langstr("menu_comp/rvl"),NULL,NULL,0))->disable();
+    new FXMenuSeparator(_menucomp);
+    new FXMenuCommand(_menucomp,langstr("menu_comp/rvl_home"),NULL,this,ID_WWW_RVL_HOME);
+    new FXMenuCommand(_menucomp,langstr("menu_comp/rvl_champ"),NULL,this,ID_WWW_RVL_CHAMP);
+    new FXMenuCommand(_menucomp,langstr("menu_comp/rvl_cup"),NULL,this,ID_WWW_RVL_CUP);
+
+    new FXMenuCommand(_menuhelp,langstr("menu_help/router_help"),NULL,this,ID_WWW_HELP_ROUTER);
+    new FXMenuCommand(_menuhelp,langstr("menu_help/faq"),NULL,this,ID_WWW_HELP_FAQ);
+    new FXMenuCommand(_menuhelp,langstr("menu_help/conn_help"),NULL,this,ID_WWW_HELP_CONN);
+    new FXMenuSeparator(_menuhelp);
+    new FXMenuCommand(_menuhelp,langstr("menu_help/about_house"),NULL,this,ID_ABOUT);
+
+    _update_status();
+    _update_menu_player_status();
+    
+    house->setSplit(1, 150);
+    sections->setSplit(0, 150);
     _rooms_view->observer_set(this);
     _users_view->observer_set(this);
+
+    _menu_www_map[ID_WWW_RVL_HOME]    = conf()->get("www", "rvl_home");
+    _menu_www_map[ID_WWW_RVL_CHAMP]   = conf()->get("www", "rvl_championship");
+    _menu_www_map[ID_WWW_RVL_CUP]     = conf()->get("www", "rvl_cup");
+    _menu_www_map[ID_WWW_HELP_ROUTER] = conf()->get("www", "help_router");
+    _menu_www_map[ID_WWW_HELP_CONN]   = conf()->get("www", "help_connection");
+    _menu_www_map[ID_WWW_HELP_FAQ]    = conf()->get("www", "help_faq");
+
+    util::restore_size(this, "house_win");
     
     getAccelTable()->addAccel(MKUINT(KEY_F4,ALTMASK),this,FXSEL(SEL_COMMAND,ID_CLOSE)); 
 }
@@ -163,6 +268,8 @@ house::create() {
 }
 
 house::~house() {
+    util::store_size(this, "house_win");
+    
     getApp()->removeTimeout(this, ID_RECONNECT);
     getApp()->removeTimeout(this, ID_REFRESH);
     getApp()->removeTimeout(this, ID_DHT_DISCONNECTED);
@@ -170,6 +277,12 @@ house::~house() {
     ACE_DEBUG((LM_DEBUG, "Main window closed, sending quit request to APP\n"));
 
     getApp()->handle(this, FXSEL(SEL_COMMAND,FXApp::ID_QUIT), NULL);
+    
+    delete _menufile;
+    delete _menuedit;
+    delete _menuplayer;
+    delete _menucomp;
+    delete _menuhelp;    
 }
 
 long 
@@ -438,8 +551,10 @@ house::on_room_join(FXObject *from, FXSelector sel, void *ptr) {
     int i = _rooms_view->selected_item_index();
     ACE_DEBUG((LM_DEBUG, "house::index clicked is %d\n", i));
     
-    if (i < 0) return 0;
-        
+    if (i < 0) {    
+        return 0;
+    }
+    
     // room_item *item = _rooms_view->item_at(i);
     chat_gaming::room::id_type rid = _rooms_view->room_id_at(i);
     
@@ -497,8 +612,29 @@ house::handle_message(::message *msg) {
 
     switch(msg->id()) {
     case ::message::room:
-    case ::message::user:
         _room_buttons_status(); break;
+    case ::message::user:
+    {
+        message_user *u = dynamic_ptr_cast<message_user>(msg);
+        _room_buttons_status();
+        // ACE_DEBUG((LM_DEBUG, "update_menu_player got user id %s, self user id %s",
+        //          u->user().id().c_str(), self_model()->user().id()))
+        if (u->user().id().id_str() == self_model()->user().id().id_str())            
+            _update_menu_player_status();
+
+    }   
+        break;
+    case ::message::send:
+        // Don't flash the window, however, if playing
+        // already
+        if (app_opts.flash_main_chat() &&
+            self_model()->user().status() != chat_gaming::user::status_playing)
+        {
+            message_channel *m = dynamic_ptr_cast<message_channel>(msg);
+            if (m->channel() == _chat_view->channel())
+                os::flash_window(this);
+        }
+        break;
     }
     _users_view->handle_message(msg);
     _chat_view->handle_message(msg);    
@@ -638,16 +774,44 @@ house::_update_status() {
     // _status->setText(status.c_str());
 }
 
+void
+house::_update_menu_player_status() {
+    ACE_DEBUG((LM_DEBUG, "house::_update_menu_player_status: for %d\n",
+              self_model()->user().status()));
+    _menu_status_map_type::iterator ci = _menu_status_map.find(
+        self_model()->user().status()
+    );
+    // if (ci != _menu_status_map.end()) {
+        _menu_status_map_type::iterator i = _menu_status_map.begin();
+        for (; i != _menu_status_map.end(); i++) {
+            ACE_DEBUG((LM_DEBUG, "house::_update_menu_player_status: setting %d to %d\n",
+                       i->first, i == ci));
+            // i->second->setCheck(TRUE);
+            i->second->setCheck(i == ci ? TRUE : FALSE);
+            ACE_DEBUG((LM_DEBUG, "house::_update_menu_player_status: after set %d\n",
+                       i->second->getCheck()));
+        }
+    //} else {
+    //    ACE_DEBUG((LM_DEBUG, "house::_update_menu_player_status: not found for %d\n",
+    //              self_model()->user().status()));
+    //}        
+}
+
 void 
 house::_room_buttons_status() {
     if (self_model()->joining_room()   != chat_gaming::room::id_type() ||
         self_model()->user().room_id() != chat_gaming::room::id_type())
     {
         _room_create_button->disable();
+        _room_create_menu->disable();
         _room_join_button->disable();
+        _room_join_menu->disable();
+        
     } else {
         _room_create_button->enable();
+        _room_create_menu->enable();
         _room_join_button->enable();
+        _room_join_menu->enable();
     }   
 }
 
@@ -702,6 +866,57 @@ house::on_about (FXObject *from, FXSelector sel, void *) {
     return 1;
 }
 
+long 
+house::on_www(FXObject *from, FXSelector sel, void *) {
+    ACE_DEBUG((LM_DEBUG, "house::on_www\n"));
+    _menu_www_map_type::iterator ci = _menu_www_map.find(FXSELID(sel));
+    if (ci != _menu_www_map.end()) { 
+        ACE_DEBUG((LM_DEBUG, "house::on_www starting %s\n", ci->second.c_str()));
+       launcher_file()->start(ci->second.c_str());
+    }
+       
+    return 1;
+}
+
+long 
+house::on_settings (FXObject *from, FXSelector sel, void *) {
+    settings *win = new window::settings(::app());
+    win->create();
+
+    return 1;
+}
+
+long 
+house::on_minimize(FXObject *from, FXSelector sel, void *) {
+    ACE_DEBUG((LM_DEBUG, "window::house: on_minimize\n"));
+    return 1;
+}
+
+long 
+house::on_restore(FXObject *from, FXSelector sel, void *) {
+    ACE_DEBUG((LM_DEBUG, "window::house: on_restore\n"));
+    return 1;
+}
+
+/*
+long 
+house::on_configure(FXObject *from, FXSelector sel, void *p) {
+    ACE_DEBUG((LM_DEBUG, "window::house: on_configure\n"));
+    FXEvent *e = reinterpret_cast<FXEvent *>(p);
+    ACE_DEBUG((LM_DEBUG, "window::house: win_x/win_y: %d/%d\n",
+              e->win_x, e->win_y));
+    ACE_DEBUG((LM_DEBUG, "window::house: win_x/win_y: %d/%d\n",
+              e->root_x, e->root_y));
+    ACE_DEBUG((LM_DEBUG, "window::house: state: %d\n",
+              e->state));
+    ACE_DEBUG((LM_DEBUG, "window::house: code: %d\n",
+              e->code));
+    ACE_DEBUG((LM_DEBUG, "window::house: text: %s\n",
+              e->text.text()));
+    return 1;
+}
+*/
+
 void 
 house::interruptable_action_update() {
     // True if interruptable
@@ -728,10 +943,15 @@ house::on_dht_disconnected(FXObject *from, FXSelector sel, void *) {
         return 1;
     }
 
-    ACE_DEBUG((LM_DEBUG, "house::on_dht_disconnected:help box\n")); 
-    // Display a message box
-    (new router_fw_help)->show_when_possible();
-    
+    if (conf()->get<bool>("main", "no_router_fw_help", false))
+        return 1;
+        
+    if (!_router_fw_help_showed) {
+        ACE_DEBUG((LM_DEBUG, "house::on_dht_disconnected:help box\n")); 
+        // Display a message box
+        (new router_fw_help)->show_when_possible();
+        _router_fw_help_showed = true;
+    }    
     return 1;
 }
 
@@ -746,6 +966,11 @@ house::interruptable_action_update(const std::string &s) {
 // users_view::observer interface   
 void
 house::user_added(const chat_gaming::user &u) {
+    if (app_opts.flash_new_user() &&
+        self_model()->user().status() != chat_gaming::user::status_playing)
+    {
+        os::flash_window(this);
+    }
     _chat_view->status_message(langstr("chat/user_entered", u.display_id().c_str()));
 }
 
@@ -758,6 +983,14 @@ house::user_removed(const chat_gaming::user &u) {
 void 
 house::room_added(const chat_gaming::room &r) {
     _chat_view->status_message(langstr("chat/room_created", r.topic().c_str()));
+    // Don't flash the window, however, if playing or in some room
+    // already
+    if (app_opts.flash_new_room() &&
+        self_model()->user().status() != chat_gaming::user::status_playing &&
+        self_model()->user().room_id().empty())
+    {
+        os::flash_window(this);
+    }
 }
 
 void

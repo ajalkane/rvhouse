@@ -36,7 +36,7 @@ special functions:
     Alt+letter then activates the corresponding controller in
     the dialog. If you want to assign shortcuts, make sure 
     each dialog do not have overlapping shortcuts.
-\1 - can be also another number. With some strings, these will be
+%1 - can be also another number. With some strings, these will be
      replaced with some input from RV House that can vary
      (for example user name etc.). It should be clear from the
      context of the string what kind of data there can be

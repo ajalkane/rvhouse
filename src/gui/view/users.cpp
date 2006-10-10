@@ -39,7 +39,7 @@ FXDEFMAP(users) users_map[]={
     FXMAPFUNC(SEL_COMMAND, users::ID_PRIV_MSG,     users::on_priv_msg),
     FXMAPFUNC(SEL_DOUBLECLICKED,0,users::on_doubleclick),   
     FXMAPFUNCS(SEL_COMMAND, users::ID_STATUS_CHATTING, 
-                            users::ID_STATUS_AWAY,
+                            users::ID_STATUS_DONT_DISTURB,
                             users::on_status_change),
     
     
@@ -93,6 +93,8 @@ user_item::resolve_user_state() {
     bool is_playing = false;
     bool is_in_room = false;
     bool is_away    = false;
+    bool is_dnd     = false; // do not disturb
+    
     _dht_conn  = false;
     _ctz_conn  = false;
     _natted    = false;
@@ -112,10 +114,12 @@ user_item::resolve_user_state() {
           house_model()->user_find(uid_i->second, gi->first);
         if (ui == house_model()->user_end()) continue;
         
-        if (ui->status() == chat_gaming::user::status_playing)
-            is_playing = true;
-        if (ui->status() == chat_gaming::user::status_away)
-            is_away = true;
+        switch (ui->status()) {
+        case chat_gaming::user::status_playing: is_playing = true; break;
+        case chat_gaming::user::status_away   : is_away    = true; break;
+        case chat_gaming::user::status_dont_disturb: is_dnd = true; break;
+        }
+        
         if (ui->room_id() != chat_gaming::room::id_type())
             is_in_room = true;
         if (gi->first == message::dht_group_base) {
@@ -140,6 +144,10 @@ user_item::resolve_user_state() {
         setOpenIcon(app_icons()->get("user_away"));
         setClosedIcon(app_icons()->get("user_away"));       
         _display_group = (is_in_room ? group_in_room : group_away);
+    } else if (is_dnd) {
+        setOpenIcon(app_icons()->get("user_dont_disturb"));
+        setClosedIcon(app_icons()->get("user_dont_disturb"));       
+        _display_group = (is_in_room ? group_in_room : group_dnd);
     } else if (is_in_room) {
         setOpenIcon(app_icons()->get("user_in_room_small"));
         setClosedIcon(app_icons()->get("user_in_room_small"));      
@@ -223,11 +231,11 @@ user_item::_resolve_tip() {
                  )
           << _tip(header_non_empty_value(uf, langstr("words/note"), 
                   user_value_accessor(&user_type::sharing_tracks,
-                  true_to_string(langstr("users/shares_tracks"))))
+                  true_to_string(langstr("users_view/shares_tracks"))))
                  )
           << _tip(header_non_empty_value(uf, "Note", 
                   user_value_accessor(&user_type::getting_tracks,
-                  true_to_string(langstr("users/dloads_tracks"))))
+                  true_to_string(langstr("users_view/dloads_tracks"))))
                  );
                  
 if (app_opts.debug()) {
@@ -243,7 +251,7 @@ if (app_opts.debug()) {
     if (_dht_conn) {
         tip_s << _tip(header_value(langstr("words/dht"), langstr("words/connected")));
     } else {
-        tip_s << _tip(header_value(langstr("words/dht"), langstr("users/dht_not_found")));
+        tip_s << _tip(header_value(langstr("words/dht"), langstr("users_view/dht_not_found")));
     }
     if (_ctz_conn) {
         tip_s << _tip(header_value(langstr("words/ctz"), langstr("words/connected")));
@@ -253,7 +261,7 @@ if (app_opts.debug()) {
 
     if (_natted) {
         tip_s << _tip(header_value(langstr("words/note"), 
-                 langstr("users/natted")));
+                 langstr("users_view/natted")));
     }
 
     _tip_str = tip_s.str().c_str();
@@ -277,6 +285,7 @@ users::users(
     _group_items[user_item::group_in_room]  = _parent_item(langstr("status/waiting"));
     _group_items[user_item::group_playing]  = _parent_item(langstr("status/playing"));
     _group_items[user_item::group_away]     = _parent_item(langstr("status/away"));
+    _group_items[user_item::group_dnd]      = _parent_item(langstr("status/dont_disturb"));
     
   // Right mouse popup
     _popup = new FXMenuPane(this);
@@ -299,6 +308,11 @@ users::users(
     new FXMenuCommand(_popup_status, 
         chat_gaming::user::status_to_string(chat_gaming::user::status_away),
         NULL, this, ID_STATUS_AWAY);
+    new FXMenuCommand(_popup_status, 
+        chat_gaming::user::status_to_string(
+            chat_gaming::user::status_dont_disturb
+        ),
+        NULL, this, ID_STATUS_DONT_DISTURB);
 
     _popup_status_cascade = new FXMenuCascade(_popup, langstr("words/status"), NULL, _popup_status);
     _popup_share = new FXMenuCommand(_popup, langstr("user_popup/share_tracks"), NULL, this);
@@ -683,19 +697,27 @@ users::on_user_rightclick(FXObject *sender,FXSelector sel,void *ptr) {
 long
 users::on_status_change(FXObject *sender,FXSelector sel,void *ptr) {
     int new_status = 0;
+
+    // Restrict status changing so that it can be done only once in a 
+    // second
+    static time_t last_change = time(NULL);
+    time_t now = time(NULL);
+    if (now - last_change < 1) return 1;
     
     switch (FXSELID(sel)) {
     case ID_STATUS_CHATTING: new_status = chat_gaming::user::status_chatting; break;
     case ID_STATUS_PLAYING : new_status = chat_gaming::user::status_playing;  break;
     case ID_STATUS_AWAY    : new_status = chat_gaming::user::status_away;     break;
+    case ID_STATUS_DONT_DISTURB : new_status = chat_gaming::user::status_dont_disturb; break;
     }
 
     if (new_status && new_status != self_model()->user().status()) {
+        last_change = now;
         self_model()->user().status(new_status);
         self_model()->user_send();      
     }
     
-    return 0;
+    return 1;
 }
 
 long

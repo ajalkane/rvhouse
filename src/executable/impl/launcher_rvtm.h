@@ -11,7 +11,8 @@ namespace executable {
 
 class launcher_rvtm : public launcher, public ACE_Event_Handler {
     int  _launch(const std::string &host_id);
-    volatile bool _running;
+    volatile pid_t _rvtm_pid;
+    volatile bool  _running;
 public:
     launcher_rvtm();
     virtual ~launcher_rvtm();

@@ -74,7 +74,7 @@ mapper::get(
     while (!quit) {
         switch (*val) {
         case 0: quit = true; break;
-        case '\\':
+        case '%':
         {
             val++;
             // Substitute

@@ -4,23 +4,34 @@
 #include <string>
 #include <sstream>
 #include <list>
+#include <locale>
 #include <map>
 
 #include <fx.h>
 
 #include "common.h"
+#include "util.h"
 
 /* Wrapper around FX's configuration file with the relevant functions 
  * needed by this application */
 class config_file {
     FXSettings *_conf;
     std::string _parsed_file;
+    bool        _no_delete;
+
+    static no_space_as_ws_ctype _loc_facet;
+    static std::locale _loc;
+    
 public:
     config_file();
     config_file(const config_file &o);
+    config_file(FXRegistry &reg);
+    config_file(const std::string &app, const std::string &vendor);
+    
     virtual ~config_file();
 
-    void parse(const std::string &file);
+    void load(const std::string &file);
+    void load();
     void save(const std::string &file);
     // Saves to the last parsed file
     void save();
@@ -31,6 +42,11 @@ public:
                            const char *ndx);
     template <class T>
     T get(const char *sec, const char *ndx, const T &def_val);
+    // Template specialization for std::strings
+    /*std::string get(
+        const char *sec, const char *ndx,
+        const std::string &def_val);
+    */
     template <class T>
     const T &set(const char *sec, const char *ndx, const T &val);
     
@@ -42,11 +58,20 @@ inline std::string
 config_file::get(const char *sec, const char *ndx) {
     return _conf->readStringEntry(sec, ndx, "");
 }
+
+/*
+inline std::string 
+config_file::get(const char *sec, const char *ndx, const std::string &def_val) {
+    return _conf->readStringEntry(sec, ndx, def_val.c_str());
+}
+*/
+
 template <class T> T 
 config_file::get(const char *sec, const char *ndx, const T &def_val) {
     const char *valstr = _conf->readStringEntry(sec, ndx, NULL);
     if (valstr == NULL) return def_val;
     std::istringstream oss(valstr);
+    oss.imbue(_loc);
     T val = def_val;
     oss >> val;
     return val;

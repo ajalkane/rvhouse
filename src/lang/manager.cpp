@@ -35,7 +35,7 @@ manager::init(const std::string &dir) {
 
         // Parse each language definition file and create info class for it
         config_file df;
-        df.parse(path_noext + ".def");
+        df.load(path_noext + ".def");
         
         std::list<info>::iterator i = _infos.insert(_infos.end(), info());
         i->_lang    = df.get("info", "language");
@@ -78,7 +78,7 @@ manager::_mapper_fill(mapper &m, const std::string &name) {
 
     ACE_DEBUG((LM_DEBUG, "lang::manager: parsing file %s\n", i->file().c_str()));
     config_file lf;
-    lf.parse(i->file());
+    lf.load(i->file());
     
     std::list<std::string> sections;
     std::list<std::string>::const_iterator sec_i;

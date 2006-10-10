@@ -45,9 +45,24 @@ login::login(FXWindow *owner)
     
     new FXSeparator(this);
     FXHorizontalFrame *bframe = new FXHorizontalFrame(this, LAYOUT_CENTER_X);
-    _log_button = new FXButton(bframe, langstr("login_win/login"),    NULL, this, ID_LOGIN, BUTTON_NORMAL|BUTTON_INITIAL|BUTTON_DEFAULT);
-    _reg_button = new FXButton(bframe, langstr("login_win/register"), NULL, this, ID_REGISTER);
-    new FXButton(bframe, langstr("login_win/quit"), NULL, this, ID_CANCEL);
+    _log_button = new FXButton(
+        bframe, langstr("login_win/login"), NULL, 
+        this, ID_LOGIN, 
+        BUTTON_NORMAL|BUTTON_INITIAL|BUTTON_DEFAULT /*,
+        0,0,0,0,20,20*/
+    );
+    _reg_button = new FXButton(
+        bframe, langstr("login_win/register"), NULL, 
+        this, ID_REGISTER /*,
+        BUTTON_NORMAL,
+        0,0,0,0,20,20 */ 
+    );
+    new FXButton(
+        bframe, langstr("login_win/quit"), NULL, 
+        this, ID_CANCEL /*,
+        BUTTON_NORMAL,
+        0,0,0,0,20,20 */   
+    );
     
     _log_button->setFocus();
     

@@ -2,6 +2,7 @@
 #define _HOUSE_WINDOW_H_
 
 #include <string>
+#include <map>
 #include <vector>
 #include <fx.h>
 
@@ -31,7 +32,8 @@ class house
 {
     FXDECLARE(house)
 
-    FXHorizontalFrame *_toolbar;
+    // FXHorizontalFrame *_toolbar;
+    // FXComposite       *_toolbar;
     // FXLabel       *_status;
     FXStatusBar       *_status;
     FXTextField       *_msg_field;
@@ -39,6 +41,17 @@ class house
     FXButton          *_room_create_button;
     FXButton          *_room_join_button;
     FXButton          *_refresh_button;
+    // Menus
+    FXMenuBar         *_menubar;
+    FXMenuPane        *_menufile;
+    FXMenuPane        *_menuedit;
+    FXMenuPane        *_menuplayer;
+    FXMenuPane        *_menucomp;
+    FXMenuPane        *_menuhelp;
+    
+    FXMenuCommand     *_room_create_menu;
+    FXMenuCommand     *_room_join_menu;
+    
     view::chat        *_chat_view;
     view::users       *_users_view;
     view::rooms       *_rooms_view;
@@ -48,6 +61,12 @@ class house
     std::string _status_ctz;
     std::string _status_tmp;
     
+    typedef std::map<int, FXMenuRadio *> _menu_status_map_type;
+    _menu_status_map_type _menu_status_map;
+
+    typedef std::map<int, std::string> _menu_www_map_type;
+    _menu_www_map_type _menu_www_map;
+    
     time_t _last_connect;
     ACE_Time_Value _flood_last_sent_message;
     int    _flood_control;
@@ -55,13 +74,26 @@ class house
     
     bool _ctz_disconnected;
     int  _last_dht_status_message_id;
-        
+    bool _router_fw_help_showed;
+    
     void _update_status();
+    void _update_menu_player_status();
     void _room_buttons_status();
     bool _chat_command(const FXString &t);
     void _chat_command_model_rooms();
     void _chat_command_model_users();
     void _chat_command_model_self();
+/*    
+    inline FXComposite *_view_container(FXComposite *parent) {
+        return new FXVerticalFrame(
+                parent,
+                LAYOUT_FILL_X|LAYOUT_FILL_Y|
+                FRAME_SUNKEN|FRAME_THICK,
+                0,0,0,0, 0,
+                0,0,0
+        );        
+    }
+    */
 protected:
     house() {}
 
@@ -81,6 +113,16 @@ public:
         ID_ABOUT,
         ID_RECONNECT,
         ID_DHT_DISCONNECTED,        
+        ID_SETTINGS,
+        ID_WWW_START,
+        ID_WWW_RVL_HOME,
+        ID_WWW_RVL_CHAMP,
+        ID_WWW_RVL_CUP,
+        ID_WWW_HELP_ROUTER,
+        ID_WWW_HELP_CONN,
+        ID_WWW_HELP_FAQ,
+        ID_WWW_END,
+        
         ID_LAST,
     };
     
@@ -94,13 +136,17 @@ public:
     long on_network_command (FXObject *from, FXSelector sel, void *);   
     long on_send_message    (FXObject *from, FXSelector sel, void *);
     long on_room_create     (FXObject *from, FXSelector sel, void *);
+    long on_settings        (FXObject *from, FXSelector sel, void *);
     long on_room_join       (FXObject *from, FXSelector sel, void *);
     long on_interrupt       (FXObject *from, FXSelector sel, void *);
     long on_refresh         (FXObject *from, FXSelector sel, void *);
     long on_refresh_enable  (FXObject *from, FXSelector sel, void *);
     long on_reconnect       (FXObject *from, FXSelector sel, void *);
     long on_about           (FXObject *from, FXSelector sel, void *);
+    long on_www             (FXObject *from, FXSelector sel, void *);
     long on_dht_disconnected(FXObject *from, FXSelector sel, void *);
+    long on_minimize        (FXObject *from, FXSelector sel, void *);
+    long on_restore         (FXObject *from, FXSelector sel, void *);
     
     void handle_message    (::message *msg);    
 

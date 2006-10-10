@@ -44,14 +44,14 @@ reg_ok          = Registro correcto! Ya puedes logearte
 
 [about_win]
 title         = Acerca de
-license       = Lanzado bajo \1
-icons_by      = Iconos por \1
-house_icon_by = Icono de RV House por \1
+license       = Lanzado bajo %1
+icons_by      = Iconos por %1
+house_icon_by = Icono de RV House por %1
 other_sites   = Algunos websites de la comunidad:
 using         = Usando:
-using_lib     = \1 (por \2)
+using_lib     = %1 (por %2)
 translations  = Traducciones:
-translation   = \1 by \2 <\3>
+translation   = %1 by %2 <%3>
 
 [app]
 rv_not_found_title = "Re-Volt instalado?"
@@ -64,7 +64,7 @@ join_err_topic     = Error entrando en la sala
 [new_version_win]
 title     = Nueva versión!
 force_msg = DEBES actualizar RVHouse! Las versiones viejas no son compatibles!
-msg       = Versión \1 disponible, tu versión es \2
+msg       = Versión %1 disponible, tu versión es %2
 new_since = Nuevo desde tu versión:
 download  = Baja la nueva versión de:
 
@@ -113,27 +113,27 @@ ctz_connected         = Conexión centralizada
 ctz_disconnecting     = Desconectando centralizado
 ctz_disconnected      = Desconexión centralizada
 
-ip_detecting = Detectando IP de: \1
-ip_detected  = IP detectada: \1
-ip_failed    = Detección de IP fallida: \1
+ip_detecting = Detectando IP de: %1
+ip_detected  = IP detectada: %1
+ip_failed    = Detección de IP fallida: %1
 
 [chat]
-user_entered = \1 ha entrado
-user_exited  = \1 ha salido
-room_created = Nueva sala creada (\1)
-room_closed  = Sala cerrada (\1)
+user_entered = %1 ha entrado
+user_exited  = %1 ha salido
+room_created = Nueva sala creada (%1)
+room_closed  = Sala cerrada (%1)
 
-host_kicked_host = Host se ha autokikeado \1
-host_kicks_user  = Host esta kikeando \1 de la sala
-host_kicks_you   = Host te ha kikeado de la sala \1
+host_kicked_host = Host se ha autokikeado %1
+host_kicks_user  = Host esta kikeando %1 de la sala
+host_kicks_you   = Host te ha kikeado de la sala %1
 
-user_joined_room         = \1 se une a la sala
-user_exited_room         = \1 sale de la sala
-user_shares_tracks       = \1 esta compartiendo tracks
-user_shares_tracks_stops = \1 ha parado de compartir tracks
-user_dloads_tracks       = \1 esta descargando tracks
-user_dloads_tracks_stops = \1 ha parado de descargar tracks
-private_msg_refused      = El usuario \1 rechazó tu mensaje.
+user_joined_room         = %1 se une a la sala
+user_exited_room         = %1 sale de la sala
+user_shares_tracks       = %1 esta compartiendo tracks
+user_shares_tracks_stops = %1 ha parado de compartir tracks
+user_dloads_tracks       = %1 esta descargando tracks
+user_dloads_tracks_stops = %1 ha parado de descargar tracks
+private_msg_refused      = El usuario %1 rechazó tu mensaje.
 
 [room_settings_win]
 title       = Opciones de la sala

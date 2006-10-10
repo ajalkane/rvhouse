@@ -124,7 +124,8 @@ house_app::create() {
         app_rel_path("img"),
         "about", "cancel", "close", "exit", "launch", "launch_small",
         "locked_small", "refresh", "room_create", "room_join", 
-        "settings", "rv_house", "user_in_room_small", "user_away",
+        "settings", "rv_house", 
+        "user_in_room_small", "user_away", "user_dont_disturb",
         "tracks_share", "tracks_share_small",
         "private_message",
         NULL
@@ -147,7 +148,8 @@ house_app::create() {
 
     ACE_DEBUG((LM_DEBUG, "house_app: showing main window\n"));  
     _house_win->create();
-    _house_win->show(PLACEMENT_SCREEN); 
+    _house_win->show();
+    // _house_win->show(PLACEMENT_SCREEN); 
     
 #ifdef DAMN_TEST
     addTimeout(this, ID_TEST, 1000);
@@ -199,7 +201,16 @@ house_app::start() {
                              langstr("app/rv_not_found"));
     }
     
-    ACE_DEBUG((LM_DEBUG, "login_window: creating\n"));
+    ACE_DEBUG((LM_DEBUG, "house_app::start main/gui_test: %d\n",
+              conf()->get<bool>("main", "gui_test", false)));
+              
+    if (conf()->get<bool>("main", "gui_test", false)) {
+        ACE_DEBUG((LM_DEBUG, "house_app::start gui_test activated, no login shown\n"));
+        run();
+        return;
+    }
+
+    ACE_DEBUG((LM_DEBUG, "house_app::start creating login window\n"));
 
     window::login *_login_win = new window::login(_house_win);
     std::auto_ptr<window::login> login_win_guard(_login_win);
@@ -207,9 +218,9 @@ house_app::start() {
     // Fetch current version information
     net_messenger()->send_msg(new ::message(::message::version_fetch));
     
-    _login_win->user(conf()->get("user", "id", std::string()));
+    _login_win->user(pref()->get("user", "id", std::string()));
     // Use rot13 in nostalgic honour of this legendary scrambler!
-    _login_win->pass(derot13(conf()->get("user", "pass", std::string())));
+    _login_win->pass(derot13(pref()->get("user", "pass", std::string())));
 
     ACE_DEBUG((LM_DEBUG, "login_window: executing\n")); 
     if (!_login_win->execute(PLACEMENT_SCREEN)) {
@@ -218,10 +229,10 @@ house_app::start() {
         // handle(this, FXSEL(SEL_COMMAND, ID_QUIT), NULL);
     }
     
-    conf()->set("user", "id", _login_win->user());
+    pref()->set("user", "id", _login_win->user());
     // Use rot13 in nostalgic honour of this legendary scrambler!
-    conf()->set("user", "pass", rot13(_login_win->pass()));
-    conf()->save();
+    pref()->set("user", "pass", rot13(_login_win->pass()));
+    pref()->save();
 
     self_model()->user().login_id(_login_win->user());
     if (_login_win->user_validated())
@@ -682,7 +693,8 @@ house_app::_cond_open_private_message_window(::message *msg) {
     bool allow_new_window  = true;
     bool new_window_needed = false;
     
-    if (self_model()->user().status() == chat_gaming::user::status_playing ||
+    if (self_model()->user().status() == chat_gaming::user::status_playing     ||
+        self_model()->user().status() == chat_gaming::user::status_dont_disturb||
         self_model()->user().id().id_str() == m->sender_id().id_str()) {
         allow_new_window = false;
     }
@@ -994,7 +1006,10 @@ house_app::private_message_window_to(
     }
     
     win = new window::private_message(this, user_id_str);
+    // win->lower();
     win->create();
+    // win->lower();
+    // win->killFocus();
 
     // Must emulate the addition of participants of private chat
     std::vector<std::string> users(2);

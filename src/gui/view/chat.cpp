@@ -3,6 +3,7 @@
 #include <fx.h>
 
 #include "../../util.h"
+#include "../../os_util.h"
 #include "../../main.h"
 #include "../../app_options.h"
 #include "../../messaging/message_channel.h"
@@ -53,6 +54,7 @@ chat::chat(
 : FXText(c, tgt, sel, opts, x, y, w, h, pl, pr, pt, pb),
   _allow_scroll(true)
 {
+    
     _current_cursor = DEF_ARROW_CURSOR;
     
     _styles = new FXHiliteStyle[style_last - 1];
@@ -180,7 +182,7 @@ chat::handle_message(::message *msg) {
         ACE_DEBUG((LM_DEBUG, "chat::handle message _channel/channel %s/%s\n",
                   _channel.c_str(), m->channel().c_str()));
                   
-        if (_channel == m->channel()) {
+        if (_channel == m->channel()) {                
             // Public message
             public_message(m->sender_id(), m->str(), m->group_base());
         }

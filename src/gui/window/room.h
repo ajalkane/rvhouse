@@ -25,7 +25,6 @@ class room
     typedef FXTopWindow super;
     FXDECLARE(room)
 
-    FXHorizontalFrame *_toolbar;
     FXTextField       *_msg_field;
     FXButton          *_edit_button;
     FXButton          *_launch_button;

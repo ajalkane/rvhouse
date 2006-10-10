@@ -2,6 +2,7 @@
 #define _UTIL_H_
 
 #include <string>
+#include <locale>
 
 #include "os_util.h"
 
@@ -66,5 +67,26 @@ public:
 
 std::string rot13(const std::string &s);
 std::string derot13(const std::string &s);
+
+// Utility struct for std::stream classes.
+// Disables space as a white space separator. Needed so that
+// can extract nicely also strings that have white spaces in them.
+// Modified from the example found from here:
+// http://www.talkaboutprogramming.com/group/comp.lang.c++/messages/740314.html
+struct no_space_as_ws_ctype : std::ctype<char> {
+    no_space_as_ws_ctype() : std::ctype<char>(get_table()) {}
+    static std::ctype_base::mask const *get_table() {
+        static std::ctype_base::mask *rc = 0;
+
+        if (rc == 0) {
+            rc = new std::ctype_base::mask[std::ctype<char>::table_size];
+            std::fill_n(rc, std::ctype<char>::table_size,
+                        std::ctype_base::mask());
+            // Use only linefeed as a separator
+            rc['\n'] = std::ctype_base::space;
+        }
+        return rc;
+    }
+};  
 
 #endif //_UTIL_H_

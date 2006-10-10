@@ -87,7 +87,12 @@ about::about(FXWindow *owner)
     new FXSeparator(this);
     FXHorizontalFrame *bframe = new FXHorizontalFrame(this, LAYOUT_CENTER_X);
 
-    new FXButton(bframe, langstr("common/ok_button"), NULL, this, ID_CANCEL);
+    new FXButton(
+        bframe, langstr("common/ok_button"), NULL, this, ID_CANCEL,
+        BUTTON_INITIAL|BUTTON_DEFAULT|LAYOUT_CENTER_X|
+        FRAME_RAISED|FRAME_THICK,
+        0,0,0,0,20,20        
+    );
     
     getAccelTable()->addAccel(MKUINT(KEY_F4,ALTMASK),this,FXSEL(SEL_COMMAND,ID_CANCEL));
 }

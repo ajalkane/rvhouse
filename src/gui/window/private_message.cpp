@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include <utility>
 
 #include <fx.h>
@@ -60,17 +61,29 @@ private_message::_init2() {
         setTitle(ui->display_id().c_str());
 
     int button_opts = ICON_ABOVE_TEXT|BUTTON_TOOLBAR|FRAME_RAISED;
-        
-    FXVerticalFrame *c = new FXVerticalFrame(this, LAYOUT_FILL_X|LAYOUT_FILL_Y);
 
-    _toolbar  = new FXHorizontalFrame(c);
+    FXVerticalFrame *c = new FXVerticalFrame(
+        this, LAYOUT_FILL_X|LAYOUT_FILL_Y,
+        0,0,0,0, 0,0,0,0, 0,0
+    );    
+    FXComposite *toolbarcontainer = new FXHorizontalFrame(
+        c, LAYOUT_SIDE_TOP|LAYOUT_FILL_X,
+        0,0,0,0, 0,0,0,0, 0,0
+    );
+    new FXToolBarTab(toolbarcontainer,NULL,0,FRAME_RAISED);
+    FXComposite *toolbar = new FXToolBar(
+        toolbarcontainer,
+        FRAME_RAISED|
+        LAYOUT_SIDE_TOP|LAYOUT_FILL_X,
+        0,0,0,0, 4,4,4,4, 0,0
+    );
 
-    new FXButton(_toolbar, 
+    new FXButton(toolbar, 
                  util::button_text(NULL, langstr("private_message_win/close")),
                  app_icons()->get("close"), 
                  this, ID_CLOSE, button_opts);
 
-    // new FXVerticalSeparator(_toolbar);
+    // new FXVerticalSeparator(toolbar);
 
     FXSplitter *house     = new FXSplitter(c, SPLITTER_HORIZONTAL |
                                                  SPLITTER_REVERSED   |
@@ -80,18 +93,24 @@ private_message::_init2() {
                                                   LAYOUT_FILL_Y |
                                                   SPLITTER_VERTICAL);
 
-    _users_view = new view::users(house, NULL); // , 0, FRAME_SUNKEN|FRAME_THICK);
+    _users_view = new view::users(util::framed_container(house), NULL); // , 0, FRAME_SUNKEN|FRAME_THICK);
 
-    _chat_view = new view::chat(sections);
+    _chat_view = new view::chat(util::framed_container(sections));
 
     // _chat_view->channel(_room_id);
     // FXFrame *f = new FXFrame(this);
-    _msg_field = new FXTextField(c, 0, this, ID_SEND_MSG, 
+    FXVerticalFrame *b = new FXVerticalFrame(
+        c, LAYOUT_FILL_X,
+        0,0,0,0,
+        0,0);
+
+    _msg_field = new FXTextField(b, 0, this, ID_SEND_MSG, 
                                  FRAME_SUNKEN|FRAME_THICK|
                                  LAYOUT_FILL_X|TEXTFIELD_ENTER_ONLY);
 
     _msg_field->setFocus(); 
-    _users_view->setWidth(150);
+    house->setSplit(1, 150);
+    // _users_view->setWidth(150);
     _users_view->observer_set(this);
     
     getAccelTable()->addAccel(MKUINT(KEY_F4,ALTMASK),this,FXSEL(SEL_COMMAND,ID_CLOSE));
@@ -134,6 +153,9 @@ private_message::on_send_message(FXObject *from, FXSelector sel, void *) {
         t.trunc(app_opts.limit_chat_msg());
     t.substitute("\r", "");
 
+    // TODO away
+    // ACE_OS::sleep(5);
+
     // Sending a private message
     message_channel *msg = 
       new message_channel(::message::send_private,
@@ -143,7 +165,7 @@ private_message::on_send_message(FXObject *from, FXSelector sel, void *) {
                           self_model()->sequence(),
                           0);
     net_messenger()->send_msg(msg);
-    
+        
     _msg_field->setText("");
     
     return 1;

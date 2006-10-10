@@ -1,5 +1,18 @@
 RV House change log
 
+Version 0.87.0 (09.10.2006)
+- Menus and some shortcuts
+- Extra help easily available
+- Remembers size and position of main and room windows
+- Remembers user settings across new installations from now on
+- Settings window
+- Option to flash if new message on main chat
+- Option to flash if new room created
+- Option to flash if new user arrived
+- Do not disturb mode
+- Small visual improvements
+- Some bug fixes
+
 Version 0.83.2 (17.08.2006)
 - Allow additional characters in usernames: =-[]
 - German translation included

@@ -44,14 +44,14 @@ reg_ok          = Sikeres regisztráció, ezentúl bejelentkezhetsz azonosítóddal é
 
 [about_win]
 title         = Névjegy
-license       = Licenc: \1
-icons_by      = Ikonokat készítette \1
-house_icon_by = Az RV House ikont készítette \1
+license       = Licenc: %1
+icons_by      = Ikonokat készítette %1
+house_icon_by = Az RV House ikont készítette %1
 other_sites   = Néhány népszerû, hasznos RV weboldal az online közösséghez:
 using         = Az alábbiak felhasználásával:
-using_lib     = \1 (írta \2)
+using_lib     = %1 (írta %2)
 translations  = Fordítások:
-translation   = \1 : fordította \2 <\3>
+translation   = %1 : fordította %2 <%3>
 
 [app]
 rv_not_found_title = "Installálva van a Re-Volt?"
@@ -64,7 +64,7 @@ join_err_topic     = Nem tudsz belépni
 [new_version_win]
 title     = Új RV House verzió
 force_msg = Frissítened kell az RV House-t! A régi verzió nem kompatibilis!
-msg       = RV House verzió \1 elérhetõ, a te verziód \2
+msg       = RV House verzió %1 elérhetõ, a te verziód %2
 new_since = Újdonságok a te verziód óta:
 download  = Az új verzió letölhetõ innen:
 
@@ -113,26 +113,26 @@ ctz_connected         = központilag kapcsolódva
 ctz_disconnecting     = központi kapcsolat bontása
 ctz_disconnected      = központi kapcsolat megszûnt
 
-ip_detecting = IP észlelése: \1
-ip_detected  = A Te IP-d: \1
-ip_failed    = IP észlelése sikertelen: \1
+ip_detecting = IP észlelése: %1
+ip_detected  = A Te IP-d: %1
+ip_failed    = IP észlelése sikertelen: %1
 
 [chat]
-user_entered = \1 belépett
-user_exited  = \1 kilépett
-room_created = Új szoba létrehozva (\1)
-room_closed  = Szoba bezárva (\1)
+user_entered = %1 belépett
+user_exited  = %1 kilépett
+room_created = Új szoba létrehozva (%1)
+room_closed  = Szoba bezárva (%1)
 
-host_kicked_host = A tökfej Host kirúgta magát a szobából \1
-host_kicks_user  = A Host kirúgja \1 -t a szobából
-host_kicks_you   = A Host kirúgott a szobából \1
+host_kicked_host = A tökfej Host kirúgta magát a szobából %1
+host_kicks_user  = A Host kirúgja %1 -t a szobából
+host_kicks_you   = A Host kirúgott a szobából %1
 
-user_joined_room         = \1 belépett a szobába
-user_exited_room         = \1 kilépett a szobából
-user_shares_tracks       = \1 pályákat oszt meg
-user_shares_tracks_stops = \1 leállította a pályák megosztását
-user_dloads_tracks       = \1 pályákat tölt le
-user_dloads_tracks_stops = \1 leállította a pályák letöltését
+user_joined_room         = %1 belépett a szobába
+user_exited_room         = %1 kilépett a szobából
+user_shares_tracks       = %1 pályákat oszt meg
+user_shares_tracks_stops = %1 leállította a pályák megosztását
+user_dloads_tracks       = %1 pályákat tölt le
+user_dloads_tracks_stops = %1 leállította a pályák letöltését
 
 [room_settings_win]
 title       = A szoba beállításai

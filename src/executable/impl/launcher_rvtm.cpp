@@ -16,10 +16,19 @@
 
 namespace executable {
 
-launcher_rvtm::launcher_rvtm() : _running(false) {  
+launcher_rvtm::launcher_rvtm() 
+    : _rvtm_pid(ACE_INVALID_PID),
+      _running(false) 
+{  
 }
 
 launcher_rvtm::~launcher_rvtm() {
+    if (_rvtm_pid != ACE_INVALID_PID) {
+        ACE_DEBUG((LM_INFO, "launcher_rvtm::dtor removing pid %d\n",
+                   _rvtm_pid));
+        ACE_Process_Manager *pm = ACE_Process_Manager::instance();
+        pm->remove(_rvtm_pid);
+    }
 }
 
 int 
@@ -82,10 +91,10 @@ launcher_rvtm::_launch(const std::string &host_id) {
     ACE_Process_Manager *pm = ACE_Process_Manager::instance();
     ACE_Process_Options opts;
     opts.command_line(cmd.c_str());
-    int sret = pm->spawn(opts, this);
+    _rvtm_pid = pm->spawn(opts, this);
     ACE_DEBUG((LM_INFO, "launcher_rvtm: pid %d from thread %t, cmd: %s\n",
-               sret, cmd.c_str()));
-    if (sret == ACE_INVALID_PID) {
+               _rvtm_pid, cmd.c_str()));
+    if (_rvtm_pid == ACE_INVALID_PID) {
         ACE_ERROR((LM_ERROR, "launcher_rvtm: failed to launch: %s\n",
                   cmd.c_str()));
         return err_could_not_launch;
@@ -103,6 +112,7 @@ launcher_rvtm::handle_exit(ACE_Process *proc) {
     // different thread than _launch. But since integer operations are
     // usually atomic and the risk is at most theoretical, no locking done.
     _running = false;
+    _rvtm_pid = ACE_INVALID_PID;
     gui_messenger()->send_msg(new message(message::rvtm_exited));
     return 0;   
 }

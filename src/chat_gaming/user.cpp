@@ -70,9 +70,10 @@ user::_init_extra_vars() {
 const char *
 user::status_to_string(int s) {
     switch (s) {
-    case status_chatting: return langstr("status/chatting");
-    case status_playing:  return langstr("status/playing");
-    case status_away:     return langstr("status/away");
+    case status_chatting:     return langstr("status/chatting");
+    case status_playing:      return langstr("status/playing");
+    case status_away:         return langstr("status/away");
+    case status_dont_disturb: return langstr("status/dont_disturb");
     }
     
     return langstr("status/unknown");

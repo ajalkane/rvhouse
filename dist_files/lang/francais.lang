@@ -44,14 +44,14 @@ reg_ok          = Enregistrement réussi, vous pouvez vous connecter avec votre I
 
 [about_win]
 title         = A Propos
-license       = Distribué sous \1
-icons_by      = Icônes par \1
-house_icon_by = Icône RV House par \1
+license       = Distribué sous %1
+icons_by      = Icônes par %1
+house_icon_by = Icône RV House par %1
 other_sites   = Sites populaires, utiles pour la communauté:
 using         = Utilise:
-using_lib     = \1 (by \2)
+using_lib     = %1 (by %2)
 translations  = Traductions:
-translation   = \1 par \2 <\3>
+translation   = %1 par %2 <%3>
 
 [app]
 rv_not_found_title = "Re-Volt est-il installé?"
@@ -76,7 +76,7 @@ dht_connect_err_title = "Erreur de connexion"
 [new_version_win]
 title     = Nouvelle version de RV House
 force_msg = Vous DEVEZ mettre à jour RV House! L'ancienne version n'est plus compatible!
-msg       = RV House version \1 disponible, votre version est \2
+msg       = RV House version %1 disponible, votre version est %2
 new_since = Nouveautés apportées:
 download  = Téléchargez la nouvelle version ici:
 
@@ -126,31 +126,31 @@ ctz_connected         = Connecté au serveur Centralisé
 ctz_disconnecting     = Déconnexion du serveur Centralisé
 ctz_disconnected      = Déconnecté du serveur Centralisé
 
-ip_detecting = Détection de l'adresse IP depuis: \1
-ip_detected  = IP Détectée: \1
-ip_failed    = La détection de l'IP a échoué: \1
+ip_detecting = Détection de l'adresse IP depuis: %1
+ip_detected  = IP Détectée: %1
+ip_failed    = La détection de l'IP a échoué: %1
 
 [chat]
-user_entered = \1 est entré
-user_exited  = \1 est parti
-room_created = Nouvelle salle créée (\1)
-room_closed  = Salle fermée (\1)
+user_entered = %1 est entré
+user_exited  = %1 est parti
+room_created = Nouvelle salle créée (%1)
+room_closed  = Salle fermée (%1)
 
-host_kicked_host = L'hôte est éjecté de sa partie \1
-host_kicks_user  = L'hôte expulse \1 de la salle
-host_kicks_you   = L'hôte vous a expulsé de la salle \1
+host_kicked_host = L'hôte est éjecté de sa partie %1
+host_kicks_user  = L'hôte expulse %1 de la salle
+host_kicks_you   = L'hôte vous a expulsé de la salle %1
 
-user_joined_room         = \1 a rejoint la salle
-user_exited_room         = \1 a quitté la salle
-user_shares_tracks       = \1 partage ses circuits
-user_shares_tracks_stops = \1 a fini de partager ses circuits
-user_dloads_tracks       = \1 télécharge les ciruits
-user_dloads_tracks_stops = \1 a terminé de télécharger les circuits
+user_joined_room         = %1 a rejoint la salle
+user_exited_room         = %1 a quitté la salle
+user_shares_tracks       = %1 partage ses circuits
+user_shares_tracks_stops = %1 a fini de partager ses circuits
+user_dloads_tracks       = %1 télécharge les ciruits
+user_dloads_tracks_stops = %1 a terminé de télécharger les circuits
 
-# \1 = the message that was refused/not received.
+# %1 = the message that was refused/not received.
 # Caused because of user is playing so no windows
 # are wanted to be opened.
-private_msg_refused      = L'utilisateur a refusé votre message: \1
+private_msg_refused      = L'utilisateur a refusé votre message: %1
 
 flood_control = Contrôle du Flood
 

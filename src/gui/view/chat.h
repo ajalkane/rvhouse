@@ -17,6 +17,7 @@ class chat : public FXText {
     FXDECLARE(chat)
     
     std::string _channel;
+        
 protected:
     chat() {}
     enum {
@@ -44,16 +45,21 @@ public:
     };
     
     chat(FXComposite *c, FXObject *tgt=NULL, 
-             FXSelector sel=0, FXuint opts=TEXT_READONLY|TEXT_WORDWRAP, 
-             FXint x=0, FXint y=0, 
-             FXint w=0, FXint h=0, 
-             FXint pl=3, FXint pr=3, 
-             FXint pt=2, FXint pb=2);
+         FXSelector sel=0, 
+         FXuint opts=TEXT_READONLY|TEXT_WORDWRAP|LAYOUT_FILL_X|LAYOUT_FILL_Y, 
+         FXint x=0, FXint y=0, 
+         FXint w=0, FXint h=0, 
+         FXint pl=3, FXint pr=3, 
+         FXint pt=2, FXint pb=2);
     virtual ~chat();
     virtual void create();
     
     inline const std::string &channel(const std::string &s) {
+        
         return _channel = s;
+    }
+    inline const std::string &channel() const {
+        return _channel;
     }
     void public_message (const chat_gaming::user::id_type &user_id, 
                          const std::string &msg, int grp); 

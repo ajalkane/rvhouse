@@ -33,6 +33,7 @@
 
 accessor<gui::house_app *> app(NULL);
 accessor<config_file *>    conf(NULL);
+accessor<config_file *>    pref(NULL);
 accessor<messenger *>      net_messenger(NULL);
 accessor<messenger *>      gui_messenger(NULL);
 accessor<model::house *>   house_model(NULL);
@@ -89,10 +90,21 @@ void init_app(int argc, char **argv) {
 
 void init_pre() {
     // First init configuration
-    conf.instance(new config_file());
     std::string conf_file = app_rel_path(CONF_FILE);                  
-    conf()->parse(conf_file);
-
+    conf.instance(new config_file());
+    conf()->load(conf_file);
+    // Preferences are settings that user has made,
+    // and therefore have to persist across new installations
+    // in contrast to config
+    pref.instance(
+        new config_file(
+            conf()->get<std::string>("user", "app_id",    "RV House"),
+            conf()->get<std::string>("user", "vendor_id", "Re-Volt")
+        )
+    );
+    
+    pref()->load();
+    
     app_opts.init();
     
     // Init logging
@@ -163,6 +175,9 @@ int do_main(int argc, char **argv) {
 
     ACE_DEBUG((LM_DEBUG, "run app %d\n", app_mode));
     app_mode->run();
+    
+    pref()->save();
+    
     return 0;
 }
 
@@ -189,7 +204,9 @@ ACE_TMAIN (int argc, ACE_TCHAR *argv[]) {
     delete app_mode;
     delete app();
     ACE_DEBUG((LM_DEBUG, "Deleting conf\n"));
-    delete conf();  
+    delete conf();
+    delete pref();
+    
     // ACE_DEBUG((LM_DEBUG, "Deleting logging_strategy\n"));
     // Seems maybe logging strategy is not meant to be deleted manually,
     // documentation on this issue in ACE is scarce.

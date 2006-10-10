@@ -2,23 +2,58 @@
 #include "fx_util.h"
 #include "exception.h"
 
-config_file::config_file() : _conf(new FXSettings) {}
+no_space_as_ws_ctype config_file::_loc_facet;
+std::locale          config_file::_loc = 
+  std::locale(std::locale(), &config_file::_loc_facet);
+
+config_file::config_file() : 
+    _conf(new FXSettings),
+    _no_delete(false)
+{}
+
 config_file::config_file(const config_file &o) {
     FXSettings *from_conf = const_cast<FXSettings *>(o._conf);
-    _conf = CopyFXSettings(from_conf);
+    _conf = CopyFXSettings(from_conf),
+    _no_delete = false;
+}
+
+config_file::config_file(const std::string &app, const std::string &vendor) 
+    : _conf(new FXRegistry(app.c_str(), vendor.c_str())),
+      _no_delete(false)
+{
+    ACE_DEBUG((LM_DEBUG, "config_file::ctor registry vendor/app: %s/%s\n",
+              vendor.c_str(), app.c_str()));
+    // FXRegistry *rconf = dynamic_cast<FXRegistry *>(_conf);
+    // rconf->read();
+}
+
+config_file::config_file(FXRegistry &reg) 
+    : _conf(&reg),
+      _no_delete(true)
+{
 }
 
 config_file::~config_file() {
-    delete _conf;
+    if (!_no_delete)
+        delete _conf;
 }
     
 void 
-config_file::parse(const std::string &file) {
+config_file::load(const std::string &file) {
     if (!_conf->parseFile(file.c_str(), true))
         throw exceptionf(0, "Could not find configuration file %s",
                          file.c_str());
                          
     _parsed_file = file;
+}
+
+void 
+config_file::load() {
+    FXRegistry *rconf = dynamic_cast<FXRegistry *>(_conf);
+    if (!rconf) 
+        throw exceptionf(0, "config_file called but no source defined/inferred");
+    
+    rconf->read();    
 }
 
 void 
@@ -33,9 +68,13 @@ config_file::save(const std::string &file) {
 
 void 
 config_file::save() {
-    if (_parsed_file.empty())
-        throw exceptionf(0, "No configuration file parsed, can not save");
-
+    if (_parsed_file.empty()) {
+        FXRegistry *rconf = dynamic_cast<FXRegistry *>(_conf);
+        if (rconf == NULL)
+            throw exceptionf(0, "No configuration file parsed, can not save");
+        rconf->write();
+        return;
+    }
     save(_parsed_file);
 }
     

@@ -90,7 +90,9 @@ public:
     rooms(FXComposite *c, FXObject *tgt=NULL, 
                FXSelector sel=0, 
                FXuint opts=LAYOUT_FILL_X|LAYOUT_FILL_Y|
-                           ICONLIST_DETAILED|ICONLIST_EXTENDEDSELECT,
+                           ICONLIST_DETAILED|ICONLIST_EXTENDEDSELECT|
+                           LAYOUT_FILL_X|
+                           LAYOUT_FILL_Y,
                FXint x=0, FXint y=0, FXint w=0, FXint h=0);
     virtual void create();
     

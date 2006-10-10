@@ -35,6 +35,8 @@ public:
         group_in_room,
         group_playing,
         group_away,
+        group_dnd, // Do not disturb group
+        group_size,
     };
 private:
     const static FXColor col_dht_conn;
@@ -103,6 +105,7 @@ public:
         ID_STATUS_CHATTING = super::ID_LAST,
         ID_STATUS_PLAYING,
         ID_STATUS_AWAY,
+        ID_STATUS_DONT_DISTURB,
         
         ID_USER_KICK,
         ID_SHARE_TRACKS,
@@ -130,7 +133,9 @@ public:
               FXSelector sel=0, 
               FXuint opts=TREELIST_SINGLESELECT|
                           TREELIST_SHOWS_BOXES |
-                          TREELIST_ROOT_BOXES,
+                          TREELIST_ROOT_BOXES  |
+                          LAYOUT_FILL_X|
+                          LAYOUT_FILL_Y,
               FXint x=0, FXint y=0, FXint w=0, FXint h=0);
     virtual void create();
     virtual ~users();
@@ -193,7 +198,7 @@ private:
           : item(NULL), children(0), text(txt) {}
         inline bool visible() const { return children > 0; }
     };
-    _parent_item _group_items[4];
+    _parent_item _group_items[user_item::group_size];
     
     tree_item_type *_item_players; // only one category for now
     chat_gaming::room::id_type _room_id;    

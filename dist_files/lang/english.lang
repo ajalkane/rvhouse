@@ -1,6 +1,39 @@
 [common]
-ok_button       = " &OK "
-cancel_button   = " &Cancel "
+ok_button       = "&OK"
+cancel_button   = "&Cancel"
+apply_button    = "&Apply"
+
+[menu_file]
+title           = "&File"
+quit            = "&Quit\tCtl-Q"
+
+[menu_edit]
+title           = "&Edit"
+settings        = "&Settings...\tAlt-S"
+
+[menu_player]
+title           = "&Player"
+status          = "Status"
+create_room     = "Create room...\tCtl-R"
+join_room       = "Join room"
+chatting        = "Chatting\tShift-Alt-C"
+playing         = "Playing\tShift-Alt-P"
+away            = "Away\tShift-Alt-A"
+dont_disturb    = "Do Not Disturb\tShift-Alt-D"
+
+[menu_comp]
+title           = "&Competitions"
+rvl             = "RV League"
+rvl_home        = "WWW-site"
+rvl_champ       = "Championship"
+rvl_cup         = "Cup"
+
+[menu_help]
+title           = "&Help"
+router_help     = "Router/Firewall Help"
+faq             = "RV House FAQ"
+conn_help       = "Connection Help doc"
+about_house     = "About RV House"
 
 [login_win]
 title           = Login
@@ -44,23 +77,23 @@ reg_ok          = Registered successfully, you can login now with your User ID a
 
 [about_win]
 title         = About
-# \1 is replace with the license. Example: Released under GPL
-license       = Released under \1
-# \1 is replaced by the author of used icons. Icons by ADX
-icons_by      = Icons by \1
-# \1 is replaced by the author of RV House icon. RV House icon by Pigasque
-house_icon_by = RV House icon by \1
+# %1 is replace with the license. Example: Released under GPL
+license       = Released under %1
+# %1 is replaced by the author of used icons. Icons by ADX
+icons_by      = Icons by %1
+# %1 is replaced by the author of RV House icon. RV House icon by Pigasque
+house_icon_by = RV House icon by %1
 other_sites   = Some popular, useful RV sites for online community:
 using         = Using:
-# \1 is replaced by the library name, \2 by library author
+# %1 is replaced by the library name, %2 by library author
 # ACE network library (by Douglas C. Schmidt)
-using_lib     = \1 (by \2)
+using_lib     = %1 (by %2)
 translations  = Translations:
-# \1 is replaced by the language name, \2 by author of translation
-# \3 by translation authors name \4 by the version of translation
+# %1 is replaced by the language name, %2 by author of translation
+# %3 by translation authors name %4 by the version of translation
 # Example:
 # Spanish by ADX <the.adx@gmail.com> for v0.81
-translation   = \1 by \2 <\3> for v\4
+translation   = %1 by %2 <%3> for v%4
 
 [app]
 rv_not_found_title = "Re-Volt installed?"
@@ -85,9 +118,9 @@ dht_connect_err_title = "Error connecting"
 [new_version_win]
 title     = New RV House version
 force_msg = You MUST upgrade RV House! Old version is not compatible!
-# \1 is replaced by latest RV House version number, \2 by
+# %1 is replaced by latest RV House version number, %2 by
 # users RV House version.
-msg       = RV House version \1 available, your version is \2
+msg       = RV House version %1 available, your version is %2
 new_since = New since your version:
 download  = Download new version from here:
 
@@ -137,37 +170,37 @@ ctz_connected         = Centralized connected
 ctz_disconnecting     = Centralized disconnecting
 ctz_disconnected      = Centralized disconnected
 
-# \1 is replacedwith the site where user's IP is fetched from
-ip_detecting = Detecting IP from: \1
-# \1 is replaced with the IP obtained
-ip_detected  = Detected IP: \1
-# \1 is replaced with the error reason
-ip_failed    = Detecting IP failed: \1
+# %1 is replacedwith the site where user's IP is fetched from
+ip_detecting = Detecting IP from: %1
+# %1 is replaced with the IP obtained
+ip_detected  = Detected IP: %1
+# %1 is replaced with the error reason
+ip_failed    = Detecting IP failed: %1
 
 [chat]
-# \1 is replaced with user name
-user_entered = \1 has entered
-user_exited  = \1 has exited
-# \1 is replaced with room name
-room_created = New room created (\1)
-room_closed  = Room closed (\1)
+# %1 is replaced with user name
+user_entered = %1 has entered
+user_exited  = %1 has exited
+# %1 is replaced with room name
+room_created = New room created (%1)
+room_closed  = Room closed (%1)
 
-host_kicked_host = Dumbass host kicked himself from room \1
-host_kicks_user  = Host is kicking \1 from the room
-host_kicks_you   = Host kicked you from the room \1
+host_kicked_host = Dumbass host kicked himself from room %1
+host_kicks_user  = Host is kicking %1 from the room
+host_kicks_you   = Host kicked you from the room %1
 
-# \1 is replaced with user name
-user_joined_room         = \1 has joined the room
-user_exited_room         = \1 has exited the room
-user_shares_tracks       = \1 is sharing tracks
-user_shares_tracks_stops = \1 stopped sharing tracks
-user_dloads_tracks       = \1 is downloading tracks
-user_dloads_tracks_stops = \1 stopped downloading tracks
+# %1 is replaced with user name
+user_joined_room         = %1 has joined the room
+user_exited_room         = %1 has exited the room
+user_shares_tracks       = %1 is sharing tracks
+user_shares_tracks_stops = %1 stopped sharing tracks
+user_dloads_tracks       = %1 is downloading tracks
+user_dloads_tracks_stops = %1 stopped downloading tracks
 
-# \1 = the message that was refused/not received.
-# Caused because of user is playing so no windows
-# are wanted to be opened.
-private_msg_refused      = User refused your message: \1
+# %1 = the message that was refused/not received.
+# Caused because of user is playing or in do not disturb
+# mode so no windows are wanted to be opened.
+private_msg_refused      = User refused your message: %1
 
 flood_control = Flood control
 
@@ -190,6 +223,9 @@ share_tracks  = Share custom tracks with others
 dload_tracks  = Download custom tracks from host
 
 host_launched = Host has launched Re-Volt. Your game will be automatically started in few seconds
+# %1 is replaced with the limit (in minutes)
+join_too_late = "Can not join the race if the host has been\nplaying more than %1 minutes."
+join_too_late_title = "Too late to join"
 
 [private_message_win]
 close = Close chat
@@ -244,8 +280,33 @@ chatting      = Chatting
 waiting       = Waiting in room
 playing       = Playing
 away          = Away
+dont_disturb  = Do Not Disturb
 unknown       = Unknown
 
 [misc]
 user_not_validated = User ID untrusted (not validated)
 pass_needed        = Password required
+
+
+[settings_win]
+title           = RV House Settings
+general_tab     = General
+colors_tab      = Colors
+
+flash_main_chat = Flash if message on main chat
+flash_room_chat = Flash if message on room chat
+flash_new_room  = Flash if new room created
+flash_new_user  = Flash if new user arrives
+
+away_minimize   = Away when main window minimized
+
+base_color      = Base Color
+border_color    = Border Color
+text_color      = Text Color
+bg_color        = Background Color
+sel_text_color  = Selected Text Color 
+sel_bg_color    = Selected Background Color
+sel_mt_color    = Selected Menu Text Color
+sel_mbg_color   = Selected Menu Background Color
+tip_text_color  = Tip Text Color
+tip_bg_color    = Tip Background Color

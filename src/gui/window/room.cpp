@@ -9,6 +9,7 @@
 #include "../../messaging/message_send_room.h"
 #include "../../messaging/message_room_command.h"
 #include "../../util.h"
+#include "../../os_util.h"
 #include "../../model/house.h"
 #include "../../model/self.h"
 #include "../../executable/launcher.h"
@@ -89,44 +90,56 @@ room::_init() {
 
     int button_opts = ICON_ABOVE_TEXT|BUTTON_TOOLBAR|FRAME_RAISED;
         
-    FXVerticalFrame *c = new FXVerticalFrame(this, LAYOUT_FILL_X|LAYOUT_FILL_Y);
+    // FXVerticalFrame *c = new FXVerticalFrame(this, LAYOUT_FILL_X|LAYOUT_FILL_Y);
 
-    _toolbar  = new FXHorizontalFrame(c);
+   //  toolbar  = new FXHorizontalFrame(c);
 
-    new FXButton(_toolbar, 
+    FXVerticalFrame *c = new FXVerticalFrame(
+        this, LAYOUT_FILL_X|LAYOUT_FILL_Y,
+        0,0,0,0, 0,0,0,0, 0,0
+    );    
+    FXComposite *toolbarcontainer = new FXHorizontalFrame(
+        c, LAYOUT_SIDE_TOP|LAYOUT_FILL_X,
+        0,0,0,0, 0,0,0,0, 0,0
+    );
+    new FXToolBarTab(toolbarcontainer,NULL,0,FRAME_RAISED);
+    FXComposite *toolbar = new FXToolBar(
+        toolbarcontainer,
+        FRAME_RAISED|
+        LAYOUT_SIDE_TOP|LAYOUT_FILL_X,
+        0,0,0,0, 4,4,4,4, 0,0
+    );
+
+    new FXButton(toolbar, 
                  util::button_text(NULL, langstr("room_win/leave")),
                  app_icons()->get("close"), 
                  this, ID_CLOSE, button_opts);
 
     _edit_button = 
-      new FXButton(_toolbar, 
+      new FXButton(toolbar, 
                    util::button_text(NULL, langstr("room_win/settings")),
                    app_icons()->get("settings"), this, ID_EDIT_ROOM,
                    button_opts);    
     _launch_button = 
-      new FXButton(_toolbar, 
+      new FXButton(toolbar, 
                    util::button_text(NULL, langstr("room_win/launch")),
                    app_icons()->get("launch"), this, ID_LAUNCH,
                    button_opts);    
 
-    new FXVerticalSeparator(_toolbar);
+    new FXVerticalSeparator(toolbar);
 
     std::string share_btn_text("\t");
     share_btn_text += (_hosting 
                        ? langstr("room_win/share_tracks")
                        : langstr("room_win/dload_tracks"));
-    _share_button  = new FXButton(_toolbar, share_btn_text.c_str(),
+    _share_button  = new FXButton(toolbar, share_btn_text.c_str(),
                      app_icons()->get("tracks_share"), this, ID_SHARE_TRACKS,
                      button_opts);  
 
-    new FXVerticalSeparator(_toolbar);
-    FXComposite *infoframe = /* new FXVerticalFrame(
-        _toolbar, 0,
-        0,0,0,0,
-        0,0,0,0,0,0
-    ); */
+    new FXVerticalSeparator(toolbar);
+    FXComposite *infoframe =
      new FXMatrix(
-        _toolbar, 2, MATRIX_BY_COLUMNS,
+        toolbar, 2, MATRIX_BY_COLUMNS,
         0,0,0,0,
         DEFAULT_SPACING,
         DEFAULT_SPACING,
@@ -155,31 +168,43 @@ room::_init() {
     FXSplitter *sections  = new FXSplitter(house, LAYOUT_FILL_X | 
                                                   LAYOUT_FILL_Y |
                                                   SPLITTER_VERTICAL);
-    _users_view = new view::users(house, NULL); // , 0, FRAME_SUNKEN|FRAME_THICK);
+    _users_view = new view::users(util::framed_container(house), NULL); // , 0, FRAME_SUNKEN|FRAME_THICK);
     _users_view->room_id(_room_id);
     
-    new FXFrame(_users_view);
+    // new FXFrame(_users_view);
     // new FXLabel(house, "Users View", NULL, FRAME_SUNKEN|FRAME_THICK);    
     // _rooms_view = new rooms_view(sections);
     // new FXLabel(sections, "Rooms View", NULL, FRAME_SUNKEN|FRAME_THICK);
-    _chat_view = new view::chat(sections);
+    _chat_view = new view::chat(util::framed_container(sections));
     _chat_view->channel(_room_id);
     
     // new FXLabel(sections, "Chat Window View", NULL, FRAME_SUNKEN|FRAME_THICK);
-    _msg_field = new FXTextField(c, 0,  this, ID_SEND_MSG, 
+    FXVerticalFrame *b = new FXVerticalFrame(
+        c, LAYOUT_FILL_X,
+        0,0,0,0,
+        0,0);
+    
+    _msg_field = new FXTextField(b, 0,  this, ID_SEND_MSG, 
                                  FRAME_SUNKEN|FRAME_THICK|
                                  LAYOUT_FILL_X|TEXTFIELD_ENTER_ONLY);                      
     _msg_field->setFocus(); 
     // _status->getStatusLine()->setNormalText("Waiting...");
 
+    util::restore_size(this, "room_win");
+
+    house->setSplit(1, 150);
+    
     _users_view->setWidth(150);
     _users_view->observer_set(this);
-        
+    
     getAccelTable()->addAccel(MKUINT(KEY_F4,ALTMASK),this,FXSEL(SEL_COMMAND,ID_CLOSE));     
 }
 
 room::~room() {
-    ACE_DEBUG((LM_DEBUG, "room: dtor\n"));
+    ACE_DEBUG((LM_DEBUG, "room::dtor\n"));
+
+    util::store_size(this, "room_win");
+    
     // Set ourself to be in no room anymore, and off we go
     self_model()->user().room_id(chat_gaming::room::id_type());
     self_model()->hosting_room().id(chat_gaming::room::id_type());
@@ -196,7 +221,11 @@ void
 room::create() {
     super::create();
     watched_window::create(this);
-    show(PLACEMENT_SCREEN);
+    // show(PLACEMENT_SCREEN);
+    show();
+
+    // util::restore_size(this, "room", "win");
+        
     _buttons_state();   
 }
 
@@ -272,9 +301,34 @@ room::on_launch(FXObject *from, FXSelector sel, void *) {
         _launch_host();
     } else {
         model::house::user_iterator playing_host = _playing_host();
-            
+        
         if (playing_host != house_model()->user_end()) {
-            _launch_join(playing_host);
+            // Check how long the host has been playing and don't
+            // allow join if too long played
+            int rejoin_time = conf()->get<int>("play", "rejoin_time", 60*3);
+            ACE_DEBUG((LM_DEBUG, "room::on_launch "
+                      "rejoin_time/time/statustime/dif: %d/%d/%d/%d\n",
+                      rejoin_time, time(NULL), playing_host->status_time(),
+                      time(NULL) - playing_host->status_time()));
+            if (time(NULL) - playing_host->status_time() > rejoin_time) {
+                std::ostringstream mins;
+                mins << rejoin_time / 60;
+                const char *topic = langstr("room_win/join_too_late_title");
+                std::string content = langstr("room_win/join_too_late",
+                                              mins.str().c_str());
+                ACE_DEBUG((LM_DEBUG, "room::on_launch "
+                          "mins: %s\n", mins.str().c_str()));
+                ACE_DEBUG((LM_DEBUG, "room::on_launch "
+                          "content: %s\n", content.c_str()));
+                ACE_DEBUG((LM_DEBUG, "room::on_launch "
+                          "raw: %s\n", langstr("room_win/join_too_late")));
+                                              
+                FXMessageBox::information(
+                    this, FX::MBOX_OK, topic, content.c_str()
+                );
+            } else {
+                _launch_join(playing_host);
+            }
         }       
     }
         
@@ -372,6 +426,23 @@ room::handle_message(::message *msg) {
         //  do_close = true;
         //}
     }
+        break;
+    case ::message::send:
+        // TODO this don't work correctly yet
+        
+        ACE_DEBUG((LM_DEBUG, "window::room: msg_send: flash_room_chat: %d\n",
+                  app_opts.flash_room_chat()));
+        if (app_opts.flash_room_chat()) {
+            message_channel *m = dynamic_ptr_cast<message_channel>(msg);
+            ACE_DEBUG((LM_DEBUG, 
+                "window::room: msg_send channel/chat_view_chn: %s/%s\n",
+                m->channel().c_str(), _chat_view->channel().c_str()));
+            if (m->channel() == _chat_view->channel()) {
+                ACE_DEBUG((LM_DEBUG, 
+                    "window::room: msg_send flashing\n"));
+                os::flash_window(this->getOwner());
+            }
+        }
         break;
     default:
         return;
@@ -474,12 +545,13 @@ room::_handle_room_kick(::message *msg) {
 
 void
 room::_launch_host() {
-    int ret = launcher_game()->start_host();
-    if (ret) {
-        _launcher_error(ret);
-        return;
-    }
-    
+    if (conf()->get<bool>("play", "no_launch", false) == false) {
+        int ret = launcher_game()->start_host();
+        if (ret) {
+            _launcher_error(ret);
+            return;
+        }
+    }    
     // Send a message to room participants to start the game
     net_messenger()->send_msg(
       new message_room_command(
@@ -497,12 +569,13 @@ room::_launch_host() {
 
 void
 room::_launch_join(chat_gaming::house::user_iterator host_ui) { 
-    int ret = launcher_game()->start_client(host_ui->ip_as_string());
-    if (ret) {
-        _launcher_error(ret);
-        return;
+    if (conf()->get<bool>("play", "no_launch", false) == false) {        
+        int ret = launcher_game()->start_client(host_ui->ip_as_string());
+        if (ret) {
+            _launcher_error(ret);
+            return;
+        }
     }
-
     _launched_display();
 }
 
