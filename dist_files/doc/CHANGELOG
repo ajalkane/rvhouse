@@ -1,5 +1,8 @@
 RV House change log
 
+Version 0.88.1 (19.10.2006)
+- Fix: user's nick flashing is case insensitive
+
 Version 0.88.0 (19.10.2006)
 - Support for changing some of the colours
 - P2P support enabled again

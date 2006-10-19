@@ -3,6 +3,7 @@
 #include <fx.h>
 
 #include "../../util.h"
+#include "../../regexp.h"
 #include "../../os_util.h"
 #include "../../main.h"
 #include "../../app_options.h"
@@ -273,7 +274,7 @@ chat::public_message(
     if (_flash_window && app_opts.flash_nick()) {
         ACE_DEBUG((LM_DEBUG, "chat::public_message: trying to find %s from %s\n",
                   self_model()->user().display_id().c_str(), msg.c_str()));
-        if (msg.find(self_model()->user().display_id()) != std::string::npos) {
+        if (regexp::matchiv(self_model()->user().display_id(), msg)) {
             ACE_DEBUG((LM_DEBUG, "chat::public_message: found\n"));
             os::flash_window(_flash_window); 
         }

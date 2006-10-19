@@ -6,16 +6,16 @@
 
 namespace regexp {
 
-bool match(const char *pattern, const char *subject) {
+bool match(const char *pattern, const char *subject, FXint mode) {
     // For now using Fox's regexp facilities
-    FXRex rex(pattern);
+    FXRex rex(pattern, mode);
     // ACE_DEBUG((LM_DEBUG, "regexp::match2: %s to %s\n", pattern, subject));   
     ACE_DEBUG((LM_DEBUG, "regexp::match2: %s\n", pattern)); 
     return rex.match(subject, strlen(subject));
 }
 
-bool match(const std::string &pattern, const std::string &subject) {
-    FXRex rex(pattern.c_str());
+bool match(const std::string &pattern, const std::string &subject, FXint mode) {
+    FXRex rex(pattern.c_str(), mode);
     // ACE_DEBUG((LM_DEBUG, "regexp::match: %s to %s\n", pattern.c_str(), subject.c_str()));
     ACE_DEBUG((LM_DEBUG, "regexp::match: %s\n", pattern.c_str()));
     return rex.match(subject.c_str()); // , subject.size());

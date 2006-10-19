@@ -58,6 +58,7 @@ void flash_window(FXWindow *win) {
 }
 
 bool ensure_single_app_instance() {
+#ifndef RV_HOUSE_TEST
 #ifdef WIN32
     // This is not a very robust way to check if this is single 
     // running instance, but the hell with it, it's the easiest.
@@ -68,6 +69,7 @@ bool ensure_single_app_instance() {
     if (FindWindow(NULL, APP_NAME)) {
         return false;
     }
+#endif
 #endif
     return true;    
 }
