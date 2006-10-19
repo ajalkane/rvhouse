@@ -10,6 +10,7 @@
 #include "../../messaging/message_room.h"
 #include "../../messaging/message_user.h"
 #include "../../model/house.h"
+#include "../../model/self.h"
 #include "../../parser/url/dfa.h"
 #include "../../executable/launcher.h"
 
@@ -52,6 +53,7 @@ chat::chat(
     FXint pl, FXint pr, 
     FXint pt, FXint pb)
 : FXText(c, tgt, sel, opts, x, y, w, h, pl, pr, pt, pb),
+  _flash_window(NULL),
   _allow_scroll(true)
 {
     
@@ -267,6 +269,15 @@ chat::public_message(
         appendStyledText("\n", 1);  
     }
     _cond_scroll();
+    
+    if (_flash_window && app_opts.flash_nick()) {
+        ACE_DEBUG((LM_DEBUG, "chat::public_message: trying to find %s from %s\n",
+                  self_model()->user().display_id().c_str(), msg.c_str()));
+        if (msg.find(self_model()->user().display_id()) != std::string::npos) {
+            ACE_DEBUG((LM_DEBUG, "chat::public_message: found\n"));
+            os::flash_window(_flash_window); 
+        }
+    }
 }
 
 void 

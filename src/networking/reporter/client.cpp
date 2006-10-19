@@ -3,8 +3,10 @@
 
 #include "client.h"
 #include "config.h"
+#include "../global.h"
 #include "../../messaging/message.h"
 #include "../../app_version.h"
+#include "../../config_file.h"
 
 #ifdef SEP
 #undef SEP
@@ -17,9 +19,20 @@ namespace reporter {
 client::client(ACE_Reactor *r) : _reactor(r)
 {
     ACE_DEBUG((LM_DEBUG, "reporter::client ctor\n"));
-    
+    std::string addr = net_conf()->get<std::string>(
+        "reporter","server",REPORTER_SERVER_ADDR
+    );
+    u_short     port = net_conf()->get<u_short>(
+        "repoter","port",REPORTER_SERVER_PORT
+    );
+#ifndef RV_HOUSE_TEST
+    addr = REPORTER_SERVER_ADDR;
+    port = REPORTER_SERVER_PORT;
+#endif
+
     if (!_reactor) _reactor = ACE_Reactor::instance();
-    ACE_INET_Addr server_addr(REPORTER_SERVER_PORT, REPORTER_SERVER_ADDR); 
+    ACE_INET_Addr server_addr(port, addr.c_str());
+    
     _handler = new handler(_reactor, this);
 
     _connector = 
@@ -88,6 +101,46 @@ void
 client::disabled(int grp) {
     // cf = connect disabled
     _send_connect_report("cd", grp);    
+}
+
+void 
+client::dht_connected() {
+    _send_connect_report("cd0", message::dht_group_base); 
+}
+
+void 
+client::dht_bootstrap() {
+    _send_connect_report("cdb", message::dht_group_base); 
+}
+
+void 
+client::dht_disconnected() {
+    _send_connect_report("dd0", message::dht_group_base); 
+}
+
+
+void 
+client::dht_ip_found(const ACE_INET_Addr &addr) {
+    if (!_handler) {
+        ACE_DEBUG((LM_WARNING, "reporter::client::send_user_report "
+                  " not connected, report not sent\n"));
+        return;
+    }
+    std::ostringstream str;
+        
+    str << APP_VERSION_ONLY
+        << SEP << _self.id().id_str()
+        << SEP << "ip"
+        << SEP << 'd'
+        << SEP << addr.get_host_addr()
+        << ":" << addr.get_port_number()
+        << std::endl;
+    
+    ACE_DEBUG((LM_DEBUG, "%t reporter::client: sending report of size %d:\n%s", 
+              str.str().size(), str.str().c_str()));
+              
+    _handler->send(str.str());
+   
 }
 
 void

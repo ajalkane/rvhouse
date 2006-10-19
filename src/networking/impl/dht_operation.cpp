@@ -1,3 +1,5 @@
+#include "../global.h"
+#include "../reporter/client.h"
 #include "dht_operation.h"
 
 namespace networking {
@@ -14,6 +16,7 @@ dht_operation::set_node(dht::client *n) {
     // Install observer for reporting DHT state changes with messenger
     // (to gui)
     n->observer_attach(this, dht::event_observer::mask_state_changed);
+    n->observer_attach(this, dht::event_observer::mask_search_result);
 }
 
 int
@@ -55,8 +58,9 @@ void
 dht_operation::update_contacts() {}
     
 void
-dht_operation::observer_attach(dht::event_observer *obs, int events_mask) {
-    // Dont't care about events_mask, only state_changes supported
+dht_operation::observer_attach(dht::event_observer *obs /*, int events_mask */) {
+    // Dont't care about events_mask, what target class
+    // defines will get called
     _obs = obs;
 }
 
@@ -66,9 +70,15 @@ dht_operation::state_changed(int dht_state) {
     
     switch (dht_state) {
     case dht::client::connecting:    mtype = message::dht_connecting;    break;
-    case dht::client::connected:     mtype = message::dht_connected;     break;
+    case dht::client::connected:     
+        mtype = message::dht_connected;     
+        net_report()->dht_connected();        
+        break;
     case dht::client::disconnecting: mtype = message::dht_disconnecting; break;
-    case dht::client::disconnected:  mtype = message::dht_disconnected;  break;
+    case dht::client::disconnected:  
+        mtype = message::dht_disconnected;
+        net_report()->dht_connected();        
+        break;
     default:
         // get_node() might return NULL so don't do this here
         // ACE_DEBUG((LM_WARNING, "dht_operation: " 
@@ -84,5 +94,11 @@ dht_operation::state_changed(int dht_state) {
     
     return 0;
 }
+
+int
+dht_operation::search_result(const dht::key &k, const dht::value &v) {
+    return (_obs ? _obs->search_result(k, v) : 0);   
+}
+
 
 } // ns networking

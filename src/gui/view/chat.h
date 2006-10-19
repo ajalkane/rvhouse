@@ -32,6 +32,7 @@ protected:
     };
     FXDefaultCursor _current_cursor;
     FXHiliteStyle  *_styles;
+    FXWindow       *_flash_window;
     
     bool _allow_scroll;
     void _cond_scroll();
@@ -53,6 +54,8 @@ public:
          FXint pt=2, FXint pb=2);
     virtual ~chat();
     virtual void create();
+    
+    inline void flash_window(FXWindow *w) { _flash_window = w; }
     
     inline const std::string &channel(const std::string &s) {
         

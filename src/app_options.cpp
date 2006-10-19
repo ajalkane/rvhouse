@@ -7,7 +7,8 @@ app_options::app_options()
     _flash_main_chat(false),
     _flash_room_chat(false),
     _flash_new_room(false),
-    _flash_new_user(false)
+    _flash_new_user(false),
+    _flash_nick(false)
 {
 }
 
@@ -18,4 +19,5 @@ app_options::init() {
     _flash_room_chat = pref()->get<bool>("general", "flash_room_chat", false);
     _flash_new_room  = pref()->get<bool>("general", "flash_new_room",  false);
     _flash_new_user  = pref()->get<bool>("general", "flash_new_user",  false);
+    _flash_nick      = pref()->get<bool>("general", "flash_nick",      false);
 }

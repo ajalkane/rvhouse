@@ -54,7 +54,12 @@ FXDEFMAP(house_app) house_app_map[]= {
 FXIMPLEMENT(house_app, FXApp, house_app_map, ARRAYNUMBER(house_app_map))
   
 house_app::house_app() 
-  : FXApp("RV House", "ajalkane"),
+  : FXApp(
+        conf()->get<std::string>("user", "app_id",    "RV House").c_str(),
+        conf()->get<std::string>("user", "vendor_id", "Re-Volt").c_str()
+    ),
+  
+  // "RV House", "ajalkane"),
      _room_win(NULL)
 {
     ACE_DEBUG((LM_DEBUG, "house_app: ctor\n")); 
@@ -78,7 +83,8 @@ house_app::house_app()
         new win_registry(win_registry::id_software, "Acclaim", "Re-Volt", "1.0")
     );
 
-    app_icons.instance(new icon_store(this));       
+    app_icons.instance(new icon_store(this));
+    pref.instance(new config_file(this->reg()));
 }
 
 house_app::~house_app() {
@@ -113,11 +119,15 @@ house_app::~house_app() {
     delete game_registry(); game_registry.instance(NULL);
     delete app_icons();     app_icons.instance(NULL);
     delete lang_mngr();     lang_mngr.instance(NULL);
+
+    pref.instance(NULL);
 }
 
 void
 house_app::create() {
     FXApp::create();    
+
+    app_opts.init();
     
     // app_icons()->load("create_room", app_rel_path("img/create_room.gif"));
     app_icons()->scan_from_dir(
@@ -223,7 +233,7 @@ house_app::start() {
     _login_win->pass(derot13(pref()->get("user", "pass", std::string())));
 
     ACE_DEBUG((LM_DEBUG, "login_window: executing\n")); 
-    if (!_login_win->execute(PLACEMENT_SCREEN)) {
+    if (!_login_win->execute(PLACEMENT_DEFAULT)) {
         ACE_DEBUG((LM_DEBUG, "Login failed, quitting\n"));
         return;
         // handle(this, FXSEL(SEL_COMMAND, ID_QUIT), NULL);

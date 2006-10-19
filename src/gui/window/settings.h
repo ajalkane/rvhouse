@@ -62,6 +62,7 @@ protected:
 public:
     enum {
         ID_COLORS = super::ID_LAST,
+        ID_OK,
         ID_CHOOSE_FONT,
         ID_LAST,
     };
@@ -72,7 +73,9 @@ public:
     
     // long on_send_message(FXObject *from, FXSelector sel, void *);
     
-    void handle_message    (::message *msg);        
+    void handle_message    (::message *msg);
+    long on_ok(FXObject *from, FXSelector sel, void *);    
+    
 };
 
 } // ns window

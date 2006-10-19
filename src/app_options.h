@@ -38,6 +38,7 @@ public:
     ACCESSOR(bool, flash_room_chat)
     ACCESSOR(bool, flash_new_room)
     ACCESSOR(bool, flash_new_user)
+    ACCESSOR(bool, flash_nick)
 };
 
 #endif //_APP_OPTIONS_H_

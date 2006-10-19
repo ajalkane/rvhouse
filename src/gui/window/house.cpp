@@ -181,6 +181,8 @@ house::house(FXApp *a)
     _rooms_view->target_item_doubleclicked(this, FXSEL(SEL_COMMAND, ID_ROOM_JOIN));
     
     _chat_view = new view::chat(util::framed_container(sections));
+    _chat_view->flash_window(this);
+    
     FXVerticalFrame *b = new FXVerticalFrame(
         c, LAYOUT_FILL_X,
         0,0,0,0,

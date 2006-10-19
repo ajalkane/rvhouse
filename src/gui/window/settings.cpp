@@ -20,6 +20,7 @@ namespace {
         "flash_new_room",
         // "away_minimize"
         "flash_new_user",
+        "flash_nick",
     };
     bool general_check_defaults[] = {
         false,
@@ -27,19 +28,20 @@ namespace {
         false,
         // true,
         false,
+        false,
     };
 }
 
-// FXDEFMAP(settings) settings_map[]= {
-//  FXMAPFUNC(SEL_COMMAND,  settings::ID_SEND_MSG, 
-//                          settings::on_send_message),
-//};
+FXDEFMAP(settings) settings_map[]= {
+  FXMAPFUNC(SEL_COMMAND,  settings::ID_OK, 
+                          settings::on_ok),
+};
 
 // FXIMPLEMENT(settings, settings::super, settings_map, ARRAYNUMBER(settings_map))
-FXIMPLEMENT(settings, settings::super, NULL, 0)
+FXIMPLEMENT(settings, settings::super, settings_map, ARRAYNUMBER(settings_map))
 
 settings::settings(FXApp *a)
-    : super(a, "", NULL, NULL, DECOR_ALL, 0, 0, 350, 330),
+    : super(a, "", NULL, NULL, DECOR_ALL, 0, 0, 350, 350),
     _font(NULL),
     _titlefont(NULL)
      // , 0,0,0,0,0,0),
@@ -115,10 +117,16 @@ settings::_init() {
 
 settings::~settings() {
     ACE_DEBUG((LM_DEBUG, "settings: dtor\n"));
-    _form_to_pref();
     
     delete _font;
     delete _titlefont;    
+}
+
+long
+settings::on_ok(FXObject *from, FXSelector sel, void *ptr) {
+    ACE_DEBUG((LM_DEBUG, "settings: on_ok\n"));
+    _form_to_pref();
+    return this->handle(from, FXSEL(FXSELTYPE(sel), ID_CLOSE), ptr);
 }
 
 void
@@ -206,26 +214,17 @@ settings::_setup() {
         FRAME_RAISED|ICON_ABOVE_TEXT|LAYOUT_FILL
     );
 
-#if 0
     vframe = new FXVerticalFrame(buttonframe,FRAME_SUNKEN,0,0,0,0,0,0,0,0);
     new FXButton(
         vframe,langstr("settings_win/colors_tab"),NULL,switcher,
         FXSwitcher::ID_OPEN_SECOND,
         FRAME_RAISED|ICON_ABOVE_TEXT|LAYOUT_FILL
     );
-#endif
 
     /*****************************************
      * Start of General view
      */
   
-#if 0  
-    FXVerticalFrame *themeframe = new FXVerticalFrame(frame,LAYOUT_FILL_X,0,0,0,0,DEFAULT_SPACING,DEFAULT_SPACING,DEFAULT_SPACING,DEFAULT_SPACING);
-    new FXLabel(themeframe,"Theme: ",NULL,LAYOUT_CENTER_Y);
-    list = new FXListBox(themeframe,this,ID_COLOR_THEME,LAYOUT_FILL_X|FRAME_SUNKEN|FRAME_THICK);
-    list->setNumVisible(9);
-    initColors();
-#endif  
     vframe = new FXVerticalFrame(
         switcher,
         LAYOUT_FILL_X|LAYOUT_FILL_Y,
@@ -240,19 +239,7 @@ settings::_setup() {
         langkey += key;
         _check_map[key] = new FXCheckButton(vframe, langstr(langkey.c_str()));
     }
-#if 0
-    _check_map["flash_main_chat"] = new FXCheckButton(
-        vframe, "Flash if message on main chat"
-    );
-    _check_map["flash_room_chat"] = new FXCheckButton(
-        vframe, "Flash if message on room chat"
-    );
-    _check_map["away_minimize"] = new FXCheckButton(
-        vframe, "Away when main window minimized"
-    );
-#endif
 
-#if 0
     /*****************************************
      * Start of Themes view
      */
@@ -318,8 +305,6 @@ settings::_setup() {
   
     colorwell = new FXColorWell(matrix,FXRGB(0,0,255),&_target_tipback,FXDataTarget::ID_VALUE);
     label     = new FXLabel(matrix,langstr("settings_win/tip_bg_color"));
-#endif
-
 
 #if 0  
     frame = new FXVerticalFrame(hframe,LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0,DEFAULT_SPACING,DEFAULT_SPACING,DEFAULT_SPACING,DEFAULT_SPACING,0,0);
@@ -398,8 +383,7 @@ settings::_setup() {
         LAYOUT_CENTER_X);
 
     util::create_default_button(
-        closebox, langstr("common/ok_button"), this, ID_CLOSE
-
+        closebox, langstr("common/ok_button"), this, ID_OK
     );
     util::create_button(
         closebox, langstr("common/cancel_button"), this, ID_CLOSE
@@ -424,9 +408,22 @@ settings::_form_to_pref() {
         bool        val = _check_map[key]->getCheck() ? true : false;
         pref()->set<bool>("general", key, val);
     }
+
+    getApp()->setBaseColor(_base);
+    getApp()->setBackColor(_back);
+    getApp()->setBorderColor(_border);
+    getApp()->setForeColor(_fore);
+    getApp()->setHiliteColor(_hilite);
+    getApp()->setShadowColor(_shadow);
+    getApp()->setSelforeColor(_selfore);
+    getApp()->setSelbackColor(_selback);
+    getApp()->setTipforeColor(_tipfore);
+    getApp()->setTipbackColor(_tipback);
+    getApp()->setSelMenuTextColor(_menufore);
+    getApp()->setSelMenuBackColor(_menuback);
     
     pref()->save();
-    app_opts.init();
+    app_opts.init();    
 }
 
 void

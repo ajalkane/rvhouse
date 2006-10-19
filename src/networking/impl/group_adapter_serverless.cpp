@@ -1,11 +1,15 @@
 #include <fx.h>
 
+#include <netcomgrp/serverless/util.h>
+
 #include "group_adapter_serverless.h"
 // #include "group_handler_serverless.h"
 #include "group_handler_base.h"
 #include "kadc/dht_operation.h"
 
+#include "../global.h"
 #include "../worker.h"
+#include "../reporter/client.h"
 
 #include "../../file_util.h"
 #include "../../util.h"
@@ -31,7 +35,7 @@ group_adapter_serverless::group_adapter_serverless(
     // _dht_user_connecting = 0;
 
     _dht_oper = new kadc::dht_operation(this);
-    _dht_oper->observer_attach(this, dht::event_observer::mask_state_changed);
+    _dht_oper->observer_attach(this); // , dht::event_observer::mask_state_changed);
 }
 
 group_adapter_serverless::~group_adapter_serverless() {
@@ -318,6 +322,36 @@ group_adapter_serverless::state_changed(int dht_state) {
         break;
     }
     
+    return 0;
+}
+
+int 
+group_adapter_serverless::search_result(
+    const dht::key &k, 
+    const dht::value &v)
+{
+    ACE_DEBUG((LM_DEBUG, "group_adapter_serverless::search_result: %s\n",
+              k.c_str()));
+    const dht::name_value_map &m = v.meta();
+
+    if (!m.exists("netcomgrp")) return 0;
+    
+    netcomgrp::addr_inet_type addr;    
+    using netcomgrp::serverless::util::addr_deserialize;
+    if (addr_deserialize(&addr, v.data(), v.size()) <= 0) {
+        ACE_ERROR((LM_WARNING, "group_adapter_serverless::search_result: "
+                  "could not deserialize IP from data\n"));
+        return 0;
+    }
+    
+    if (_seen_ips.count(addr) == 0) {
+        _seen_ips.insert(addr);
+        ACE_DEBUG((LM_DEBUG, "group_adapter_serverless::search_result: "
+                  "unseen peer %s:%d\n", 
+                  addr.get_host_addr(),
+                  addr.get_port_number()));
+        net_report()->dht_ip_found(addr);                  
+    }
     return 0;
 }
 

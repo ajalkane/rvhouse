@@ -297,6 +297,7 @@ flash_main_chat = Flash if message on main chat
 flash_room_chat = Flash if message on room chat
 flash_new_room  = Flash if new room created
 flash_new_user  = Flash if new user arrives
+flash_nick      = Flash if your nick seen on main chat
 
 away_minimize   = Away when main window minimized
 

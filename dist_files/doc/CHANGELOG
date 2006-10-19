@@ -1,6 +1,14 @@
 RV House change log
 
-Version 0.87.0 (10.10.2006)
+Version 0.88.0 (19.10.2006)
+- Support for changing some of the colours
+- P2P support enabled again
+- Login window saves position
+- Option to flash if user's nick seen on main chat
+- Settings window bug fix: pressing cancel applied settings
+- Some other small bug fixes
+
+Version 0.87.1 (10.10.2006)
 - Bug fix: first status change did not work
 
 Version 0.87.0 (09.10.2006)

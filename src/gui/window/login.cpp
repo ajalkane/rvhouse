@@ -6,6 +6,7 @@
 #include "../../messaging/message_login.h"
 #include "../../util.h"
 #include "../../validation.h"
+#include "../util/util.h"
 #include "login.h"
 #include "register_user.h"
 
@@ -65,6 +66,8 @@ login::login(FXWindow *owner)
     );
     
     _log_button->setFocus();
+
+    util::restore_size(this, "login_win");
     
     getAccelTable()->addAccel(MKUINT(KEY_F4,ALTMASK),this,FXSEL(SEL_COMMAND,ID_CANCEL));
 }
@@ -78,6 +81,7 @@ login::create() {
 
 login::~login() {
     ACE_DEBUG((LM_DEBUG, "login::dtor\n"));
+    util::store_size(this, "login_win");
 }
 
 const std::string &

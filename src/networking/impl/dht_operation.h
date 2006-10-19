@@ -47,10 +47,11 @@ namespace networking {
         virtual void update_contacts();
         
         // like dht::client::observer_attach ...
-        virtual void observer_attach(dht::event_observer *obs, int events_mask);
+        virtual void observer_attach(dht::event_observer *obs);
         
         // dht::event_observer interface
         virtual int state_changed(int dht_state);
+        virtual int search_result(const dht::key &k, const dht::value &v);
     };
 
 } // ns networking

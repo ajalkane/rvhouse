@@ -2,10 +2,15 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "RV House"
-#define MyAppVerName "RV House 0.87.0"
+#define MyAppVerName "RV House 0.88.0"
 #define MyAppPublisher "Arto Jalkanen"
 #define MyAppURL "http://www.rvhouse.net"
 #define MyAppExeName "rv_house.exe"
+
+; Todo remove this for the next version, removes the old
+; kadc.ini file that had stale contact nodes
+[InstallDelete]
+Type: files; Name: {app}\conf\kadc.ini
 
 [Setup]
 AppName={#MyAppName}
@@ -40,9 +45,6 @@ Source: ..\dist_files\img\*; DestDir: {app}\img; Flags: ignoreversion
 Source: ..\dist_files\log\*; DestDir: {app}\log; Flags: ignoreversion
 Source: ..\dist_files\doc\*; DestDir: {app}\doc; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
-
-[InstallDelete]
-Type: files; Name: {app}\img\*
 
 [Icons]
 Name: {group}\{#MyAppName}; Filename: {app}\{#MyAppExeName}

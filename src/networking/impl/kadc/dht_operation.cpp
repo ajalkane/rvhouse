@@ -2,6 +2,9 @@
 #include <fstream>
 #include <string>
 
+#include "../../global.h"
+#include "../../reporter/client.h"
+
 #include "dht_operation.h"
 #include "util.h"
 #include "../../../file_util.h"
@@ -18,6 +21,8 @@ dht_operation::dht_operation(dht_target *t)
     ACE_DEBUG((LM_DEBUG, "kadc::dht_operation: logfile '%s'\n", logfile.c_str()));
     if (!logfile.empty()) {
         logfile = app_rel_path(logfile);
+        // First remove the old log file if it exists
+        file_delete(logfile);
         ACE_DEBUG((LM_DEBUG, "kadc::dht_operation: logfile '%s'\n", logfile.c_str()));
         dht::kadc::client::logfile(logfile);
     }
@@ -42,6 +47,7 @@ dht_operation::conf_contacts_dload() {
 }
 
 dht_operation::~dht_operation() {
+    
 // Causes probs, disabled... kadC deinitialisation is too slow to wait
 /*  if (_dht_client) {
         _dht_client->deinit();
@@ -49,6 +55,11 @@ dht_operation::~dht_operation() {
         _dht_client = NULL;
     }
     */
+    // But writing the contact files back is not too slow, so do that.
+    if (_dht_client) {
+        ACE_DEBUG((LM_DEBUG, "dht_operation::dtor writing ini file\n"));
+        _dht_client->write_inifile();
+    }
 }
 
 dht::client *
@@ -115,6 +126,7 @@ dht_operation::update_contacts() {
     // update contacts might be called from within _dht_client's callback,
     // schedule a wake up to the reactor to do so.
     _updating_contacts = true;
+    net_report()->dht_bootstrap();
     ACE_Reactor::instance()->notify(this);
 }
 

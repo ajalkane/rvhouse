@@ -96,7 +96,7 @@ void init_pre() {
     // Preferences are settings that user has made,
     // and therefore have to persist across new installations
     // in contrast to config
-    pref.instance(
+/*    pref.instance(
         new config_file(
             conf()->get<std::string>("user", "app_id",    "RV House"),
             conf()->get<std::string>("user", "vendor_id", "Re-Volt")
@@ -105,7 +105,7 @@ void init_pre() {
     
     pref()->load();
     
-    app_opts.init();
+    app_opts.init();*/
     
     // Init logging
     std::string logfile = conf()->get<std::string>("log", "file", "log/rvhouse.log");
@@ -176,7 +176,7 @@ int do_main(int argc, char **argv) {
     ACE_DEBUG((LM_DEBUG, "run app %d\n", app_mode));
     app_mode->run();
     
-    pref()->save();
+    // pref()->save();
     
     return 0;
 }
@@ -205,7 +205,7 @@ ACE_TMAIN (int argc, ACE_TCHAR *argv[]) {
     delete app();
     ACE_DEBUG((LM_DEBUG, "Deleting conf\n"));
     delete conf();
-    delete pref();
+    // delete pref();
     
     // ACE_DEBUG((LM_DEBUG, "Deleting logging_strategy\n"));
     // Seems maybe logging strategy is not meant to be deleted manually,

@@ -1,6 +1,8 @@
 #ifndef _NETWORKING_GROUP_ADAPTER_SERVERLESS_H_
 #define _NETWORKING_GROUP_ADAPTER_SERVERLESS_H_
 
+#include <set>
+
 #include <netcomgrp/serverless/group.h>
 #include <netcomgrp/serverless/event_observer.h>
 
@@ -28,6 +30,8 @@ namespace networking {
         std::string                   _grp_id;
         chat_gaming::user             _self;
         
+        std::set<netcomgrp::addr_inet_type> _seen_ips;
+                
         // contains a count of the number of times connect has been tried for
         // int _dht_user_connecting; 
         int _connect_try;
@@ -54,6 +58,8 @@ namespace networking {
         
         // dht::event_observer interface
         virtual int state_changed(int dht_state);
+        virtual int search_result(const dht::key &k, const dht::value &v);
+        
         // netcomgrp::serverless::event_observer interface
         virtual int extra_state_changed(int);
         
