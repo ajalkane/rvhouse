@@ -113,9 +113,6 @@ launcher_dx7::_run_app(
   const std::string &host_addr
 ) {
     HRESULT        hr;
-    DPSESSIONDESC2 session_info;
-    DPNAME         player_name;
-    DPLCONNECTION  connect_info;
     DWORD  dx_addr_size2 = 0;
     VOID  *dx_addr2      = NULL;
     char   player_name_str[64];

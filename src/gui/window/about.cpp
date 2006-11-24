@@ -39,7 +39,7 @@ about::about(FXWindow *owner)
     new FXLabel(this, str.str().c_str(), NULL, JUSTIFY_LEFT);
     new FXLinkLabel(this, "http://www.rvhouse.net");
     new FXLinkLabel(this, "http://revolt.speedweek.net");
-    new FXLinkLabel(this, "http://www.rvleague.com");
+    new FXLinkLabel(this, "http://www.rvleague.atomysk.com");
     new FXLinkLabel(this, "http://www.rvtt.com");
     new FXLinkLabel(this, "http://www.revolt-cars.com");
     new FXLinkLabel(this, "http://www.frappr.com/revoltgame");

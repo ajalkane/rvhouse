@@ -2,7 +2,7 @@
 #define _APP_VERSION_H_
 
 #define APP_NAME    "RV House (Blue Ghost Edition)"
-#define APP_VERSION_ONLY "0.88.1"
+#define APP_VERSION_ONLY "0.88.4"
 #define APP_VERSION APP_VERSION_ONLY
 
 // #define RV_HOUSE_TEST 1

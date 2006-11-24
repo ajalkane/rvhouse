@@ -269,9 +269,11 @@ group_adapter_serverless::handle_close() {
 }
 
 void group_adapter_serverless::dht_ready_to_disconnect() {
-    ACE_DEBUG((LM_DEBUG, "group_adapter_serverless: disconnecting DHT\n"));
-    // if (!_dht_user_connecting)
-    _dht_oper->get_node()->disconnect();    
+    ACE_DEBUG((LM_DEBUG, "group_adapter_serverless: skipping disconnecting DHT for now\n"));
+    // Do not do this at least for now... too slow process to wait
+    // when quitting, and doing this way creates a race condition with
+    // writing the inifile.
+    // _dht_oper->get_node()->disconnect();    
 }
 
 int group_adapter_serverless::disconnect() {

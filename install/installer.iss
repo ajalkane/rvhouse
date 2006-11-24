@@ -2,15 +2,15 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "RV House"
-#define MyAppVerName "RV House 0.88.1"
+#define MyAppVerName "RV House 0.88.4"
 #define MyAppPublisher "Arto Jalkanen"
 #define MyAppURL "http://www.rvhouse.net"
 #define MyAppExeName "rv_house.exe"
 
 ; Todo remove this for the next version, removes the old
 ; kadc.ini file that had stale contact nodes
-[InstallDelete]
-Type: files; Name: {app}\conf\kadc.ini
+;[InstallDelete]
+;Type: files; Name: {app}\conf\kadc.ini
 
 [Setup]
 AppName={#MyAppName}

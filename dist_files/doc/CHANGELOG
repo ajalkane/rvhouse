@@ -1,5 +1,14 @@
 RV House change log
 
+Version 0.88.4 (24.11.2006)
+- New command line option to export contact.dat for KadC.
+- Bug fixes:
+- no DHT disconnect at quit (ini file write race condition)
+- log window drifting position fixed
+- kadc.ini file not written if seems connection not made (preventing empty file)
+- dx launch some local variables moved to class variables
+- www.rvleague.com address changed to working one
+
 Version 0.88.1 (19.10.2006)
 - Fix: user's nick flashing is case insensitive
 

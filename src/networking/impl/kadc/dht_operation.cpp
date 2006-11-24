@@ -56,9 +56,17 @@ dht_operation::~dht_operation() {
     }
     */
     // But writing the contact files back is not too slow, so do that.
-    if (_dht_client) {
+    // Only done if managed to get connected and the number of 
+    // contacted nodes reasonably high.
+    // Otherwise prefer to keep the old file
+    if (_dht_client &&
+        _dht_client->contacted_nodes() > 20) 
+    {
         ACE_DEBUG((LM_DEBUG, "dht_operation::dtor writing ini file\n"));
         _dht_client->write_inifile();
+    } else if (_dht_client) {
+        ACE_DEBUG((LM_WARNING, "dht_operation: ini file not written, "
+                   "contacted nodes: %d\n", _dht_client->contacted_nodes()));
     }
 }
 

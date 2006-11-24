@@ -12,6 +12,8 @@
 #include "app_functionality/base.h"
 #include "app_functionality/house.h"
 #include "app_functionality/langdiff.h"
+#include "app_functionality/export_contact_dat.h"
+#include "app_functionality/import_contact_dat.h"
 
 #include "gui/house_app.h"
 #include "messaging/messenger.h"
@@ -54,6 +56,8 @@ namespace {
     
     enum {
         opt_langdiff = 0,
+        opt_export_contact_dat,
+        opt_import_contact_dat,
     };
     
     app_functionality::base *app_mode = NULL;
@@ -67,7 +71,15 @@ void init_app(int argc, char **argv) {
     // static const ACE_TCHAR options[] = ":l:";
     // Long options only
     ACE_Get_Opt cmd_opts(argc, argv, ":", 1, 1, ACE_Get_Opt::PERMUTE_ARGS, 1); // options, 1, 1);
-    cmd_opts.long_option("langdiff", opt_langdiff, ACE_Get_Opt::ARG_REQUIRED);
+    cmd_opts.long_option("langdiff", 
+                         opt_langdiff, 
+                         ACE_Get_Opt::ARG_REQUIRED);
+    cmd_opts.long_option("export_contact_dat", 
+                         opt_export_contact_dat, 
+                         ACE_Get_Opt::ARG_REQUIRED);
+    cmd_opts.long_option("import_contact_dat", 
+                         opt_import_contact_dat, 
+                         ACE_Get_Opt::ARG_REQUIRED);
     
     int option;
     while ((option = cmd_opts ()) != EOF) {
@@ -75,6 +87,16 @@ void init_app(int argc, char **argv) {
         case opt_langdiff:
             app_mode = new app_functionality::langdiff(
                 argc, argv, DEFAULT_LANGUAGE, cmd_opts.opt_arg()
+            );
+            break;
+        case opt_export_contact_dat:
+            app_mode = new app_functionality::export_contact_dat(
+                argc, argv, cmd_opts.opt_arg()
+            );
+            break;
+        case opt_import_contact_dat:
+            app_mode = new app_functionality::import_contact_dat(
+                argc, argv, cmd_opts.opt_arg()
             );
             break;
         case ':':

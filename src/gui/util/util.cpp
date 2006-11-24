@@ -20,7 +20,7 @@ void store_size  (FXWindow *win, const char *section) {
     ACE_DEBUG((LM_DEBUG, "util::store_size: writing %s: %d/%d/%d/%d\n",
               section, x,y,w,h));
 
-    if (w > 0 && h > 0) {          
+    if (w > 0 && h > 0) {
         pref()->set(section, "x", x);
         pref()->set(section, "y", y);
         pref()->set(section, "w", w);
@@ -55,15 +55,23 @@ void restore_size(FXWindow *win, const char *section) {
     x = std::min(x, win->getRoot()->getWidth() - 50);
     y = std::min(y, win->getRoot()->getHeight() - 50);
     x = std::max(x, -w + 50);
-    y = std::max(y, 50);
+    y = std::max(y, 20);
                   
     w = std::max(w, 30);
     h = std::max(h, 30);
-    
+
+    if (dynamic_cast<FXDialogBox *>(win)) {
+        // Fox seems to have a sort of bug with some window types in Windows.
+        // Getting the window position differs from the one that was set.
+        // Results in a drifting window x+3 y+22 at least on Win2000. So adjust 
+        // appropriately.
+        x -= 3;
+        y -= 22;
+    }    
     win->setX(x);
     win->setY(y);
     win->setWidth(w);
-    win->setHeight(h);
+    win->setHeight(h);    
 }
 
 std::string 

@@ -14,6 +14,15 @@ namespace executable {
 
 class launcher_dx7 : public launcher {
     LPDIRECTPLAYLOBBY3A  _lobby;
+
+    // As class variables, since maybe these need to be
+    // around while the launched app is running? Was in
+    // _run_app as stack allocated locals. At least one
+    // report of user experiencing a crash after exiting
+    // from app. Maybe this fixes it.
+    DPSESSIONDESC2 session_info;
+    DPNAME         player_name;
+    DPLCONNECTION  connect_info;
     
     struct _service_provider {
         std::string name;
