@@ -66,6 +66,7 @@ public:
         
         user,
         user_left,
+        
         // user_room,
         // user_room_left,
         
@@ -93,7 +94,9 @@ public:
         version_fetch,
         
         rvtm_exited,
-        
+
+        block_users,
+                
         last
     };
     

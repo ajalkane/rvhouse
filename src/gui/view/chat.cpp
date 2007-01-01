@@ -10,6 +10,7 @@
 #include "../../messaging/message_channel.h"
 #include "../../messaging/message_room.h"
 #include "../../messaging/message_user.h"
+#include "../../messaging/message_block_users.h"
 #include "../../model/house.h"
 #include "../../model/self.h"
 #include "../../parser/url/dfa.h"
@@ -203,6 +204,15 @@ chat::handle_message(::message *msg) {
                 langstr("chat/private_msg_refused", m->str().c_str())
             );
         }
+    }
+        break;
+    case ::message::block_users:
+    {
+        message_block_users *m = dynamic_ptr_cast<message_block_users>(msg);
+        ACE_DEBUG((LM_DEBUG, "chat::handle message block_users\n"));
+        status_message(
+            langstr("chat/user_ignores", m->user().display_id().c_str())
+        );
     }
         break;
     case ::message::room:

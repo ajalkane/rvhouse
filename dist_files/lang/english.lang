@@ -196,6 +196,8 @@ user_shares_tracks       = %1 is sharing tracks
 user_shares_tracks_stops = %1 stopped sharing tracks
 user_dloads_tracks       = %1 is downloading tracks
 user_dloads_tracks_stops = %1 stopped downloading tracks
+user_ignored             = Ignoring user %1
+user_ignores             = You are being ignored by %1
 
 # %1 = the message that was refused/not received.
 # Caused because of user is playing or in do not disturb
@@ -203,6 +205,7 @@ user_dloads_tracks_stops = %1 stopped downloading tracks
 private_msg_refused      = User refused your message: %1
 
 flood_control = Flood control
+
 
 [room_settings_win]
 title       = Room settings
@@ -274,6 +277,7 @@ share_tracks  = Share tracks
 dload_tracks  = Download tracks
 kick          = Kick
 private_msg   = Send Private Message
+ignore_user   = Ignore user
 
 [status]
 chatting      = Chatting

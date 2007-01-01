@@ -11,7 +11,7 @@ login           = &Login
 register        = &Registrieren
 quit            = &Beenden
 
-login_err_topic = Can't login
+login_err_topic = Einloggen nicht möglich!
 fill_user       = Gib deinen Benutzernamen ein
 fill_pass       = Gib dein Passwort ein
 invalid_user    = Ungültiger Benutzername, muss 3 bis 20 Zeichen lang sein und darf die Zeichen a-z, A-Z und _ enthalten
@@ -161,7 +161,7 @@ not_found = Konnte Re-Volt nicht finden. Bitte installiere Re-Volt (und starte e
 other     = Konnte Re-Volt nicht starten
 
 title     = Starte Spiel
-text      = Klicke OK when du zurückkehren willst
+text      = Klicke OK wenn du zurückkehren willst
 
 
 [words]
@@ -182,7 +182,7 @@ creating = Erstellen
 
 minutes_short = min
 dht           = P2P
-ctz           = Centralized
+ctz           = Zentralisiert
 connected     = Verbunden
 disconnected  = Getrennt
 

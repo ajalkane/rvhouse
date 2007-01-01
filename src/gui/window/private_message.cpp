@@ -15,11 +15,14 @@
 #include "../../executable/launcher.h"
 #include "../../icon_store.h"
 #include "../house_app.h"
-#include "private_message.h"
 #include "../util/util.h"
+#include "private_message.h"
 
 namespace gui {
 namespace window {
+
+// Static variable, as must be shared between private_message instances.
+util::slots<16> private_message::_slots;
 
 FXDEFMAP(private_message) private_message_map[]= {
   FXMAPFUNC(SEL_COMMAND,  private_message::ID_SEND_MSG, 
@@ -109,7 +112,18 @@ private_message::_init2() {
                                  LAYOUT_FILL_X|TEXTFIELD_ENTER_ONLY);
 
     _msg_field->setFocus(); 
+    
     house->setSplit(1, 150);
+
+    // Find a free slot for this private message window
+    _slot = _slots.reserve();
+    if (_slot.valid()) {
+        std::string win_name = "private_message" + _slot.as_str();
+        // For some reason, restore_size has to be in constructor
+        // if FXMainWindow and in create otherwise
+        util::restore_size(this, win_name.c_str());
+    }
+
     // _users_view->setWidth(150);
     _users_view->observer_set(this);
     
@@ -125,7 +139,15 @@ private_message::_init2() {
 
 private_message::~private_message() {
     ACE_DEBUG((LM_DEBUG, "private_message: dtor\n"));
-    // Set ourself to be in no room anymore, and off we go
+
+    if (_slot.valid()) {
+        std::string win_name = "private_message" + _slot.as_str();
+        // For some reason, restore_size has to be in constructor
+        // if FXMainWindow and in create if FXDialogBox.
+        util::store_size(this, win_name.c_str());
+
+        _slots.free(_slot);
+    }
     
     delete _users_view;
     delete _chat_view;
@@ -135,13 +157,11 @@ private_message::~private_message() {
 
 void
 private_message::create() {
-    ACE_DEBUG((LM_DEBUG, "private_message::create this %d\n", this));
     super::create();
-    ACE_DEBUG((LM_DEBUG, "private_message::create2\n"));
     watched_window::create(this);
-    ACE_DEBUG((LM_DEBUG, "private_message::create3\n"));
-    show(PLACEMENT_SCREEN);
-    ACE_DEBUG((LM_DEBUG, "private_message::create done\n"));
+
+    // show(PLACEMENT_SCREEN);
+    show();
 }
 
 long 
@@ -149,6 +169,12 @@ private_message::on_send_message(FXObject *from, FXSelector sel, void *) {
     FXString t = _msg_field->getText();
 
     if (t.empty()) return 1;
+    
+    if (!_flood_control.allow_send(t)) {
+        _chat_view->status_message(langstr("chat/flood_control"));
+        return 0;        
+    }
+    
     if (t.length() > (int)app_opts.limit_chat_msg()) 
         t.trunc(app_opts.limit_chat_msg());
     t.substitute("\r", "");

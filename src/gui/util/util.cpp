@@ -48,9 +48,23 @@ void restore_size(FXWindow *win, const char *section) {
         return;
     }
     
+    FXint wx = win->getX(),
+          wy = win->getY(),
+          ww = win->getWidth(),
+          wh = win->getHeight();
+          
     ACE_DEBUG((LM_DEBUG, "util::restore_size: x/y/w/h: %d/%d/%d/%d\n", 
               x,y,w,h));
+    ACE_DEBUG((LM_DEBUG, "util::restore_size: wx/wy/ww/wh: %d/%d/%d/%d\n", 
+              wx,wy,ww,wh));
 
+    // If all values equal do nothing
+    if (x == wx && y == wy &&
+        w == ww && h == wh) {
+        ACE_DEBUG((LM_DEBUG, "util::restore_size: window already correct\n"));
+        return;
+    }                
+    
     // Force the window to be on screen, just in case
     x = std::min(x, win->getRoot()->getWidth() - 50);
     y = std::min(y, win->getRoot()->getHeight() - 50);
@@ -60,6 +74,7 @@ void restore_size(FXWindow *win, const char *section) {
     w = std::max(w, 30);
     h = std::max(h, 30);
 
+#if 0
     if (dynamic_cast<FXDialogBox *>(win)) {
         // Fox seems to have a sort of bug with some window types in Windows.
         // Getting the window position differs from the one that was set.
@@ -67,11 +82,16 @@ void restore_size(FXWindow *win, const char *section) {
         // appropriately.
         x -= 3;
         y -= 22;
-    }    
+    }
+#endif    
     win->setX(x);
     win->setY(y);
     win->setWidth(w);
     win->setHeight(h);    
+
+    ACE_DEBUG((LM_DEBUG, "util::restore_size: set to x/y/w/h: %d/%d/%d/%d\n", 
+              x,y,w,h));
+
 }
 
 std::string 

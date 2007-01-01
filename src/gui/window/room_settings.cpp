@@ -168,7 +168,7 @@ room_settings::on_command(FXObject *from, FXSelector sel, void *ptr) {
     }
 
     if (msg) net_messenger()->send_msg(msg);
-    
+
     if (nsel) {
         this->handle(from, nsel, ptr);
     }

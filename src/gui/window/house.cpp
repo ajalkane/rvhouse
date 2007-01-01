@@ -71,8 +71,6 @@ house::house(FXApp *a)
     : FXMainWindow(a, APP_NAME, NULL, NULL, DECOR_ALL, 0, 0, 800, 600),
     _status_dht_extra(2), 
     _last_connect(0),
-    _flood_last_sent_message(0),
-    _flood_control(0),
     _conn_tries(0),
     _ctz_disconnected(true),
     _last_dht_status_message_id(0),
@@ -240,6 +238,10 @@ house::house(FXApp *a)
 
     _update_status();
     _update_menu_player_status();
+
+    // For some reason, restore_size has to be in constructor
+    // if FXMainWindow and in create if FXDialogBox.
+    util::restore_size(this, "house_win");
     
     house->setSplit(1, 150);
     sections->setSplit(0, 150);
@@ -252,8 +254,6 @@ house::house(FXApp *a)
     _menu_www_map[ID_WWW_HELP_ROUTER] = conf()->get("www", "help_router");
     _menu_www_map[ID_WWW_HELP_CONN]   = conf()->get("www", "help_connection");
     _menu_www_map[ID_WWW_HELP_FAQ]    = conf()->get("www", "help_faq");
-
-    util::restore_size(this, "house_win");
     
     getAccelTable()->addAccel(MKUINT(KEY_F4,ALTMASK),this,FXSEL(SEL_COMMAND,ID_CLOSE)); 
 }
@@ -261,7 +261,8 @@ house::house(FXApp *a)
 void
 house::create() {
     FXMainWindow::create();
-    watched_window::create(this);   
+    watched_window::create(this);
+    
     interruptable_action_update();
     
     _room_buttons_status();
@@ -293,17 +294,9 @@ house::on_send_message(FXObject *from, FXSelector sel, void *) {
 
     if (t.empty()) return 1;
 
-    // Simple flood control
-    ACE_Time_Value now(ACE_OS::gettimeofday());
-    
-    if (_flood_control < 0 || (now - _flood_last_sent_message).msec() >= 5000) 
-        _flood_control = 0;
-    else
-        _flood_control += 2000 - (now - _flood_last_sent_message).msec();
-    
-    if (_flood_control >= 3000) {
+    if (!_flood_control.allow_send(t)) {
         _chat_view->status_message(langstr("chat/flood_control"));
-        return 0;
+        return 0;        
     }
     // if (now - _last_send_message < 2) return 0;
     
@@ -324,7 +317,6 @@ house::on_send_message(FXObject *from, FXSelector sel, void *) {
     }
         
     _msg_field->setText("");
-    _flood_last_sent_message = now;
     
     return 1;
 }
@@ -979,6 +971,11 @@ house::user_added(const chat_gaming::user &u) {
 void
 house::user_removed(const chat_gaming::user &u) {
     _chat_view->status_message(langstr("chat/user_exited", u.display_id().c_str()));
+}
+
+void
+house::user_blocked(const std::string &display_id) {
+    _chat_view->status_message(langstr("chat/user_ignored",display_id.c_str()));
 }
 
 // rooms_view::observer interface   

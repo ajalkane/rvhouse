@@ -244,11 +244,12 @@ group_adapter_serverless::handle_response(const http::response &resp) {
         ACE_DEBUG((LM_DEBUG, "Got ip string: %s\n", ipstr.c_str()));
         _external_ip_set(ipstr);
         gui_messenger()->send_msg(new message_string(message::external_ip_fetch_done,
-                                                ipstr));    
-                
+                                                ipstr));
+        net_report()->ext_ip_detected(ipstr);
     } else {
         gui_messenger()->send_msg(new message_string(message::external_ip_fetch_fail,
                              "no suitable IP found from response"));            
+        net_report()->ext_ip_failed();
     }
     
     _cond_group_join();
@@ -259,6 +260,7 @@ int
 group_adapter_serverless::handle_error(int reason, const char *details) {
     gui_messenger()->send_msg(new message_string(message::external_ip_fetch_fail,
                                             details));
+    net_report()->ext_ip_failed();
     return 0;
 }
 

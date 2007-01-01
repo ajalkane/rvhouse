@@ -41,6 +41,9 @@ namespace networking {
         void handle_room_command_message(message *msg);
         void handle_send_private_message(message *msg);
         void handle_private_refused     (message *msg);
+        void handle_block_users         (message *msg);
+        
+        void ip_blocked(uint32_t ip, unsigned seq);
         
         inline void notify(group_handler_notify *n);
         inline void user_self(const chat_gaming::user &u);

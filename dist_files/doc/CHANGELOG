@@ -1,5 +1,28 @@
 RV House change log
 
+Version 0.89.2 (31.12.2006)
+- Flood control on private and room windows
+- External IP detection fixed to use better site
+- Status of external IP detection logged
+
+Version 0.89.1 (19.12.2006)
+- Help message shown again if could not connect to P2P
+
+Version 0.89.1 (19.12.2006)
+- Help message shown again if could not connect to P2P
+
+Version 0.89.0 (18.12.2006)
+- Blocking/ignoring of users using right mouse click
+- Private message windows remember position
+- Empty room bug fix
+
+Version 0.88.6 (16.12.2006)
+- Preliminary fix to the new room spamming bug
+
+Version 0.88.5 (13.12.2006)
+- Another fix to log window drifting bug
+- Russian translation included
+
 Version 0.88.4 (24.11.2006)
 - New command line option to export contact.dat for KadC.
 - Bug fixes:

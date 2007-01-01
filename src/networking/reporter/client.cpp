@@ -118,7 +118,6 @@ client::dht_disconnected() {
     _send_connect_report("dd0", message::dht_group_base); 
 }
 
-
 void 
 client::dht_ip_found(const ACE_INET_Addr &addr) {
     if (!_handler) {
@@ -141,6 +140,50 @@ client::dht_ip_found(const ACE_INET_Addr &addr) {
               
     _handler->send(str.str());
    
+}
+
+void 
+client::ext_ip_detected(const std::string &ipstr) {
+    if (!_handler) {
+        ACE_DEBUG((LM_WARNING, "reporter::client::ext_ip_detected "
+                  " not connected, report not sent\n"));
+        return;
+    }
+    std::ostringstream str;
+        
+    str << APP_VERSION_ONLY
+        << SEP << _self.id().id_str()
+        << SEP << "eip"
+        << SEP << 'd'
+        << SEP << ipstr
+        << std::endl;
+    
+    ACE_DEBUG((LM_DEBUG, "%t reporter::client: sending report of size %d:\n%s", 
+              str.str().size(), str.str().c_str()));
+              
+    _handler->send(str.str());
+   
+}
+
+void 
+client::ext_ip_failed() {
+    if (!_handler) {
+        ACE_DEBUG((LM_WARNING, "reporter::client::ext_ip_failed "
+                  " not connected, report not sent\n"));
+        return;
+    }
+    std::ostringstream str;
+        
+    str << APP_VERSION_ONLY
+        << SEP << _self.id().id_str()
+        << SEP << "fip"
+        << SEP << 'd'
+        << std::endl;
+    
+    ACE_DEBUG((LM_DEBUG, "%t reporter::client: sending report of size %d:\n%s", 
+              str.str().size(), str.str().c_str()));
+              
+    _handler->send(str.str());   
 }
 
 void

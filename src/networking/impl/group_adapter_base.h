@@ -22,6 +22,8 @@ namespace networking {
         group_adapter_base(ACE_Reactor *r = NULL);
         virtual ~group_adapter_base();
 
+        inline netcomgrp::group *group() { return _group; }
+        
         virtual void init();                
         virtual int connect(const chat_gaming::user &self);
         virtual int disconnect();

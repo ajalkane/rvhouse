@@ -7,14 +7,18 @@ class config_file;
 
 namespace networking {
 
-// Forward declaration
+// Forward declarations
 namespace reporter {
     class client;
 }
 
-extern accessor<class config_file *>    net_conf;
+namespace ip_block {
+    class store;
+}
+
+extern accessor<class config_file *>      net_conf;
 extern accessor<class reporter::client *> net_report;
-    
+extern accessor<class ip_block::store *>  net_ip_block;
 
 }
 

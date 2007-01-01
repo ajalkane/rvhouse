@@ -190,6 +190,8 @@ room::_init() {
     _msg_field->setFocus(); 
     // _status->getStatusLine()->setNormalText("Waiting...");
 
+    // For some reason, restore_size has to be in constructor
+    // if FXMainWindow and in create if FXDialogBox.
     util::restore_size(this, "room_win");
 
     house->setSplit(1, 150);
@@ -261,6 +263,12 @@ room::on_send_message(FXObject *from, FXSelector sel, void *) {
     FXString t = _msg_field->getText();
 
     if (t.empty()) return 1;
+
+    if (!_flood_control.allow_send(t)) {
+        _chat_view->status_message(langstr("chat/flood_control"));
+        return 0;        
+    }
+    
     if (t.length() > (int)app_opts.limit_chat_msg()) 
         t.trunc(app_opts.limit_chat_msg());
     t.substitute("\r", "");
@@ -656,6 +664,11 @@ room::user_removed(const chat_gaming::user &u) {
     _chat_view->status_message(
         langstr("chat/user_exited_room", u.display_id().c_str())
     );
+}
+
+void
+room::user_blocked(const std::string &display_id) {
+    _chat_view->status_message(langstr("chat/user_ignored",display_id.c_str()));
 }
 
 void 

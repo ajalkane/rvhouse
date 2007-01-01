@@ -18,10 +18,12 @@ namespace pdu {
         
         id_message_private,
         id_private_refused,
+        
+        id_user_blocked,
     };
         
     class header {
-        unsigned    _sequence;      
+        unsigned    _sequence;
         int _id;
         
         friend class boost::serialization::access;

@@ -71,6 +71,9 @@ namespace reporter {
         void dht_bootstrap();
         void dht_disconnected();
         void dht_ip_found(const ACE_INET_Addr &addr);
+
+        void ext_ip_detected(const std::string &ipstr);
+        void ext_ip_failed();
         
         inline void reactor(ACE_Reactor *r) { _reactor = r; }
         inline ACE_Reactor *reactor() const { return _reactor; }                

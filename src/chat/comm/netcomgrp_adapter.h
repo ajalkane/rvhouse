@@ -409,6 +409,13 @@ private:
           room_info.id().c_str(),
           room_info.owner_id().c_str()));
 
+        // Ignore room updates with empty id (WaVe bug)
+        // typename room_type::id_type empty_id 
+        if (room_info.id() == typename room_type::id_type()) {
+            ACE_DEBUG((LM_WARNING, "chat::netcomgrp_adapter::recv_room_update " \
+              "with empty room id received, ignoring"));
+            return;
+        }
         typename house_type::room_iterator ri = _house->room_find(room_info);
 
         if (ri != _house->room_end()) {
@@ -461,6 +468,13 @@ private:
         if (ui != _house->user_end()) {
             user_type user_info(from);
             ia >> user_info;
+
+            // Ignore user updates with empty id
+            if (user_info.id() == typename user_type::id_type()) {
+                ACE_DEBUG((LM_WARNING, "chat::netcomgrp_adapter::recv_user_update " \
+                  "with empty user id received, ignoring"));
+                return;
+            }
 
             _notify->user_update(*ui, user_info, from);
 

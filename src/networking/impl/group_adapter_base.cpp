@@ -13,6 +13,34 @@ group_adapter_base::group_adapter_base(
 {
 }
 
+// #define _ENTER_EXIT_TEST
+
+#ifdef _ENTER_EXIT_TEST
+static int recv_ignore_non_local_packets(
+    void  *param,
+    const void *buf, 
+    size_t n,
+    const reudp::addr_type &addr0)
+{
+    const reudp::addr_inet_type &addr 
+        = dynamic_cast<const reudp::addr_inet_type &>(addr0);
+        
+    group_adapter_base *gab = reinterpret_cast<group_adapter_base *>(param);
+    if (addr.is_loopback() == false) return -1;
+    
+    // If this far, then local address. Only let through items
+    // sent are sent by self to self.
+    reudp::addr_inet_type local_addr;
+    gab->group()->dgram_adapter().get_local_addr(local_addr);
+    
+    if (local_addr.get_port_number() == addr.get_port_number())
+        return 0;
+        
+    return -1;
+}
+
+#endif
+
 void
 group_adapter_base::init() {
     ACE_DEBUG((LM_DEBUG, "group_adapter_base::init\n"));
@@ -22,6 +50,11 @@ group_adapter_base::init() {
     ACE_DEBUG((LM_DEBUG, "group_adapter_base::init create_handler\n"));
     _handler = create_handler(_group);
     ACE_DEBUG((LM_DEBUG, "group_adapter_base::init done\n"));
+    
+#ifdef _ENTER_EXIT_TEST
+    reudp::dgram_multi &dg = _group->dgram_adapter();
+    dg.packet_recv_cb(recv_ignore_non_local_packets, this);
+#endif
 }
 
 group_adapter_base::~group_adapter_base() {

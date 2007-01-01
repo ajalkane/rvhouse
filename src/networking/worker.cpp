@@ -28,6 +28,7 @@
 #include "reporter/client.h"
 #include "impl/group_adapter_combine.h"
 #include "impl/login_manager_rvzt.h"
+#include "ip_block/store.h"
 
 namespace networking {
 
@@ -37,12 +38,14 @@ worker::worker()
     _reactor   = ACE_Reactor::instance();
     net_messenger.instance(new ace_messenger(_reactor, this));
     net_conf.instance(new config_file(*(conf())));
+    net_ip_block.instance(new ip_block::store);
     _version_update_client = NULL;
 }
 
 worker::~worker() {
     delete net_messenger();
     delete net_conf();
+    delete net_ip_block();
 }
 
 int
@@ -217,6 +220,10 @@ worker::handle_message(message *msg) {
         message_user *m = dynamic_ptr_cast<message_user>(msg);
         _group_adapter->update(m->user());
     }
+        break;
+    case message::block_users:
+        net_ip_block()->handle_message(msg);
+        _group_adapter->handle_message(msg);
         break;
     case message::room:
     {

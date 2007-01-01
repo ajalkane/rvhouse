@@ -108,6 +108,7 @@ public:
         ID_STATUS_DONT_DISTURB,
         
         ID_USER_KICK,
+        ID_USER_BLOCK,
         ID_SHARE_TRACKS,
         ID_GET_TRACKS,
         
@@ -120,6 +121,8 @@ public:
     public:
         virtual void user_added(const chat_gaming::user &u)   {}
         virtual void user_removed(const chat_gaming::user &u) {}
+        virtual void user_blocked(const std::string &display_id) {}
+        
         virtual void sharing_tracks_changed(const chat_gaming::user &u,
                                             bool value) {}
         virtual void getting_tracks_changed(const chat_gaming::user &u,
@@ -127,6 +130,7 @@ public:
         
         virtual void user_rightclick(const multi_feed::user_item &uf,
                                      FXEvent *e) {}
+        
     };
     
     users(FXComposite *c, FXObject *tgt=NULL, 
@@ -169,6 +173,7 @@ public:
     long on_user_rightclick(FXObject *sender,FXSelector sel,void *ptr);
     long on_status_change(FXObject *sender,FXSelector sel,void *ptr);
     long on_user_kick(FXObject *sender,FXSelector sel,void *ptr);
+    long on_user_block(FXObject *sender,FXSelector sel,void *ptr);
     long on_share(FXObject *sender,FXSelector sel,void *ptr);
     long on_doubleclick(FXObject *sender,FXSelector sel,void *ptr);
     long on_priv_msg(FXObject *sender,FXSelector sel,void *ptr);
@@ -183,6 +188,7 @@ private:
     FXMenuCommand *_popup_user;
     FXMenuCommand *_popup_share;
     FXMenuCommand *_popup_priv;
+    FXMenuCommand *_popup_block;
     
     observer *_observer;
     

@@ -11,6 +11,7 @@
 #include "../view/users.h"
 #include "../message_handler.h"
 #include "../watched_window.h"
+#include "../util/flood_control.h"
 
 namespace gui {
 namespace window {
@@ -42,7 +43,9 @@ class room
     // chat_gaming::room _room;
     chat_gaming::room::id_type _room_id;    
     chat_gaming::user::id_type _host_id;
-    
+
+    util::flood_control _flood_control;
+        
     void _handle_room_launch(::message *msg);
     void _handle_room_kick  (::message *msg);
     void _launcher_error(int err);
@@ -91,6 +94,8 @@ public:
     // view::users::observer interface  
     virtual void user_added(const chat_gaming::user &u);
     virtual void user_removed(const chat_gaming::user &u);
+    virtual void user_blocked(const std::string &display_id);
+    
     virtual void sharing_tracks_changed(const chat_gaming::user &u,
                                         bool value);
     virtual void getting_tracks_changed(const chat_gaming::user &u,

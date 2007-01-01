@@ -277,7 +277,9 @@ rooms::_update_room(const chat_gaming::room &r, int grp_base) {
     
     if (item == NULL) {
         // Create a new room
-        _new_room(r, grp_base);
+        // But only if there is at least someone in the room!
+        if (house_model()->room_size(r.id()) > 0)
+            _new_room(r, grp_base);
     } else {
         ACE_DEBUG((LM_DEBUG, "rooms::_update_room found room item\n"));
         item->room(r.id(), grp_base);

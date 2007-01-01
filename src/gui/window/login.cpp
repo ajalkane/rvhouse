@@ -66,8 +66,6 @@ login::login(FXWindow *owner)
     );
     
     _log_button->setFocus();
-
-    util::restore_size(this, "login_win");
     
     getAccelTable()->addAccel(MKUINT(KEY_F4,ALTMASK),this,FXSEL(SEL_COMMAND,ID_CANCEL));
 }
@@ -76,7 +74,11 @@ void
 login::create() {
     ACE_DEBUG((LM_DEBUG, "login::create2\n"));
     FXDialogBox::create();
-    watched_window::create(this);   
+    watched_window::create(this);
+
+    // For some reason, restore_size has to be in constructor
+    // if FXMainWindow and in create if FXDialogBox.
+    util::restore_size(this, "login_win");    
 }
 
 login::~login() {

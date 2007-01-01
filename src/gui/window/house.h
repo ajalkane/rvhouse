@@ -19,6 +19,7 @@
 #include "../view/rooms.h"
 #include "../message_handler.h"
 #include "../watched_window.h"
+#include "../util/flood_control.h"
 
 namespace gui {
 namespace window {
@@ -60,6 +61,8 @@ class house
     std::vector<std::string> _status_dht_extra;
     std::string _status_ctz;
     std::string _status_tmp;
+
+    util::flood_control _flood_control;
     
     typedef std::map<int, FXMenuRadio *> _menu_status_map_type;
     _menu_status_map_type _menu_status_map;
@@ -68,8 +71,6 @@ class house
     _menu_www_map_type _menu_www_map;
     
     time_t _last_connect;
-    ACE_Time_Value _flood_last_sent_message;
-    int    _flood_control;
     size_t _conn_tries;
     
     bool _ctz_disconnected;
@@ -155,11 +156,12 @@ public:
     }
     
     // view::users::observer interface  
-    virtual void user_added(const chat_gaming::user &u);
+    virtual void user_added  (const chat_gaming::user &u);
     virtual void user_removed(const chat_gaming::user &u);
+    virtual void user_blocked(const std::string &display_id);
 
     // view::rooms::observer interface  
-    virtual void room_added(const chat_gaming::room &r);
+    virtual void room_added  (const chat_gaming::room &r);
     virtual void room_removed(const chat_gaming::room &r);
     
 };

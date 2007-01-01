@@ -9,6 +9,7 @@
 #include "../../exception.h"
 #include "../../model/self.h"
 #include "../../messaging/messenger.h"
+#include "../../messaging/message_block_users.h"
 #include "../../messaging/message_user.h"
 #include "../../messaging/message_room.h"
 #include "../../messaging/message_room_command.h"
@@ -33,7 +34,8 @@ FXDEFMAP(user_item) user_item_map[]={
 FXDEFMAP(users) users_map[]={
     FXMAPFUNC(SEL_QUERY_TIP,         0, users::on_query_tip),
     FXMAPFUNC(SEL_RIGHTBUTTONRELEASE,0, users::on_user_rightclick),
-    FXMAPFUNC(SEL_COMMAND, users::ID_USER_KICK, users::on_user_kick),
+    FXMAPFUNC(SEL_COMMAND, users::ID_USER_KICK,  users::on_user_kick),
+    FXMAPFUNC(SEL_COMMAND, users::ID_USER_BLOCK, users::on_user_block),
     FXMAPFUNC(SEL_COMMAND, users::ID_SHARE_TRACKS, users::on_share),
     FXMAPFUNC(SEL_COMMAND, users::ID_GET_TRACKS,   users::on_share),
     FXMAPFUNC(SEL_COMMAND, users::ID_PRIV_MSG,     users::on_priv_msg),
@@ -317,6 +319,7 @@ users::users(
     _popup_status_cascade = new FXMenuCascade(_popup, langstr("words/status"), NULL, _popup_status);
     _popup_share = new FXMenuCommand(_popup, langstr("user_popup/share_tracks"), NULL, this);
     _popup_priv  = new FXMenuCommand(_popup, langstr("user_popup/private_msg"), NULL, this, ID_PRIV_MSG);
+    _popup_block = new FXMenuCommand(_popup, langstr("user_popup/ignore_user"), NULL, this, ID_USER_BLOCK);
 }
 
 void
@@ -659,27 +662,30 @@ users::on_user_rightclick(FXObject *sender,FXSelector sel,void *ptr) {
     _popup_user->setText(user.c_str());
     
     /* Sharing of tracks */
-    bool _share_enable = false;
-    bool _priv_enable  = _priv_msg_enable(item);
+    bool share_enable = false;
+    bool priv_enable  = _priv_msg_enable(item);
+    bool block_enable = true;
     if (user == self_model()->user().login_id()) {
         _popup_status_cascade->enable();
         _popup_share->setText(langstr("user_popup/share_tracks"));
         _popup_share->setSelector(ID_SHARE_TRACKS);
         // _popup_share->setSelector(FXSEL(SEL_COMMAND, ID_SHARE_TRACKS));
-        _share_enable = (item->sharing_tracks() || item->getting_tracks()
+        share_enable = (item->sharing_tracks() || item->getting_tracks()
                          ? false : true);
+        block_enable = false;
     } else {
         _popup_status_cascade->disable(); // ->show(); // disable();
         _popup_share->setText(langstr("user_popup/dload_tracks"));
         _popup_share->setSelector(ID_GET_TRACKS);
         // _popup_share->setSelector(FXSEL(SEL_COMMAND, ID_GET_TRACKS));
-        _share_enable = (item->sharing_tracks() && 
+        share_enable = (item->sharing_tracks() && 
                          !self_model()->user().getting_tracks() &&
                          !self_model()->user().sharing_tracks()
                          ? true : false);
     }
-    _share_enable ? _popup_share->enable() : _popup_share->disable();
-    _priv_enable  ? _popup_priv->enable()  : _popup_priv->disable();
+    share_enable ? _popup_share->enable() : _popup_share->disable();
+    priv_enable  ? _popup_priv->enable()  : _popup_priv->disable();
+    block_enable ? _popup_block->enable() : _popup_block->disable();
     
     /* The item is selected so that when the user chooses an action
      * from the popup, it can be targete
@@ -751,6 +757,52 @@ users::on_user_kick(FXObject *sender,FXSelector sel,void *ptr) {
     
     return 0;
 }
+
+long
+users::on_user_block(FXObject *sender,FXSelector sel,void *ptr) {
+    ACE_DEBUG((LM_DEBUG, "users::on_block\n"));
+        
+    item_type *item = selected_item();
+
+    if (!item) return 0;
+
+    std::string ipstr = multi_feed::uniq_value(
+        item->feed_item(),
+        multi_feed::user_value_accessor(&chat_gaming::user::ip_as_string)
+    );
+
+    ACE_DEBUG((LM_DEBUG, "users::on_user_block: got IP '%s'\n",
+              ipstr.c_str()));
+    
+    // Check, just to make sure, that it really looks like an IP
+    // before converting to IP number
+    // if (regexp::match("([0-9]{1,3}[.]){3}[0-9]{1,3}", ipstr) {
+    struct in_addr a;
+    if (ACE_OS::inet_aton(ipstr.c_str(), &a) &&
+        a.s_addr != htonl(INADDR_ANY)      && 
+        a.s_addr != htonl(INADDR_LOOPBACK) &&
+        a.s_addr != htonl(INADDR_NONE)) {
+        
+        ACE_DEBUG((LM_DEBUG, "users::on_user_block: recognized IP\n"));
+        message_block_users *m = new message_block_users(
+            ::message::block_users,
+            self_model()->user(),
+            self_model()->sequence(),
+            0
+        );
+        m->ip_push_back(a.s_addr);
+        net_messenger()->send_msg(m);
+
+        if (_observer)
+            _observer->user_blocked(item->feed_item().unambiguous_display_id());        
+    } else {
+        ACE_ERROR((LM_ERROR, "users::on_user_block: IP '%s' not "
+                   "recognized or invalid as IP\n", ipstr.c_str()));
+    }
+
+    return 0;
+}
+
 
 long
 users::on_share(FXObject *sender,FXSelector sel,void *ptr) {

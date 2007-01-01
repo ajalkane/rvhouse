@@ -2,6 +2,7 @@
 #define _PRIVATE_MESSAGE_WINDOW_H_
 
 #include <string>
+#include <bitset>
 #include <fx.h>
 
 #include "../../chat_gaming/house.h"
@@ -11,6 +12,8 @@
 #include "../view/users.h"
 #include "../message_handler.h"
 #include "../watched_window.h"
+#include "../util/slots.h"
+#include "../util/flood_control.h"
 
 namespace gui {
 namespace window {
@@ -34,8 +37,14 @@ class private_message
     // chat_gaming::room _room;
     std::string _channel;
     std::string _user_id_str;
+
+    // Used to hold a slot for a free private window position
+    static util::slots<16> _slots;
+    util::slot             _slot;
+    util::flood_control    _flood_control;
     
     void _init2();
+    int  _find_free_slot();
 protected:
     private_message() {}
 

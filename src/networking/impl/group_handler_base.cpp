@@ -12,9 +12,11 @@
 #include "../../messaging/message_room_command.h"
 #include "../../messaging/message_channel.h"
 #include "../../messaging/message_send.h"
+#include "../../messaging/message_block_users.h"
 #include "../worker.h"
 #include "../global.h"
 #include "../reporter/client.h"
+#include "../ip_block/store.h"
 
 namespace networking {
 
@@ -51,6 +53,9 @@ group_handler_base::handle_message(message *msg) {
         break;
     case message::private_refused:
         handle_private_refused(msg);
+        break;
+    case message::block_users:
+        handle_block_users(msg);
         break;
     }   
 }
@@ -145,6 +150,58 @@ group_handler_base::handle_private_refused(message *msg) {
     );
 }
 
+void
+group_handler_base::handle_block_users(message *msg) {
+    message_block_users *m  = dynamic_ptr_cast<message_block_users>(msg);
+    
+    message_block_users::list_type::const_iterator i   = m->ip_begin();
+    message_block_users::list_type::const_iterator end = m->ip_end();
+    for (; i != end; i++) {
+        ip_blocked(*i, m->sequence());
+    }
+    
+}
+
+void
+group_handler_base::ip_blocked(uint32_t ip, unsigned seq) {
+    char ip_str[INET_ADDRSTRLEN];
+    if (ACE_OS::inet_ntop(AF_INET, &ip, ip_str, sizeof(ip_str))) {
+        ACE_DEBUG((LM_DEBUG, "group_handler_base::ip_blocked %s\n", ip_str));
+    } else {
+        ACE_ERROR((LM_ERROR, "group_handler_base::ip_blocked conversion failed\n"));
+    }
+    
+    // Find all nodes with the blocked IP and do node_removed for them.
+    _house_type::user_iterator i   = _house.user_begin();
+    _house_type::user_iterator end = _house.user_end();
+    typedef std::list<const netcomgrp::node *> list_type;
+    list_type rm;
+    
+    for (; i != end; i++) {
+        if (i->node() == NULL) continue;
+        uint32_t ip2 = htonl(i->node()->addr().get_ip_address());
+        char ip_str2[INET_ADDRSTRLEN];
+        ACE_OS::inet_ntop(AF_INET, &ip2, ip_str2, sizeof(ip_str2));
+        ACE_DEBUG((LM_DEBUG, "ip_blocked: comparing %s to %s\n", ip_str, ip_str2));
+        if (ip2 == ip)
+            rm.push_back(i->node());
+    }
+    list_type::const_iterator ri = rm.begin();
+    for (; ri != rm.end(); ri++) {
+        ACE_DEBUG((LM_DEBUG, "group_handler_base::ip_blocked removing node "
+                  "%s:%d\n", 
+                  (*ri)->addr().get_host_addr(), 
+                  (*ri)->addr().get_port_number()));
+
+        _house_adapter->send_to(
+            chat_gaming::pdu::header(chat_gaming::pdu::id_user_blocked, seq),
+            *ri
+        );
+                  
+        node_removed(*ri);
+    }
+}
+
 int
 group_handler_base::node_added(const netcomgrp::node *n) {
     ACE_DEBUG((LM_DEBUG, "Checking if it is self... self is %d, node %d\n",
@@ -153,6 +210,12 @@ group_handler_base::node_added(const netcomgrp::node *n) {
     ACE_DEBUG((LM_DEBUG, "addr: %s:%d\n", 
               n->addr().get_host_addr(),
               n->addr().get_port_number()));
+
+    if (net_ip_block()->is_blocked(htonl(n->addr().get_ip_address()))) {
+        ACE_DEBUG((LM_DEBUG, "group_handler_base: node added from blocked IP %s "
+                  "received", n->addr().get_host_addr()));
+        return 0;
+    }
               
     _house_adapter->node_added(n);
     
@@ -216,6 +279,11 @@ group_handler_base::data_received(const void *data,
                   const netcomgrp::node *n) {
     ACE_DEBUG((LM_DEBUG, "group_handler_base: received data of size %d:\n%s\n",
       data_len, data));
+    if (net_ip_block()->is_blocked(n->addr().get_ip_address())) {
+        ACE_DEBUG((LM_DEBUG, "group_handler_base: data from blocked IP %s "
+                  "received", n->addr().get_host_addr()));
+        return 0;
+    }
     _house_adapter->data_received(data, data_len, n);
     return 0;
 }
@@ -664,6 +732,16 @@ group_handler_base::user_data_available(chat_gaming::user &u, const netcomgrp::n
             _grp_msg_base
         );
         break;  
+    case chat_gaming::pdu::id_user_blocked:
+        ACE_DEBUG((LM_DEBUG, "group_handler_base::user_data_available: " \
+                  "received user blocked\n"));
+        smsg = new message_block_users(
+            message::block_users,
+            u,
+            hdr.sequence(),
+            _grp_msg_base
+        );
+        break;
     }
     
     if (smsg) gui_messenger()->send_msg(smsg);
