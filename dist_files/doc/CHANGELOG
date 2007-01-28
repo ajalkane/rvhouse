@@ -1,5 +1,9 @@
 RV House change log
 
+Version 0.90.0 (28.01.2007)
+- Global ignore list to help ignoring trouble makers
+- Time user has been in chatting status shown
+
 Version 0.89.2 (31.12.2006)
 - Flood control on private and room windows
 - External IP detection fixed to use better site

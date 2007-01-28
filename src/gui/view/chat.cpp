@@ -1,4 +1,4 @@
-#include <sstream>
+            #include <sstream>
 
 #include <fx.h>
 
@@ -11,6 +11,7 @@
 #include "../../messaging/message_room.h"
 #include "../../messaging/message_user.h"
 #include "../../messaging/message_block_users.h"
+#include "../../messaging/message_global_ignore.h"
 #include "../../model/house.h"
 #include "../../model/self.h"
 #include "../../parser/url/dfa.h"
@@ -27,7 +28,9 @@ FXDEFMAP(chat) chat_map[]= {
     FXMAPFUNC(SEL_MOTION, 0, chat::on_motion),
     FXMAPFUNC(SEL_COMMAND, chat::ID_INPUT, 
                            chat::on_input),
+    FXMAPFUNC(SEL_CONFIGURE, chat::ID_CONFIGURE,chat::on_configure)                           
 };
+
 
 FXIMPLEMENT(chat, FXText, chat_map, ARRAYNUMBER(chat_map))
     
@@ -176,6 +179,17 @@ chat::on_timer(FXObject*,FXSelector,void* ptr) {
    return 1;
 }
 
+long 
+chat::on_configure(FXObject*,FXSelector,void* ptr) {
+   FXWindow *win = this;
+   ACE_DEBUG((LM_DEBUG, "chat::on_configure %d/%d/%d/%d\n", 
+              win->getX(),win->getY(),win->getWidth(), win->getHeight()));
+   _cond_scroll_prepare();
+   _cond_scroll();
+   // getApp()->endWaitCursor();
+   return 1;
+}
+
 void
 chat::handle_message(::message *msg) {
     switch (msg->id()) {
@@ -214,6 +228,9 @@ chat::handle_message(::message *msg) {
             langstr("chat/user_ignores", m->user().display_id().c_str())
         );
     }
+        break;
+    case ::message::global_ignore_list:
+        _handle_global_ignore(msg);
         break;
     case ::message::room:
     {
@@ -372,6 +389,25 @@ chat::_styled_content(const char *msg, size_t len, int base_style) {
             base = p;
         }
     }   
+}
+
+void
+chat::_handle_global_ignore(::message *msg) {
+    ACE_DEBUG((LM_DEBUG, "chat::_handle_global_ignore"));
+    message_global_ignore *m = dynamic_ptr_cast<message_global_ignore>(msg);
+    message_global_ignore::ip_list_type::const_iterator i = m->ip_begin();
+    
+    bool first = true;
+    for (; i != m->ip_end(); i++) {
+        if (first) {
+            status_message(langstr("chat/global_ignore"));
+            first = false;
+        }
+        status_message(
+            langstr("chat/user_global_ignore", 
+                    i->userid.c_str(), i->reason.c_str())
+        );        
+    }
 }
 
 } // ns view

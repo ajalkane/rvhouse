@@ -21,6 +21,7 @@ namespace {
         // "away_minimize"
         "flash_new_user",
         "flash_nick",
+        "global_ignore",
     };
     bool general_check_defaults[] = {
         false,
@@ -29,6 +30,7 @@ namespace {
         // true,
         false,
         false,
+        true,
     };
 }
 

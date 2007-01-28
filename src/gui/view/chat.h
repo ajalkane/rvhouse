@@ -38,10 +38,12 @@ protected:
     void _cond_scroll();
     void _cond_scroll_prepare();
     void _styled_content(const char *msg, size_t len, int base_style);
+    void _handle_global_ignore(::message *msg);
 public:
     enum {
         ID_INPUT = FXText::ID_LAST,
         ID_TIMER,
+        ID_CONFIGURE,
         ID_LAST,
     };
     
@@ -73,6 +75,8 @@ public:
     long on_motion     (FXObject *from, FXSelector sel, void *);    
     long on_left_button(FXObject *from, FXSelector sel, void *);    
     long on_timer      (FXObject *from, FXSelector sel, void *);    
+    long on_configure  (FXObject *from, FXSelector sel, void *);
+
     void handle_message(::message *msg);
 };
 

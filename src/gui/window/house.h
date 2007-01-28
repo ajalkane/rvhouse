@@ -123,6 +123,7 @@ public:
         ID_WWW_HELP_CONN,
         ID_WWW_HELP_FAQ,
         ID_WWW_END,
+        ID_CONFIGURE,
         
         ID_LAST,
     };
@@ -148,6 +149,7 @@ public:
     long on_dht_disconnected(FXObject *from, FXSelector sel, void *);
     long on_minimize        (FXObject *from, FXSelector sel, void *);
     long on_restore         (FXObject *from, FXSelector sel, void *);
+    long on_configure       (FXObject *from, FXSelector sel, void *);
     
     void handle_message    (::message *msg);    
 

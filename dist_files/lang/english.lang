@@ -206,6 +206,10 @@ private_msg_refused      = User refused your message: %1
 
 flood_control = Flood control
 
+global_ignore = Following users are in global ignore list because of disruptive behaviour and are ignored by you automatically. You can disable global ignoring from Settings if you wish to.
+# %1 is replaced by user name
+# %2 is replaced with reason
+user_global_ignore = Global ignore on user '%1', reason: %2
 
 [room_settings_win]
 title       = Room settings
@@ -302,8 +306,8 @@ flash_room_chat = Flash if message on room chat
 flash_new_room  = Flash if new room created
 flash_new_user  = Flash if new user arrives
 flash_nick      = Flash if your nick seen on main chat
-
 away_minimize   = Away when main window minimized
+global_ignore   = Use global ignore list
 
 base_color      = Base Color
 border_color    = Border Color

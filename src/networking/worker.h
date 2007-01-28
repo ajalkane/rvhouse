@@ -16,6 +16,7 @@
 #include "../config_file.h"
 
 #include "version_update/client.h"
+#include "global_ignore/client.h"
 #include "group_adapter.h"
 #include "login_manager.h"
 
@@ -27,6 +28,7 @@ namespace networking {
         login_manager    *_login_manager;
         std::string       _exception_str;
         version_update::client *_version_update_client;
+        global_ignore::client  *_global_ignore_client;
         bool _quit;
         
         void _main();

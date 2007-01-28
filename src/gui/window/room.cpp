@@ -1,3 +1,5 @@
+#include <ace/Process.h>
+
 #include <utility>
 
 #include <fx.h>
@@ -589,6 +591,17 @@ room::_launch_join(chat_gaming::house::user_iterator host_ui) {
 
 void
 room::_launched_display() {
+#if 0    
+    // Now launch Phoenix
+    ACE_Process_Options px_opts;
+    ACE_Process px;
+    std::string px_cmd = conf()->get("phoenix", "cmd");
+    px_opts.command_line(px_cmd.c_str());
+    ACE_DEBUG((LM_DEBUG, "room::launching phoenix: %s\n", px_cmd.c_str()));
+    pid_t px_pid = px.spawn(px_opts);
+
+    ACE_DEBUG((LM_DEBUG, "room::launching phoenix: ret val %d\n", px_pid));
+#endif
     self_model()->user().status(chat_gaming::user::status_playing);
     self_model()->user_send();
 

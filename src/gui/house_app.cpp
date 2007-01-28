@@ -27,6 +27,8 @@
 #include "../messaging/message_room_join.h"
 #include "../messaging/message_grouped.h"
 #include "../messaging/message_version.h"
+#include "../messaging/message_global_ignore.h"
+#include "../messaging/message_block_users.h"
 #include "../util.h"
 #include "../os_util.h"
 #include "../file_util.h"
@@ -227,7 +229,10 @@ house_app::start() {
 
     // Fetch current version information
     net_messenger()->send_msg(new ::message(::message::version_fetch));
-    
+    // Fetch global ignore list unless feature disabled
+    if (pref()->get<bool>("general", "global_ignore", true)) {
+        net_messenger()->send_msg(new ::message(::message::global_ignore_fetch));
+    }
     _login_win->user(pref()->get("user", "id", std::string()));
     // Use rot13 in nostalgic honour of this legendary scrambler!
     _login_win->pass(derot13(pref()->get("user", "pass", std::string())));
@@ -332,6 +337,9 @@ house_app::handle_messenger(FXObject *from, FXSelector sel, void *msnger_p) {
                     version_update_window(*i);
                 // }
                 break;
+            case ::message::global_ignore_list:
+                _handle_global_ignore(*i);
+                break;              
             case ::message::rvtm_exited:
                 ACE_DEBUG((LM_DEBUG, "house_app::rvtm_exited msg received\n"));
                 self_model()->user().sharing_tracks(false);
@@ -627,6 +635,38 @@ house_app::_handle_room_join_ack(::message *msg) {
     }
 
     interruptable_action_update();  
+}
+
+void
+house_app::_handle_global_ignore(::message *msg) {
+    ACE_DEBUG((LM_DEBUG, "house_app::_handle_global_ignore"));
+    message_global_ignore *m = dynamic_ptr_cast<message_global_ignore>(msg);
+    message_global_ignore::ip_list_type::const_iterator i = m->ip_begin();
+        
+    message_block_users *mb = new message_block_users(
+        ::message::block_users,
+        self_model()->user(),
+        self_model()->sequence(),
+        0
+    );
+    
+    for (; i != m->ip_end(); i++) {
+        const std::string &ipstr = i->ip;
+        struct in_addr a;
+        if (ACE_OS::inet_aton(ipstr.c_str(), &a) &&
+            a.s_addr != htonl(INADDR_ANY)      && 
+            a.s_addr != htonl(INADDR_LOOPBACK) &&
+            a.s_addr != htonl(INADDR_NONE)) {
+            
+            ACE_DEBUG((LM_DEBUG, "house_app::global_ignore recognized IP\n"));
+            mb->ip_push_back(a.s_addr);
+        }
+    }
+
+    if (mb->ip_size() > 0)
+        net_messenger()->send_msg(mb);
+    else
+        delete mb;
 }
 
 // TODO logic of not opening a window if self is not joining_room

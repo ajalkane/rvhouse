@@ -87,6 +87,7 @@ class house_app : public FXApp {
     void _handle_room_model_update(model::house *hm, ::message *msg);
     void _handle_room_join(::message *msg);
     void _handle_room_join_ack(::message *msg);
+    void _handle_global_ignore(::message *msg);
     void _cond_open_room_window(::message *msg);
     void _cond_open_private_message_window(::message *msg);
     bool _filter_message(::message *msg);

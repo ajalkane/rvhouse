@@ -120,6 +120,12 @@ room_settings::_room_to_form(const chat_gaming::room &r)
 void
 room_settings::_form_to_room(chat_gaming::room &r) const
 {
+    // Some sensible limits
+    if (_topic_field->getText().length() > 80)
+        _topic_field->setText(_topic_field->getText().left(80));
+    if (_pass_field->getText().length() > 32)
+        _pass_field->setText(_pass_field->getText().left(32));
+    
     r.topic(_topic_field->getText().trim().text());
     r.password(_pass_field->getText().text());
     r.laps(_laps_field->getValue());

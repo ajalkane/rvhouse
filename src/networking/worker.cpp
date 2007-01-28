@@ -101,6 +101,7 @@ worker::_main() {
     _group_adapter->init();
     
     _version_update_client = new version_update::client;
+    _global_ignore_client  = new global_ignore::client;
     
     while (!_quit) {
         ACE_DEBUG((LM_DEBUG, "worker: handle_events\n"));
@@ -116,6 +117,7 @@ worker::_main() {
     }
     
     delete _version_update_client;
+    delete _global_ignore_client;
 }
 
 int
@@ -179,6 +181,12 @@ worker::handle_message(message *msg) {
         // Deletes itself automatically after fetch has been called
         _version_update_client->fetch();
         _version_update_client = NULL;
+        break;
+    case message::global_ignore_fetch:
+        ACE_DEBUG((LM_DEBUG, "networking::worker: global_ignore_fetch received\n"));
+        // Deletes itself automatically after fetch has been called
+        _global_ignore_client->fetch();
+        _global_ignore_client = NULL;
         break;
     case message::send:
     {

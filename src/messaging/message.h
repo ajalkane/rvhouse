@@ -96,7 +96,9 @@ public:
         rvtm_exited,
 
         block_users,
-                
+        global_ignore_fetch,
+        global_ignore_list,
+        
         last
     };
     

@@ -133,6 +133,9 @@ namespace chat_gaming {
         inline bool authenticated() const;
         
         inline const std::string &ip_as_string() const { return _local.ip_as_string; }
+        inline const std::string &ip_as_string(const std::string &ip) { 
+            return _local.ip_as_string = ip; 
+        }
         inline const std::string &display_id()   const { return _local.display_id;   }
     
         inline int status() const { return _status; }

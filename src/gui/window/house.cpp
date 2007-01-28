@@ -58,6 +58,8 @@ FXDEFMAP(house) house_map[]= {
                           house::on_reconnect),
   FXMAPFUNC(SEL_TIMEOUT,  house::ID_DHT_DISCONNECTED,
                           house::on_dht_disconnected),
+  FXMAPFUNC(SEL_CONFIGURE,  house::ID_CONFIGURE,
+                          house::on_configure)                          
 };
 
 FXIMPLEMENT(house, FXMainWindow, house_map, ARRAYNUMBER(house_map))
@@ -743,7 +745,9 @@ house::handle_external_ip_message(::message *msg) {
     case message::external_ip_fetching:
         _status_tmp = langstr("main_win/ip_detecting", ms->str().c_str()); break;
     case message::external_ip_fetch_done:
-        _status_tmp = langstr("main_win/ip_detected",  ms->str().c_str()); break;
+        _status_tmp = langstr("main_win/ip_detected",  ms->str().c_str()); 
+        self_model()->user().ip_as_string(ms->str());
+        break;
     case message::external_ip_fetch_fail:
         _status_tmp = langstr("main_win/ip_failed",    ms->str().c_str()); break;
     default:
@@ -889,6 +893,14 @@ house::on_minimize(FXObject *from, FXSelector sel, void *) {
 long 
 house::on_restore(FXObject *from, FXSelector sel, void *) {
     ACE_DEBUG((LM_DEBUG, "window::house: on_restore\n"));
+    return 1;
+}
+
+long 
+house::on_configure(FXObject *from, FXSelector sel, void *) {
+   FXWindow *win = this;
+   ACE_DEBUG((LM_DEBUG, "house::on_configure %d/%d/%d/%d\n", 
+              win->getX(),win->getY(),win->getWidth(), win->getHeight()));
     return 1;
 }
 

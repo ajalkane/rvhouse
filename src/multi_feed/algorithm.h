@@ -85,10 +85,11 @@ public:
     std::string operator()(const chat_gaming::user &u, int) {
         std::ostringstream ostr;
         ostr << u.status_as_string();
-        if (u.status() != chat_gaming::user::status_chatting) {
+        // Always display the time now
+        // if (u.status() != chat_gaming::user::status_chatting) {
             int mins = (time(NULL) - u.status_time()) / 60;
             ostr << " " << mins << " " << langstr("words/minutes_short");
-        }
+        // }
         return ostr.str();
     }
 };      
