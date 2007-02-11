@@ -10,8 +10,11 @@ class message_global_ignore : public message {
 public:
     struct ip_entry {
         std::string ip;
+        std::string mask;
         std::string userid;
         std::string reason;
+        
+        inline ip_entry() : mask("255.255.255.255") {}
     };
     
     typedef std::list<ip_entry> ip_list_type;

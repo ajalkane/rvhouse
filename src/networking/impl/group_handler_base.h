@@ -43,8 +43,11 @@ namespace networking {
         void handle_private_refused     (message *msg);
         void handle_block_users         (message *msg);
         
+#if 0
         void ip_blocked(uint32_t ip, unsigned seq);
-        
+#endif        
+        void remove_blocked_users(unsigned seq);
+
         inline void notify(group_handler_notify *n);
         inline void user_self(const chat_gaming::user &u);
         int send(const std::string &msg, const std::string &channel, unsigned seq);

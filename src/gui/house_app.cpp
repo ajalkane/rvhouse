@@ -639,34 +639,59 @@ house_app::_handle_room_join_ack(::message *msg) {
 
 void
 house_app::_handle_global_ignore(::message *msg) {
-    ACE_DEBUG((LM_DEBUG, "house_app::_handle_global_ignore"));
+    ACE_DEBUG((LM_DEBUG, "house_app::_handle_global_ignore\n"));
     message_global_ignore *m = dynamic_ptr_cast<message_global_ignore>(msg);
     message_global_ignore::ip_list_type::const_iterator i = m->ip_begin();
-        
+    
     message_block_users *mb = new message_block_users(
         ::message::block_users,
         self_model()->user(),
         self_model()->sequence(),
         0
     );
+
+    mb->global_ignore(true);
+    
+    auto_ptr<message_block_users> mb_guard(mb);
     
     for (; i != m->ip_end(); i++) {
-        const std::string &ipstr = i->ip;
+        const std::string &ipstr   = i->ip;
+        const std::string &maskstr = i->mask;
         struct in_addr a;
-        if (ACE_OS::inet_aton(ipstr.c_str(), &a) &&
-            a.s_addr != htonl(INADDR_ANY)      && 
-            a.s_addr != htonl(INADDR_LOOPBACK) &&
-            a.s_addr != htonl(INADDR_NONE)) {
-            
-            ACE_DEBUG((LM_DEBUG, "house_app::global_ignore recognized IP\n"));
-            mb->ip_push_back(a.s_addr);
+        struct in_addr m;
+        if (!ACE_OS::inet_aton(ipstr.c_str(),   &a)   ||
+            !ACE_OS::inet_aton(maskstr.c_str(), &m)) 
+        {
+            ACE_DEBUG((LM_ERROR, "house_app::global_ignore invalid IP "
+                      " or mask address: %s/%s\n", 
+                      ipstr.c_str(), maskstr.c_str()));
+            continue;
         }
+        
+        a.s_addr = ntohl(a.s_addr);
+        m.s_addr = ntohl(m.s_addr);
+        
+        if (a.s_addr == INADDR_ANY      || 
+            a.s_addr == INADDR_LOOPBACK ||
+            a.s_addr == INADDR_NONE     ||
+            m.s_addr == INADDR_ANY) 
+        {
+            ACE_DEBUG((LM_ERROR, "house_app::global_ignore IP "
+                      " or mask invalid as IP: %s/%s\n", 
+                      ipstr.c_str(), maskstr.c_str()));
+            continue;
+        }
+        
+        ACE_DEBUG((LM_DEBUG, "house_app::global_ignore recognized IP\n"));
+        mb->ip_push_back(a.s_addr, m.s_addr);
     }
 
-    if (mb->ip_size() > 0)
-        net_messenger()->send_msg(mb);
-    else
-        delete mb;
+    if (mb->ip_size() > 0) {
+        // House window is also interested in this message, so pass it
+        // there too.
+        _house_win->handle_message(mb);
+        net_messenger()->send_msg(mb_guard.release());
+    }
 }
 
 // TODO logic of not opening a window if self is not joining_room

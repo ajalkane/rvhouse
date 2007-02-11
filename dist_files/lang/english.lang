@@ -28,6 +28,10 @@ rvl_home        = "WWW-site"
 rvl_champ       = "Championship"
 rvl_cup         = "Cup"
 
+rvr             = "Re-Volt Race"
+rvr_home        = "WWW-site"
+rvr_1vs1        = "1 vs 1 Championship"
+
 [menu_help]
 title           = "&Help"
 router_help     = "Router/Firewall Help"
@@ -114,6 +118,9 @@ dht_connect_err8   = "you can fix it :).\n"
 dht_connect_err9   = When you press OK, you will be directed
 dht_connect_err10  = to a router/firewall settings help page.
 dht_connect_err_title = "Error connecting"
+
+self_on_global_ignore_topic = "You are on global ignore list"
+self_on_global_ignore = "Your IP has been found from global ignore list.\nAs a result most people can not see you.\nIf you think you haven't done anything wrong\nand should be removed from global ignore\nthen post to RV Pub Forum about it\nat the address below"
 
 [new_version_win]
 title     = New RV House version

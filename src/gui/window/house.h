@@ -13,6 +13,7 @@
 #include "../../messaging/messenger.h"
 #include "../../messaging/message.h"
 #include "../../messaging/message_string.h"
+#include "../../messaging/message_block_users.h"
 #include "../../multi_feed/user_item.h"
 #include "../view/chat.h"
 #include "../view/users.h"
@@ -20,6 +21,8 @@
 #include "../message_handler.h"
 #include "../watched_window.h"
 #include "../util/flood_control.h"
+
+#include "../../networking/ip_block/store.h"
 
 namespace gui {
 namespace window {
@@ -63,6 +66,8 @@ class house
     std::string _status_tmp;
 
     util::flood_control _flood_control;
+
+    networking::ip_block::store _global_ip_block;
     
     typedef std::map<int, FXMenuRadio *> _menu_status_map_type;
     _menu_status_map_type _menu_status_map;
@@ -84,6 +89,8 @@ class house
     void _chat_command_model_rooms();
     void _chat_command_model_users();
     void _chat_command_model_self();
+    
+    void _check_if_self_blocked();
 /*    
     inline FXComposite *_view_container(FXComposite *parent) {
         return new FXVerticalFrame(
@@ -101,6 +108,7 @@ protected:
     bool handle_dht_message(::message *msg);
     bool handle_ctz_message(::message *msg);
     bool handle_external_ip_message(::message *msg);
+    void handle_global_block_users(::message_block_users *msg);
 public:
     enum {
         ID_CONNECT = FXMainWindow::ID_LAST,
@@ -119,6 +127,8 @@ public:
         ID_WWW_RVL_HOME,
         ID_WWW_RVL_CHAMP,
         ID_WWW_RVL_CUP,
+        ID_WWW_RVR_HOME,
+        ID_WWW_RVR_1VS1,
         ID_WWW_HELP_ROUTER,
         ID_WWW_HELP_CONN,
         ID_WWW_HELP_FAQ,

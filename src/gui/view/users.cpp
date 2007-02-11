@@ -778,27 +778,34 @@ users::on_user_block(FXObject *sender,FXSelector sel,void *ptr) {
     // before converting to IP number
     // if (regexp::match("([0-9]{1,3}[.]){3}[0-9]{1,3}", ipstr) {
     struct in_addr a;
-    if (ACE_OS::inet_aton(ipstr.c_str(), &a) &&
-        a.s_addr != htonl(INADDR_ANY)      && 
-        a.s_addr != htonl(INADDR_LOOPBACK) &&
-        a.s_addr != htonl(INADDR_NONE)) {
-        
-        ACE_DEBUG((LM_DEBUG, "users::on_user_block: recognized IP\n"));
-        message_block_users *m = new message_block_users(
-            ::message::block_users,
-            self_model()->user(),
-            self_model()->sequence(),
-            0
-        );
-        m->ip_push_back(a.s_addr);
-        net_messenger()->send_msg(m);
-
-        if (_observer)
-            _observer->user_blocked(item->feed_item().unambiguous_display_id());        
-    } else {
+    if (!ACE_OS::inet_aton(ipstr.c_str(), &a)) {
         ACE_ERROR((LM_ERROR, "users::on_user_block: IP '%s' not "
-                   "recognized or invalid as IP\n", ipstr.c_str()));
+                   "recognized\n", ipstr.c_str()));
+        return 0;
     }
+    
+    a.s_addr = ntohl(a.s_addr);
+    if (a.s_addr == INADDR_ANY      ||
+        a.s_addr == INADDR_LOOPBACK ||
+        a.s_addr == INADDR_NONE) 
+    {
+        ACE_ERROR((LM_ERROR, "users::on_user_block: IP '%s' invalid as IP\n",
+                   ipstr.c_str()));
+        return 0;
+    }
+        
+    ACE_DEBUG((LM_DEBUG, "users::on_user_block: recognized IP\n"));
+    message_block_users *m = new message_block_users(
+        ::message::block_users,
+        self_model()->user(),
+        self_model()->sequence(),
+        0
+    );
+    m->ip_push_back(a.s_addr);
+    net_messenger()->send_msg(m);
+
+    if (_observer)
+        _observer->user_blocked(item->feed_item().unambiguous_display_id());        
 
     return 0;
 }

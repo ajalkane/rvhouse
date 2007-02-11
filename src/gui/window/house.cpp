@@ -23,6 +23,7 @@
 #include "settings.h"
 #include "router_fw_help.h"
 #include "house.h"
+#include "house_message_box.h"
 
 namespace gui {
 namespace window {
@@ -232,6 +233,12 @@ house::house(FXApp *a)
     new FXMenuCommand(_menucomp,langstr("menu_comp/rvl_champ"),NULL,this,ID_WWW_RVL_CHAMP);
     new FXMenuCommand(_menucomp,langstr("menu_comp/rvl_cup"),NULL,this,ID_WWW_RVL_CUP);
 
+    new FXMenuSeparator(_menucomp);
+    (new FXMenuCommand(_menucomp,langstr("menu_comp/rvr"),NULL,NULL,0))->disable();
+    new FXMenuSeparator(_menucomp);
+    new FXMenuCommand(_menucomp,langstr("menu_comp/rvr_home"),NULL,this,ID_WWW_RVR_HOME);
+    new FXMenuCommand(_menucomp,langstr("menu_comp/rvr_1vs1"),NULL,this,ID_WWW_RVR_1VS1);
+
     new FXMenuCommand(_menuhelp,langstr("menu_help/router_help"),NULL,this,ID_WWW_HELP_ROUTER);
     new FXMenuCommand(_menuhelp,langstr("menu_help/faq"),NULL,this,ID_WWW_HELP_FAQ);
     new FXMenuCommand(_menuhelp,langstr("menu_help/conn_help"),NULL,this,ID_WWW_HELP_CONN);
@@ -253,6 +260,8 @@ house::house(FXApp *a)
     _menu_www_map[ID_WWW_RVL_HOME]    = conf()->get("www", "rvl_home");
     _menu_www_map[ID_WWW_RVL_CHAMP]   = conf()->get("www", "rvl_championship");
     _menu_www_map[ID_WWW_RVL_CUP]     = conf()->get("www", "rvl_cup");
+    _menu_www_map[ID_WWW_RVR_HOME]    = conf()->get("www", "rvr_home");
+    _menu_www_map[ID_WWW_RVR_1VS1]    = conf()->get("www", "rvr_1vs1");
     _menu_www_map[ID_WWW_HELP_ROUTER] = conf()->get("www", "help_router");
     _menu_www_map[ID_WWW_HELP_CONN]   = conf()->get("www", "help_connection");
     _menu_www_map[ID_WWW_HELP_FAQ]    = conf()->get("www", "help_faq");
@@ -631,6 +640,15 @@ house::handle_message(::message *msg) {
                 os::flash_window(this);
         }
         break;
+    case ::message::block_users:
+    {
+        message_block_users *mb = dynamic_ptr_cast<message_block_users>(msg);
+        if (mb->global_ignore()) {
+            handle_global_block_users(mb);
+        }
+    }
+        break;
+        
     }
     _users_view->handle_message(msg);
     _chat_view->handle_message(msg);    
@@ -747,6 +765,7 @@ house::handle_external_ip_message(::message *msg) {
     case message::external_ip_fetch_done:
         _status_tmp = langstr("main_win/ip_detected",  ms->str().c_str()); 
         self_model()->user().ip_as_string(ms->str());
+        _check_if_self_blocked();
         break;
     case message::external_ip_fetch_fail:
         _status_tmp = langstr("main_win/ip_failed",    ms->str().c_str()); break;
@@ -756,6 +775,41 @@ house::handle_external_ip_message(::message *msg) {
 
     _update_status();
     return true;
+}
+
+void
+house::handle_global_block_users(::message_block_users *mb) {
+    _global_ip_block.handle_message(mb);
+    _check_if_self_blocked();
+}
+
+void
+house::_check_if_self_blocked() {
+    if (self_model()->user().ip_as_string().empty() ||
+        _global_ip_block.size() == 0)
+    {
+        return;
+    }
+    
+    struct in_addr a;
+    if (!ACE_OS::inet_aton(self_model()->user().ip_as_string().c_str(), &a)) {
+        ACE_ERROR((LM_ERROR, "house::_check_if_self_blocked: "
+                   "could not make IP of %s\n", 
+                   self_model()->user().ip_as_string().c_str()));
+        return;
+    }
+    
+    a.s_addr = ntohl(a.s_addr);
+    
+    if (_global_ip_block.is_blocked(a.s_addr)) {
+        // Let user know he is in global block list, how unfortunate for him
+        house_message_box::information(
+            ::app(), FX::MBOX_OK, 
+            conf()->get("www", "pub_forum").c_str(),
+            langstr("app/self_on_global_ignore_topic"),
+            langstr("app/self_on_global_ignore")
+        );        
+    }
 }
 
 void

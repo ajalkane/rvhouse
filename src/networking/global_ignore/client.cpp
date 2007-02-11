@@ -73,10 +73,29 @@ client::handle_response(const http::response &resp)
                       res[1].c_str(),
                       res[2].c_str()
                       ));
+            // Parse possible ip/mask
+            std::vector<std::string> ipmask(2);
+            if (regexp::match("([0-9.]+)/([0-9.]+)", res[0], ipmask.begin())) {
+                ACE_DEBUG((LM_DEBUG, "global_ignore::client: "
+                           "got ip/mask: %s/%s\n", 
+                           ipmask[0].c_str(),
+                           ipmask[1].c_str()));
+            } else {
+                ipmask[0] = res[0];
+            }
             message_global_ignore::ip_entry e;
-            e.ip     = res[0];
+            e.ip     = ipmask[0];
+            if (!ipmask[1].empty())
+                e.mask = ipmask[1];
+                
             e.userid = res[1];
             e.reason = res[2];
+
+            ACE_DEBUG((LM_DEBUG, "global_ignore::client: "
+                       "ip/mask/userid/reason: %s/%s/%s/%s\n", 
+                       e.ip.c_str(), e.mask.c_str(), 
+                       e.userid.c_str(), e.reason.c_str()));
+            
             m->ip_push_back(e);
         } else if (line.empty()) {
             // break;

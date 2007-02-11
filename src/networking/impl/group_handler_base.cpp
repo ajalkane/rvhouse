@@ -153,19 +153,51 @@ group_handler_base::handle_private_refused(message *msg) {
 void
 group_handler_base::handle_block_users(message *msg) {
     message_block_users *m  = dynamic_ptr_cast<message_block_users>(msg);
-    
+#if 0
+      
     message_block_users::list_type::const_iterator i   = m->ip_begin();
     message_block_users::list_type::const_iterator end = m->ip_end();
     for (; i != end; i++) {
-        ip_blocked(*i, m->sequence());
+        ip_blocked(i->ip, i->mask, m->sequence());
     }
-    
+#endif
+    remove_blocked_users(m->sequence());
 }
 
 void
-group_handler_base::ip_blocked(uint32_t ip, unsigned seq) {
+group_handler_base::remove_blocked_users(unsigned seq) {    
+    // Find all nodes with a blocked IP and do node_removed for them.
+    _house_type::user_iterator i   = _house.user_begin();
+    _house_type::user_iterator end = _house.user_end();
+    typedef std::list<const netcomgrp::node *> list_type;
+    list_type rm;
+    
+    for (; i != end; i++) {
+        if (i->node() == NULL) continue;
+        if (net_ip_block()->is_blocked(i->node()->addr().get_ip_address()))
+            rm.push_back(i->node());
+    }
+    list_type::const_iterator ri = rm.begin();
+    for (; ri != rm.end(); ri++) {
+        ACE_DEBUG((LM_DEBUG, "group_handler_base::remove_blocked_users removing node "
+                  "%s:%d\n", 
+                  (*ri)->addr().get_host_addr(), 
+                  (*ri)->addr().get_port_number()));
+
+        _house_adapter->send_to(
+            chat_gaming::pdu::header(chat_gaming::pdu::id_user_blocked, seq),
+            *ri
+        );
+                  
+        node_removed(*ri);
+    }
+}
+
+#if 0    
+void
+group_handler_base::ip_blocked(uint32_t ip, uint32_t mask, unsigned seq) {
     char ip_str[INET_ADDRSTRLEN];
-    if (ACE_OS::inet_ntop(AF_INET, &ip, ip_str, sizeof(ip_str))) {
+    if (ACE_OS::inet_htop(AF_INET, &ip, ip_str, sizeof(ip_str))) {
         ACE_DEBUG((LM_DEBUG, "group_handler_base::ip_blocked %s\n", ip_str));
     } else {
         ACE_ERROR((LM_ERROR, "group_handler_base::ip_blocked conversion failed\n"));
@@ -201,6 +233,7 @@ group_handler_base::ip_blocked(uint32_t ip, unsigned seq) {
         node_removed(*ri);
     }
 }
+#endif
 
 int
 group_handler_base::node_added(const netcomgrp::node *n) {
@@ -211,7 +244,7 @@ group_handler_base::node_added(const netcomgrp::node *n) {
               n->addr().get_host_addr(),
               n->addr().get_port_number()));
 
-    if (net_ip_block()->is_blocked(htonl(n->addr().get_ip_address()))) {
+    if (net_ip_block()->is_blocked(n->addr().get_ip_address())) {
         ACE_DEBUG((LM_DEBUG, "group_handler_base: node added from blocked IP %s "
                   "received", n->addr().get_host_addr()));
         return 0;

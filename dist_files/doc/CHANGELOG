@@ -1,8 +1,17 @@
 RV House change log
 
+Version 0.90.8 (11.02.2007)
+- Competitions menu has links to new online competition (Re-Volt Race)
+- About dialog includes new links: RRR forum and Re-Volt Race
+- Improvements to global ignore list
+
+Version 0.90.1 (28.01.2007)
+- P2P connection node timeout more practical 30 seconds
+
 Version 0.90.0 (28.01.2007)
 - Global ignore list to help ignoring trouble makers
 - Time user has been in chatting status shown
+- P2P connection node timeout bug fixed
 
 Version 0.89.2 (31.12.2006)
 - Flood control on private and room windows

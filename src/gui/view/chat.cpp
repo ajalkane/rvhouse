@@ -223,10 +223,12 @@ chat::handle_message(::message *msg) {
     case ::message::block_users:
     {
         message_block_users *m = dynamic_ptr_cast<message_block_users>(msg);
-        ACE_DEBUG((LM_DEBUG, "chat::handle message block_users\n"));
-        status_message(
-            langstr("chat/user_ignores", m->user().display_id().c_str())
-        );
+        if (m->global_ignore() == false) {
+            ACE_DEBUG((LM_DEBUG, "chat::handle message block_users\n"));
+            status_message(
+                langstr("chat/user_ignores", m->user().display_id().c_str())
+            );
+        }
     }
         break;
     case ::message::global_ignore_list:
