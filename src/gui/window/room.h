@@ -51,7 +51,7 @@ class room
     void _launcher_error(int err);
     void _launch_host();
     void _launch_join(chat_gaming::house::user_iterator host_ui);
-    model::house::user_iterator room::_playing_host();
+    model::house::user_iterator _playing_host();
     void _launched_display();
     void _buttons_state();
     void _init();

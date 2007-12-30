@@ -135,28 +135,34 @@ void init_pre() {
     std::string logamnt = conf()->get<std::string>("log", "amount", "2"); // 2 log files
     std::string logintr = conf()->get<std::string>("log", "interval", "10"); // 10 interval for sampling log file size
     bool logdebug       = conf()->get<bool>       ("log", "debug", true);
-    
-    logfile = app_rel_path(logfile);
-    std::string logpars = "VERBOSE_LITE";
-    
-    const char *log_s_pars[] = {
-        "-s", logfile.c_str(),
-        "-m", logsize.c_str(),
-        "-N", logamnt.c_str(),
-        "-i", logintr.c_str(),
-        "-f", logpars.c_str()
-    };
 
-    logging_strategy = new ACE_Logging_Strategy;
+    if (logfile == "stderr") logfile.clear();
+    if (!logfile.empty()) logfile = app_rel_path(logfile);
+    std::string logpars = "VERBOSE_LITE";
     
     // TODO logging strategy's init unfortunately
     // writes temporarily to the passed strings due
     // to using strtok... using std::strings 
     // as values is technically wrong but will do for
     // now. Better to make a copy of the log_s_pars,
-    // maybe with an encapsulating class    
-    if (logging_strategy->init(array_sizeof(log_s_pars), 
-                               const_cast<char **>(log_s_pars))) 
+    // maybe with an encapsulating class
+    // Temporary solution: copy the strings with strdup
+    
+    char *log_s_pars[] = {
+        "-f", strdup(logpars.c_str()),
+        "-m", strdup(logsize.c_str()),
+        "-N", strdup(logamnt.c_str()),
+        "-i", strdup(logintr.c_str()),
+        "-s", strdup(logfile.c_str())
+    };
+
+    size_t log_s_pars_size = array_sizeof(log_s_pars);
+    if (logfile.empty()) log_s_pars_size = 1;
+    
+    logging_strategy = new ACE_Logging_Strategy;
+    
+    if (logging_strategy->init(log_s_pars_size, 
+                               log_s_pars)) 
     {
         std::cerr << "Could not open log system, params used: " << std::endl;
                                

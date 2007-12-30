@@ -2,9 +2,9 @@
 #include "fx_util.h"
 #include "exception.h"
 
-no_space_as_ws_ctype config_file::_loc_facet;
+// no_space_as_ws_ctype config_file::_loc_facet = new no_space_as_ws_ctype();
 std::locale          config_file::_loc = 
-  std::locale(std::locale(), &config_file::_loc_facet);
+  std::locale(std::locale(), new no_space_as_ws_ctype());
 
 config_file::config_file() : 
     _conf(new FXSettings),

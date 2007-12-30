@@ -19,7 +19,7 @@ class config_file {
     std::string _parsed_file;
     bool        _no_delete;
 
-    static no_space_as_ws_ctype _loc_facet;
+    // static no_space_as_ws_ctype *_loc_facet;
     static std::locale _loc;
     
 public:
