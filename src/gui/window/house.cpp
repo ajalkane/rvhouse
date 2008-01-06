@@ -226,14 +226,16 @@ house::house(FXApp *a)
     _room_join_menu = 
         new FXMenuCommand(_menuplayer,langstr("menu_player/join_room"), NULL, this, ID_ROOM_JOIN);
     _room_join_menu->hide();
-    
-    (new FXMenuCommand(_menucomp,langstr("menu_comp/rvl"),NULL,NULL,0))->disable();
+
+/* RV league is no more */    
+/*    (new FXMenuCommand(_menucomp,langstr("menu_comp/rvl"),NULL,NULL,0))->disable();
     new FXMenuSeparator(_menucomp);
     new FXMenuCommand(_menucomp,langstr("menu_comp/rvl_home"),NULL,this,ID_WWW_RVL_HOME);
     new FXMenuCommand(_menucomp,langstr("menu_comp/rvl_champ"),NULL,this,ID_WWW_RVL_CHAMP);
     new FXMenuCommand(_menucomp,langstr("menu_comp/rvl_cup"),NULL,this,ID_WWW_RVL_CUP);
 
     new FXMenuSeparator(_menucomp);
+*/
     (new FXMenuCommand(_menucomp,langstr("menu_comp/rvr"),NULL,NULL,0))->disable();
     new FXMenuSeparator(_menucomp);
     new FXMenuCommand(_menucomp,langstr("menu_comp/rvr_home"),NULL,this,ID_WWW_RVR_HOME);
@@ -257,9 +259,11 @@ house::house(FXApp *a)
     _rooms_view->observer_set(this);
     _users_view->observer_set(this);
 
+/*
     _menu_www_map[ID_WWW_RVL_HOME]    = conf()->get("www", "rvl_home");
     _menu_www_map[ID_WWW_RVL_CHAMP]   = conf()->get("www", "rvl_championship");
     _menu_www_map[ID_WWW_RVL_CUP]     = conf()->get("www", "rvl_cup");
+*/
     _menu_www_map[ID_WWW_RVR_HOME]    = conf()->get("www", "rvr_home");
     _menu_www_map[ID_WWW_RVR_1VS1]    = conf()->get("www", "rvr_1vs1");
     _menu_www_map[ID_WWW_HELP_ROUTER] = conf()->get("www", "help_router");
