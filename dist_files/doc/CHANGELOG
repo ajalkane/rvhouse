@@ -1,5 +1,15 @@
 RV House change log
 
+Version 0.91.1 (12.01.2008) 
+- More fixes to the UDP layer
+- RvR links
+
+Version 0.91.0 (06.01.2008) 
+- Bug fix release
+- Log file size should not run out of bounds any more
+- If centralized server has problems should not crash RV House
+- The UDP layer updated to handle better variable send timeouts
+
 Version 0.90.8 (11.02.2007)
 - Competitions menu has links to new online competition (Re-Volt Race)
 - About dialog includes new links: RRR forum and Re-Volt Race

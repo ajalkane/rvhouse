@@ -240,6 +240,8 @@ house::house(FXApp *a)
     new FXMenuSeparator(_menucomp);
     new FXMenuCommand(_menucomp,langstr("menu_comp/rvr_home"),NULL,this,ID_WWW_RVR_HOME);
     new FXMenuCommand(_menucomp,langstr("menu_comp/rvr_1vs1"),NULL,this,ID_WWW_RVR_1VS1);
+    new FXMenuCommand(_menucomp,langstr("menu_comp/rvr_players"),NULL,this,ID_WWW_RVR_PLAYERS);
+    new FXMenuCommand(_menucomp,langstr("menu_comp/rvr_teams"),NULL,this,ID_WWW_RVR_TEAMS);
 
     new FXMenuCommand(_menuhelp,langstr("menu_help/router_help"),NULL,this,ID_WWW_HELP_ROUTER);
     new FXMenuCommand(_menuhelp,langstr("menu_help/faq"),NULL,this,ID_WWW_HELP_FAQ);

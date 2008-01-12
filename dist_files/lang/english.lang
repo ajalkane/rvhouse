@@ -31,6 +31,8 @@ rvl_cup         = "Cup"
 rvr             = "Re-Volt Race"
 rvr_home        = "WWW-site"
 rvr_1vs1        = "1 vs 1 Championship"
+rvr_players     = "Player profiles"
+rvr_teams       = "Teams"
 
 [menu_help]
 title           = "&Help"

@@ -28,7 +28,7 @@ about::about(FXWindow *owner)
     
     str << APP_NAME << " " << APP_VERSION << endl
         << endl
-        << "Copyright (C) 2006 Arto Jalkanen" << endl
+        << "Copyright (C) 2006-2008 Arto Jalkanen" << endl
         << endl
         << langstr("about_win/license", "GPL") << endl
         << endl
@@ -45,11 +45,6 @@ about::about(FXWindow *owner)
     new FXLinkLabel(this, "http://www.rvtt.com");
     new FXLinkLabel(this, "http://www.revolt-cars.com");
     new FXLinkLabel(this, "http://www.frappr.com/revoltgame");
-/*      << "http://revolt.speedweek.net" << endl
-        << "http://rvleague.free.fr" << endl
-        << "http://www.rvtt.com (french)" << endl
-        << "http://www.revolt-cars.com (french)" << endl
-        << "http://www.frappr.com/revoltgame" << endl */
     str.str("");
     str << endl
         << langstr("about_win/using") << endl

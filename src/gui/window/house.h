@@ -129,6 +129,8 @@ public:
         ID_WWW_RVL_CUP,
         ID_WWW_RVR_HOME,
         ID_WWW_RVR_1VS1,
+        ID_WWW_RVR_PLAYERS,
+        ID_WWW_RVR_TEAMS,        
         ID_WWW_HELP_ROUTER,
         ID_WWW_HELP_CONN,
         ID_WWW_HELP_FAQ,
