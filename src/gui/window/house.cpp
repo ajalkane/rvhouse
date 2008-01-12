@@ -268,6 +268,8 @@ house::house(FXApp *a)
 */
     _menu_www_map[ID_WWW_RVR_HOME]    = conf()->get("www", "rvr_home");
     _menu_www_map[ID_WWW_RVR_1VS1]    = conf()->get("www", "rvr_1vs1");
+    _menu_www_map[ID_WWW_RVR_PLAYERS] = conf()->get("www", "rvr_players");
+    _menu_www_map[ID_WWW_RVR_TEAMS]   = conf()->get("www", "rvr_teams");
     _menu_www_map[ID_WWW_HELP_ROUTER] = conf()->get("www", "help_router");
     _menu_www_map[ID_WWW_HELP_CONN]   = conf()->get("www", "help_connection");
     _menu_www_map[ID_WWW_HELP_FAQ]    = conf()->get("www", "help_faq");
