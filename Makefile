@@ -32,3 +32,13 @@ dist: clean_all
 	gzip $(DIST_BASENAME).tar
 	rm -r dist_tmp
 
+# Temporary solution
+# TODO: to scons file generalized method of creating
+# tar package of the binary distribution
+linux_bin_dist:
+	strip build/linux2/Release/rv_house
+	mkdir -p linux_bin_dist/rv_house
+	cp -rp dist_files/* linux_bin_dist/rv_house
+	rm linux_bin_dist/rv_house/pthreadGC.dll
+	cp -p build/linux2/Release/rv_house linux_bin_dist/rv_house
+	cd linux_bin_dist; tar -cvf rv_house_linux.tar --exclude '.*' rv_house; gzip rv_house_linux.tar
