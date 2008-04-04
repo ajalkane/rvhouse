@@ -28,6 +28,12 @@ rvl_home        = "WWW-site"
 rvl_champ       = "Championat"
 rvl_cup         = "Coupe"
 
+rvr             = "Re-Volt Race"
+rvr_home        = "WWW-site"
+rvr_1vs1        = "Championnat 1 contre 1"
+rvr_players     = "Profils des Joueurs"
+rvr_teams       = "Equipes"
+
 [menu_help]
 title           = "&Aide"
 router_help     = "Aide Routeur/Firewall"
@@ -105,6 +111,9 @@ dht_connect_err8   = vous pouvier le résoudre :).\n
 dht_connect_err9   = En appuyant sur OK, vous serez redirigé
 dht_connect_err10  = vers la page d'aide à la configuration de votre router/firewall.
 dht_connect_err_title = "Erreur de connexion"
+self_on_global_ignore_topic = "Vous êtes dans la liste noire générale"
+self_on_global_ignore = "Votre IP fait partie de la liste noire globale.\nLa plupart des joueurs ne pourront pas vous voir.\nSi vous pensez que vous n'avez rien fait de mal \net que vous souhaités être supprimé de la liste noire,\nenvoyez un message sur le Forum RV Pub à l'adresse ci-dessous:"
+
 
 [new_version_win]
 title     = Nouvelle version de RV House
@@ -187,6 +196,13 @@ private_msg_refused      = L'utilisateur a refusé votre message: %1
 
 flood_control = Contrôle du Flood
 
+user_ignored             = Ignore %1
+user_ignores             = %1 ne souhaite pas vous voir
+
+global_ignore = Following users are in global ignore list because of disruptive behaviour and are ignored by you automatically. You can disable global ignoring from Settings if you wish to.
+user_global_ignore = %1 est dans la lsite noire, raison: %2
+
+
 [room_settings_win]
 title       = Paramètres de la salle
 topic       = &Titre:
@@ -257,6 +273,7 @@ share_tracks  = Partager les circuits
 dload_tracks  = Télécharger les circuits
 kick          = Expulser
 private_msg   = Envoyer un message privé
+ignore_user   = Ignorer l'utilisateur
 
 [status]
 chatting      = Discute
@@ -279,8 +296,10 @@ flash_main_chat = Clignoter si message dans le chat principal
 flash_room_chat = Clignoter si message dans le chat de la salle
 flash_new_room  = Clignoter si nouvelle salle créée
 flash_new_user  = Clignoter si quelqu'un se connecte
+flash_nick      = Clignoter si message dans le chat principal
 
 away_minimize   = Absent quand le fenêtre est minimisée
+global_ignore   = Utiliser la liste noire générale
 
 base_color      = Couleur de Base
 border_color    = Couleur des Bordures
