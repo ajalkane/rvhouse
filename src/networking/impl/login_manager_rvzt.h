@@ -24,8 +24,9 @@ namespace networking {
         virtual void register_user(const message *msg);
     private:
         http::fetcher *_http_fetcher;
-        std::string    _base_url;
-
+        std::string    _base_validate_url;
+        std::string    _base_register_url;
+        
         void _login_operation(const std::string &req_url, 
                               const std::string &user,
                               int _msg_base);

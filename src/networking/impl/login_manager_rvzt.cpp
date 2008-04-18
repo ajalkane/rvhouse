@@ -6,6 +6,7 @@
 #include "../../util.h"
 #include "../../regexp.h"
 
+#include "../global.h"
 #include "../worker.h"
 #include "login_manager_rvzt.h"
 
@@ -15,11 +16,14 @@ namespace networking {
 
 login_manager_rvzt::login_manager_rvzt(ACE_Reactor *r) 
   : login_manager(r),
-    _http_fetcher(new http::fetcher),
-    _base_url("http://revolt.speedweek.net/main/")
-    // _base_url("http://localhost/rvzt/main/")
+    _http_fetcher(new http::fetcher)
 {
-    
+    _base_validate_url = net_conf()->get<std::string>(
+        "auth", "validate", "http://revolt.speedweek.net/main/user_validate.php"
+    );
+    _base_register_url = net_conf()->get<std::string>(
+        "auth", "register", "http://revolt.speedweek.net/main/user_register.php"
+    );
 }
 
 login_manager_rvzt::~login_manager_rvzt() {
@@ -51,7 +55,7 @@ void
 login_manager_rvzt::login(const message *msg) {
     const message_login *m = dynamic_ptr_cast<const message_login>(msg);
     
-    std::string req_url = _base_url + "user_validate.php";
+    std::string req_url = _base_validate_url;
     req_url += "?user=" + m->user();
     req_url += "&pass=" + m->pass();
 
@@ -62,7 +66,7 @@ void
 login_manager_rvzt::register_user(const message *msg) {
     const message_register *m = dynamic_ptr_cast<const message_register>(msg);
     
-    std::string req_url = _base_url + "user_register.php";
+    std::string req_url = _base_register_url;
     req_url += "?user=" + m->user();
     req_url += "&pass=" + m->pass();
     req_url += "&mail=" + m->mail();

@@ -18,6 +18,9 @@ Version 0.90.8 (11.02.2007)
 - About dialog includes new links: RRR forum and Re-Volt Race
 - Improvements to global ignore list
 
+Version 0.91.3 (18.04.2008)
+- Authentication server configurable in rvhouse.conf
+
 Version 0.90.1 (28.01.2007)
 - P2P connection node timeout more practical 30 seconds
 
