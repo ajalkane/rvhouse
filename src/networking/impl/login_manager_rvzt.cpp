@@ -5,7 +5,7 @@
 #include "../../messaging/message_register.h"
 #include "../../util.h"
 #include "../../regexp.h"
-
+#include "../http/url.h"
 #include "../global.h"
 #include "../worker.h"
 #include "login_manager_rvzt.h"
@@ -24,8 +24,26 @@ login_manager_rvzt::login_manager_rvzt(ACE_Reactor *r)
     _base_register_url = net_conf()->get<std::string>(
         "auth", "register", "http://revolt.speedweek.net/main/user_register.php"
     );
+    
+    // Ensure only revolt.speedweek.net or www.revoltrace.com used
+    http::url validate_url = http::url(_base_validate_url);
+    http::url register_url = http::url(_base_register_url);
+    
+    if (!_check_auth_url(validate_url))
+        throw exception(0, "Invalid validation URL");
+    if (!_check_auth_url(register_url))
+        throw exception(0, "Invalid register URL");
+        
 }
 
+bool login_manager_rvzt::_check_auth_url(const http::url &u)
+{
+    if (u.host() == "revolt.speedweek.net" ||
+        u.host() == "www.revoltrace.com") {
+        return true;
+    }
+    return false;
+}
 login_manager_rvzt::~login_manager_rvzt() {
     delete _http_fetcher;
 }

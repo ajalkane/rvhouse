@@ -32,20 +32,26 @@ url::parse(const std::string &s) {
 
     ACE_DEBUG((LM_DEBUG, "Parsed URL: to host: %s, port: %s\n",
                _host.c_str(), _port.c_str()));
-            
+
+    _is_addr_set = false;        
     // std::string addr_str = _host + ":" + _port;
     // _addr.set   (addr_str.c_str());
-    _addr.set(atoi(_port.c_str()), _host.c_str());
-    
-    if (_addr.is_any())  // _addr.get_ip_address() == INADDR_ANY ||
-        // _addr.get_ip_address() == INADDR_NONE)
-    {
-        // throw exceptionf(0, "Could not resolve address");
-        throw exceptionf(0, "Could not resolve address '%s' from URL: %s", 
-                         _host.c_str(), s.c_str());
-    }       
-}
+ }
 
+void url::_set_addr() const
+{
+    _addr.set(atoi(_port.c_str()), _host.c_str());
+     
+     if (_addr.is_any())  // _addr.get_ip_address() == INADDR_ANY ||
+         // _addr.get_ip_address() == INADDR_NONE)
+     {
+         // throw exceptionf(0, "Could not resolve address");
+         throw exceptionf(0, "Could not resolve address '%s' from URL", 
+                          _host.c_str());
+     }
+     
+     _is_addr_set = true;
+}
 
 } // ns http
 } // ns networking

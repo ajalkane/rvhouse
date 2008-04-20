@@ -14,21 +14,23 @@ namespace http {
      * Encapsulates URL
      */
     class url {
-        ACE_INET_Addr _addr;
+        mutable ACE_INET_Addr _addr;
+        mutable bool  _is_addr_set;
         std::string   _file;
         std::string   _host;
         std::string   _port;
         
+        void _set_addr() const;
     public:
-        inline url() {}
-        inline url(const std::string &url_string) { parse(url_string); }
-        // inline url(const url &o);
+        inline url() : _is_addr_set(false) {}
+        inline url(const std::string &url_string) 
+        { parse(url_string); }
 
         virtual ~url();
                 
         void parse(const std::string &url_string);
         
-        inline const ACE_INET_Addr &addr() const;       
+        inline const ACE_INET_Addr &addr() const;
         inline const std::string   &file() const;
         inline const std::string   &host() const;
         inline const std::string   &port() const;
@@ -40,6 +42,7 @@ namespace http {
         *this = o;
     } */
     inline const ACE_INET_Addr &url::addr() const {
+        if (!_is_addr_set) _set_addr();
         return _addr;
     }
     

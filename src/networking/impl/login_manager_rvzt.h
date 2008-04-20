@@ -8,6 +8,7 @@
 
 #include "../login_manager.h"
 #include "../http/fetcher.h"
+#include "../http/url.h"
 
 namespace networking {
     // Implementation of the login manager that uses RVZT's
@@ -30,7 +31,7 @@ namespace networking {
         void _login_operation(const std::string &req_url, 
                               const std::string &user,
                               int _msg_base);
-        
+        bool _check_auth_url(const http::url &u);
         class _fetch_handler : public http::handler {
             login_manager_rvzt *_owner;
             std::string         _user;
