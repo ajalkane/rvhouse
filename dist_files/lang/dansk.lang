@@ -1,0 +1,330 @@
+[common]
+ok_button       = "&OK"
+cancel_button   = "&Annulér"
+apply_button    = "&Anvend"
+
+[menu_file]
+title           = "&Filer"
+quit            = "&Afslut\tCtl-Q"
+
+[menu_edit]
+title           = "&Redigér"
+settings        = "&Indstillinger...\tAlt-S"
+
+[menu_player]
+title           = "&Spiller"
+status          = "Status"
+create_room     = "Nyt Rum...\tCtl-R"
+join_room       = "Join rum"
+chatting        = "Chatting\tShift-Alt-C"
+playing         = "Spiller\tShift-Alt-P"
+away            = "Ikke til stede\tShift-Alt-A"
+dont_disturb    = "Optaget\tShift-Alt-D"
+
+[menu_comp]
+title           = "&Competitions"
+rvl             = "RV League"
+rvl_home        = "WWW-site"
+rvl_champ       = "Championship"
+rvl_cup         = "Cup"
+
+rvr             = "Re-Volt Race"
+rvr_home        = "WWW-site"
+rvr_1vs1        = "1 vs 1 Championship"
+rvr_players     = "Spiller profiler"
+rvr_teams       = "Hold"
+
+[menu_help]
+title           = "&Hjælp"
+router_help     = "Router/Firewall Hjælp"
+faq             = "RV House FAQ"
+conn_help       = "Forbindelses Hjælp doc"
+about_house     = "Om RV House"
+
+[login_win]
+title           = Login
+user_id         = &Bruger ID:
+password        = &Password:
+uses_rvzt_login = Bruger RVZT login
+login           = &Login
+register        = &Registrér
+quit            = &Afslut
+
+login_err_topic = Kan ikke log in
+fill_user       = Skriv dit bruger ID
+fill_pass       = Skriv dit password
+invalid_user    = Forkert bruger ID, det skal være mellem 3 til 20 tegn og kan indeholde tegnene a-z, A-Z og _
+invalid_pass    = Forkert password, det skal være mellem 3 eller flere tegn og må kun indeholde tegnene a-z, A-Z og _
+server_down     = Login server kunne ikke blive kontakted, dit bruger id er ikke blevet godkendt endnu. Vil du fortsætte alligevel?
+validation_err  = Forkert bruger ID eller password
+
+
+[register_win]
+title           = Registrér bruger
+user_id         = &bruger ID:
+password        = &Password:
+repassword      = &Gen-skriv password:
+email           = &E-mail:
+register        = Registrér
+cancel          = &Annulér
+
+reg_err_topic   = Kan ikke registrere bruger
+reg_ok_topic    = Du er nu Registreret
+fill_user       = Skriv dit bruger ID
+fill_pass       = Skriv dit password
+pass_mismatch   = Passwords matcher ikke!
+invalid_user    = Forkert bruger ID, det skal være mellem 3 til 20 tegn og kan indeholde tegnene a-z, A-Z og _
+invalid_pass    = Forkert password, det skal være mellem 3 eller flere tegn og må kun indeholde tegnene a-z, A-Z og _
+invalid_email   = Forkert E-mail addresse
+server_down     = Kan ikke kontakte server. Kan ikke registrere
+user_reserved   = Det bruger ID du prøvede at registrere er reserveret, vælg venligst et andet ét
+reg_ok          = Du er nu registreret og kan nu logge ind med dit brugernavn og password.
+
+
+[about_win]
+title         = Om
+# %1 er erstattet med licensen . Eksempel: Udgivet under GPL
+license       = Udgivet under %1
+# %1 Er erstattet af Ejerens Ikoner . Ikoner af ADX
+icons_by      = Ikoner af %1
+# %1 er erstattet af ejeren af RV House Ikonet. RV House ikonet er lavet af Pigasque
+house_icon_by = RV House ikon af %1
+other_sites   = Som populære sider der kan blive brugelige for RV House:
+using         = Using:
+# %1 Er erstattet af biblioteks navnet, %2 af biblioteks ejer
+# ACE netværks bibliotek (by Douglas C. Schmidt)
+using_lib     = %1 (af %2)
+translations  = Oversættelser:
+# %1 er blevet erstattet af Sprog-navnet, %2 Af ham der lavede oversættelsen
+# %3 af oversætterens navn %4 Af versionen af oversættelsen
+# Eksempel:
+# Spansk af ADX <the.adx@gmail.com> for v0.81
+translation   = %1 af %2 <%3> for v%4
+
+[app]
+rv_not_found_title = "Re-Volt installeret?"
+rv_not_found       = "Re-Volt blev ikke fundet i registeret\nHar du installeret og kørt Revolt\ninden du startede RVHouse?"
+rv_house_running   = "RV House kører allerede!"
+join_room_full     = Rummet er fuldt!
+join_invalid_pass  = Forkert password er givet!
+join_refused       = Host nægtede at tiltræde rummet!
+join_err_topic     = Kunne ikke join rummet
+dht_connect_err1   = "kunne ikke få forbindelese til det decentrale netværk"
+dht_connect_err2   = Dettte er sandsynligvis fordi du  bruger en router eller firewall
+dht_connect_err3   = "er ikke opsat korrekt.\n"
+dht_connect_err4   = at opsætte dette er vigtig for
+dht_connect_err5   = ellers er det ikke muligt at se andre spillere
+dht_connect_err6   = Også denne del af RV House er centralt for min
+dht_connect_err7   = universitet afhandling så jeg vil sætte pris på det, hvis
+dht_connect_err8   = "du kan fikse det :).\n"
+dht_connect_err9   = Når du trykker OK åbnes 
+dht_connect_err10  = en router/firewall indstillinger hjælpe side.
+dht_connect_err_title = Fejl ved forbindelsen"
+
+self_on_global_ignore_topic = "Du er på den globale fjendeliste"
+self_on_global_ignore = "Din IP er blevet fundet fra den globale fjendeliste.\nDet betyder at de fleste mennesker kan ikke se dig.\nHvis du tror at det ikke er dig der har gjordt noget galt\nog skulle blivee fjernet Fra globale fjendeliste\nså skriv i RV Pub Forum om det\ni addressen nedenunder"
+
+[new_version_win]
+title     = Ny RV House version
+force_msg = Du bliver altså nød til at opgradere RVHouse! Din version er forældet...
+# %1 is replaced by latest RV House version number, %2 by
+# users RV House version.
+msg       = En ny RV House version %1 er klar, din version er %2
+new_since = ny siden din version:
+download  = Download den nye version her:
+
+[rvtm_err]
+title     = Fejlte i at åbne RV Track Manager
+not_found = "Kunne ikke finde RV Track Manager.\nFor at gøre det muligt at få Tracks\nfra andre skal du bruge \nversion 1.5.0 of RV Track Manager eller nyere\nDu kan downloade den her:"
+running   = RV Track Manager Kører allerede
+other     = Kunne ikke Køre RV Track manager
+
+[message_box]
+ok     = "&OK"
+cancel = "&Annulér"
+yes    = "&Ja"
+no     = "&Nej"
+quit   = "&Afslut"
+save   = "&Gem"
+
+[main_win]
+exit        = Afslut
+create_room = Nyt Rum
+join_room   = Join Rum
+refresh     = Opdatér
+cancel      = Annulér
+about       = Om
+
+ask_room_pass_title = Password beskyttet rum
+ask_room_pass       = Skriv password
+
+joining_room  = Joining room
+
+dht_connecting        = P2P Tilslutter
+dht_connected         = P2P Tilslutted
+dht_disconnecting     = P2P Afslutter
+dht_disconnected      = P2P Ikke Forbundet
+dht_upding_contacts   = P2P opdaterer kontakt noder...
+dht_upd_contacts      = P2P kontakt noder opdateret
+dht_upd_contacts_fail = P2P kunne ikke opdatere kontakt noder
+dht_joining           = P2P slutter sig til
+dht_joined            = P2P sluttet til
+dht_leaving           = P2P forlader
+dht_left              = P2P forladte
+dht_searching         = P2P søger efter bruger
+dht_announcing        = P2P bebuder
+
+ctz_connecting        = Centraliseret forbinder
+ctz_connected         = Centraliseret forbundet
+ctz_disconnecting     = Centraliseret Afslutter
+ctz_disconnected      = Centraliseret ikke Forbundet
+
+# %1 er erstattetmed siden, hvor brugere's IP  site where user's IP er hentet fra
+ip_detecting = Detekter IP fra: %1
+# %1 er erstattet med IP Hentning
+ip_detected  = Detektet IP: %1
+# %1 er erstattet med fejlbegrundelsen
+ip_failed    = Forsøg på Detekt IP fejlede: %1
+
+[chat]
+# %1 er erstattet med brugernavnet
+user_entered = %1 trådte ind
+user_exited  = %1 gad ikke mere
+# %1 er erstattet med rum navnet
+room_created = Nyt rum er lavet (%1)
+room_closed  = Rum lukkede (%1)
+
+host_kicked_host = Idiot, host sparkede hamselv ud af rummet %1
+host_kicks_user  = Host har sparket %1 ud af rummet
+host_kicks_you   = Host Sparkede dig lige ud af rummet %1
+
+# %1 is replaced with user name
+user_joined_room         = %1 Sluttede sig til rummet
+user_exited_room         = %1 Gik igen
+user_shares_tracks       = %1 Deler baner
+user_shares_tracks_stops = %1 stoppede med at dele baner
+user_dloads_tracks       = %1 Downloader baner
+user_dloads_tracks_stops = %1 Stoppede med at downloade baner
+user_ignored             = Ingorérer %1
+user_ignores             = Du bliver ingoreret af %1
+
+# %1 = meddelsen kunne ikke leveres.
+# Fordi at spilleren spiller eller er optaget
+# så ingen vinduer vil blive åbnet.
+private_msg_refused      = brugeren sendte meddelsen tilbage: %1
+
+flood_control = Flood control
+
+global_ignore = Følgende bruger bliver ingoreret af alle. Du kan altid slå den globale fjendeliste fra i indstillingerne.
+# %1 is replaced by user name
+# %2 is replaced with reason
+user_global_ignore = Global ignorering på bruger '%1', Hvorfor: %2
+
+[room_settings_win]
+title       = Room indstillinger
+topic       = &Navn på rum:
+password    = &Password:
+pickups     = L&yn
+laps        = &Antal runder:
+players     = Max&spillere:
+
+error_title    = Rum indstillinger Fejl
+topic_missing  = Skriv navnet på Rummet
+
+[room_win]
+leave         = Forlad rum
+settings      = Redigér rum indstillingerne
+launch        = Kør Spillet
+share_tracks  = Del tracks med andre
+dload_tracks  = Download custom tracks fra Host
+
+host_launched = Host har startet revolt.. Revolt vil starte hos dig om nogle få sekunder
+# %1 is replaced with the limit (in minutes)
+join_too_late = "Kan ikke slutte sig til rummet. Host\nhar spillet mere end et %1 minut."
+join_too_late_title = "For sent til at slutte sig til"
+
+[private_message_win]
+close = Close chat
+
+[rv_launch]
+title_err = Fejlede i at starte spillet
+not_found = Kunne ikke finde Revolt. Installér og kør venligst revolt inden du åbner RV House
+other     = Kunne ikkke starte Revolt
+
+title     = Starter Spillet
+text      = Tryk OK hvis du vil tilbage til RV House
+
+
+[words]
+topic   = Navn
+host    = Host
+# For example, Note: Rummet er password beskyttet.
+note    = Note
+players = Spillere
+laps    = Runder
+pickups = Lyn
+user_id = Bruger ID
+warning = Advarsel
+status  = Status
+room    = Rum
+yes     = Ja
+no      = Nej
+creating = Oprettee 
+
+minutes_short = mins
+dht           = P2P
+ctz           = Centralized
+connected     = Tilsluttet
+disconnected  = Ikke Tilsluttet
+
+
+[users_view]
+shares_tracks = Brugeren deler custom tracks
+dloads_tracks = Bruger får tracks
+dht_not_found = Ikke fundet fra decentralized network
+natted        = Brugerens Forbindelse ser ud til at være bag NAT
+
+[user_popup]
+user_name     = Bruger Navn
+share_tracks  = Del Tracks
+dload_tracks  = Download tracks
+kick          = Spark
+private_msg   = Send Privat Besked
+ignore_user   = Ignorer bruger
+
+[status]
+chatting      = Chatter
+waiting       = Venter i et rum
+playing       = Spiller
+away          = Ikke til stede
+dont_disturb  = Optaget
+unknown       = Ukendt
+
+[misc]
+user_not_validated = Bruger id ikke betroet (ikke godkendt)
+pass_needed        = Password skal bruges
+
+
+[settings_win]
+title           = RV House Indstillinger
+general_tab     = Generalt
+colors_tab      = Farver
+
+flash_main_chat = Flash hvis der kommer en besked på main chat
+flash_room_chat = Flash hvis der kommer en besked på rum chat
+flash_new_room  = Flash hvis ny rum er lavet
+flash_new_user  = Flash hvis der kommer nye brugere
+flash_nick      = Flash hvis nogen nævner dit navn på main chat
+away_minimize   = Ikke til stede når RV House er minimeret
+global_ignore   = Brug den globale fjendeliste
+
+base_color      = Basis farve
+border_color    = Kant farve
+text_color      = Tekst farve
+bg_color        = Baggrunds farve
+sel_text_color  = Vælg tekst farve 
+sel_bg_color    = Vælg baggrunds farve
+sel_mt_color    = vælg Menu tekst farve
+sel_mbg_color   = Valgte baggrunds farve
+tip_text_color  = Tip Tekst Farve
+tip_bg_color    = Tip baggrunds farve

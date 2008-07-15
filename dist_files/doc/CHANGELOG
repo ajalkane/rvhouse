@@ -1,9 +1,9 @@
 RV House change log
 
-Version 0.92.3 (20.04.2008) 
+Version 0.91.3 (20.04.2008) 
 - Logging in problems fixed: using revoltrace.com for user authentication
 
-Version 0.92.2 (15.02.2008) 
+Version 0.91.2 (15.02.2008) 
 - RV House new versions update location changed
 
 Version 0.91.1 (12.01.2008) 
@@ -16,13 +16,13 @@ Version 0.91.0 (06.01.2008)
 - If centralized server has problems should not crash RV House
 - The UDP layer updated to handle better variable send timeouts
 
+Version 0.91.3 (18.04.2008)
+- Authentication server configurable in rvhouse.conf
+
 Version 0.90.8 (11.02.2007)
 - Competitions menu has links to new online competition (Re-Volt Race)
 - About dialog includes new links: RRR forum and Re-Volt Race
 - Improvements to global ignore list
-
-Version 0.91.3 (18.04.2008)
-- Authentication server configurable in rvhouse.conf
 
 Version 0.90.1 (28.01.2007)
 - P2P connection node timeout more practical 30 seconds
