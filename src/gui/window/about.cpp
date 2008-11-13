@@ -1,4 +1,5 @@
 #include <utility>
+#include <algorithm>
 #include <string>
 #include <list>
 #include <sstream>
@@ -20,12 +21,12 @@ using component::FXLinkLabel;
 
 FXIMPLEMENT(about, FXDialogBox, NULL, 0);
 
-about::about(FXWindow *owner) 
+about::about(FXWindow *owner)
     : FXDialogBox(owner, langstr("about_win/title"))
 {
     std::ostringstream str;
     using std::endl;
-    
+
     str << APP_NAME << " " << APP_VERSION << endl
         << endl
         << "Copyright (C) 2006-2008 Arto Jalkanen" << endl
@@ -48,22 +49,22 @@ about::about(FXWindow *owner)
     str.str("");
     str << endl
         << langstr("about_win/using") << endl
-        << langstr("about_win/using_lib", 
+        << langstr("about_win/using_lib",
                    "FOX C++ GUI Library", "Jeroen van der Zijp") << endl
-        << langstr("about_win/using_lib", 
+        << langstr("about_win/using_lib",
                    "ACE network library", "Douglas C. Schmidth") << endl
-        << langstr("about_win/using_lib", 
+        << langstr("about_win/using_lib",
                    "KadC P2P library", "Enzo Michelangeli") << endl
-        << langstr("about_win/using_lib", 
+        << langstr("about_win/using_lib",
                    "libdht, libreudp, libnetcomgrp", "ajalkane") << endl
-        << langstr("about_win/using_lib", 
+        << langstr("about_win/using_lib",
                    "Boost serialization", "Robert Ramey");
 
     std::list<lang::info> lang_infos = lang_mngr()->lang_infos();
     // Remove english, as its the original language and not a translation,
     // from the list before listing translations
-    std::list<lang::info>::iterator new_end 
-      = std::remove_if(lang_infos.begin(), lang_infos.end(), 
+    std::list<lang::info>::iterator new_end
+      = std::remove_if(lang_infos.begin(), lang_infos.end(),
                        lang::info_match_lang_fobj("English"));
     lang_infos.erase(new_end, lang_infos.end());
     if (lang_infos.size() > 0) {
@@ -71,14 +72,14 @@ about::about(FXWindow *owner)
             << langstr("about_win/translations") << endl;
         std::list<lang::info>::const_iterator i = lang_infos.begin();
         for (; i != lang_infos.end(); i++) {
-            str << langstr("about_win/translation", 
+            str << langstr("about_win/translation",
                            i->lang().c_str(),
                            i->author().c_str(),
                            i->email().c_str(),
                            i->version().c_str())
-                << endl; 
+                << endl;
         }
-    }                  
+    }
     new FXLabel(this, str.str().c_str(), NULL, JUSTIFY_LEFT);
 
     new FXSeparator(this);
@@ -88,9 +89,9 @@ about::about(FXWindow *owner)
         bframe, langstr("common/ok_button"), NULL, this, ID_CANCEL,
         BUTTON_INITIAL|BUTTON_DEFAULT|LAYOUT_CENTER_X|
         FRAME_RAISED|FRAME_THICK,
-        0,0,0,0,20,20        
+        0,0,0,0,20,20
     );
-    
+
     getAccelTable()->addAccel(MKUINT(KEY_F4,ALTMASK),this,FXSEL(SEL_COMMAND,ID_CANCEL));
 }
 
