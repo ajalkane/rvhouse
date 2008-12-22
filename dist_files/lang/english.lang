@@ -205,7 +205,7 @@ user_shares_tracks       = %1 is sharing tracks
 user_shares_tracks_stops = %1 stopped sharing tracks
 user_dloads_tracks       = %1 is downloading tracks
 user_dloads_tracks_stops = %1 stopped downloading tracks
-user_ignored             = Ignoring user %1
+user_ignored             = Ignoring user %1. The ignore can be removed by restarting RV House.
 user_ignores             = You are being ignored by %1
 
 # %1 = the message that was refused/not received.
