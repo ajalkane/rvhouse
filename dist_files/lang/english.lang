@@ -220,6 +220,8 @@ global_ignore = Following users are in global ignore list because of disruptive 
 # %2 is replaced with reason
 user_global_ignore = Global ignore on user '%1', reason: %2
 
+host_ip = Host's IP is %1
+
 [room_settings_win]
 title       = Room settings
 topic       = &Topic:
@@ -317,6 +319,7 @@ flash_new_user  = Flash if new user arrives
 flash_nick      = Flash if your nick seen on main chat
 away_minimize   = Away when main window minimized
 global_ignore   = Use global ignore list
+send_ip         = Send IP when hosting
 
 base_color      = Base Color
 border_color    = Border Color

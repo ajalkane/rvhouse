@@ -22,6 +22,7 @@ namespace {
         "flash_new_user",
         "flash_nick",
         "global_ignore",
+        "send_ip"
     };
     bool general_check_defaults[] = {
         false,
@@ -31,11 +32,12 @@ namespace {
         false,
         false,
         true,
+        true
     };
 }
 
 FXDEFMAP(settings) settings_map[]= {
-  FXMAPFUNC(SEL_COMMAND,  settings::ID_OK, 
+  FXMAPFUNC(SEL_COMMAND,  settings::ID_OK,
                           settings::on_ok),
 };
 
@@ -56,7 +58,7 @@ settings::_init() {
     setIcon(app_icons()->get("rv_house"));
     setMiniIcon(app_icons()->get("rv_house"));
     setTitle(langstr("settings_win/title"));
-    
+
     /// Retrieve Current Color Settings
     _base      = getApp()->getBaseColor();
     _back      = getApp()->getBackColor();
@@ -97,7 +99,7 @@ settings::_init() {
     _target_tipback.setTarget(this);
     _target_menufore.setTarget(this);
     _target_menuback.setTarget(this);
-    
+
     _target_base.setSelector(ID_COLORS);
     _target_back.setSelector(ID_COLORS);
     _target_border.setSelector(ID_COLORS);
@@ -113,15 +115,15 @@ settings::_init() {
 
     _setup();
     _pref_to_form();
-        
-    getAccelTable()->addAccel(MKUINT(KEY_F4,ALTMASK),this,FXSEL(SEL_COMMAND,ID_CLOSE));    
+
+    getAccelTable()->addAccel(MKUINT(KEY_F4,ALTMASK),this,FXSEL(SEL_COMMAND,ID_CLOSE));
 }
 
 settings::~settings() {
     ACE_DEBUG((LM_DEBUG, "settings: dtor\n"));
-    
+
     delete _font;
-    delete _titlefont;    
+    delete _titlefont;
 }
 
 long
@@ -147,14 +149,14 @@ settings::_setup() {
     FXFontDesc fontdescription;
     getApp()->getNormalFont()->create();
     getApp()->getNormalFont()->getFontDesc(fontdescription);
-  
+
     _font = new FXFont(getApp(),fontdescription);
     _font->create();
-  
+
     fontdescription.size = (FXuint) (((double)fontdescription.size) * 1.5);
     _titlefont = new FXFont(getApp(),fontdescription);
     _titlefont->create();
-  
+
     FXHorizontalFrame *hframe=NULL;
     FXVerticalFrame   *frame=NULL;
     FXVerticalFrame   *vframe=NULL;
@@ -163,19 +165,19 @@ settings::_setup() {
     FXColorWell       *colorwell=NULL;
     FXSpinner         *spinner=NULL;
     FXCheckButton     *check=NULL;
-    
+
     FXVerticalFrame *vmain = new FXVerticalFrame(
         this,
         LAYOUT_FILL_X|LAYOUT_FILL_Y,
         0,0,0,0,0,0,0,0,0,0
     );
-  
+
     FXIcon *desktopicon = app_icons()->get("rv_house");
 
     // Assuming we have a icon of size 48x48, using different
     // spacing will give us about the same size header.
     const FXint spacing=(desktopicon ? 5 : 15);
-  
+
     // Create nice header
     label = new FXLabel(
         vmain,langstr("settings_win/title"),desktopicon,
@@ -185,30 +187,30 @@ settings::_setup() {
     label->setBackColor(FXRGB(255,255,255));
     label->setTextColor(FXRGB(  0,  0,  0));
     label->setFont(_titlefont);
-  
+
     new FXSeparator(vmain,SEPARATOR_GROOVE|LAYOUT_FILL_X);
-  
+
     FXHorizontalFrame *hmainframe = new FXHorizontalFrame(
         vmain,
         LAYOUT_FILL_X|LAYOUT_FILL_Y,
         0,0,0,0,0,0,0,0,0,0
     );
-  
+
     FXVerticalFrame *buttonframe = new FXVerticalFrame(
         hmainframe,
         LAYOUT_FILL_Y|LAYOUT_LEFT|PACK_UNIFORM_WIDTH|PACK_UNIFORM_HEIGHT,
-        0,0,0,0, 
+        0,0,0,0,
         DEFAULT_SPACING,DEFAULT_SPACING,DEFAULT_SPACING,DEFAULT_SPACING
     );
-  
+
     new FXSeparator(hmainframe,SEPARATOR_GROOVE|LAYOUT_FILL_Y);
-  
+
     FXSwitcher *switcher = new FXSwitcher(
         hmainframe,
         LAYOUT_FILL_X|LAYOUT_FILL_Y,
         0,0,0,0,0,0,0,0
     );
-  
+
     vframe = new FXVerticalFrame(buttonframe,FRAME_SUNKEN,0,0,0,0,0,0,0,0);
     new FXButton(
         vframe,langstr("settings_win/general_tab"),NULL,switcher,
@@ -226,15 +228,15 @@ settings::_setup() {
     /*****************************************
      * Start of General view
      */
-  
+
     vframe = new FXVerticalFrame(
         switcher,
         LAYOUT_FILL_X|LAYOUT_FILL_Y,
         0,0,0,0,0,0,0,0,0,0
     );
-  
+
     new FXSeparator(vframe,SEPARATOR_GROOVE|LAYOUT_FILL_X);
-    
+
     for (size_t i = 0; i < array_sizeof(general_check_order); i++) {
         const char *key     = general_check_order[i];
         std::string langkey = "settings_win/";
@@ -250,88 +252,88 @@ settings::_setup() {
         LAYOUT_FILL_X|LAYOUT_FILL_Y,
         0,0,0,0,0,0,0,0,0,0
     );
-  
+
     hframe = new FXHorizontalFrame(
         vframe,LAYOUT_FILL_X|LAYOUT_FILL_Y,
         0,0,0,0,0,0,0,0,0,0
     );
     new FXSeparator(vframe,SEPARATOR_GROOVE|LAYOUT_FILL_X);
-  
-  
+
+
     frame  = new FXVerticalFrame(hframe,LAYOUT_FILL_Y,0,0,0,0,0,0,0,0,0,0);
     new FXSeparator(hframe,SEPARATOR_GROOVE|LAYOUT_FILL_Y);
 
-#if 0  
+#if 0
     FXVerticalFrame *themeframe = new FXVerticalFrame(frame,LAYOUT_FILL_X,0,0,0,0,DEFAULT_SPACING,DEFAULT_SPACING,DEFAULT_SPACING,DEFAULT_SPACING);
     new FXLabel(themeframe,"Theme: ",NULL,LAYOUT_CENTER_Y);
     list = new FXListBox(themeframe,this,ID_COLOR_THEME,LAYOUT_FILL_X|FRAME_SUNKEN|FRAME_THICK);
     list->setNumVisible(9);
     initColors();
-#endif  
-  
+#endif
+
     new FXSeparator(frame,SEPARATOR_GROOVE|LAYOUT_FILL_X);
-  
+
     matrix = new FXMatrix(
         frame,2,
         LAYOUT_FILL_Y|MATRIX_BY_COLUMNS,
         0,0,0,0,DEFAULT_SPACING,
         DEFAULT_SPACING,DEFAULT_SPACING,DEFAULT_SPACING,1,1
     );
-  
+
     colorwell = new FXColorWell(matrix,FXRGB(0,0,255),&_target_base,FXDataTarget::ID_VALUE);
     label     = new FXLabel(matrix,langstr("settings_win/base_color"));
-  
+
     colorwell = new FXColorWell(matrix,FXRGB(0,0,255),&_target_border,FXDataTarget::ID_VALUE);
     label     = new FXLabel(matrix,langstr("settings_win/border_color"));
-  
+
     colorwell = new FXColorWell(matrix,FXRGB(0,0,255),&_target_fore,FXDataTarget::ID_VALUE);
     label     = new FXLabel(matrix,langstr("settings_win/text_color"));
-  
+
     colorwell = new FXColorWell(matrix,FXRGB(0,0,255),&_target_back,FXDataTarget::ID_VALUE);
     label     = new FXLabel(matrix,langstr("settings_win/bg_color"));
-  
+
     colorwell = new FXColorWell(matrix,FXRGB(0,0,255),&_target_selfore,FXDataTarget::ID_VALUE);
     label     = new FXLabel(matrix,langstr("settings_win/sel_text_color"));
-  
+
     colorwell = new FXColorWell(matrix,FXRGB(0,0,255),&_target_selback,FXDataTarget::ID_VALUE);
     label     = new FXLabel(matrix,langstr("settings_win/sel_bg_color"));
-  
+
     colorwell = new FXColorWell(matrix,FXRGB(0,0,255),&_target_menufore,FXDataTarget::ID_VALUE);
     label     = new FXLabel(matrix,langstr("settings_win/sel_mt_color"));
-  
+
     colorwell = new FXColorWell(matrix,FXRGB(0,0,255),&_target_menuback,FXDataTarget::ID_VALUE);
     label     = new FXLabel(matrix,langstr("settings_win/sel_mbg_color"));
-  
+
     colorwell = new FXColorWell(matrix,FXRGB(0,0,255),&_target_tipfore,FXDataTarget::ID_VALUE);
     label     = new FXLabel(matrix,langstr("settings_win/tip_text_color"));
-  
+
     colorwell = new FXColorWell(matrix,FXRGB(0,0,255),&_target_tipback,FXDataTarget::ID_VALUE);
     label     = new FXLabel(matrix,langstr("settings_win/tip_bg_color"));
 
-#if 0  
+#if 0
     frame = new FXVerticalFrame(hframe,LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0,DEFAULT_SPACING,DEFAULT_SPACING,DEFAULT_SPACING,DEFAULT_SPACING,0,0);
-  
+
     tabbook = new FXTabBook(frame,NULL,0,LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0,0,0,0,0);
     tabitem  = new FXTabItem(tabbook," Item 1 ");
     tabframe = new FXVerticalFrame(tabbook,LAYOUT_FILL_X|LAYOUT_FILL_Y|FRAME_THICK|FRAME_RAISED);
-  
+
     labeltextframe1 = new FXHorizontalFrame(tabframe,LAYOUT_FILL_X);
     label1 = new FXLabel(labeltextframe1,"Label with Text",NULL);
     textfield1 = new FXTextField(labeltextframe1,30,NULL,0,LAYOUT_FILL_X|FRAME_THICK|FRAME_SUNKEN);
     textfield1->setText("Select this text, to see the selected colors");
-  
+
     labeltextframe2 = new FXHorizontalFrame(tabframe,LAYOUT_FILL_X);
     textframe1 = new FXHorizontalFrame(labeltextframe2,LAYOUT_FILL_X|FRAME_THICK|FRAME_SUNKEN,0,0,0,0,2,2,2,2,0,0);
     label3 = new FXLabel(textframe1,"Selected Text (with focus)",NULL,LAYOUT_FILL_X,0,0,0,0,1,1,1,1);
     textframe2 = new FXHorizontalFrame(labeltextframe2,LAYOUT_FILL_X|FRAME_THICK|FRAME_SUNKEN,0,0,0,0,2,2,2,2,0,0);
     label4 = new FXLabel(textframe2,"Selected Text (no focus)",NULL,LAYOUT_FILL_X,0,0,0,0,1,1,1,1);
-  
+
     sep1 = new FXSeparator(tabframe,LAYOUT_FILL_X|SEPARATOR_LINE);
-  
+
     tabsubframe = new FXHorizontalFrame(tabframe,LAYOUT_FILL_X|LAYOUT_FILL_Y);
-  
+
     grpbox1 = new FXGroupBox(tabsubframe,"MenuPane",FRAME_GROOVE|LAYOUT_FILL_Y|LAYOUT_FILL_X);
-  
+
     menuframe = new FXVerticalFrame(grpbox1,FRAME_RAISED|FRAME_THICK|LAYOUT_CENTER_X|LAYOUT_CENTER_Y,0,0,0,0,0,0,0,0,0,0);
     menulabels[0]=new FXLabel(menuframe,"&Open",NULL,LABEL_NORMAL,0,0,0,0,16,4);
     menulabels[1]=new FXLabel(menuframe,"S&ave",NULL,LABEL_NORMAL,0,0,0,0,16,4);
@@ -341,35 +343,35 @@ settings::_setup() {
     menulabels[3]=new FXLabel(menuframe,"Print",NULL,LABEL_NORMAL,0,0,0,0,16,4);
     sep3 = new FXSeparator(menuframe,LAYOUT_FILL_X|SEPARATOR_GROOVE);
     menulabels[5]=new FXLabel(menuframe,"&Quit",NULL,LABEL_NORMAL,0,0,0,0,16,4);
-  
+
     grpbox2 = new FXGroupBox(tabsubframe,"Tooltips",FRAME_GROOVE|LAYOUT_FILL_Y|LAYOUT_FILL_X);
-  
+
     label2 = new FXLabel(grpbox2,"Sample Tooltip",NULL,FRAME_LINE|LAYOUT_CENTER_X);
     label5 = new FXLabel(grpbox2,"Multiline Sample\n Tooltip",NULL,FRAME_LINE|LAYOUT_CENTER_X);
-  
+
     hframe = new FXHorizontalFrame(vframe,LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0,DEFAULT_SPACING,DEFAULT_SPACING,DEFAULT_SPACING,DEFAULT_SPACING);
-  
+
     new FXLabel(hframe,"Normal Font: ",NULL,LAYOUT_CENTER_Y);
     fontbutton = new FXButton(hframe," ",NULL,this,ID_CHOOSE_FONT,LAYOUT_CENTER_Y|FRAME_RAISED|JUSTIFY_CENTER_X|JUSTIFY_CENTER_Y|LAYOUT_FILL_X);
-  
-  
+
+
     vframe = new FXVerticalFrame(switcher,LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0,0,0,0,0,0,0);
-  
+
     hframe = new FXHorizontalFrame(vframe,LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0,DEFAULT_SPACING,DEFAULT_SPACING,DEFAULT_SPACING,DEFAULT_SPACING);
     new FXLabel(hframe,"Icon Search Path",NULL,LAYOUT_CENTER_Y);
     new FXTextField(hframe,2,&target_iconpath,FXDataTarget::ID_VALUE,LAYOUT_SIDE_LEFT|LAYOUT_FILL_X|LAYOUT_CENTER_Y|FRAME_SUNKEN|FRAME_THICK);
-  
+
     new FXSeparator(vframe,SEPARATOR_GROOVE|LAYOUT_FILL_X);
-  
-  
+
+
     hframe = new FXHorizontalFrame(vframe,LAYOUT_FILL_X|LAYOUT_FILL_Y,0,0,0,0,0,0,0,0,0,0);
     vframe = new FXVerticalFrame(hframe,LAYOUT_FILL_Y,0,0,0,0,DEFAULT_SPACING,DEFAULT_SPACING,DEFAULT_SPACING,DEFAULT_SPACING);
     new FXSeparator(hframe,SEPARATOR_GROOVE|LAYOUT_FILL_Y);
-  
-  
+
+
     new FXLabel(vframe,"File Binding: ");
     frame = new FXVerticalFrame(vframe,FRAME_SUNKEN|FRAME_THICK|LAYOUT_FILL_Y|LAYOUT_FILL_X,0,0,0,0,0,0,0,0);
-  
+
     filebindinglist = new FXList(frame,this,ID_SELECT_FILEBINDING,LAYOUT_FILL_Y|LAYOUT_FILL_X|LIST_BROWSESELECT);
     filebindinglist->setSortFunc(FXList::ascending);
     FXHorizontalFrame * listbuttonframe = new FXHorizontalFrame(vframe,PACK_UNIFORM_WIDTH|LAYOUT_FILL_X,0,0,0,0,0,0,0,0);
@@ -390,7 +392,7 @@ settings::_setup() {
     util::create_button(
         closebox, langstr("common/cancel_button"), this, ID_CLOSE
     );
-    
+
 }
 
 void
@@ -400,10 +402,10 @@ settings::_pref_to_form() {
         bool    def_val = general_check_defaults[i];
         bool        val = pref()->get<bool>("general", key, def_val);
         _check_map[key]->setCheck(val);
-    }    
+    }
 }
 
-void 
+void
 settings::_form_to_pref() {
     for (size_t i = 0; i < array_sizeof(general_check_order); i++) {
         const char *key = general_check_order[i];
@@ -423,15 +425,15 @@ settings::_form_to_pref() {
     getApp()->setTipbackColor(_tipback);
     getApp()->setSelMenuTextColor(_menufore);
     getApp()->setSelMenuBackColor(_menuback);
-    
+
     pref()->save();
-    app_opts.init();    
+    app_opts.init();
 }
 
 void
 settings::handle_message(::message *msg) {
     ACE_DEBUG((LM_DEBUG, "settings::handle_message\n"));
-    
+
     message_grouped *mg = dynamic_cast<message_grouped *>(msg);
     if (!mg) return;
 }
