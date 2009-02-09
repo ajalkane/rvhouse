@@ -29,19 +29,19 @@ group_handler_base::group_handler_base(
   netcomgrp::group *grp, int msgbase
   ) : _grp(grp), _grp_msg_base(msgbase), _notify(NULL)
 {
-    _grp->observer_attach(this, 
+    _grp->observer_attach(this,
                           netcomgrp::event_observer::mask_data_received |
                           netcomgrp::event_observer::mask_node_added    |
                           netcomgrp::event_observer::mask_node_removed  |
                           netcomgrp::event_observer::mask_state_changed |
                           netcomgrp::event_observer::mask_error);
-                          
+
     _house_adapter = new _house_adapter_type(grp, &_house, this);
 }
 
 group_handler_base::~group_handler_base() {}
 
-void 
+void
 group_handler_base::handle_message(message *msg) {
     switch (msg->id()) {
     case message::room_kick:
@@ -51,16 +51,19 @@ group_handler_base::handle_message(message *msg) {
     case message::send_private:
         handle_send_private_message(msg);
         break;
+    case message::send_notification:
+        handle_send_notification_message(msg);
+        break;
     case message::private_refused:
         handle_private_refused(msg);
         break;
     case message::block_users:
         handle_block_users(msg);
         break;
-    }   
+    }
 }
 
-void 
+void
 group_handler_base::handle_room_command_message(message *msg) {
     message_room_command *m = dynamic_ptr_cast<message_room_command>(msg);
     int pdu_cmd = -1;
@@ -71,7 +74,7 @@ group_handler_base::handle_room_command_message(message *msg) {
         ACE_ERROR((LM_ERROR, "Invalid room command %d\n", m->id()));
         return;
     }
-    
+
     _house_adapter->send_to_room(
         chat_gaming::pdu::header(pdu_cmd, m->sequence()),
         chat_gaming::pdu::room_command(m->room_id(), m->target_user_id()),
@@ -85,7 +88,7 @@ group_handler_base::handle_send_private_message(message *msg) {
     unsigned int seq           = m->sequence();
     const std::string &str     = m->str();
     const std::string &channel = m->channel();
-    
+
     const chat_gaming::house::user_type::id_type &uid = m->sender_id();
     chat_gaming::house::user_iterator ui = _house.user_find(uid.id_str());
 
@@ -104,7 +107,7 @@ group_handler_base::handle_send_private_message(message *msg) {
     } else user_nodes[0] = ui->id().node();
 
     user_nodes[1] = _grp->self();
-    
+
     for (; un_i != user_nodes.end(); un_i++) {
         ACE_DEBUG((LM_DEBUG, "group_handler_base::send_private_message sending to node ptr %d\n",
                    *un_i));
@@ -115,7 +118,7 @@ group_handler_base::handle_send_private_message(message *msg) {
                 chat_gaming::pdu::message(str, channel),
                 *un_i
             );
-        }       
+        }
     }
 }
 
@@ -125,7 +128,7 @@ group_handler_base::handle_private_refused(message *msg) {
     unsigned int seq           = m->sequence();
     const std::string &str     = m->str();
     const std::string &channel = m->channel();
-    
+
     const chat_gaming::house::user_type::id_type &uid = m->sender_id();
     chat_gaming::house::user_iterator ui = _house.user_find(uid.id_str());
 
@@ -151,10 +154,48 @@ group_handler_base::handle_private_refused(message *msg) {
 }
 
 void
+group_handler_base::handle_send_notification_message(message *msg) {
+    message_channel *m         = dynamic_ptr_cast<message_channel>(msg);
+    unsigned int seq           = m->sequence();
+    const std::string &str     = m->str();
+    const std::string &channel = m->channel();
+
+    const chat_gaming::house::user_type::id_type &uid = m->sender_id();
+    chat_gaming::house::user_iterator ui = _house.user_find(uid.id_str());
+
+    // Send the private message only to recipient
+    std::vector<const netcomgrp::node *> user_nodes(1);
+    std::vector<const netcomgrp::node *>::const_iterator un_i = user_nodes.begin();
+    if (ui == _house.user_end()) {
+        // Not really a bad error since the message can be sent via
+        // several sources (DHT and centralized) and the user might be
+        // associated with one source only. So this will return an error
+        // when it is routed to the source that it didn't originate from.
+        // But the other branch where it goes won't give error.
+        ACE_ERROR((LM_WARNING, "group_handler_base::send_channel_private_message: no user "
+                  "found for id %s group %d\n", uid.c_str(), _grp_msg_base));
+        user_nodes[0] = NULL;
+    } else user_nodes[0] = ui->id().node();
+
+    for (; un_i != user_nodes.end(); un_i++) {
+        ACE_DEBUG((LM_DEBUG, "group_handler_base::send_channel_private_message sending to node ptr %d\n",
+                   *un_i));
+
+        if (*un_i) {
+            _house_adapter->send_to(
+                chat_gaming::pdu::header(chat_gaming::pdu::id_message_notification, seq),
+                chat_gaming::pdu::message(str, channel),
+                *un_i
+            );
+        }
+    }
+}
+
+void
 group_handler_base::handle_block_users(message *msg) {
     message_block_users *m  = dynamic_ptr_cast<message_block_users>(msg);
 #if 0
-      
+
     message_block_users::list_type::const_iterator i   = m->ip_begin();
     message_block_users::list_type::const_iterator end = m->ip_end();
     for (; i != end; i++) {
@@ -165,13 +206,13 @@ group_handler_base::handle_block_users(message *msg) {
 }
 
 void
-group_handler_base::remove_blocked_users(unsigned seq) {    
+group_handler_base::remove_blocked_users(unsigned seq) {
     // Find all nodes with a blocked IP and do node_removed for them.
     _house_type::user_iterator i   = _house.user_begin();
     _house_type::user_iterator end = _house.user_end();
     typedef std::list<const netcomgrp::node *> list_type;
     list_type rm;
-    
+
     for (; i != end; i++) {
         if (i->node() == NULL) continue;
         if (net_ip_block()->is_blocked(i->node()->addr().get_ip_address()))
@@ -180,20 +221,20 @@ group_handler_base::remove_blocked_users(unsigned seq) {
     list_type::const_iterator ri = rm.begin();
     for (; ri != rm.end(); ri++) {
         ACE_DEBUG((LM_DEBUG, "group_handler_base::remove_blocked_users removing node "
-                  "%s:%d\n", 
-                  (*ri)->addr().get_host_addr(), 
+                  "%s:%d\n",
+                  (*ri)->addr().get_host_addr(),
                   (*ri)->addr().get_port_number()));
 
         _house_adapter->send_to(
             chat_gaming::pdu::header(chat_gaming::pdu::id_user_blocked, seq),
             *ri
         );
-                  
+
         node_removed(*ri);
     }
 }
 
-#if 0    
+#if 0
 void
 group_handler_base::ip_blocked(uint32_t ip, uint32_t mask, unsigned seq) {
     char ip_str[INET_ADDRSTRLEN];
@@ -202,13 +243,13 @@ group_handler_base::ip_blocked(uint32_t ip, uint32_t mask, unsigned seq) {
     } else {
         ACE_ERROR((LM_ERROR, "group_handler_base::ip_blocked conversion failed\n"));
     }
-    
+
     // Find all nodes with the blocked IP and do node_removed for them.
     _house_type::user_iterator i   = _house.user_begin();
     _house_type::user_iterator end = _house.user_end();
     typedef std::list<const netcomgrp::node *> list_type;
     list_type rm;
-    
+
     for (; i != end; i++) {
         if (i->node() == NULL) continue;
         uint32_t ip2 = htonl(i->node()->addr().get_ip_address());
@@ -221,15 +262,15 @@ group_handler_base::ip_blocked(uint32_t ip, uint32_t mask, unsigned seq) {
     list_type::const_iterator ri = rm.begin();
     for (; ri != rm.end(); ri++) {
         ACE_DEBUG((LM_DEBUG, "group_handler_base::ip_blocked removing node "
-                  "%s:%d\n", 
-                  (*ri)->addr().get_host_addr(), 
+                  "%s:%d\n",
+                  (*ri)->addr().get_host_addr(),
                   (*ri)->addr().get_port_number()));
 
         _house_adapter->send_to(
             chat_gaming::pdu::header(chat_gaming::pdu::id_user_blocked, seq),
             *ri
         );
-                  
+
         node_removed(*ri);
     }
 }
@@ -240,7 +281,7 @@ group_handler_base::node_added(const netcomgrp::node *n) {
     ACE_DEBUG((LM_DEBUG, "Checking if it is self... self is %d, node %d\n",
               _grp->self(), n));
 
-    ACE_DEBUG((LM_DEBUG, "addr: %s:%d\n", 
+    ACE_DEBUG((LM_DEBUG, "addr: %s:%d\n",
               n->addr().get_host_addr(),
               n->addr().get_port_number()));
 
@@ -249,21 +290,21 @@ group_handler_base::node_added(const netcomgrp::node *n) {
                   "received", n->addr().get_host_addr()));
         return 0;
     }
-              
+
     _house_adapter->node_added(n);
-    
+
     ACE_DEBUG((LM_DEBUG, "group_handler_base::node added, checking if self, "
               "self/node: %d/%d\n", _grp->self(), n));
-    
+
     if (_grp->self() && *(_grp->self()) == *n) {
         chat_gaming::user &self_ref = _house_adapter->self_user();
         const chat_gaming::user &s = _house_adapter->self_user();
         ACE_DEBUG((LM_DEBUG, "group_handler_base::node_added user self now %s (room_id %s) grp %d\n",
                   s.id().c_str(), s.room_id().c_str(), _grp_msg_base));
-        
+
         ACE_DEBUG((LM_DEBUG, "group_handler_base: user self found, setting " \
                   "user login to %s\n", self_ref.login_id().c_str()));
-                  
+
         _house_type::user_iterator ui = _house.user_find(_user_type(n));
         if (ui == _house.user_end()) {
             ACE_ERROR((LM_ERROR, "group_handler_base: user self, not found " \
@@ -277,7 +318,7 @@ group_handler_base::node_added(const netcomgrp::node *n) {
                   s.id().c_str(), s.room_id().c_str(), _grp_msg_base));
 
         *ui = self_ref; // _house_adapter->self_user(); // _self;
-        // Can set the id string after having added the user since the 
+        // Can set the id string after having added the user since the
         // actual used sorting key is the node associated with self
         chat_gaming::user_key new_key(ui->id());
         new_key.id_str(self_ref.id().id_str());
@@ -286,7 +327,7 @@ group_handler_base::node_added(const netcomgrp::node *n) {
 
         ACE_DEBUG((LM_DEBUG, "group_handler_base::node_added user self3 now %s (room_id %s) grp %d\n",
                   s.id().c_str(), s.room_id().c_str(), _grp_msg_base));
-        
+
         ACE_DEBUG((LM_DEBUG, "group_handler_base: set self id to %s\n",
                   ui->id().c_str()));
         // ui->login_id(_self.login_id());
@@ -294,21 +335,21 @@ group_handler_base::node_added(const netcomgrp::node *n) {
     }
 
     ACE_DEBUG((LM_DEBUG, "Node added done\n"));
-    
+
     return 0;
 }
 
 int
 group_handler_base::node_removed(const netcomgrp::node *n) {
     _house_adapter->node_removed(n);
-        
+
     return 0;
 }
 
 // Start of netcomgrp::event_observer interface
 int
-group_handler_base::data_received(const void *data, 
-                  size_t data_len, 
+group_handler_base::data_received(const void *data,
+                  size_t data_len,
                   const netcomgrp::node *n) {
     ACE_DEBUG((LM_DEBUG, "group_handler_base: received data of size %d:\n%s\n",
       data_len, data));
@@ -324,9 +365,9 @@ group_handler_base::data_received(const void *data,
 int
 group_handler_base::state_changed(int grp_state) {
     int mtype = -1;
-    
+
     _house_adapter->state_changed(grp_state);
-    
+
     switch (grp_state) {
     case netcomgrp::group::joining:
         mtype = GROUP_MESSAGE(message::group_joining); break;
@@ -340,11 +381,11 @@ group_handler_base::state_changed(int grp_state) {
         net_report()->disconnected(_grp_msg_base);
         mtype = GROUP_MESSAGE(message::group_not_joined); break;
     }
-    
+
     if (mtype > -1) gui_messenger()->send_msg(new message(mtype));
-    
+
     if (_notify) _notify->group_state_changed(grp_state);
-    
+
     return 0;
 }
 
@@ -355,7 +396,7 @@ group_handler_base::error(int err, const char *reason) {
 }
 
 int
-group_handler_base::send(const std::string &msg, 
+group_handler_base::send(const std::string &msg,
                          const std::string &channel,
                          unsigned seq) {
     _house_adapter->send(
@@ -366,7 +407,7 @@ group_handler_base::send(const std::string &msg,
 }
 
 int
-group_handler_base::send_room(const std::string &msg, 
+group_handler_base::send_room(const std::string &msg,
                               const chat_gaming::room::id_type &rid,
                               unsigned seq)
 {
@@ -381,7 +422,7 @@ group_handler_base::send_room(const std::string &msg,
 }
 
 void
-group_handler_base::room_command(const chat_gaming::room::id_type &rid, 
+group_handler_base::room_command(const chat_gaming::room::id_type &rid,
                                  int command,
                                  unsigned seq)
 {
@@ -398,7 +439,7 @@ void
 group_handler_base::refresh()
 {
     ACE_DEBUG((LM_DEBUG, "group_handler_base::refresh\n"));
-    
+
     // Iterate through each user and ask again info from it
     _house_type::user_iterator ui = _house.user_begin();
     for (; ui != _house.user_end(); ui++) {
@@ -432,7 +473,7 @@ group_handler_base::join(const chat_gaming::room &r, unsigned seq) {
                   r.id().c_str(), r.owner_id().c_str()));
         return;
     }
-    
+
     _house_adapter->send_to(
         chat_gaming::pdu::header(chat_gaming::pdu::id_room_join, seq),
         chat_gaming::pdu::room_join(r),
@@ -444,7 +485,7 @@ void
 group_handler_base::join_rsp(const chat_gaming::user::id_type &uid, int rsp, unsigned seq) {
     ACE_DEBUG((LM_DEBUG, "group_handler_base::join_rsp to %s, group %d\n",
               uid.c_str(), _grp_msg_base));
-    
+
     chat_gaming::house::user_iterator ui = _house.user_find(uid.id_str());
     if (ui == _house.user_end()) {
         // Not really a bad error since the message can be sent via
@@ -473,44 +514,44 @@ group_handler_base::update(const chat_gaming::room &r) {
     _house_adapter->self_room(r);
     // Id must be updated separately
     _house_adapter->self_room().id(r.id());
-    _house_adapter->room_update(r); 
+    _house_adapter->room_update(r);
 }
 
 // chat::comm::netcomgrp_adapter
-void 
+void
 group_handler_base::user_inserted(chat_gaming::user &u, const netcomgrp::node *sender) {
     ACE_DEBUG((LM_DEBUG, "group_handler_base::user_added\n"));
     gui_messenger()->send_msg(new message_user(message::user, u, 0, _grp_msg_base));
     net_report()->new_user(u, _grp_msg_base);
 }
 
-void 
+void
 group_handler_base::user_erased(chat_gaming::user &u, const netcomgrp::node *sender) {
     ACE_DEBUG((LM_DEBUG, "group_handler_base::user_erased\n"));
     if (!u.room_id().empty()) {
         // Check that the user was hosting the room, no close otherwise
         _house_type::room_iterator ri = _house.room_find(u.room_id());
         if (ri != _house.room_end() &&
-            ri->owner_id() == u.id()) 
-        {       
+            ri->owner_id() == u.id())
+        {
             _room_closed_update(u.room_id(), u.id());
         }
     }
     gui_messenger()->send_msg(new message_user(message::user_left, u, 0, _grp_msg_base));
 }
 
-void 
+void
 group_handler_base::user_update(chat_gaming::user &old, chat_gaming::user &upd, const netcomgrp::node *sender) {
     ACE_DEBUG((LM_DEBUG, "group_handler_base::user_update id %s\n", upd.id().c_str()));
     ACE_DEBUG((LM_DEBUG, "group_handler_base::user_update old id %s\n", old.id().c_str()));
 
     // Since the id's node pointer is not transferred (as it is meaningless
-    // at the other end), it is not yet set on the upd node, so set it to 
+    // at the other end), it is not yet set on the upd node, so set it to
     // correct one obtained from the one already in.
     chat_gaming::user_key new_key(upd.id());
     new_key.node(old.id().node());
     upd.id(new_key);
-    
+
     // Another special case is when user is first updated with it's info.
     // At first the user's information is empty and only a matching node ptr
     // is known about it. When user's information is updated, all normal
@@ -520,22 +561,22 @@ group_handler_base::user_update(chat_gaming::user &old, chat_gaming::user &upd, 
     if (old.id().id_str().empty()) {
         old.id(upd.id());
         ACE_DEBUG((LM_DEBUG, "group_handler_base::user_update updating "
-                   "user id of the model (id_str is now %s)\n", 
-                   old.id().id_str().c_str()));     
+                   "user id of the model (id_str is now %s)\n",
+                   old.id().id_str().c_str()));
     }
     // Another special case is when the user crashes and restarts the
     // program before his absence is noticed. In that case the
-    // user id's timestamp (embedded in id_str) will differ and 
+    // user id's timestamp (embedded in id_str) will differ and
     // the user display would get duplicates. To prevent that, check
     // if the old id differs from the new one and remove the old
     // then.
-    else if (!old.id().id_str().empty() && 
+    else if (!old.id().id_str().empty() &&
              !upd.id().id_str().empty() &&
              old.id().id_str() != upd.id().id_str())
     {
         ACE_DEBUG((LM_DEBUG, "group_handler_base::user_update received "
             "id (%s) that differs from the old one (%s), removing the "
-            "the old one\n", 
+            "the old one\n",
             upd.id().id_str().c_str(),
             old.id().id_str().c_str()
         ));
@@ -544,7 +585,7 @@ group_handler_base::user_update(chat_gaming::user &old, chat_gaming::user &upd, 
         // But in here just update the model id
         old.id(upd.id());
     }
-        
+
     // Check if the user's update will close some room
     if (!old.room_id().empty() && old.room_id() != upd.room_id()) {
         _house_type::room_iterator ri = _house.room_find(old.room_id());
@@ -554,20 +595,20 @@ group_handler_base::user_update(chat_gaming::user &old, chat_gaming::user &upd, 
     gui_messenger()->send_msg(
         new message_user(message::user, upd, upd.sequence(), _grp_msg_base));
 
-    net_report()->user_updated(old, upd, _grp_msg_base);        
+    net_report()->user_updated(old, upd, _grp_msg_base);
 }
 
-void 
+void
 group_handler_base::_room_closed_update(
     const chat_gaming::room::id_type &id,
-    const chat_gaming::user::id_type &sender_id) 
+    const chat_gaming::user::id_type &sender_id)
 {
     ACE_DEBUG((LM_DEBUG, "group_handler_base::erasing "
               "room id %s\n", id.c_str()));
     _house_type::room_iterator i = _house.room_find(id);
 
     ACE_DEBUG((LM_DEBUG, "group_handler_base::room find done\n"));
-    
+
     if (i != _house.room_end()) {
         ACE_DEBUG((LM_DEBUG, "group_handler_base:let us send a message\n"));
         gui_messenger()->send_msg(
@@ -583,18 +624,18 @@ group_handler_base::_room_closed_update(
 
 }
 
-void 
+void
 group_handler_base::user_data_available(chat_gaming::user &u, const netcomgrp::node *sender) {
     chat_gaming::pdu::header hdr;
-    
+
     ACE_DEBUG((LM_DEBUG, "group_handler_base::user_data_available: " \
               "receiving user data\n"));
     _house_adapter->recv(&hdr);
 
     ACE_DEBUG((LM_DEBUG, "group_handler_base:go on\n"));
-    
+
     message *smsg = NULL;
-    
+
     switch (hdr.id()) {
     case chat_gaming::pdu::id_message:
     {
@@ -602,7 +643,7 @@ group_handler_base::user_data_available(chat_gaming::user &u, const netcomgrp::n
         _house_adapter->recv(&data);
         ACE_DEBUG((LM_DEBUG, "group_handler_base::user_data_available: " \
                   "received user data: %s\n", data.data().c_str()));
-        
+
         // Hmm... what to do with the user data? Maybe send it to GUI
         // for processing or something
         smsg = new message_channel(
@@ -623,11 +664,32 @@ group_handler_base::user_data_available(chat_gaming::user &u, const netcomgrp::n
                   "received user data: %s\n", data.data().c_str()));
         ACE_DEBUG((LM_DEBUG, "group_handler_base::user_data_available: " \
                   "channel: %s\n", data.channel().c_str()));
-        
+
         // Hmm... what to do with the user data? Maybe send it to GUI
         // for processing or something
         smsg = new message_channel(
           message::send_private,
+          data.data(),
+          u.id(),
+          data.channel(),
+          hdr.sequence(),
+          _grp_msg_base
+        );
+    }
+        break;
+    case chat_gaming::pdu::id_message_notification:
+    {
+        chat_gaming::pdu::message data;
+        _house_adapter->recv(&data);
+        ACE_DEBUG((LM_DEBUG, "group_handler_base::user_data_available: " \
+                  "received user data: %s\n", data.data().c_str()));
+        ACE_DEBUG((LM_DEBUG, "group_handler_base::user_data_available: " \
+                  "channel: %s\n", data.channel().c_str()));
+
+        // Hmm... what to do with the user data? Maybe send it to GUI
+        // for processing or something
+        smsg = new message_channel(
+          message::send_notification,
           data.data(),
           u.id(),
           data.channel(),
@@ -644,7 +706,7 @@ group_handler_base::user_data_available(chat_gaming::user &u, const netcomgrp::n
                   "received user data: %s\n", data.data().c_str()));
         ACE_DEBUG((LM_DEBUG, "group_handler_base::user_data_available: " \
                   "channel: %s\n", data.channel().c_str()));
-        
+
         smsg = new message_channel(
           message::private_refused,
           data.data(),
@@ -662,13 +724,13 @@ group_handler_base::user_data_available(chat_gaming::user &u, const netcomgrp::n
         _house_adapter->recv(&data);
         // _house_adapter->recv(&ruid);
         ACE_DEBUG((LM_DEBUG, "group_handler_base::user_data_available: " \
-                  "received room launch command from user id %s " 
-                  "to room id %s\n", 
+                  "received room launch command from user id %s "
+                  "to room id %s\n",
                   u.id().c_str(),
                   data.room_id().c_str()));
         // ACE_DEBUG((LM_DEBUG, "group_handler_base::user_data_available: "
         //          "received launch command for room id: %s\n", ruid.c_str()));
-        
+
         // Hmm... what to do with the user data? Maybe send it to GUI
         // for processing or something
         smsg = new message_room_command(
@@ -687,8 +749,8 @@ group_handler_base::user_data_available(chat_gaming::user &u, const netcomgrp::n
         chat_gaming::pdu::room_command data;
         _house_adapter->recv(&data);
         ACE_DEBUG((LM_DEBUG, "group_handler_base::user_data_available: " \
-                  "received room kick command from user id %s " 
-                  "about room id %s\n", 
+                  "received room kick command from user id %s "
+                  "about room id %s\n",
                   u.id().c_str(),
                   data.room_id().c_str()));
 
@@ -710,19 +772,19 @@ group_handler_base::user_data_available(chat_gaming::user &u, const netcomgrp::n
         chat_gaming::pdu::room_join data;
         _house_adapter->recv(&data);
         ACE_DEBUG((LM_DEBUG, "group_handler_base::user_data_available: " \
-                  "received room join request from user id %s " 
-                  "to room id %s\n", 
+                  "received room join request from user id %s "
+                  "to room id %s\n",
                   u.id().c_str(),
                   data.room_id().c_str()));
 
         smsg = new message_room_join(
           message::room_join,
-          data.room_id(), 
+          data.room_id(),
           data.password(),
           u.id(),
           hdr.sequence(),
           _grp_msg_base
-        );  
+        );
     }
         break;
     case chat_gaming::pdu::id_room_join_ack:
@@ -734,7 +796,7 @@ group_handler_base::user_data_available(chat_gaming::user &u, const netcomgrp::n
             hdr.sequence(),
             _grp_msg_base
         );
-        break;  
+        break;
     case chat_gaming::pdu::id_room_join_full:
         ACE_DEBUG((LM_DEBUG, "group_handler_base::user_data_available: " \
                   "received room join full response\n"));
@@ -744,7 +806,7 @@ group_handler_base::user_data_available(chat_gaming::user &u, const netcomgrp::n
             hdr.sequence(),
             _grp_msg_base
         );
-        break;  
+        break;
     case chat_gaming::pdu::id_room_join_refused:
         ACE_DEBUG((LM_DEBUG, "group_handler_base::user_data_available: " \
                   "received room join nack response\n"));
@@ -754,7 +816,7 @@ group_handler_base::user_data_available(chat_gaming::user &u, const netcomgrp::n
             hdr.sequence(),
             _grp_msg_base
         );
-        break;  
+        break;
     case chat_gaming::pdu::id_room_join_password:
         ACE_DEBUG((LM_DEBUG, "group_handler_base::user_data_available: " \
                   "received room join pass response\n"));
@@ -764,7 +826,7 @@ group_handler_base::user_data_available(chat_gaming::user &u, const netcomgrp::n
             hdr.sequence(),
             _grp_msg_base
         );
-        break;  
+        break;
     case chat_gaming::pdu::id_user_blocked:
         ACE_DEBUG((LM_DEBUG, "group_handler_base::user_data_available: " \
                   "received user blocked\n"));
@@ -776,12 +838,12 @@ group_handler_base::user_data_available(chat_gaming::user &u, const netcomgrp::n
         );
         break;
     }
-    
+
     if (smsg) gui_messenger()->send_msg(smsg);
 }
 
 
-void 
+void
 group_handler_base::room_update(
   chat_gaming::room &r, const netcomgrp::node *sender
 ) {
@@ -792,7 +854,7 @@ group_handler_base::room_update(
     // the update is the owner of the room (TODO a check here that at least
     // the id strings match)
     chat_gaming::user::id_type search_id(sender);
-    _house_type::user_iterator ui = _house.user_find(search_id);    
+    _house_type::user_iterator ui = _house.user_find(search_id);
     if (ui == _house.user_end()) {
         ACE_ERROR((LM_ERROR, "group_handler_base::room_update received from "
                   "netcomgrp node that was not found from model. Strange.\n"));

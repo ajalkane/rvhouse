@@ -220,7 +220,7 @@ global_ignore = Following users are in global ignore list because of disruptive 
 # %2 is replaced with reason
 user_global_ignore = Global ignore on user '%1', reason: %2
 
-host_ip = Host's IP is %1
+host_ip = My IP is %1. You might need it if you're running Windows Vista.
 
 [room_settings_win]
 title       = Room settings

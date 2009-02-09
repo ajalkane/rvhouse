@@ -220,6 +220,19 @@ chat::handle_message(::message *msg) {
         }
     }
         break;
+    case ::message::send_notification:
+    {
+        message_channel *m = dynamic_ptr_cast<message_channel>(msg);
+        ACE_DEBUG((LM_DEBUG, "chat::handle message _channel/channel %s/%s\n",
+                  _channel.c_str(), m->channel().c_str()));
+
+        if (_channel == m->channel()) {
+            notification_message(
+                m->sender_id(), m->str(), m->group_base()
+            );
+        }
+    }
+        break;
     case ::message::block_users:
     {
         message_block_users *m = dynamic_ptr_cast<message_block_users>(msg);
@@ -308,6 +321,40 @@ chat::public_message(
             os::flash_window(_flash_window);
         }
     }
+}
+
+void
+chat::notification_message(
+  const chat_gaming::user::id_type &from_id,
+  const std::string &msg,
+  int grp)
+{
+    model::house::house_type::user_iterator ui
+      = house_model()->user_find(from_id, grp);
+    if (ui == house_model()->user_end()) {
+        ACE_DEBUG((LM_ERROR, "chat::notification_message no user found for "
+        "user id %s\n", from_id.c_str()));
+        return;
+    }
+    const chat_gaming::user &from = *ui;
+
+    _cond_scroll_prepare();
+    {
+        /** Message Header **/
+        // At least for now display notification messages just like status messages
+        appendStyledText("*", 1, style_status);
+        appendStyledText(" ", 1);
+
+        appendStyledText("<", 1, style_status);
+        appendStyledText(from.display_id().c_str(), from.display_id().size(), style_status);
+        appendStyledText(">", 1, style_status);
+        appendStyledText(" ", 1);
+
+        /** Message Contents **/
+        _styled_content(msg.c_str(), msg.size(), style_status);
+        appendStyledText("\n", 1);
+    }
+    _cond_scroll();
 }
 
 void

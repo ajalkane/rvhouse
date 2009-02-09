@@ -85,7 +85,7 @@ public:
         send,
         send_room,
         send_private,
-        send_room_private,
+        send_notification,
         private_refused,
 
         refresh,

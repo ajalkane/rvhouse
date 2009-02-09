@@ -56,15 +56,15 @@ worker::svc() {
     } catch (const std::exception &e) {
         ACE_DEBUG((LM_ERROR, "networking::worker dying of exception %s\n",
                    e.what()));;
-        message_string *m = 
+        message_string *m =
           new message_string(message::worker_exception, e.what());
         gui_messenger()->send_msg(m);
     } catch (...) {
         ACE_DEBUG((LM_ERROR, "some unrecognized exception received, dying!\n"));
     }
-    
+
     delete net_report(); net_report.instance(NULL);
-    
+
     ACE_DEBUG((LM_DEBUG, "networking::worker thread exit\n"));
     return 0;
 }
@@ -75,7 +75,7 @@ worker::_main() {
     {
         size_t tout_msec = net_conf()->get<size_t>("net_reudp", "timeout", 0);
         size_t send_amnt = net_conf()->get<size_t>("net_reudp", "send_try_count", 0);
-        
+
         if (tout_msec != 0) {
             reudp::time_value_type tout;
             tout.msec(tout_msec);
@@ -85,37 +85,37 @@ worker::_main() {
             reudp::config::send_try_count(send_amnt);
         }
     }
-            
-    // Networking worker thread must own the reactor so that it can be 
+
+    // Networking worker thread must own the reactor so that it can be
     // signalled to wake up
     _reactor->owner(ACE_Thread::self());
     net_report.instance(new reporter::client(_reactor));
-    
-    _group_adapter = 
+
+    _group_adapter =
         new group_adapter_combine(_reactor);
     std::auto_ptr<group_adapter> ga_guard(_group_adapter);
-    
+
     _login_manager = new login_manager_rvzt(_reactor);
     std::auto_ptr<login_manager> lm_guard(_login_manager);
-    
+
     _group_adapter->init();
-    
+
     _version_update_client = new version_update::client;
     _global_ignore_client  = new global_ignore::client;
-    
+
     while (!_quit) {
         ACE_DEBUG((LM_DEBUG, "worker: handle_events\n"));
         // TODO check error, throw exception
         _reactor->handle_events();
     }
-    
+
     if (!_exception_str.empty()) {
         ACE_DEBUG((LM_DEBUG, "worker::exception string set, throwing: %s\n",
                    _exception_str.c_str()));
         // Work around for ACE peculiarity
         throw exception(0, _exception_str.c_str());
     }
-    
+
     delete _version_update_client;
     delete _global_ignore_client;
 }
@@ -123,24 +123,24 @@ worker::_main() {
 int
 worker::handle_exception(ACE_HANDLE) {
     ACE_DEBUG((LM_DEBUG, "networking::worker: handle_messenger received at thread %t\n"));
-        
+
     typedef std::list<message *> ctype;
     ctype msgs;
     std::insert_iterator<ctype> inserter(msgs, msgs.begin());
-    
+
     net_messenger()->collect_msgs(inserter);
 
-    try {   
+    try {
         ctype::iterator i = msgs.begin();
         for (; i != msgs.end(); i++) {
             ACE_DEBUG((LM_DEBUG, "networking::worker: msg is %d\n", (*i)->id()));
-            
+
             // At least for now, just pass the message to house_window for handling
             this->handle_message(*i);
         }
     } catch (const std::exception &e) {
         ACE_DEBUG((LM_DEBUG, "worker::handle_exception: gots exception uh\n"));
-        
+
         // ACE has some strange troubles with rethrowing the exception from
         // here... the exception does not end up being catched by worker's
         // main, but in the real program main! Yet in the worker thread.
@@ -156,8 +156,8 @@ worker::handle_exception(ACE_HANDLE) {
     std::for_each(msgs.begin(), msgs.end(), delete_ptr<message>());
 
     ACE_DEBUG((LM_DEBUG, "networking::worker: handle_messenger exiting\n"));
-    
-    return 1;   
+
+    return 1;
 }
 
 void
@@ -168,7 +168,7 @@ worker::handle_message(message *msg) {
         ACE_DEBUG((LM_DEBUG, "networking::worker: connect received\n"));
         message_user *m = dynamic_ptr_cast<message_user>(msg);
         ACE_DEBUG((LM_DEBUG, "TODO debug user id str: %s\n",
-                  m->user().id().id_str().c_str()));        
+                  m->user().id().id_str().c_str()));
         _group_adapter->connect(m->user());
     }
         break;
@@ -254,6 +254,7 @@ worker::handle_message(message *msg) {
     case message::room_kick:
     case message::send_private:
     case message::private_refused:
+    case message::send_notification:
         _group_adapter->handle_message(msg);
         break;
     case message::room_join:

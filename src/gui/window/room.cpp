@@ -670,14 +670,21 @@ room::user_added(const chat_gaming::user &u) {
         langstr("chat/user_joined_room", u.display_id().c_str())
     );
 
-    if (_hosting && pref()->get("general", "send_ip", true)) {
+    ACE_DEBUG((LM_DEBUG, "room::user_added: user id/self id: %s/%s\n",
+               u.id().id_str().c_str(), self_model()->user().id().id_str().c_str()));
+
+    if (_hosting
+        && pref()->get("general", "send_ip", true)
+        && u.id().id_str() != self_model()->user().id().id_str()) {
         // Send our IP to the new joiner. The channel used
         // is this particular room, which will cause the
         // user to receive the message in this room.
+        std::string external_ip = self_model()->user().ip_as_string();
+        if (external_ip.empty()) external_ip = "<undetected>";
         message_channel *msg =
-          new message_channel(::message::send_private,
-                              langstr("chat/host_ip", self_model()->user().ip_as_string().c_str()),
-                              u.display_id(),
+          new message_channel(::message::send_notification,
+                              langstr("chat/host_ip", external_ip.c_str()),
+                              u.id(),
                               _room_id,
                               self_model()->sequence(),
                               0);
