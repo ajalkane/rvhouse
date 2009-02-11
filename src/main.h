@@ -24,6 +24,7 @@ namespace gui {
 
 extern accessor<class gui::house_app *>    app;
 extern accessor<class config_file *>  conf;
+extern accessor<class config_file *>  user_conf;
 extern accessor<class config_file *>  pref;
 extern accessor<class messenger *>    net_messenger;
 extern accessor<class messenger *>    gui_messenger;

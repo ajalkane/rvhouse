@@ -36,6 +36,7 @@
 accessor<gui::house_app *> app(NULL);
 accessor<config_file *>    conf(NULL);
 accessor<config_file *>    pref(NULL);
+accessor<config_file *>    user_conf(NULL);
 accessor<messenger *>      net_messenger(NULL);
 accessor<messenger *>      gui_messenger(NULL);
 accessor<model::house *>   house_model(NULL);
@@ -53,17 +54,18 @@ app_options  app_opts;
 
 namespace {
     ACE_Logging_Strategy *logging_strategy = NULL;
-    
+
     enum {
         opt_langdiff = 0,
         opt_export_contact_dat,
         opt_import_contact_dat,
     };
-    
+
     app_functionality::base *app_mode = NULL;
 }
 
 #define CONF_FILE "conf/rvhouse.ini"
+#define USER_CONF_FILE "conf/user_conf.ini"
 
 void init_app(int argc, char **argv) {
     ACE_DEBUG((LM_DEBUG, "init_app\n"));
@@ -71,16 +73,16 @@ void init_app(int argc, char **argv) {
     // static const ACE_TCHAR options[] = ":l:";
     // Long options only
     ACE_Get_Opt cmd_opts(argc, argv, ":", 1, 1, ACE_Get_Opt::PERMUTE_ARGS, 1); // options, 1, 1);
-    cmd_opts.long_option("langdiff", 
-                         opt_langdiff, 
+    cmd_opts.long_option("langdiff",
+                         opt_langdiff,
                          ACE_Get_Opt::ARG_REQUIRED);
-    cmd_opts.long_option("export_contact_dat", 
-                         opt_export_contact_dat, 
+    cmd_opts.long_option("export_contact_dat",
+                         opt_export_contact_dat,
                          ACE_Get_Opt::ARG_REQUIRED);
-    cmd_opts.long_option("import_contact_dat", 
-                         opt_import_contact_dat, 
+    cmd_opts.long_option("import_contact_dat",
+                         opt_import_contact_dat,
                          ACE_Get_Opt::ARG_REQUIRED);
-    
+
     int option;
     while ((option = cmd_opts ()) != EOF) {
         switch (option) {
@@ -101,20 +103,23 @@ void init_app(int argc, char **argv) {
             break;
         case ':':
             throw "option missing";
-            break;          
+            break;
         default:
             throw "invalid option";
         }
     }
-    
-    if (!app_mode) app_mode = new app_functionality::house(argc, argv); 
+
+    if (!app_mode) app_mode = new app_functionality::house(argc, argv);
 }
 
 void init_pre() {
     // First init configuration
-    std::string conf_file = app_rel_path(CONF_FILE);                  
+    std::string conf_file      = app_rel_path(CONF_FILE);
+    std::string user_conf_file = app_rel_path(USER_CONF_FILE);
     conf.instance(new config_file());
     conf()->load(conf_file);
+    user_conf.instance(new config_file);
+    user_conf()->load_conditionally(user_conf_file);
     // Preferences are settings that user has made,
     // and therefore have to persist across new installations
     // in contrast to config
@@ -124,11 +129,11 @@ void init_pre() {
             conf()->get<std::string>("user", "vendor_id", "Re-Volt")
         )
     );
-    
+
     pref()->load();
-    
+
     app_opts.init();*/
-    
+
     // Init logging
     std::string logfile = conf()->get<std::string>("log", "file", "log/rvhouse.log");
     std::string logsize = conf()->get<std::string>("log", "size", "2000"); // 2MBytes
@@ -139,15 +144,15 @@ void init_pre() {
     if (logfile == "stderr") logfile.clear();
     if (!logfile.empty()) logfile = app_rel_path(logfile);
     std::string logpars = "VERBOSE_LITE";
-    
+
     // TODO logging strategy's init unfortunately
     // writes temporarily to the passed strings due
-    // to using strtok... using std::strings 
+    // to using strtok... using std::strings
     // as values is technically wrong but will do for
     // now. Better to make a copy of the log_s_pars,
     // maybe with an encapsulating class
     // Temporary solution: copy the strings with strdup
-    
+
     char *log_s_pars[] = {
         "-f", strdup(logpars.c_str()),
         "-m", strdup(logsize.c_str()),
@@ -158,23 +163,23 @@ void init_pre() {
 
     size_t log_s_pars_size = array_sizeof(log_s_pars);
     if (logfile.empty()) log_s_pars_size = 1;
-    
+
     logging_strategy = new ACE_Logging_Strategy;
-    
-    if (logging_strategy->init(log_s_pars_size, 
-                               log_s_pars)) 
+
+    if (logging_strategy->init(log_s_pars_size,
+                               log_s_pars))
     {
         std::cerr << "Could not open log system, params used: " << std::endl;
-                               
+
         for (unsigned int i = 0; i < array_sizeof(log_s_pars); i++)
             std::cerr << log_s_pars[i] << " ";
         std::cerr << std::endl;
-    }                           
+    }
 
-    ACE_DEBUG((LM_INFO, APP_NAME " " APP_VERSION " started\n"));    
+    ACE_DEBUG((LM_INFO, APP_NAME " " APP_VERSION " started\n"));
     if (!logdebug) {
         ACE_DEBUG((LM_DEBUG, "Turning debug logging off\n"));
-        
+
         ACE_LOG_MSG->priority_mask(
             LM_NOTICE  | LM_ALERT | LM_INFO |
             LM_WARNING | LM_ERROR | LM_CRITICAL |
@@ -182,30 +187,30 @@ void init_pre() {
             ACE_Log_Msg::PROCESS
         );
     }
-    
+
     ACE_Process_Manager *pm = ACE_Process_Manager::instance();
-    pm->open(10, ACE_Reactor::instance());  
+    pm->open(10, ACE_Reactor::instance());
 }
 
 void init_debug() {
     if (app_opts.debug()) {
-        multi_feed::config::always_display_feeds = true;    
+        multi_feed::config::always_display_feeds = true;
     }
 }
 
 int do_main(int argc, char **argv) {
     // ACE_LOG_MSG->set_flags(ACE_Log_Msg::VERBOSE_LITE);
     ACE_LOG_MSG->set_flags(ACE_Log_Msg::VERBOSE);
-    
+
     init_pre();
     init_debug();
     init_app(argc, argv);
 
     ACE_DEBUG((LM_DEBUG, "run app %d\n", app_mode));
     app_mode->run();
-    
+
     // pref()->save();
-    
+
     return 0;
 }
 
@@ -223,7 +228,7 @@ ACE_TMAIN (int argc, ACE_TCHAR *argv[]) {
         os::alert("Fatal error received", e.what());
     } catch (const char *e) {
         ACE_DEBUG((LM_DEBUG, "exception received3  at thread %t:\n"));
-        os::alert("Fatal error received", e);       
+        os::alert("Fatal error received", e);
     } catch (...) {
         ACE_DEBUG((LM_DEBUG, "exception received4  at thread %t:\n"));
         os::alert("Unrecognized exception", "Die...");
@@ -233,12 +238,13 @@ ACE_TMAIN (int argc, ACE_TCHAR *argv[]) {
     delete app();
     ACE_DEBUG((LM_DEBUG, "Deleting conf\n"));
     delete conf();
+    delete user_conf();
     // delete pref();
-    
+
     // ACE_DEBUG((LM_DEBUG, "Deleting logging_strategy\n"));
     // Seems maybe logging strategy is not meant to be deleted manually,
     // documentation on this issue in ACE is scarce.
     // delete logging_strategy;
-    ACE_DEBUG((LM_INFO, APP_NAME " exit\n"));   
+    ACE_DEBUG((LM_INFO, APP_NAME " exit\n"));
     return 0;
 }

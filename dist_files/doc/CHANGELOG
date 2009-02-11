@@ -3,6 +3,7 @@ RV House change log
 Version ??????
 - Ignoring user informs that the ignore is temporary
 - Host sends his IP to every user that join (can be turned off)
+- Possibility to block permanently users with configuration file
 
 Version 0.91.3 (20.04.2008) 
 - Logging in problems fixed: using revoltrace.com for user authentication
