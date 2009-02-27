@@ -232,6 +232,19 @@ room::create() {
     // util::restore_size(this, "room", "win");
 
     _buttons_state();
+
+    if (_hosting &&
+        pref()->get("general", "send_ip", true) &&
+        pref()->get("one_time_alert", "send_ip", true))
+    {
+        pref()->set("one_time_alert", "send_ip", false);
+        const char *topic   = langstr("room_win/send_ip_info_title");
+        const char *content = langstr("room_win/send_ip_info");
+
+        variable_guard<bool> guard(_running_modal); _running_modal = true;
+        FXMessageBox::information(this, FX::MBOX_OK, topic, content);
+    }
+
 }
 
 void
@@ -592,17 +605,6 @@ room::_launch_join(chat_gaming::house::user_iterator host_ui) {
 
 void
 room::_launched_display() {
-#if 0
-    // Now launch Phoenix
-    ACE_Process_Options px_opts;
-    ACE_Process px;
-    std::string px_cmd = conf()->get("phoenix", "cmd");
-    px_opts.command_line(px_cmd.c_str());
-    ACE_DEBUG((LM_DEBUG, "room::launching phoenix: %s\n", px_cmd.c_str()));
-    pid_t px_pid = px.spawn(px_opts);
-
-    ACE_DEBUG((LM_DEBUG, "room::launching phoenix: ret val %d\n", px_pid));
-#endif
     self_model()->user().status(chat_gaming::user::status_playing);
     self_model()->user_send();
 
