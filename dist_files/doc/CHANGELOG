@@ -1,6 +1,9 @@
 RV House change log
 
-Version 0.91.4 (01.03.2008)
+Version 0.91.5 (08.04.2009)
+- IP server changed to working one
+
+Version 0.91.4 (01.03.2009)
 - Ignoring user informs that the ignore is temporary
 - Host sends his IP to every user that join (can be turned off)
 - Possibility to block permanently users with configuration file
