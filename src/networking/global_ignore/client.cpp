@@ -13,14 +13,14 @@ namespace networking {
 namespace global_ignore {
 
 client::client() : _http_fetcher(NULL)
-{   
+{
 }
 
 client::~client() {
     delete _http_fetcher;
 }
-                
-void 
+
+void
 client::fetch() {
     ACE_DEBUG((LM_DEBUG, "global_ignore::client::fetch\n"));
     std::string url = net_conf()->get<std::string>("main", "global_ignore", "");
@@ -30,9 +30,9 @@ client::fetch() {
         delete this;
         return;
     }
-    
+
     _http_fetcher = new http::fetcher;
-    
+
     // HTTP fetcher throws an exception in case of an error
     try {
         ACE_DEBUG((LM_DEBUG, "global_ignore::client::fetch: "
@@ -42,22 +42,24 @@ client::fetch() {
     } catch (std::exception &e) {
         ACE_ERROR((LM_ERROR, "global_ignore::client::fetch: exception: %s\n",
                   e.what()));
-        delete this;
+        // No need for deleting the handler, seems like ACE calls
+        // handle_close() if could not connect which does the deleting
+        // delete this;
         return;
     }
-    
+
     // If gotten this far, deleted from handle_close
 }
 
-// http::handler interface      
+// http::handler interface
 int
-client::handle_response(const http::response &resp) 
+client::handle_response(const http::response &resp)
 {
     ACE_DEBUG((LM_DEBUG, "global_ignore::client::got response: %s\n",
               resp.content()));
     const char *str_s = resp.content();
     const char *str_e = strchr(str_s, '\n');
-    
+
     message_global_ignore *m = new message_global_ignore(message::global_ignore_list);
     auto_ptr<message_global_ignore> m_guard(m);
     // Go through the file line by line
@@ -77,7 +79,7 @@ client::handle_response(const http::response &resp)
             std::vector<std::string> ipmask(2);
             if (regexp::match("([0-9.]+)/([0-9.]+)", res[0], ipmask.begin())) {
                 ACE_DEBUG((LM_DEBUG, "global_ignore::client: "
-                           "got ip/mask: %s/%s\n", 
+                           "got ip/mask: %s/%s\n",
                            ipmask[0].c_str(),
                            ipmask[1].c_str()));
             } else {
@@ -87,15 +89,15 @@ client::handle_response(const http::response &resp)
             e.ip     = ipmask[0];
             if (!ipmask[1].empty())
                 e.mask = ipmask[1];
-                
+
             e.userid = res[1];
             e.reason = res[2];
 
             ACE_DEBUG((LM_DEBUG, "global_ignore::client: "
-                       "ip/mask/userid/reason: %s/%s/%s/%s\n", 
-                       e.ip.c_str(), e.mask.c_str(), 
+                       "ip/mask/userid/reason: %s/%s/%s/%s\n",
+                       e.ip.c_str(), e.mask.c_str(),
                        e.userid.c_str(), e.reason.c_str()));
-            
+
             m->ip_push_back(e);
         } else if (line.empty()) {
             // break;
@@ -112,7 +114,7 @@ client::handle_response(const http::response &resp)
 int
 client::handle_error(int reason, const char *details) {
     ACE_DEBUG((LM_DEBUG, "global_ignore::client: error: %s\n", details));
-    return 0;   
+    return 0;
 }
 
 int
@@ -120,8 +122,8 @@ client::handle_close() {
     ACE_DEBUG((LM_DEBUG, "global_ignore::client: destroying handler\n"));
     delete this;
     ACE_DEBUG((LM_DEBUG, "global_ignore::client: destroying handler, done\n"));
-    return 0;   
+    return 0;
 }
-    
+
 } // ns global_ignore
 } // ns networking

@@ -65,7 +65,7 @@ login_manager_rvzt::_login_operation(
         gui_messenger()->send_msg(
           new message(LOGIN_MESSAGE(message::login_err)));
         // No need for deleting the handler, seems like ACE calls
-        // handle_close() if could not connect
+        // handle_close() if could not connect which does the deleting
         // delete h;
     }
     fh_guard.release();
