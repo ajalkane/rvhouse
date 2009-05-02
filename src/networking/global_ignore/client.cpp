@@ -33,20 +33,10 @@ client::fetch() {
 
     _http_fetcher = new http::fetcher;
 
-    // HTTP fetcher throws an exception in case of an error
-    try {
-        ACE_DEBUG((LM_DEBUG, "global_ignore::client::fetch: "
-                  "getting version information from %s\n",
-                  url.c_str()));
-        _http_fetcher->fetch(url, this);
-    } catch (std::exception &e) {
-        ACE_ERROR((LM_ERROR, "global_ignore::client::fetch: exception: %s\n",
-                  e.what()));
-        // No need for deleting the handler, seems like ACE calls
-        // handle_close() if could not connect which does the deleting
-        // delete this;
-        return;
-    }
+    ACE_DEBUG((LM_DEBUG, "global_ignore::client::fetch: "
+              "getting version information from %s\n",
+              url.c_str()));
+    _http_fetcher->fetch(url, this);
 
     // If gotten this far, deleted from handle_close
 }

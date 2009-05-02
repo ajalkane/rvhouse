@@ -55,12 +55,10 @@ login_manager_rvzt::_login_operation(
   int _msg_base
 ) {
     _fetch_handler *h = new _fetch_handler(this, user, _msg_base);
-    std::auto_ptr<_fetch_handler> fh_guard(h);
-    try {
-        _http_fetcher->fetch(req_url, fh_guard.get());
-    } catch (std::exception &e) {
-        ACE_ERROR((LM_ERROR, "login_manager_rvzt::_login_operation exception '%s'\n",
-                  e.what()));
+    http::fetcher::status status = _http_fetcher->fetch(req_url, h);
+    if (status != http::fetcher::FETCH_OK) {
+        ACE_ERROR((LM_ERROR, "login_manager_rvzt::_login_operation error '%d'\n",
+                  status));
 
         gui_messenger()->send_msg(
           new message(LOGIN_MESSAGE(message::login_err)));
@@ -68,7 +66,6 @@ login_manager_rvzt::_login_operation(
         // handle_close() if could not connect which does the deleting
         // delete h;
     }
-    fh_guard.release();
 }
 
 void

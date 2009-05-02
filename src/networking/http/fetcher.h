@@ -10,7 +10,7 @@
 
 namespace networking {
 namespace http {
-    
+
     /**
      * Simple class for fetching HTTP data
      */
@@ -18,13 +18,18 @@ namespace http {
         ACE_Connector<fetcher_handler, ACE_SOCK_CONNECTOR> *_connector;
         ACE_Time_Value _timeout;
     public:
+        enum status {
+            FETCH_OK,
+            FETCH_CONNECT_ERROR
+        };
+
         fetcher();
         virtual ~fetcher();
-        
+
         inline void timeout(const ACE_Time_Value &t) { _timeout = t; }
-        
-        void fetch(const request &req, handler *h);
-        void fetch(const url     &u,   handler *h);
+
+        status fetch(const request &req, handler *h);
+        status fetch(const url     &u,   handler *h);
     };
 
 } // ns http
