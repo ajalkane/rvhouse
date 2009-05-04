@@ -16,7 +16,7 @@ fetcher::~fetcher() {
 fetcher::status
 fetcher::fetch(const url &u, handler *h) {
     request req(u);
-    fetch(req, h);
+    return fetch(req, h);
 }
 
 fetcher::status
