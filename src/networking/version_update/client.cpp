@@ -33,10 +33,18 @@ client::fetch() {
 
     _http_fetcher = new http::fetcher;
 
-    ACE_DEBUG((LM_DEBUG, "version_update::client::fetch: "
-              "getting version information from %s\n",
-              url.c_str()));
-    _http_fetcher->fetch(url, this);
+    try
+    {
+        ACE_DEBUG((LM_DEBUG, "version_update::client::fetch: "
+                  "getting version information from %s\n",
+                  url.c_str()));
+        _http_fetcher->fetch(url, this);
+    } catch (std::exception &e) {
+        ACE_ERROR((LM_ERROR, "version_update::client::fetch: exception: %s\n",
+                  e.what()));
+        delete this;
+        return;
+    }
 
     // If gotten this far, deleted from handle_close
 }

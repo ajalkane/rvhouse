@@ -55,10 +55,21 @@ login_manager_rvzt::_login_operation(
   int _msg_base
 ) {
     _fetch_handler *h = new _fetch_handler(this, user, _msg_base);
-    http::fetcher::status status = _http_fetcher->fetch(req_url, h);
-    if (status != http::fetcher::FETCH_OK) {
-        ACE_ERROR((LM_ERROR, "login_manager_rvzt::_login_operation error '%d'\n",
-                  status));
+    bool login_exception = false;
+    http::fetcher::status status = http::fetcher::FETCH_OK;
+    try {
+         status = _http_fetcher->fetch(req_url, h);
+    } catch (std::exception &e) {
+        ACE_ERROR((LM_ERROR, "login_manager_rvzt::_login_operation exception '%s'\n",
+                  e.what()));
+
+        delete h;
+        login_exception = true;
+    }
+
+    if (status != http::fetcher::FETCH_OK || login_exception == true) {
+        ACE_ERROR((LM_ERROR, "login_manager_rvzt::_login_operation failed (status %d, exception %d)\n",
+                  status, login_exception));
 
         gui_messenger()->send_msg(
           new message(LOGIN_MESSAGE(message::login_err)));

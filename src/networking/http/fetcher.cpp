@@ -21,7 +21,7 @@ fetcher::fetch(const url &u, handler *h) {
 
 fetcher::status
 fetcher::fetch(const request &req, handler *h) {
-    fetcher_handler     *fh = new fetcher_handler(req, h);
+    // This call may throw exception if the host can not be resolved
     const ACE_INET_Addr &a  = req.target_url().addr();
 
     // ACE_DEBUG((LM_DEBUG, "Trying to fetch '%s' from %s:%d\n",
@@ -30,6 +30,7 @@ fetcher::fetch(const request &req, handler *h) {
               a.get_host_addr(), a.get_port_number()));
 
     ACE_DEBUG((LM_DEBUG, "http::fetcher: connecting\n"));
+    fetcher_handler     *fh = new fetcher_handler(req, h);
     ACE_Synch_Options conn_opts(ACE_Synch_Options::USE_REACTOR |
                                 ACE_Synch_Options::USE_TIMEOUT,
                                 _timeout);
