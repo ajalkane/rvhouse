@@ -45,6 +45,8 @@ void url::_set_addr() const
      if (_addr.is_any())  // _addr.get_ip_address() == INADDR_ANY ||
          // _addr.get_ip_address() == INADDR_NONE)
      {
+         ACE_ERROR((LM_ERROR, "url::_set_addr failed resolving address '%s' from URL\n",
+                    _host.c_str()));
          // TODO should typify this exception and add throws clause to declaration
          // throw exceptionf(0, "Could not resolve address");
          throw exceptionf(0, "Could not resolve address '%s' from URL",
