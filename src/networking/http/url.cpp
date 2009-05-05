@@ -47,10 +47,11 @@ void url::_set_addr() const
      {
          ACE_ERROR((LM_ERROR, "url::_set_addr failed resolving address '%s' from URL\n",
                     _host.c_str()));
+         // No more exceptions.
          // TODO should typify this exception and add throws clause to declaration
          // throw exceptionf(0, "Could not resolve address");
-         throw exceptionf(0, "Could not resolve address '%s' from URL",
-                          _host.c_str());
+         // throw exceptionf(0, "Could not resolve address '%s' from URL",
+         //                 _host.c_str());
      }
 
      _is_addr_set = true;

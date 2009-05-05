@@ -20,7 +20,8 @@ namespace http {
     public:
         enum status {
             FETCH_OK,
-            FETCH_CONNECT_ERROR
+            FETCH_CONNECT_ERROR,
+            FETCH_ADDRESS_RESOLVE_ERROR
         };
 
         fetcher();

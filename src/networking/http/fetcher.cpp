@@ -21,9 +21,13 @@ fetcher::fetch(const url &u, handler *h) {
 
 fetcher::status
 fetcher::fetch(const request &req, handler *h) {
-    // This call may throw exception if the host can not be resolved
     const ACE_INET_Addr &a  = req.target_url().addr();
-
+    if (a.is_any())
+    {
+        // Close handle_close always if fetch has ended
+        h->handle_close();
+        return FETCH_ADDRESS_RESOLVE_ERROR;
+    }
     // ACE_DEBUG((LM_DEBUG, "Trying to fetch '%s' from %s:%d\n",
     //          req.target_url().file().c_str(), a.get_host_addr(), a.get_port_number()));
     ACE_DEBUG((LM_DEBUG, "Trying to fetch from %s:%d\n",
@@ -38,6 +42,7 @@ fetcher::fetch(const request &req, handler *h) {
     if (_connector->connect(fh, a, conn_opts) == -1 &&
         ACE_OS::last_error() != EWOULDBLOCK)
     {
+        // ACE's connector calls hadle_close() when failed above
         ACE_ERROR((LM_ERROR, "fetcher::fetch connect failed to host %s", req.target_url().host().c_str()));
         return FETCH_CONNECT_ERROR;
     }
