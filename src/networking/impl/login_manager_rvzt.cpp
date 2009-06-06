@@ -19,13 +19,13 @@ login_manager_rvzt::login_manager_rvzt(ACE_Reactor *r)
     _http_fetcher(new http::fetcher)
 {
     _base_validate_url = net_conf()->get<std::string>(
-        "auth", "validate", "http://revolt.speedweek.net/main/user_validate.php"
+        "auth", "validate", "http://rvzt.zackattackgames.com/main/user_validate.php"
     );
     _base_register_url = net_conf()->get<std::string>(
-        "auth", "register", "http://revolt.speedweek.net/main/user_register.php"
+        "auth", "register", "http://rvzt.zackattackgames.com/main/user_register.php"
     );
 
-    // Ensure only revolt.speedweek.net or www.revoltrace.com used
+    // Ensure only expected authentiraztion urls are used
     http::url validate_url = http::url(_base_validate_url);
     http::url register_url = http::url(_base_register_url);
 
@@ -38,7 +38,7 @@ login_manager_rvzt::login_manager_rvzt(ACE_Reactor *r)
 
 bool login_manager_rvzt::_check_auth_url(const http::url &u)
 {
-    if (u.host() == "revolt.speedweek.net" ||
+    if (u.host() == "rvzt.zackattackgames.com" ||
         u.host() == "www.revoltrace.com") {
         return true;
     }

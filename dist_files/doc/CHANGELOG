@@ -1,5 +1,8 @@
 RV House change log
 
+Version 0.91.7 (06.06.2009)
+- Updated to use rvzt.zachattackgames.com as login server
+
 Version 0.91.6 (01.05.2009)
 - Crashing problem when trying to login when server down fixed
 
