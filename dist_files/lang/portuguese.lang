@@ -1,0 +1,215 @@
+[common]
+ok_button       = " &Aceitar "
+cancel_button   = " &Cancelar "
+
+[login_win]
+title           = Logar
+user_id         = &Usuario:
+password        = &Senha:
+uses_rvzt_login = Usa os dados de RVZT
+login           = &Logar
+register        = &Registrar
+quit            = &Sair
+
+login_err_topic = Não pode logar
+fill_user       = colocar seu usuario
+fill_pass       = Colocar sua senha
+invalid_user    = Usuario invalido, pode conter de 3 a 20 caracteres e pode conter a-z, A-Z y _
+invalid_pass    = Senha invalida, pode conter apartir de 3 caracteres e pode conter a-z, A-Z y _
+server_down     = Servidor não responde, sua conta não pode ser autenticada. Continuar assim mesmo?
+validation_err  = Usuario ou senha invalida
+
+
+[register_win]
+title           = Registrar
+user_id         = &Usuario:
+password        = &Senha:
+repassword      = &Repetir senha:
+email           = &E-mail:
+register        = Registrar
+cancel          = &Cancelar
+
+reg_err_topic   = Erro ao registrar usuario
+reg_ok_topic    = Registrado
+fill_user       = Colocar seu usuario
+fill_pass       = Colocar sua senha
+pass_mismatch   = As senhas não coincidem!
+invalid_user    = Usuario invalido, pode conter de 3 a 20 caracteres e pode conter a-z, A-Z y _
+invalid_pass    = Senha invalida, pode conter apartir de 3 caracteres e pode conter a-z, A-Z y _
+invalid_email   = Endereço de e-mail invalido
+server_down     = Erro ao registrar no servidor, tentar mais tarde
+user_reserved   = O usuario escolhido esta sendo usado, escolher outro
+reg_ok          = Registro concluido! voce já pode logar
+
+
+[about_win]
+title         = Sobre
+license       = Lançado baixo %1
+icons_by      = Icones por %1
+house_icon_by = Icone do RV House por %1
+other_sites   = Alguns RV sites da comunidade:
+using         = Usando:
+using_lib     = %1 (por %2)
+translations  = Traduçoes:
+translation   = %1 por %2 <%3>
+
+[app]
+rv_not_found_title = "Re-Volt esta instalado?"
+rv_not_found       = "Re-Volt não encontrado nos registros\nInstalou Re-Volt\nAntes de abrir RVHouse?"
+join_room_full     = Sala cheia!
+join_invalid_pass  = Senha invalida!
+join_refused       = Host refusado jogando na sala
+join_err_topic     = Erro não pode entrar na sala
+
+[new_version_win]
+title     = Nova versão do RV House!
+force_msg = Você deve atualizar o RV House! As versões antigas não são compativeis!
+msg       = Versão %1 disponivel, sua versão e %2
+new_since = versão atualizada:
+download  = Baixar nova versão em:
+
+[rvtm_err]
+title     = Falha ao iniciar o RV Track Manager
+not_found = "Não pode encontrar o RV Track Manager.\nPreparar para compartilhar e baixar tracks\nde outros, voce precisa ter no minimo\nversão 1.5.0 de RV Track Manager\nVocê pode baixar daqui:"
+running   = RV Track Manager esta pronto para ser iniciado
+other     = Não pode iniciar RV Track manager
+
+[message_box]
+ok     = "&Aceitar"
+cancel = "&Cancelar"
+yes    = "&Sim"
+no     = "&Não"
+quit   = "&Sair"
+save   = "&Salvar"
+
+[main_win]
+exit        = Sair
+create_room = Criar Sala
+join_room   = Entrar em sala
+refresh     = Atualizar
+cancel      = Cancelar
+about       = Sobre
+
+ask_room_pass_title = Sala protegida com senha
+ask_room_pass       = Senha
+
+joining_room  = Unir a sala
+
+dht_connecting        = Conectando P2P
+dht_connected         = P2P Conectado
+dht_disconnecting     = P2p Disconectado
+dht_upding_contacts   = Atualizando nosso contato de P2P...
+dht_upd_contacts      = Nosso contato de P2P atualizados
+dht_upd_contacts_fail = Não pode atualizar nosso contato de P2P
+dht_joining           = Unindo-se ao P2P
+dht_joined            = Unido ao P2P
+dht_leaving           = Saindo P2P
+dht_left              = P2P saido
+dht_searching         = Procurando usuarios P2P
+dht_announcing        = Anunciando P2P
+
+ctz_connecting        = Conectando centralizado
+ctz_connected         = Conexão centralizada
+ctz_disconnecting     = Desconectando centralizado
+ctz_disconnected      = Desconexão centralizada
+
+ip_detecting = Detectando IP de: %1
+ip_detected  = IP detectado: %1
+ip_failed    = Detecção de IP falhou: %1
+
+[chat]
+user_entered = %1 entrou
+user_exited  = %1 saiu
+room_created = Nova sala criada (%1)
+room_closed  = Sala fechada (%1)
+
+host_kicked_host = Host kikou ele mesmo da sala %1
+host_kicks_user  = Host esta kikando %1 da sala
+host_kicks_you   = Host te kikou da sala %1
+
+user_joined_room         = %1 entrou na sala
+user_exited_room         = %1 saiu da sala
+user_shares_tracks       = %1 esta compartilhando tracks
+user_shares_tracks_stops = %1 parou compartilhamento de tracks
+user_dloads_tracks       = %1 esta baixando tracks
+user_dloads_tracks_stops = %1 parou de baixar tracks
+private_msg_refused      = O usuario %1 rejeitou sua mensagem.
+
+[room_settings_win]
+title       = Opçoes da sala
+topic       = &Topico:
+password    = &Senha:
+pickups     = P&ickups
+laps        = &Voltas:
+players     = &Jogadores:
+
+error_title    = Erro nas opçoes da sala
+topic_missing  = Preencher topico da sala
+
+[room_win]
+leave         = Deixar sala
+settings      = Editar opçoes da sala
+launch        = Carregar jogo
+share_tracks  = Compartilhar tracks com os outros
+dload_tracks  = Baixar tracks do host
+
+host_launched = O host iniciou o Re-Volt. A partida começará em alguns segundos...
+
+
+[rv_launch]
+title_err = Erro ao abrir Re-Volt
+not_found = Re-Volt não encontrado. Instala-lo (e abrir) e re-abrir o RVHouse
+other     = Não pode abrir Re-Volt
+
+title     = Abrindo Re-Volt
+text      = Clicar em aceitar quando querer voltar.
+
+[private_message_win]
+close = Fechar chat
+
+[words]
+topic   = Nome
+host    = Host
+# Por exemplo, Nota: sala protegida por senha
+note    = Nota
+players = Jogadores
+laps    = Voltas
+pickups = Pickups
+user_id = Usuario
+warning = Aviso
+status  = Status
+room    = Sala
+yes     = Sim
+no      = Não
+creating = Criando
+
+minutes_short = mins
+dht           = P2P
+ctz           = Centralizado
+connected     = Conectado
+disconnected  = Desconectado
+
+
+[users_view]
+shares_tracks = Está compartilhando tracks
+dloads_tracks = Está recebendo tracks
+dht_not_found = Não encontrado de network descentralizada
+natted        = A conexão do usuario parece estar baixo NAT
+
+[user_popup]
+user_name     = Usuario
+share_tracks  = Compartilhar Tracks
+dload_tracks  = Baixar Tracks
+kick          = Kikar
+private_msg   = Enviar mensagem privada
+
+[status]
+chatting      = Chat
+waiting       = Esperando na sala
+playing       = Jogando
+away          = Ausente
+unknown       = Desconhecido
+
+[misc]
+user_not_validated = ID do usuario não é valida
+pass_needed        = Senha requerida
