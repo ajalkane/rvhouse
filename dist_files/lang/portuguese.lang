@@ -1,6 +1,45 @@
 [common]
-ok_button       = " &Aceitar "
-cancel_button   = " &Cancelar "
+ok_button       = "&Aceitar "
+cancel_button   = "&Cancelar "
+apply_button    = "&Aplicar"
+
+[menu_file]
+title           = "&Arquivo"
+quit            = "&Sair\tCtl-Q"
+
+[menu_edit]
+title           = "&Editar"
+settings        = "&Preferencias...\tAlt-S"
+
+[menu_player]
+title           = "&Jogador"
+status          = "Status"
+create_room     = "Criar sala...\tCtl-R"
+join_room       = "Entrar na sala"
+chatting        = "Chat\tShift-Alt-C"
+playing         = "Jogando\tShift-Alt-P"
+away            = "Ausente\tShift-Alt-A"
+dont_disturb    = "Não pertube\tShift-Alt-D"
+
+[menu_comp]
+title           = "&Competições"
+rvl             = "Liga RV"
+rvl_home        = "WWW-site"
+rvl_champ       = "Campeonato"
+rvl_cup         = "Copa"
+
+rvr             = "Corrida Re-Volt"
+rvr_home        = "WWW-site"
+rvr_1vs1        = "1 vs 1 Campeonato"
+rvr_players     = "Perfis dos jogadores"
+rvr_teams       = "Equipes"
+
+[menu_help]
+title           = "&Ajuda"
+router_help     = "Ajuda Roteador/Firewall"
+faq             = "RV House FAQ"
+conn_help       = "Ajuda de Conexão doc"
+about_house     = "Sobre RV House"
 
 [login_win]
 title           = Logar
@@ -44,33 +83,59 @@ reg_ok          = Registro concluido! voce já pode logar
 
 [about_win]
 title         = Sobre
+# %1 é substituido com a licença. Exemplo: lançado sob a GPL
 license       = Lançado baixo %1
+# %1 é substituído pelo autor de utilizar ícones. Ícones por ADX
 icons_by      = Icones por %1
+# %1 é substituído pelo autor de RV House ícone. RV House ícone por Pigasque
 house_icon_by = Icone do RV House por %1
 other_sites   = Alguns RV sites da comunidade:
 using         = Usando:
+# %1 é substituído pelo nome da livraria, %2 livraria por autor
+# ACE rede livraria (por Douglas C. Schmidt)
 using_lib     = %1 (por %2)
 translations  = Traduçoes:
-translation   = %1 por %2 <%3>
+# %1 é substituída pela linguagem, 2% pelo autor da tradução
+# %3 por nome dos autores da tradução %4 por versão da tradução
+# Exemplo:
+# Espanhol por ADX <the.adx@gmail.com> para v0.81
+translation   = %1 por %2 <%3> para v%4
 
 [app]
 rv_not_found_title = "Re-Volt esta instalado?"
 rv_not_found       = "Re-Volt não encontrado nos registros\nInstalou Re-Volt\nAntes de abrir RVHouse?"
+rv_house_running   = "RV House já está sendo executado!"
 join_room_full     = Sala cheia!
 join_invalid_pass  = Senha invalida!
-join_refused       = Host refusado jogando na sala
+join_refused       = Host recusado jogando na sala
 join_err_topic     = Erro não pode entrar na sala
+dht_connect_err1   = "Não foi possível conectar à rede descentralizada"
+dht_connect_err2   = Isto é provavelmente por causa de seu roteador ou firewall
+dht_connect_err3   = "não está configurado correctamente.\n"
+dht_connect_err4   = Corrigir isso é importante porque
+dht_connect_err5   = caso contrário você não poderá ver todos os jogadores.
+dht_connect_err6   = Além disso, esta parte da RV House é central para a minha
+dht_connect_err7   = universidade tese de modo que eu aprecio muito se
+dht_connect_err8   = "você pode corrigi-la :).\n"
+dht_connect_err9   = Quando você pressionar OK, você será direcionado
+dht_connect_err10  = para uma pagina de ajuda de preferencias do roteador/firewall.
+dht_connect_err_title = "Erro de conexão"
+
+self_on_global_ignore_topic = "	Está na lista global de ignorados"
+self_on_global_ignore = "Seu IP foi encontrado na lista global de ignorados.\nComo resultado muitas pessoas não pode te ver.\nSe você acha que não tenham feito nada errado\ne deve ser removido da ignoração global\nentão poste no forum RV sobre isto\nno endereço abaixo"
 
 [new_version_win]
 title     = Nova versão do RV House!
 force_msg = Você deve atualizar o RV House! As versões antigas não são compativeis!
+# %1 é substituido pelo numero da ultima versão de RV House, %2 por
+# usuarios RV House versão.
 msg       = Versão %1 disponivel, sua versão e %2
 new_since = versão atualizada:
 download  = Baixar nova versão em:
 
 [rvtm_err]
 title     = Falha ao iniciar o RV Track Manager
-not_found = "Não pode encontrar o RV Track Manager.\nPreparar para compartilhar e baixar tracks\nde outros, voce precisa ter no minimo\nversão 1.5.0 de RV Track Manager\nVocê pode baixar daqui:"
+not_found = "Não pode encontrar o RV Track Manager.\nPreparar para compartilhar e baixar pistas\nde outros, voce precisa ter no minimo\nversão 1.5.0 de RV Track Manager\nVocê pode baixar daqui:"
 running   = RV Track Manager esta pronto para ser iniciado
 other     = Não pode iniciar RV Track manager
 
@@ -85,7 +150,7 @@ save   = "&Salvar"
 [main_win]
 exit        = Sair
 create_room = Criar Sala
-join_room   = Entrar em sala
+join_room   = Entrar na sala
 refresh     = Atualizar
 cancel      = Cancelar
 about       = Sobre
@@ -93,18 +158,19 @@ about       = Sobre
 ask_room_pass_title = Sala protegida com senha
 ask_room_pass       = Senha
 
-joining_room  = Unir a sala
+joining_room  = Unir-se a sala
 
 dht_connecting        = Conectando P2P
 dht_connected         = P2P Conectado
-dht_disconnecting     = P2p Disconectado
+dht_disconnecting     = P2p Disconectando
+dht_disconnected      = P2P Disconectado
 dht_upding_contacts   = Atualizando nosso contato de P2P...
 dht_upd_contacts      = Nosso contato de P2P atualizados
 dht_upd_contacts_fail = Não pode atualizar nosso contato de P2P
 dht_joining           = Unindo-se ao P2P
 dht_joined            = Unido ao P2P
 dht_leaving           = Saindo P2P
-dht_left              = P2P saido
+dht_left              = P2P deixado
 dht_searching         = Procurando usuarios P2P
 dht_announcing        = Anunciando P2P
 
@@ -113,31 +179,52 @@ ctz_connected         = Conexão centralizada
 ctz_disconnecting     = Desconectando centralizado
 ctz_disconnected      = Desconexão centralizada
 
+# %1 é substituido com site onde IP do usuario é obtido de
 ip_detecting = Detectando IP de: %1
+# %1 é substituido com IP obtido
 ip_detected  = IP detectado: %1
+# %1 é substituido com a razão do erro
 ip_failed    = Detecção de IP falhou: %1
 
 [chat]
+# %1 é substituido com nome do usuario
 user_entered = %1 entrou
 user_exited  = %1 saiu
+# %1 é substituido com nome da sala
 room_created = Nova sala criada (%1)
 room_closed  = Sala fechada (%1)
 
-host_kicked_host = Host kikou ele mesmo da sala %1
+host_kicked_host = Burro do host kikou ele mesmo da sala %1
 host_kicks_user  = Host esta kikando %1 da sala
 host_kicks_you   = Host te kikou da sala %1
 
+# %1 é substituido com nome do usuario
 user_joined_room         = %1 entrou na sala
 user_exited_room         = %1 saiu da sala
-user_shares_tracks       = %1 esta compartilhando tracks
-user_shares_tracks_stops = %1 parou compartilhamento de tracks
-user_dloads_tracks       = %1 esta baixando tracks
-user_dloads_tracks_stops = %1 parou de baixar tracks
+user_shares_tracks       = %1 esta compartilhando pistas
+user_shares_tracks_stops = %1 parou compartilhamento de pistas
+user_dloads_tracks       = %1 esta baixando pistas
+user_dloads_tracks_stops = %1 parou de baixar pistas
+user_ignored             = Ignorando usuario %1. O ignoramento pode ser removido reiniciando RV House.
+user_ignores             = Você está sendo ignorado por %1
+
+# %1 = A mensagem foi recusada/nada recebido.
+# Causado porque os usuario está jogando ou em não pertube
+# modo nenhuma janela está para ser aberta.
 private_msg_refused      = O usuario %1 rejeitou sua mensagem.
+
+flood_control = Controle de flood
+
+global_ignore = Listando os usuarios que estão na lista global de ignorados por causa do comportamento pertubador e estão sendo ignorados por você automaticamente. Você pode desabilitar a ignoração nas preferencias se você desejar.
+# %1 é substituido por nome do usuario
+# %2 é substituido pela razão
+user_global_ignore = Ignorar usuario '%1', razão: %2
+
+host_ip = Meu IP é %1. Você deve precisar disto se estiver usando windows vista.
 
 [room_settings_win]
 title       = Opçoes da sala
-topic       = &Topico:
+topic       = &Nome:
 password    = &Senha:
 pickups     = P&ickups
 laps        = &Voltas:
@@ -150,16 +237,21 @@ topic_missing  = Preencher topico da sala
 leave         = Deixar sala
 settings      = Editar opçoes da sala
 launch        = Carregar jogo
-share_tracks  = Compartilhar tracks com os outros
-dload_tracks  = Baixar tracks do host
+share_tracks  = Compartilhar pistas com os outros
+dload_tracks  = Baixar pistas do host
 
 host_launched = O host iniciou o Re-Volt. A partida começará em alguns segundos...
+# %1 é substituido com o limite (em minutos)
+join_too_late = "Não pode juntar-se a corrida se o host já estiver\njogando a %1 minutos."
+join_too_late_title = "Tarde de mais para juntar-se"
 
+send_ip_info_title = "Noticia!";
+send_ip_info = "Seu IP será automaticamente enviado para pessoas que entram na sala.\nIsso é principalmente para ajudar usuarios Vista que poderia precisar dele para entrar no jogo.\n\nSe você não quiser que o seu IP não seja enviado você pode desativar nas preferencias\n\nEsta mensagem é mostrada apenas uma vez!";
 
 [rv_launch]
 title_err = Erro ao abrir Re-Volt
 not_found = Re-Volt não encontrado. Instala-lo (e abrir) e re-abrir o RVHouse
-other     = Não pode abrir Re-Volt
+other     = Não pode carregar o Re-Volt
 
 title     = Abrindo Re-Volt
 text      = Clicar em aceitar quando querer voltar.
@@ -191,25 +283,53 @@ disconnected  = Desconectado
 
 
 [users_view]
-shares_tracks = Está compartilhando tracks
-dloads_tracks = Está recebendo tracks
-dht_not_found = Não encontrado de network descentralizada
+shares_tracks = Está compartilhando pistas
+dloads_tracks = Está recebendo pistas
+dht_not_found = Não encontrado de rede descentralizada
 natted        = A conexão do usuario parece estar baixo NAT
 
 [user_popup]
 user_name     = Usuario
-share_tracks  = Compartilhar Tracks
-dload_tracks  = Baixar Tracks
+share_tracks  = Compartilhar Pistas
+dload_tracks  = Baixar Pistas
 kick          = Kikar
 private_msg   = Enviar mensagem privada
+ignore_user   = Ignorar usuario
 
 [status]
 chatting      = Chat
 waiting       = Esperando na sala
 playing       = Jogando
 away          = Ausente
+dont_disturb  = Não pertube
 unknown       = Desconhecido
 
 [misc]
 user_not_validated = ID do usuario não é valida
 pass_needed        = Senha requerida
+
+
+[settings_win]
+title           = RV House Preferencias
+general_tab     = Geral
+colors_tab      = Cores
+
+flash_main_chat = Piscar mensagem no chat principal
+flash_room_chat = Piscar mensagem no chat da sala
+flash_new_room  = Piscar se nova sala for criada
+flash_new_user  = Piscar se novos usuarios chegarem
+flash_nick      = Piscar se seu nick for visto nos principais chats
+away_minimize   = Ausente quando a janela for minimizada
+global_ignore   = Usar Lista global de ignorados
+send_ip         = Enviar IP quando estiver hospedando
+
+base_color      = Cor da base
+border_color    = Cor da borda
+text_color      = Cor do texto
+bg_color        = Cor de fundo
+sel_text_color  = Cor do texto selecionado
+sel_bg_color    = Cor de fundo selecionado
+sel_mt_color    = Cor do texto do menu selecionado
+sel_mbg_color   = Cor do fundo do menu selecionado
+tip_text_color  = Sugestão de cor do texto
+tip_bg_color    = Sugestão de cor de fundo
