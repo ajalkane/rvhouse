@@ -1,5 +1,5 @@
 #include <ace/Time_Value.h>
-#include <ace/OS.h>
+#include <ace/OS_NS_time.h>
 #include <time.h>
 
 #include "flood_control.h"

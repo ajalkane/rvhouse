@@ -343,7 +343,7 @@ client::handler::handle_output(ACE_HANDLE fd) {
         if (send_cnt == -1)
             ACE_ERROR((LM_ERROR, "(%P|%t) %p\n", "reporter_client::send"));
         else
-            mb->rd_ptr (ACE_static_cast (size_t, send_cnt));
+            mb->rd_ptr (static_cast<size_t>(send_cnt));
             
         if (mb->length() > 0) {
             this->ungetq (mb);

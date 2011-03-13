@@ -73,8 +73,8 @@ void
 worker::_main() {
     // Configure reudp if need to
     {
-        size_t tout_msec = net_conf()->get<size_t>("net_reudp", "timeout", 0);
-        size_t send_amnt = net_conf()->get<size_t>("net_reudp", "send_try_count", 0);
+        long tout_msec = net_conf()->get<long>("net_reudp", "timeout", 0);
+        long send_amnt = net_conf()->get<long>("net_reudp", "send_try_count", 0);
 
         if (tout_msec != 0) {
             reudp::time_value_type tout;
