@@ -135,10 +135,10 @@ void init_pre() {
     app_opts.init();*/
 
     // Init logging
-    std::string logfile = conf()->get<std::string>("log", "file", "log/rvhouse.log");
+    std::string logfile = conf()->get<std::string>("log", "file", "stderr");
     std::string logsize = conf()->get<std::string>("log", "size", "2000"); // 2MBytes
     std::string logamnt = conf()->get<std::string>("log", "amount", "2"); // 2 log files
-    std::string logintr = conf()->get<std::string>("log", "interval", "10"); // 10 interval for sampling log file size
+    std::string logintr = conf()->get<std::string>("log", "interval", "10"); // interval in seconds for sampling log file size
     bool logdebug       = conf()->get<bool>       ("log", "debug", true);
 
     if (logfile == "stderr") logfile.clear();

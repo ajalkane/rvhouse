@@ -1,5 +1,8 @@
 RV House change log
 
+Version 0.91.8 (13.03.2011)
+- By default write log to STDERR because some people experience log files growing indefinitely.
+
 Version 0.91.7 (06.06.2009)
 - Updated to use rvzt.zachattackgames.com as login server
 

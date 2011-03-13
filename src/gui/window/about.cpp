@@ -29,7 +29,7 @@ about::about(FXWindow *owner)
 
     str << APP_NAME << " " << APP_VERSION << endl
         << endl
-        << "Copyright (C) 2006-2009 Arto Jalkanen" << endl
+        << "Copyright (C) 2006-2011 Arto Jalkanen" << endl
         << endl
         << langstr("about_win/license", "GPL") << endl
         << endl
