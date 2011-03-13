@@ -38,7 +38,7 @@ about::about(FXWindow *owner)
         << endl
         << langstr("about_win/other_sites") << endl;
     new FXLabel(this, str.str().c_str(), NULL, JUSTIFY_LEFT);
-    new FXLinkLabel(this, "http://rvhouse.zackattackgames.com");
+    new FXLinkLabel(this, "http://house.rvzt.net");
     // RST didn't want the link in RV House so removed it.
     // new FXLinkLabel(this, "http://z8.invisionfree.com/Revolt_RC_Racing");
     new FXLinkLabel(this, "http://www.revoltrace.com");
