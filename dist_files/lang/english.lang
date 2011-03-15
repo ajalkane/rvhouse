@@ -314,6 +314,7 @@ pass_needed        = Password required
 title           = RV House Settings
 general_tab     = General
 colors_tab      = Colors
+advanced_tab    = Advanced
 
 flash_main_chat = Flash if message on main chat
 flash_room_chat = Flash if message on room chat
@@ -334,3 +335,7 @@ sel_mt_color    = Selected Menu Text Color
 sel_mbg_color   = Selected Menu Background Color
 tip_text_color  = Tip Text Color
 tip_bg_color    = Tip Background Color
+
+autoset_cmdline = Auto-set command-line
+cmdline         = Command-line
+

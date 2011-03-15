@@ -36,6 +36,9 @@ class settings
     FXColor _menufore;
     FXColor _menuback;
 
+    FXCheckButton *_autoset_cmdline_check;
+    FXTextField *_cmdline_field;
+
     FXDataTarget  _target_base;
     FXDataTarget  _target_back;
     FXDataTarget  _target_border;
@@ -56,6 +59,7 @@ class settings
     void _setup();
     void _pref_to_form();
     void _form_to_pref();
+    void _set_cmdline_field_state();
 protected:
     settings() {}
 
@@ -64,6 +68,7 @@ public:
         ID_COLORS = super::ID_LAST,
         ID_OK,
         ID_CHOOSE_FONT,
+        ID_AUTOSET_CMDLINE_TOGGLE,
         ID_LAST,
     };
     
@@ -75,6 +80,7 @@ public:
     
     void handle_message    (::message *msg);
     long on_ok(FXObject *from, FXSelector sel, void *);    
+    long on_autoset_cmdline_toggled(FXObject *from, FXSelector sel, void *);
     
 };
 
