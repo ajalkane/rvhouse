@@ -1,5 +1,8 @@
 RV House change log
 
+Version 0.92.0 (XX.XX.2011)
+- Joining to races not limited by time anymore, due to Re-Volt 1.2 developments.
+
 Version 0.91.8 (13.03.2011)
 - By default write log to STDERR because some people experience log files growing indefinitely.
 

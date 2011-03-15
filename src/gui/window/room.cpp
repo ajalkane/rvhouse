@@ -1,6 +1,7 @@
 #include <ace/Process.h>
 
 #include <utility>
+#include <climits>
 
 #include <fx.h>
 #include <fxkeys.h>
@@ -329,7 +330,7 @@ room::on_launch(FXObject *from, FXSelector sel, void *) {
         if (playing_host != house_model()->user_end()) {
             // Check how long the host has been playing and don't
             // allow join if too long played
-            int rejoin_time = conf()->get<int>("play", "rejoin_time", 60*3);
+            int rejoin_time = conf()->get<int>("play", "rejoin_time", INT_MAX);
             ACE_DEBUG((LM_DEBUG, "room::on_launch "
                       "rejoin_time/time/statustime/dif: %d/%d/%d/%d\n",
                       rejoin_time, time(NULL), playing_host->status_time(),
