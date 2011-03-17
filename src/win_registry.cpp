@@ -33,9 +33,8 @@ win_registry::win_registry(
         break;
     case id_dplay:
         path = os::is_windows_64()
-             ? "SOFTWARE\\Microsoft\\DirectPlay\\Applications\\Re-Volt";
-             : "SOFTWARE\\Wow6432Node\\Microsoft\\DirectPlay\\Applications\\Re-Volt";
-        } else
+             ? "SOFTWARE\\Microsoft\\DirectPlay\\Applications\\Re-Volt"
+             : "SOFTWARE\\Wow6432Node\\Microsoft\\DirectPlay\\Applications\\Re-Volt";        
     default:
         throw exceptionf(0, "win_registry::ctor unrecognized id %d", id);
     }

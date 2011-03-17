@@ -47,7 +47,7 @@ public:
     enum shortcut_id {
         id_software = 1,
         id_uninstall,
-        id_dplay_client
+        id_dplay
     };
 
     win_registry(const std::string &full_path);
