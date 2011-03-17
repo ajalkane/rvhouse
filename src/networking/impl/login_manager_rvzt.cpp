@@ -55,7 +55,7 @@ login_manager_rvzt::_login_operation(
   int _msg_base
 ) {
     _fetch_handler *h = new _fetch_handler(this, user, _msg_base);
-    http::fetcher::status status = status = _http_fetcher->fetch(req_url, h);
+    http::fetcher::status status = _http_fetcher->fetch(req_url, h);
 
     if (status != http::fetcher::FETCH_OK) {
         ACE_ERROR((LM_ERROR, "login_manager_rvzt::_login_operation failed (status %d)\n",
