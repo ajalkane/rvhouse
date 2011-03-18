@@ -36,7 +36,6 @@ class settings
     FXColor _menufore;
     FXColor _menuback;
 
-    FXCheckButton *_autoset_cmdline_check;
     FXTextField *_cmdline_field;
 
     FXDataTarget  _target_base;
@@ -55,10 +54,14 @@ class settings
    typedef std::map<std::string, FXCheckButton *> _check_map_type;
     _check_map_type _check_map;
 
+    typedef std::map<std::string, FXRadioButton *> _cmdline_switch_map_type;
+    _cmdline_switch_map_type _cmdline_switch_map;
+
     void _init();
     void _setup();
     void _pref_to_form();
     void _form_to_pref();
+    void _set_cmdline_switch_state(const std::string &);
     void _set_cmdline_field_state();
 protected:
     settings() {}
@@ -68,7 +71,9 @@ public:
         ID_COLORS = super::ID_LAST,
         ID_OK,
         ID_CHOOSE_FONT,
-        ID_AUTOSET_CMDLINE_TOGGLE,
+        ID_CMDLINE_AUTOSET,
+        ID_CMDLINE_DONTSET,
+        ID_CMDLINE_MANUAL,
         ID_LAST,
     };
     
@@ -80,7 +85,7 @@ public:
     
     void handle_message    (::message *msg);
     long on_ok(FXObject *from, FXSelector sel, void *);    
-    long on_autoset_cmdline_toggled(FXObject *from, FXSelector sel, void *);
+    long on_cmdline_switch_changed(FXObject *from, FXSelector sel, void *);
     
 };
 

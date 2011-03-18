@@ -1,5 +1,6 @@
 #include <utility>
 #include <string>
+#include <map>
 
 #include <fx.h>
 #include <fxkeys.h>
@@ -36,16 +37,23 @@ namespace {
         true
     };
 
-    const char *autoset_cmdline_pref_key = "autoset_cmdline";
-    bool autoset_cmdline_default = true;
+    const char *cmdline_autoset_key = "cmdline_autoset";
+    const char *cmdline_dontset_key = "cmdline_dontset";
+    const char *cmdline_manual_key  = "cmdline_manual";
+    const char *cmdline_pref_switch_default = cmdline_autoset_key;
+    const char *cmdline_pref_switch_key = "cmdline_switch";
     const char *cmdline_pref_key = "cmdline";
 }
 
 FXDEFMAP(settings) settings_map[]= {
   FXMAPFUNC(SEL_COMMAND,  settings::ID_OK,
                           settings::on_ok),
-  FXMAPFUNC(SEL_COMMAND,  settings::ID_AUTOSET_CMDLINE_TOGGLE,
-                          settings::on_autoset_cmdline_toggled),
+  FXMAPFUNC(SEL_COMMAND,  settings::ID_CMDLINE_DONTSET,
+                          settings::on_cmdline_switch_changed),
+  FXMAPFUNC(SEL_COMMAND,  settings::ID_CMDLINE_MANUAL,
+                          settings::on_cmdline_switch_changed),
+  FXMAPFUNC(SEL_COMMAND,  settings::ID_CMDLINE_AUTOSET,
+                          settings::on_cmdline_switch_changed),
 };
 
 // FXIMPLEMENT(settings, settings::super, settings_map, ARRAYNUMBER(settings_map))
@@ -141,19 +149,38 @@ settings::on_ok(FXObject *from, FXSelector sel, void *ptr) {
 }
 
 long
-settings::on_autoset_cmdline_toggled(FXObject *from, FXSelector sel, void *ptr) {
-    ACE_DEBUG((LM_DEBUG, "settings: on_autoset_cmdline_toggled\n"));
+settings::on_cmdline_switch_changed(FXObject *from, FXSelector sel, void *ptr) {
+    ACE_DEBUG((LM_DEBUG, "settings: on_cmdline_switch_changed\n"));
+    _cmdline_switch_map_type::iterator i = _cmdline_switch_map.begin();
+    for (; i != _cmdline_switch_map.end(); i++) {
+        ACE_DEBUG((LM_DEBUG, "settings::_on_cmdline_switch_changed: setting %s to %d\n",
+                   i->first.c_str(), i->second == from));
+        i->second->setCheck(i->second == from ? TRUE : FALSE);
+        ACE_DEBUG((LM_DEBUG, "settings::_on_cmdline_switch_changed: after set %d\n",
+                   i->second->getCheck()));
+    }
+
     _set_cmdline_field_state();
     return 0;
 }
 
 void
+settings::_set_cmdline_switch_state(const std::string &cmdline_switch) {
+    _cmdline_switch_map_type::iterator i = _cmdline_switch_map.find(cmdline_switch);
+    FXObject *obj = (i == _cmdline_switch_map.end() ? _cmdline_switch_map[cmdline_pref_switch_default] : i->second);
+
+    on_cmdline_switch_changed(obj, 0, NULL);
+}
+
+void
 settings::_set_cmdline_field_state() {
-    if (_autoset_cmdline_check->getCheck()) {
-        _cmdline_field->disable();
-    } else {
+    ACE_DEBUG((LM_DEBUG, "settings: _set_cmdline_field_change\n"));
+    if (_cmdline_switch_map[cmdline_manual_key]->getCheck()) {
         _cmdline_field->enable();
+    } else {
+        _cmdline_field->disable();
     }
+    ACE_DEBUG((LM_DEBUG, "settings: /_set_cmdline_field_change\n"));
 }
 
 void
@@ -412,15 +439,27 @@ settings::_setup() {
      * Start of Advanced view
      */
 
+
     vframe = new FXVerticalFrame(
         switcher,
         LAYOUT_FILL_X|LAYOUT_FILL_Y,
         0,0,0,0,0,0,0,0,0,0
     );
 
-    _autoset_cmdline_check = new FXCheckButton(vframe, langstr("settings_win/autoset_cmdline"),
-                                               this, ID_AUTOSET_CMDLINE_TOGGLE);
-    new FXLabel(vframe, langstr("settings_win/cmdline"));
+    ACE_DEBUG((LM_DEBUG, "settings::create cmdline_autoset\n"));
+
+    _cmdline_switch_map[cmdline_autoset_key] =
+            new FXRadioButton(vframe, langstr("settings_win/cmdline_autoset"),
+                              this, ID_CMDLINE_AUTOSET);
+    ACE_DEBUG((LM_DEBUG, "settings::create cmdline_dontset\n"));
+    _cmdline_switch_map[cmdline_dontset_key] =
+            new FXRadioButton(vframe, langstr("settings_win/cmdline_dontset"),
+                              this, ID_CMDLINE_DONTSET);
+    ACE_DEBUG((LM_DEBUG, "settings::create cmdline_manual\n"));
+    _cmdline_switch_map[cmdline_manual_key] =
+            new FXRadioButton(vframe, langstr("settings_win/cmdline_manual"),
+                              this, ID_CMDLINE_MANUAL);
+    ACE_DEBUG((LM_DEBUG, "settings::create cmdline_field\n"));
     _cmdline_field         = new FXTextField(vframe, 25);
 
     new FXSeparator(vframe,SEPARATOR_GROOVE|LAYOUT_FILL_X);
@@ -458,7 +497,9 @@ settings::_pref_to_form() {
         _check_map[key]->setCheck(val);
     }
 
-    _autoset_cmdline_check->setCheck(pref()->get<bool>("advanced", autoset_cmdline_pref_key, autoset_cmdline_default));
+    std::string cmdline_switch = pref()->get<std::string>("advanced", cmdline_pref_switch_key, cmdline_pref_switch_default);
+    _set_cmdline_switch_state(cmdline_switch);
+
     std::string cmdline = pref()->get("advanced", cmdline_pref_key);
     _cmdline_field->setText(FXString(cmdline.c_str()));
 
@@ -476,7 +517,13 @@ settings::_form_to_pref() {
         pref()->set<bool>("general", key, val);
     }
 
-    pref()->set<bool>("advanced", autoset_cmdline_pref_key, _autoset_cmdline_check->getCheck());
+    _cmdline_switch_map_type::iterator i = _cmdline_switch_map.begin();
+    for (; i != _cmdline_switch_map.end(); i++) {
+        if (i->second->getCheck()) {
+            ACE_DEBUG((LM_DEBUG, "settings::_form_to_pref: setting cmdline_pref_switch_key to %s\n", i->first.c_str()));
+            pref()->set<std::string>("advanced", cmdline_pref_switch_key, i->first);
+        }
+    }
     pref()->set<std::string>("advanced", cmdline_pref_key, _cmdline_field->getText().text());
 
     ACE_DEBUG((LM_DEBUG, "settings::_form_to_pref: cmdline %s\n", _cmdline_field->getText().text()));

@@ -336,6 +336,7 @@ sel_mbg_color   = Selected Menu Background Color
 tip_text_color  = Tip Text Color
 tip_bg_color    = Tip Background Color
 
-autoset_cmdline = Auto-set command-line
-cmdline         = Command-line
+cmdline_autoset = Auto-set command-line
+cmdline_dontset = Don't set command-line
+cmdline_manual  = Specify command-line:
 

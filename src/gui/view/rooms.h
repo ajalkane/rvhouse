@@ -72,13 +72,6 @@ public:
     typedef FXIconList super;
     typedef FXIconItem tree_item_type;
     typedef room_item  item_type;
-
-    enum {
-        ID_STATUS_CHATTING = super::ID_LAST,
-        ID_STATUS_AWAY,
-        ID_STATUS_PLAYING,
-        ID_LAST,
-    };
     
     class observer {
     public:
