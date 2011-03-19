@@ -1,7 +1,8 @@
 RV House change log
 
-Version 0.92.0 (XX.XX.2011)
+Version 0.92.0 (19.03.2011)
 - Joining to races not limited by time anymore, due to Re-Volt 1.2 developments.
+- Vista/Windows 7 compatibility.
 - Settings to specify command-line arguments used to launch Re-Volt.
 
 Version 0.91.8 (13.03.2011)
@@ -13,7 +14,7 @@ Version 0.91.7 (06.06.2009)
 Version 0.91.6 (01.05.2009)
 - Crashing problem when trying to login when server down fixed
 
-Version 0.91.5 (08.04.2009)
+Version 0.91.5 (08.04.2009)joo
 - IP server changed to working one
 
 Version 0.91.4 (01.03.2009)
