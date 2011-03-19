@@ -705,6 +705,16 @@ room::user_added(const chat_gaming::user &u) {
         langstr("chat/user_joined_room", u.display_id().c_str())
     );
 
+
+    ACE_DEBUG((LM_DEBUG, "room::user_added: flash_new_user_in_room: %d, user_status: %d\n",
+               app_opts.flash_new_user_in_room(), self_model()->user().status()));
+
+    if (app_opts.flash_new_user_in_room() &&
+        self_model()->user().status() != chat_gaming::user::status_playing)
+    {
+        os::flash_window(this);
+    }
+
     ACE_DEBUG((LM_DEBUG, "room::user_added: user id/self id: %s/%s\n",
                u.id().id_str().c_str(), self_model()->user().id().id_str().c_str()));
 

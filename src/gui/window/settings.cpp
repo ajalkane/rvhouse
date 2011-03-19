@@ -22,6 +22,7 @@ namespace {
         "flash_new_room",
         // "away_minimize"
         "flash_new_user",
+        "flash_new_user_in_room",
         "flash_nick",
         "global_ignore",
         "send_ip"
@@ -31,6 +32,7 @@ namespace {
         // false,
         false,
         // true,
+        false,
         false,
         false,
         true,
