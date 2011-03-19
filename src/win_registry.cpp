@@ -2,10 +2,6 @@
 
 #include "win_registry.h"
 
-#ifdef WIN32
-#include <os_util.h>
-#endif
-
 win_registry::win_registry(const std::string &full_path) : _open(false)
 {
     throw exception(0, "win_registry::full path ctor not implemented"); 
@@ -32,10 +28,8 @@ win_registry::win_registry(
         path = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\" + app;
         break;
     case id_dplay:
-        path = os::is_windows_64()
-             ? "SOFTWARE\\Microsoft\\DirectPlay\\Applications\\"
-             : "SOFTWARE\\Wow6432Node\\Microsoft\\DirectPlay\\Applications\\";
-        path += app;
+        path = "SOFTWARE\\Microsoft\\DirectPlay\\Applications\\" + app;
+        break;
     default:
         throw exceptionf(0, "win_registry::ctor unrecognized id %d", id);
     }
