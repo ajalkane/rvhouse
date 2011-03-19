@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "RV House"
-#define MyAppVerName "RV House 0.91.8"
+#define MyAppVerName "RV House 0.92.1"
 #define MyAppPublisher "Arto Jalkanen"
 #define MyAppURL "http://house.rvzt.net"
 #define MyAppExeName "rv_house.exe"
