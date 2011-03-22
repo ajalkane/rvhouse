@@ -202,6 +202,8 @@ user_ignores             = %1 ne souhaite pas vous voir
 global_ignore = Following users are in global ignore list because of disruptive behaviour and are ignored by you automatically. You can disable global ignoring from Settings if you wish to.
 user_global_ignore = %1 est dans la lsite noire, raison: %2
 
+host_ip = My IP is %1. Vous aurez surement besoin de ça si vous êtes sous Vista.
+
 
 [room_settings_win]
 title       = Paramètres de la salle
@@ -225,6 +227,9 @@ host_launched = L'hôte a lancé Re-Volt. Votre jeu va démarrer automatiquement da
 
 join_too_late = "Impossible de rejoindre la course si l'hôte\njoue depuis plus de %1 minutes."
 join_too_late_title = "Trop tard pour rejoindre la partie"
+
+send_ip_info_title = "Notice!";
+send_ip_info = "Your detected IP will automatically be sent to people who join the room.\nThis is mainly to help Vista users who might need it for joining the game.\n\nIf you do not want your IP to be sent you can turn it off from Settings\n\nThis message is only shown once!";
 
 [private_message_win]
 close = Cloturer la discussion
@@ -291,15 +296,17 @@ pass_needed        = Mot de passe requis
 title           = Paramètres de RV House
 general_tab     = Général
 colors_tab      = Couleurs
+advanced_tab    = Avancé
 
 flash_main_chat = Clignoter si message dans le chat principal
 flash_room_chat = Clignoter si message dans le chat de la salle
 flash_new_room  = Clignoter si nouvelle salle créée
 flash_new_user  = Clignoter si quelqu'un se connecte
-flash_nick      = Clignoter si message dans le chat principal
+flash_nick      = Clignoter si votre pseudo apparait dans le chat principal
 
 away_minimize   = Absent quand le fenêtre est minimisée
 global_ignore   = Utiliser la liste noire générale
+send_ip         = Afficher IP lors du host
 
 base_color      = Couleur de Base
 border_color    = Couleur des Bordures
@@ -311,3 +318,7 @@ sel_mt_color    = Couleur du texte du menu sélectionné
 sel_mbg_color   = Couleur d'Arrière-Plan du Menu
 tip_text_color  = Couleur du Texte des Infobulles
 tip_bg_color    = Couleur d'Arrière-Plan des Infobulles
+
+cmdline_autoset = Configuration auto commande
+cmdline_dontset = Pas de ligne de commande
+cmdline_manual  = Préciser vos lignes de commandes
