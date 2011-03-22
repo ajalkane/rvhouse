@@ -18,6 +18,7 @@
 #include "../../model/self.h"
 #include "../../executable/launcher.h"
 #include "../../icon_store.h"
+#include "../../rv_cmdline_builder.h"
 #include "../../win_registry.h"
 #include "../house_app.h"
 #include "../util/util.h"
@@ -323,7 +324,9 @@ room::on_edit_room(FXObject *from, FXSelector sel, void *) {
 
 long
 room::on_launch(FXObject *from, FXSelector sel, void *) {
-    _set_rv_cmdline();
+    rv_cmdline_builder cmdline_builder;
+    cmdline_builder.set_rv_cmdline();
+
     if (_room_id == self_model()->hosting_room().id()) {
         _launch_host();
     } else {
@@ -567,36 +570,6 @@ room::_handle_room_kick(::message *msg) {
         if (!_running_modal) {
             this->close();
         }
-    }
-}
-
-void
-room::_set_rv_cmdline() {
-    bool set_commandline = false;
-    std::string cmdline = "";
-    std::string cmdline_switch = pref()->get<std::string>("advanced", "cmdline_switch", "cmdline_autoset");
-    ACE_DEBUG((LM_DEBUG, "room::_set_rv_cmdline: cmdline_switch '%s'\n", cmdline_switch.c_str()));
-    if (cmdline_switch == "cmdline_autoset") {
-        ACE_DEBUG((LM_DEBUG, "room::_set_rv_cmdline: autoset commandline\n"));
-        set_commandline = true;
-        if (os::is_windows_vista_or_later()) {
-            ACE_DEBUG((LM_DEBUG, "room::_set_rv_cmdline: Windows Vista or later detected\n"));
-            cmdline = "-sli";
-
-        }
-    } else if (cmdline_switch == "cmdline_manual") {
-        ACE_DEBUG((LM_DEBUG, "room::_set_rv_cmdline: manual commandline\n"));
-        cmdline = pref()->get<std::string>("advanced", "cmdline", cmdline);
-        set_commandline = true;
-    }
-
-    if (set_commandline) {
-        ACE_DEBUG((LM_DEBUG, "room::_set_rv_cmdline: Setting commandLine to '%s'\n", cmdline.c_str()));
-        win_registry r(win_registry::id_dplay, "", "Re-Volt");
-        r.set<std::string>("CommandLine", cmdline);
-    } else {
-        ACE_DEBUG((LM_DEBUG, "room::_set_rv_cmdline: commandLine not altered\n"));
-
     }
 }
 
