@@ -25,7 +25,7 @@ dont_disturb    = "Ne pas déranger\tShift-Alt-D"
 title           = "&Compétitions"
 rvl             = "RV League"
 rvl_home        = "WWW-site"
-rvl_champ       = "Championat"
+rvl_champ       = "Championnat"
 rvl_cup         = "Coupe"
 
 rvr             = "Re-Volt Race"
@@ -55,15 +55,15 @@ fill_user       = Remplissez votre ID Utilisateur
 fill_pass       = Remplissez votre mot de passe
 invalid_user    = ID Utilisateur invalide, il doit être compris entre 3 et 20 caractères et peut contenir les caractères a-z, A-Z et _
 invalid_pass    = Mot de passe invalide, minimum 3 caractères et doit uniquement contenir les caractères a-z, A-Z et _
-server_down     = Le serveur d'identification n'a pu être contacté, votre ID Utilisateur n'a pas été autentifié. Voulez-vous quand même continuer?
+server_down     = Le serveur d'identification n'a pu être contacté, votre ID Utilisateur n'a pas été authentifié. Voulez-vous quand même continuer?
 validation_err  = ID Utilisateur ou mot de passe incorrect
 
 
 [register_win]
 title           = Enregistrement Utilisateur
-user_id         = ID &Utilisateur:
-password        = Mot de &Passe:
-repassword      = Confi&rmation du mot de passe:
+user_id         = &ID Utilisateur:
+password        = &Mot de Passe:
+repassword      = &Confirmation du mot de passe:
 email           = &E-mail:
 register        = Enregistrer
 cancel          = &Annuler
@@ -72,8 +72,8 @@ reg_err_topic   = Enregistrement impossible
 reg_ok_topic    = Enregistré
 fill_user       = Remplissez votre ID Utilisateur
 fill_pass       = Remplissez votre Mot de Passe
-pass_mismatch   = Les mots de passe ne correspndent pas!
-invalid_user    = ID Utilisateur invalide, il doit être compris entre 3 et 20 caractères and peut contenir les caractères a-z, A-Z et _
+pass_mismatch   = Les mots de passe ne correspondent pas!
+invalid_user    = ID Utilisateur invalide, il doit être compris entre 3 et 20 caractères et peut contenir les caractères a-z, A-Z et _
 invalid_pass    = Mot de passe invalide, minimum 3 caractères et doit uniquement contenir les caractères a-z, A-Z et _
 invalid_email   = Adresse E-mail incorrecte
 server_down     = Impossible de contacter le serveur, enregistrement non effectué
@@ -83,14 +83,23 @@ reg_ok          = Enregistrement réussi, vous pouvez vous connecter avec votre I
 
 [about_win]
 title         = A Propos
+
 license       = Distribué sous %1
+
 icons_by      = Icônes par %1
+
 house_icon_by = Icône RV House par %1
 other_sites   = Sites populaires, utiles pour la communauté:
 using         = Utilise:
-using_lib     = %1 (by %2)
+
+
+using_lib     = %1 (par %2)
 translations  = Traductions:
-translation   = %1 par %2 <%3>
+
+
+
+
+translation   = %1 par %2 <%3> pour v%4
 
 [app]
 rv_not_found_title = "Re-Volt est-il installé?"
@@ -102,22 +111,24 @@ join_refused       = L'hôte a refusé votre présence
 join_err_topic     = Impossible de rejoindre la salle
 dht_connect_err1   = "Impossible de se connecter au réseau décentralisé"
 dht_connect_err2   = Ceci est probablement dû au fait que votre firewall
-dht_connect_err3   = ou router n'est pas correctemetn configuré.\n"
+dht_connect_err3   = ou router n'est pas correctement configuré.\n"
 dht_connect_err4   = Il est important de résoudre ce problème sinon
 dht_connect_err5   = vous risquez de ne pas voir tous les joueurs.
 dht_connect_err6   = Aussi, cette partie de RV House est le but de ma thèse
 dht_connect_err7   = et j'apprécierais beaucoup si
-dht_connect_err8   = vous pouvier le résoudre :).\n
+dht_connect_err8   = vous pouviez le résoudre :).\n
 dht_connect_err9   = En appuyant sur OK, vous serez redirigé
 dht_connect_err10  = vers la page d'aide à la configuration de votre router/firewall.
 dht_connect_err_title = "Erreur de connexion"
+
 self_on_global_ignore_topic = "Vous êtes dans la liste noire générale"
 self_on_global_ignore = "Votre IP fait partie de la liste noire globale.\nLa plupart des joueurs ne pourront pas vous voir.\nSi vous pensez que vous n'avez rien fait de mal \net que vous souhaités être supprimé de la liste noire,\nenvoyez un message sur le Forum RV Pub à l'adresse ci-dessous:"
-
 
 [new_version_win]
 title     = Nouvelle version de RV House
 force_msg = Vous DEVEZ mettre à jour RV House! L'ancienne version n'est plus compatible!
+
+
 msg       = RV House version %1 disponible, votre version est %2
 new_since = Nouveautés apportées:
 download  = Téléchargez la nouvelle version ici:
@@ -153,10 +164,10 @@ dht_connecting        = Connexion au P2P
 dht_connected         = Connecté au P2P
 dht_disconnecting     = P2P en cours de déconnexion
 dht_disconnected      = P2P déconnecté
-dht_upding_contacts   = Mise à jour des noeuds P2P...
-dht_upd_contacts      = Noeuds P2P mis à jour
-dht_upd_contacts_fail = Le P2P ne peut mettre à jour les noeuds
-dht_joining           = P2P en cours de joignage
+dht_upding_contacts   = Mise à jour des nœuds P2P...
+dht_upd_contacts      = Nœuds P2P mis à jour
+dht_upd_contacts_fail = Le P2P ne peut mettre à jour les nœuds
+dht_joining           = P2P sur le point d'être rejoint
 dht_joined            = P2P rejoint
 dht_leaving           = P2P en cours de sortie
 dht_left              = P2P quitté
@@ -168,13 +179,18 @@ ctz_connected         = Connecté au serveur Centralisé
 ctz_disconnecting     = Déconnexion du serveur Centralisé
 ctz_disconnected      = Déconnecté du serveur Centralisé
 
+
 ip_detecting = Détection de l'adresse IP depuis: %1
+
 ip_detected  = IP Détectée: %1
+
 ip_failed    = La détection de l'IP a échoué: %1
 
 [chat]
+
 user_entered = %1 est entré
 user_exited  = %1 est parti
+
 room_created = Nouvelle salle créée (%1)
 room_closed  = Salle fermée (%1)
 
@@ -182,35 +198,36 @@ host_kicked_host = L'hôte est éjecté de sa partie %1
 host_kicks_user  = L'hôte expulse %1 de la salle
 host_kicks_you   = L'hôte vous a expulsé de la salle %1
 
+
 user_joined_room         = %1 a rejoint la salle
 user_exited_room         = %1 a quitté la salle
 user_shares_tracks       = %1 partage ses circuits
 user_shares_tracks_stops = %1 a fini de partager ses circuits
-user_dloads_tracks       = %1 télécharge les ciruits
+user_dloads_tracks       = %1 télécharge les circuits
 user_dloads_tracks_stops = %1 a terminé de télécharger les circuits
+user_ignored             = Bloquer %1. Le blocage sera supprimé en redémarrant RV House.
+user_ignores             = %1 ne souhaite pas vous voir
 
 # %1 = the message that was refused/not received.
-# Caused because of user is playing so no windows
-# are wanted to be opened.
+# Caused because of user is playing or in do not disturb
+# mode so no windows are wanted to be opened.
 private_msg_refused      = L'utilisateur a refusé votre message: %1
 
 flood_control = Contrôle du Flood
 
-user_ignored             = Ignore %1
-user_ignores             = %1 ne souhaite pas vous voir
+global_ignore = Les utilisateurs suivant sont dans la Liste Noire pour leur comportement perturbateur et sont donc automatiquement ignoré. Vous pouvez désactiver la Liste Noire dans Paramètres > Général si vous le souhaitez.
 
-global_ignore = Following users are in global ignore list because of disruptive behaviour and are ignored by you automatically. You can disable global ignoring from Settings if you wish to.
-user_global_ignore = %1 est dans la lsite noire, raison: %2
+
+user_global_ignore = %1 est dans la liste noire, raison: %2
 
 host_ip = My IP is %1. Vous aurez surement besoin de ça si vous êtes sous Vista.
-
 
 [room_settings_win]
 title       = Paramètres de la salle
 topic       = &Titre:
 password    = &Mot de passe:
 pickups     = &Bonus
-laps        = Tou&rs:
+laps        = &Tours:
 players     = &Joueurs:
 
 error_title    = Erreur dans les paramètres de la salle
@@ -229,10 +246,10 @@ join_too_late = "Impossible de rejoindre la course si l'hôte\njoue depuis plus d
 join_too_late_title = "Trop tard pour rejoindre la partie"
 
 send_ip_info_title = "Notice!";
-send_ip_info = "Your detected IP will automatically be sent to people who join the room.\nThis is mainly to help Vista users who might need it for joining the game.\n\nIf you do not want your IP to be sent you can turn it off from Settings\n\nThis message is only shown once!";
+send_ip_info = "Votre adresse IP sera automatiquement envoyé aux joueurs ayant rejoint votre salle.\nCeci a pour but d'aider les utilisateurs de Vista qui en auraient besoin pour rejoindre la partie.\nVous pouvez désactiver cette fonction dans Paramètres > Général si vous ne souhaitez pas montrer votre IP.\n\nCe message ne s'affichera qu'une seule fois!";
 
 [private_message_win]
-close = Cloturer la discussion
+close = Clôturer la discussion
 
 [rv_launch]
 title_err = La démarrage du jeu à échoué
@@ -292,6 +309,7 @@ unknown       = Inconnu
 user_not_validated = ID Utilisateur non certifié (pas validé)
 pass_needed        = Mot de passe requis
 
+
 [settings_win]
 title           = Paramètres de RV House
 general_tab     = Général
@@ -303,7 +321,6 @@ flash_room_chat = Clignoter si message dans le chat de la salle
 flash_new_room  = Clignoter si nouvelle salle créée
 flash_new_user  = Clignoter si quelqu'un se connecte
 flash_nick      = Clignoter si votre pseudo apparait dans le chat principal
-
 away_minimize   = Absent quand le fenêtre est minimisée
 global_ignore   = Utiliser la liste noire générale
 send_ip         = Afficher IP lors du host
@@ -319,6 +336,7 @@ sel_mbg_color   = Couleur d'Arrière-Plan du Menu
 tip_text_color  = Couleur du Texte des Infobulles
 tip_bg_color    = Couleur d'Arrière-Plan des Infobulles
 
-cmdline_autoset = Configuration auto commande
+cmdline_autoset = Auto-configuration ligne de commande
 cmdline_dontset = Pas de ligne de commande
 cmdline_manual  = Préciser vos lignes de commandes
+
