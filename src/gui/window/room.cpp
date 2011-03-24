@@ -141,6 +141,9 @@ room::_init() {
     _share_button  = new FXButton(toolbar, share_btn_text.c_str(),
                      app_icons()->get("tracks_share"), this, ID_SHARE_TRACKS,
                      button_opts);
+    // NOTE: the external track sharing application (RVTM) does not seem to work,
+    // and don't seem to be fixed. So for now hide the track sharing to not confuse
+    _share_button->hide();
 
     new FXVerticalSeparator(toolbar);
     FXComposite *infoframe =
