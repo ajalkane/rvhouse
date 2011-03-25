@@ -1,8 +1,12 @@
 RV House change log
 
+Version 0.92.2 (25.03.2011)
+- Fixed RV 1.2 specific room settings
+
 Version 0.92.1 (25.03.2011)
 - Track sharing button removed.
-- Support for Re-Volt 1.2 specific room settings
+- Support for Re-Volt 1.2 specific room settings.
+- RV's command-line used by DirectLobby is restored to its original value after launching RV.
 
 Version 0.92.0 (19.03.2011)
 - Joining to races not limited by time anymore, due to Re-Volt 1.2 developments.

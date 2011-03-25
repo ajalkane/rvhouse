@@ -27,9 +27,9 @@ const char *
 rv_cmdline_builder::_option_to_s(const option opt) const {
     switch (opt) {
     case rv12_version_all:
-        return "-netcomp 0";
-    case rv12_version_12_only:
         return "-netcomp 1";
+    case rv12_version_12_only:
+        return "-netcomp 0";
     case sli:
         return "-sli";
 
