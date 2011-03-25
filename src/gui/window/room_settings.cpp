@@ -28,12 +28,14 @@ FXDEFMAP(room_settings) room_settings_map[]= {
               room_settings::on_command),
     FXMAPFUNC(SEL_COMMAND, 
               room_settings::ID_MY_CANCEL,
-              room_settings::on_command)
+              room_settings::on_command),
+    FXMAPFUNC(SEL_COMMAND,
+              room_settings::ID_VERSION,
+              room_settings::on_version)
               
 };
 
 FXIMPLEMENT(room_settings, FXDialogBox, room_settings_map, ARRAYNUMBER(room_settings_map));
-// FXIMPLEMENT(room_settings, FXDialogBox, NULL, 0);
 
 room_settings::room_settings(FXWindow *owner) 
     : FXDialogBox(owner, langstr("room_settings_win/title"))
@@ -47,8 +49,13 @@ room_settings::room_settings(FXWindow *owner)
                                    TEXTFIELD_PASSWD|FRAME_SUNKEN|FRAME_THICK);
         
     new FXSeparator(this);
-    _pickups_check = new FXCheckButton(this, langstr("room_settings_win/pickups"));
-    m = new FXMatrix(this, 2, MATRIX_BY_COLUMNS);
+
+    FXComposite *divide = new FXHorizontalFrame(this);
+    FXComposite *column1 = new FXVerticalFrame(divide);
+    FXComposite *column2 = new FXVerticalFrame(divide,FRAME_SUNKEN); //,0,0,0,0,0,0,0,0);
+
+    _pickups_check = new FXCheckButton(column1, langstr("room_settings_win/pickups"));
+    m = new FXMatrix(column1, 2, MATRIX_BY_COLUMNS);
     new FXLabel(m, langstr("room_settings_win/laps"));
     _laps_field = new FXSpinner(m,3,NULL,0,SPIN_NORMAL|FRAME_SUNKEN|FRAME_THICK);
     _laps_field->setRange(1, 20);
@@ -56,7 +63,15 @@ room_settings::room_settings(FXWindow *owner)
     _players_field = new FXSpinner(m,3,NULL,0,SPIN_NORMAL|FRAME_SUNKEN|FRAME_THICK);
     _players_field->setRange(2, 12);
 
-    new FXSeparator(this);  
+    _version_check   = new FXCheckButton(column2, langstr("room_settings_win/version"), this, ID_VERSION);
+    _version_all     = new FXRadioButton(column2, langstr("room_settings_win/version_all"), this, ID_VERSION);
+    _version_12_only = new FXRadioButton(column2, langstr("room_settings_win/version_12_only"), this, ID_VERSION);
+    _version_check->setTipText(langstr("room_settings_win/version_tip"));
+    _version_all->setTipText(langstr("room_settings_win/version_all_tip"));
+    _version_12_only->setTipText(langstr("room_settings_win/version_12_tip"));
+
+    new FXSeparator(this);
+
     FXHorizontalFrame *bframe = new FXHorizontalFrame(this, LAYOUT_CENTER_X);
 
     util::create_default_button(
@@ -65,39 +80,9 @@ room_settings::room_settings(FXWindow *owner)
     util::create_button(
         bframe, langstr("common/cancel_button"), this, ID_MY_CANCEL
     );
-  /*
-    new FXButton(
-        closebox,langstr("common/ok_button"),
-        NULL,this,FXTopWindow::ID_CLOSE,
-        BUTTON_INITIAL|BUTTON_DEFAULT|LAYOUT_RIGHT|
-        FRAME_RAISED|FRAME_THICK,
-        0,0,0,0,20,20
-    );
-    new FXButton(
-        closebox,langstr("common/cancel_button"),
-        NULL,this,FXTopWindow::ID_CLOSE,
-        BUTTON_INITIAL|BUTTON_DEFAULT|LAYOUT_RIGHT|
-        FRAME_RAISED|FRAME_THICK,
-        0,0,0,0,20,20
-    );
-    
-    new FXButton(bframe, langstr("common/ok_button"), NULL, this, ID_MY_ACCEPT);
-    new FXButton(bframe, langstr("common/cancel_button"), NULL, this, ID_MY_CANCEL);
-    */
+
     /* Room initialization, settings taken from existing room.*/    
-    chat_gaming::room &r = self_model()->hosting_room();
-    _registry_to_room(r);
-    _room_id_prev = r.id();
-    _room_to_form(r);
-    if (_room_id_prev.empty()) {
-        // New room branch
-        r.owner_id(self_model()->user().id());
-        r.generate_id();
-    
-        // Set the user to be in this room and send an update
-        self_model()->user().room_id(r.id());
-        self_model()->user_send();
-    }
+    _from_settings_to_form();
     
     getAccelTable()->addAccel(MKUINT(KEY_F4,ALTMASK),this,FXSEL(SEL_COMMAND,ID_MY_CANCEL));     
 }
@@ -105,6 +90,8 @@ room_settings::room_settings(FXWindow *owner)
 void
 room_settings::create() {
     FXDialogBox::create();
+    // Initialize the version dialog
+    on_version(_version_check, 0, NULL);
 }
 
 void
@@ -157,7 +144,7 @@ room_settings::on_command(FXObject *from, FXSelector sel, void *ptr) {
     switch (FXSELID(sel)) {
     case ID_MY_ACCEPT:
     {
-        msg = _room_message();
+        msg = _to_settings_and_form_room_message();
         if (msg) nsel = FXSEL(FXSELTYPE(sel), ID_ACCEPT);
         break;      
     }
@@ -181,8 +168,60 @@ room_settings::on_command(FXObject *from, FXSelector sel, void *ptr) {
     return 1;       
 }
 
+long
+room_settings::on_version(FXObject *from, FXSelector sel, void *ptr) {
+    if (from == _version_check) {
+        if (_version_check->getCheck()) {
+            _version_all->enable();
+            _version_12_only->enable();
+            if (!_version_all->getCheck() && !_version_12_only->getCheck()) {
+                _version_all->setCheck(TRUE);
+            }
+        } else {
+            _version_all->disable();
+            _version_all->setCheck(FALSE);
+            _version_12_only->disable();
+            _version_12_only->setCheck(FALSE);
+        }
+    }
+    else if (from == _version_all) {
+        if (_version_all->getCheck()) {
+            _version_12_only->setCheck(FALSE);
+        }
+    }
+    else if (from == _version_12_only) {
+        if (_version_all->getCheck()) {
+            _version_all->setCheck(FALSE);
+        }
+    }
+    return 0;
+}
+
+void
+room_settings::_from_settings_to_form() {
+    chat_gaming::room &target_room = self_model()->hosting_room();
+
+    _registry_to_room(target_room);
+    _room_id_prev = target_room.id();
+    _room_to_form(target_room);
+
+    _version_check->setCheck(self_model()->room_version());
+    _version_all->setCheck(self_model()->room_version_all());
+    _version_12_only->setCheck(self_model()->room_version_12_only());
+
+    if (_room_id_prev.empty()) {
+        // New room branch
+        target_room.owner_id(self_model()->user().id());
+        target_room.generate_id();
+
+        // Set the user to be in this room and send an update
+        self_model()->user().room_id(target_room.id());
+        self_model()->user_send();
+    }
+}
+
 ::message *
-room_settings::_room_message() {
+room_settings::_to_settings_and_form_room_message() {
     if (_topic_field->getText().trim().empty()) {
         FXMessageBox::error(this, FX::MBOX_OK, 
                             langstr("room_settings_win/error_title"),
@@ -193,6 +232,10 @@ room_settings::_room_message() {
     _form_to_room(self_model()->hosting_room());
     _room_to_registry(self_model()->hosting_room());
     
+    self_model()->room_version(_version_check->getCheck());
+    self_model()->room_version_all(_version_all->getCheck());
+    self_model()->room_version_12_only(_version_12_only->getCheck());
+
     return self_model()->hosting_room_as_message();
 #if 0
     new message_room(

@@ -230,6 +230,13 @@ pickups     = P&ickups
 laps        = &Laps:
 players     = Pl&ayers:
 
+version         = Version
+version_all     = All
+version_12_only = RV 1.2 only
+version_tip     = Set online compatibility for Re-Volt 1.2
+version_all_tip = Allow all RV version to join
+version_12_tip  = Only RV 1.2 versions can join
+ 
 error_title    = Room settings error
 topic_missing  = Fill in room topic
 

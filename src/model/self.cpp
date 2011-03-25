@@ -11,7 +11,12 @@ namespace model {
 // sequence number 0 is reserved for "unknown" sequence,
 // which can be generated when for example when a new IP is 
 // noticed or a user is erased (by timeout)
-self::self() : _seq(1), _user(NULL) {}
+self::self()
+  : _seq(1),
+    _user(NULL),
+    _room_version(false),
+    _room_version_all(false),
+    _room_version_12_only(false) {}
 
 message *
 self::user_as_message() {
@@ -49,6 +54,9 @@ self::clear() {
     _user = user_type(NULL);
     _room = room_type();
     _joining_room = room_type::id_type();
+    _room_version = false;
+    _room_version_all = false;
+    _room_version_12_only = false;
 }
     
 } // ns model

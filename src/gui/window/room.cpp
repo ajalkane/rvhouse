@@ -146,6 +146,7 @@ room::_init() {
     _share_button->hide();
 
     new FXVerticalSeparator(toolbar);
+
     FXComposite *infoframe =
      new FXMatrix(
         toolbar, 2, MATRIX_BY_COLUMNS,
@@ -328,6 +329,7 @@ room::on_edit_room(FXObject *from, FXSelector sel, void *) {
 long
 room::on_launch(FXObject *from, FXSelector sel, void *) {
     rv_cmdline_builder cmdline_builder;
+    _set_room_cmdline(cmdline_builder);
     cmdline_builder.set_rv_cmdline();
 
     if (_room_id == self_model()->hosting_room().id()) {
@@ -366,6 +368,19 @@ room::on_launch(FXObject *from, FXSelector sel, void *) {
     }
 
     return 1;
+}
+
+void
+room::_set_room_cmdline(rv_cmdline_builder &builder) {
+    if (self_model()->room_version()) {
+        if (self_model()->room_version_all()) {
+            ACE_DEBUG((LM_DEBUG, "room::setting RV 1.2 compatibility mode ON\n"));
+            builder.add_option(rv_cmdline_builder::rv12_version_all);
+        } else if (self_model()->room_version_12_only()) {
+            ACE_DEBUG((LM_DEBUG, "room::setting RV 1.2 compatibility ONLY 1.2\n"));
+            builder.add_option(rv_cmdline_builder::rv12_version_12_only);
+        }
+    }
 }
 
 long

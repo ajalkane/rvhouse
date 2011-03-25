@@ -7,6 +7,7 @@
 #include "../../chat_gaming/house.h"
 #include "../../chat_gaming/room.h"
 #include "../../common.h"
+#include "../../rv_cmdline_builder.h"
 #include "../view/chat.h"
 #include "../view/users.h"
 #include "../message_handler.h"
@@ -56,7 +57,8 @@ class room
     void _buttons_state();
     void _init();
     void _room_message(const chat_gaming::user &u, int grp);
-    void _button_sharing_tracks_enable(bool enable_if_possible);    
+    void _button_sharing_tracks_enable(bool enable_if_possible);
+    void _set_room_cmdline(rv_cmdline_builder &builder);
 protected:
     room() {}
 

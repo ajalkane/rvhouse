@@ -17,6 +17,7 @@ namespace model {
  */
 class self {
     unsigned _seq;
+
 public:
     typedef chat_gaming::room  room_type;
     typedef chat_gaming::user  user_type;
@@ -45,6 +46,12 @@ public:
     inline const room_type::id_type &joining_room(const room_type::id_type &i) { 
         return _joining_room = i; 
     }
+    inline const bool &room_version(bool room_version) { return _room_version = room_version; }
+    inline const bool &room_version() const { return _room_version; }
+    inline const bool &room_version_all(bool room_version_all) { return _room_version_all = room_version_all; }
+    inline const bool &room_version_all() const { return _room_version_all; }
+    inline const bool &room_version_12_only(bool room_version_12_only) { return _room_version_12_only = room_version_12_only; }
+    inline const bool &room_version_12_only() const { return _room_version_12_only; }
     
     inline unsigned sequence() { 
         unsigned s = _seq++;
@@ -61,6 +68,10 @@ private:
     user_type _user;
     room_type _room;
     room_type::id_type _joining_room;
+    bool _room_version;
+    bool _room_version_all;
+    bool _room_version_12_only;
+
 };
 
 } // ns model

@@ -24,6 +24,9 @@ class room_settings : public FXDialogBox {
     FXSpinner   *_laps_field;
     FXSpinner   *_players_field;
     FXCheckButton *_pickups_check;
+    FXCheckButton *_version_check;
+    FXRadioButton *_version_all;
+    FXRadioButton *_version_12_only;
     
     FXHorizontalFrame *_toolbar;
     
@@ -34,8 +37,8 @@ class room_settings : public FXDialogBox {
     void _registry_to_room(chat_gaming::room &r) const;
     void _room_to_registry(const chat_gaming::room &r) const;
 
-    ::message *_room_message();
-
+    ::message *_to_settings_and_form_room_message();
+    void _from_settings_to_form();
 protected:
     room_settings() {}
 
@@ -43,12 +46,14 @@ public:
     enum {
         ID_MY_ACCEPT = FXDialogBox::ID_LAST,
         ID_MY_CANCEL,
+        ID_VERSION,
     };
 
     room_settings(FXWindow *owner);
     virtual void create();
         
     long on_command(FXObject *from, FXSelector sel, void *);    
+    long on_version(FXObject *from, FXSelector sel, void *);
 };
 
 } // ns window

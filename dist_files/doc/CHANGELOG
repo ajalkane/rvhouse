@@ -1,7 +1,8 @@
 RV House change log
 
-Version 0.92.1 (XX.XX.2011)
+Version 0.92.1 (25.03.2011)
 - Track sharing button removed.
+- Support for Re-Volt 1.2 specific room settings
 
 Version 0.92.0 (19.03.2011)
 - Joining to races not limited by time anymore, due to Re-Volt 1.2 developments.
