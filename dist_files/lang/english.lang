@@ -348,3 +348,4 @@ cmdline_autoset = Auto-set command-line
 cmdline_dontset = Don't set command-line
 cmdline_manual  = Specify command-line:
 
+allow_started_race_join = Allow trying to join started races

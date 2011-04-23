@@ -302,7 +302,8 @@ rooms::_update_room_state(item_type *item) {
     );
     
     int disable_status = chat_gaming::user::status_playing;
-    if (status == chat_gaming::user::status_to_string(disable_status)) {
+    bool override_disable = pref()->get<bool>("advanced", "allow_started_race_join", false);
+    if (!override_disable && status == chat_gaming::user::status_to_string(disable_status)) {
         disableItem(item);
     } else {
         enableItem(item);

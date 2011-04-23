@@ -39,6 +39,14 @@ namespace {
         true
     };
 
+    const char *advanced_check_order[] = {
+        "allow_started_race_join"
+    };
+
+    bool advanced_check_defaults[] = {
+        false
+    };
+
     const char *cmdline_autoset_key = "cmdline_autoset";
     const char *cmdline_dontset_key = "cmdline_dontset";
     const char *cmdline_manual_key  = "cmdline_manual";
@@ -466,12 +474,12 @@ settings::_setup() {
 
     new FXSeparator(vframe,SEPARATOR_GROOVE|LAYOUT_FILL_X);
 
-//    for (size_t i = 0; i < array_sizeof(general_check_order); i++) {
-//        const char *key     = general_check_order[i];
-//        std::string langkey = "settings_win/";
-//        langkey += key;
-//        _check_map[key] = new FXCheckButton(vframe, langstr(langkey.c_str()));
-//    }
+    for (size_t i = 0; i < array_sizeof(advanced_check_order); i++) {
+        const char *key     = advanced_check_order[i];
+        std::string langkey = "settings_win/";
+        langkey += key;
+        _check_map[key] = new FXCheckButton(vframe, langstr(langkey.c_str()));
+    }
 
     /**
      * Start of footer (OK/Cancel)
@@ -499,6 +507,13 @@ settings::_pref_to_form() {
         _check_map[key]->setCheck(val);
     }
 
+    for (size_t i = 0; i < array_sizeof(advanced_check_order); i++) {
+        const char *key = advanced_check_order[i];
+        bool    def_val = advanced_check_defaults[i];
+        bool        val = pref()->get<bool>("advanced", key, def_val);
+        _check_map[key]->setCheck(val);
+    }
+
     std::string cmdline_switch = pref()->get<std::string>("advanced", cmdline_pref_switch_key, cmdline_pref_switch_default);
     _set_cmdline_switch_state(cmdline_switch);
 
@@ -517,6 +532,12 @@ settings::_form_to_pref() {
         const char *key = general_check_order[i];
         bool        val = _check_map[key]->getCheck() ? true : false;
         pref()->set<bool>("general", key, val);
+    }
+
+    for (size_t i = 0; i < array_sizeof(advanced_check_order); i++) {
+        const char *key = advanced_check_order[i];
+        bool        val = _check_map[key]->getCheck() ? true : false;
+        pref()->set<bool>("advanced", key, val);
     }
 
     _cmdline_switch_map_type::iterator i = _cmdline_switch_map.begin();
