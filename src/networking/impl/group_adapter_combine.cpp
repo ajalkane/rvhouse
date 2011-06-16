@@ -14,15 +14,20 @@ group_adapter_combine::group_adapter_combine(
     ACE_Reactor *r
 ) : group_adapter(r)
 {
-    if (!net_conf()->get<bool>("net_centralized", "disable", false))
+    ACE_DEBUG((LM_DEBUG, "group_adapter_combine:ctor\n"));
+
+    if (!net_conf()->get<bool>("net_centralized/disable", false))
         _gas.push_back(new group_adapter_centralized(r));
     else
         _report_disabled.push_back(message::ctz_group_base);
         
-    if (!net_conf()->get<bool>("net_serverless", "disable", false))
+    if (!net_conf()->get<bool>("net_serverless/disable", false)) {
+        ACE_DEBUG((LM_DEBUG, "group_adapter_combine:ctor net_serverless enabled\n"));
         _gas.push_back(new group_adapter_serverless (r));   
-    else
+    } else {
+        ACE_DEBUG((LM_DEBUG, "group_adapter_combine:ctor net_serverless disabled\n"));
         _report_disabled.push_back(message::dht_group_base);
+    }
 }
 
 group_adapter_combine::~group_adapter_combine() {

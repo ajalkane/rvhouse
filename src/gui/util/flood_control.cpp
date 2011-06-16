@@ -13,7 +13,7 @@ flood_control::flood_control()
 {}
 
 bool
-flood_control::allow_send(const FXString &t) {
+flood_control::allow_send() {
     // Simple flood control
     ACE_Time_Value now(ACE_OS::gettimeofday());
     

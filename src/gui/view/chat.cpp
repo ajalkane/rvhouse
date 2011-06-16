@@ -1,12 +1,12 @@
 #include <sstream>
 
-#include <fx.h>
-
-#include "../../util.h"
 #include "../../regexp.h"
-#include "../../os_util.h"
-#include "../../main.h"
+
+#include <QtGui>
+
 #include "../../app_options.h"
+#include "../../main.h"
+#include "../../util.h"
 #include "../../messaging/message_channel.h"
 #include "../../messaging/message_room.h"
 #include "../../messaging/message_user.h"
@@ -16,23 +16,12 @@
 #include "../../model/self.h"
 #include "../../parser/url/dfa.h"
 #include "../../executable/launcher.h"
+#include "../../os_util.h"
 
 #include "chat.h"
 
 namespace gui {
 namespace view {
-
-FXDEFMAP(chat) chat_map[]= {
-    FXMAPFUNC(SEL_LEFTBUTTONPRESS,0,chat::on_left_button),
-    FXMAPFUNC(SEL_TIMEOUT,chat::ID_TIMER, chat::on_timer),
-    FXMAPFUNC(SEL_MOTION, 0, chat::on_motion),
-    FXMAPFUNC(SEL_COMMAND, chat::ID_INPUT,
-                           chat::on_input),
-    FXMAPFUNC(SEL_CONFIGURE, chat::ID_CONFIGURE,chat::on_configure)
-};
-
-
-FXIMPLEMENT(chat, FXText, chat_map, ARRAYNUMBER(chat_map))
 
 namespace {
     inline bool is_word_separator(char c) {
@@ -50,144 +39,34 @@ namespace {
     }
 }
 
-chat::chat(
-    FXComposite *c, FXObject *tgt,
-    FXSelector sel, FXuint opts,
-    FXint x, FXint y,
-    FXint w, FXint h,
-    FXint pl, FXint pr,
-    FXint pt, FXint pb)
-: FXText(c, tgt, sel, opts, x, y, w, h, pl, pr, pt, pb),
+chat::chat(QWidget *parent, const std::string &channel)
+: QTextBrowser(parent),
+  _channel(channel),
   _flash_window(NULL),
   _allow_scroll(true)
 {
+    this->setReadOnly(true);
+    this->setAcceptRichText(false);
+    this->setTabChangesFocus(true);
+    this->setOpenExternalLinks(true);
 
-    _current_cursor = DEF_ARROW_CURSOR;
+    _styles = new QTextCharFormat[style_last];
+    _styles[style_name_tag].setForeground(QColor(69, 139, 116, 255));
+    _styles[style_name_tag].setFontWeight(QFont::Bold);
 
-    _styles = new FXHiliteStyle[style_last - 1];
-    // Set defaults
-    for (int i = 0; i < style_last - 1; i++) {
-        _styles[i].normalForeColor = getApp()->getForeColor();
-        _styles[i].normalBackColor = getApp()->getBackColor();
-        _styles[i].selectForeColor = getApp()->getSelforeColor();
-        _styles[i].selectBackColor = getApp()->getSelbackColor();
-        _styles[i].hiliteForeColor = getApp()->getHiliteColor();
-        _styles[i].hiliteBackColor = getHiliteBackColor();
-        _styles[i].activeBackColor = getApp()->getBackColor();
-        _styles[i].style = 0; // no underline, italic, bold
-    }
+    _styles[style_name].setForeground(QColor(156, 102, 31, 255));
 
-    _styles[style_name_tag - 1].normalForeColor = fxcolorfromname("Aquamarine4");
-    _styles[style_name_tag - 1].style           = STYLE_BOLD;
+    _styles[style_name_notauth].setForeground(QColor(255, 0, 0, 255));
+    _styles[style_name_notauth].setFontWeight(QFont::Bold);
 
-    _styles[style_name - 1].normalForeColor     = fxcolorfromname("Brick");
-
-    _styles[style_name_notauth - 1].normalForeColor = fxcolorfromname("Red");
-    _styles[style_name_notauth - 1].style           = STYLE_BOLD;
-    _styles[style_text_notauth - 1].normalForeColor = fxcolorfromname("Red");
-
-    _styles[style_status - 1].normalForeColor = fxcolorfromname("Red");
-
-    _styles[style_url - 1].normalForeColor = fxcolorfromname("Blue");
-    _styles[style_url - 1].style           = STYLE_UNDERLINE;
-
-    setStyled(true);
-    setHiliteStyles(_styles);
-    // public_message("Myself", "Tadaa!");
+    _styles[style_status].setForeground(QColor(255, 0, 0, 255));
+    _styles[style_url].setAnchor(true);
+    _styles[style_url].setUnderlineStyle(QTextCharFormat::SingleUnderline);
+    _styles[style_url].setForeground(QColor("blue"));
 }
 
 chat::~chat() {
     delete [] _styles;
-}
-
-void
-chat::create() {
-    FXText::create();
-    // show(PLACEMENT_SCREEN);
-}
-
-long
-chat::on_input(FXObject *from, FXSelector sel, void *) {
-    // TODO later... maybe.
-    return 0;
-}
-
-long
-chat::on_motion(FXObject *from, FXSelector sel, void *ptr) {
-    FXEvent *event = (FXEvent*)ptr;
-    FXint pos = getPosAt(event->win_x, event->win_y);
-
-    // ACE_DEBUG((LM_DEBUG, "chat::on_motion %d/%d pos %d/%d\n",
-    //          event->win_x, event->win_y, pos, getLength()));
-
-    // Default is arrow cursor.
-    FXDefaultCursor set_cursor = DEF_ARROW_CURSOR;
-    if (pos < getLength()) {
-        FXint style = getStyle(pos);
-        if (style == style_url) {
-            set_cursor = DEF_HAND_CURSOR;
-        }
-    }
-
-    if (_current_cursor != set_cursor) {
-        setDefaultCursor(getApp()->getDefaultCursor(set_cursor));
-        _current_cursor = set_cursor;
-    }
-
-    FXText::handle(from, sel, ptr);
-    return 0;
-}
-
-long
-chat::on_left_button(FXObject *from, FXSelector sel, void *ptr) {
-    FXEvent *event = (FXEvent*)ptr;
-    FXint pos = getPosAt(event->win_x, event->win_y);
-
-    if (pos >= getLength()) return 0;
-
-    FXint style = getStyle(pos);
-
-    if (style == style_url) {
-        // Read in the whole URL. First find the start
-        for (; pos >= 0 && getStyle(pos) == style_url; pos--);
-
-        pos++;
-        // Then construct the URL
-        std::string link;
-        for (; pos < getLength() && getStyle(pos) == style_url; pos++) {
-            link += getChar(pos);
-        }
-
-        ACE_DEBUG((LM_DEBUG, "chat::launching link %s\n", link.c_str()));
-
-        getApp()->beginWaitCursor();
-        if (!launcher_file()->start(link)) {
-            getApp()->addTimeout(this,ID_TIMER,2000); // 2 seconds of away cursor
-        } else {
-            getApp()->endWaitCursor();
-            getApp()->beep();
-        }
-    } else {
-        FXText::handle(from, sel, ptr);
-    }
-    return 0;
-}
-
-long
-chat::on_timer(FXObject*,FXSelector,void* ptr) {
-   getApp()->endWaitCursor();
-   return 1;
-}
-
-long
-chat::on_configure(FXObject*,FXSelector,void* ptr) {
-   FXWindow *win = this;
-   ACE_DEBUG((LM_DEBUG, "chat::on_configure %d/%d/%d/%d\n",
-              win->getX(),win->getY(),win->getWidth(), win->getHeight()));
-   _cond_scroll_prepare();
-   _cond_scroll();
-   // getApp()->endWaitCursor();
-   return 1;
 }
 
 void
@@ -296,22 +175,21 @@ chat::public_message(
     }
     const chat_gaming::user &from = *ui;
 
-    FXColor s_name = (from.authenticated() ? style_name : style_name_notauth);
-    FXColor s_text = (from.authenticated() ? style_text : style_text_notauth);
-
+    _style s_name = (from.authenticated() ? style_name : style_name_notauth);
+    _style s_text = (from.authenticated() ? style_text : style_text_notauth);
     _cond_scroll_prepare();
     {
-        /** Message Header **/
-        appendStyledText("<", 1, style_name_tag);
-        appendStyledText(from.display_id().c_str(), from.display_id().size(), s_name);
-        appendStyledText(">", 1, style_name_tag);
-        appendStyledText(" ", 1);
-
-        /** Message Contents **/
-        _styled_content(msg.c_str(), msg.size(), s_text);
-        appendStyledText("\n", 1);
+        _insert_text("<", style_name_tag);
+        _insert_text(from.display_id().c_str(), s_name);
+        _insert_text(">", style_name_tag);
+        _insert_text(" ", s_text);
+        _styled_content(msg, s_text);
+        _insert_text("\n", s_text);
     }
     _cond_scroll();
+
+    ACE_DEBUG((LM_DEBUG, "chat::public_message: flash_window %d, flash_nick %d\n",
+               _flash_window, app_opts.flash_nick()));
 
     if (_flash_window && app_opts.flash_nick()) {
         ACE_DEBUG((LM_DEBUG, "chat::public_message: trying to find %s from %s\n",
@@ -321,6 +199,19 @@ chat::public_message(
             os::flash_window(_flash_window);
         }
     }
+}
+
+void
+chat::_insert_text(const char *text, const QTextCharFormat &format) {
+    ACE_DEBUG((LM_ERROR, "chat::_insert_text '%s'\n", text));
+    QTextCursor c = this->textCursor();
+    c.insertText(text, format);
+}
+
+void
+chat::_insert_text(const char *text, enum _style style) {
+    QTextCharFormat format = _styles[style];
+    _insert_text(text, format);
 }
 
 void
@@ -342,17 +233,17 @@ chat::notification_message(
     {
         /** Message Header **/
         // At least for now display notification messages just like status messages
-        appendStyledText("*", 1, style_status);
-        appendStyledText(" ", 1);
+        _insert_text("*", style_status);
+        _insert_text(" ", style_status);
 
-        appendStyledText("<", 1, style_status);
-        appendStyledText(from.display_id().c_str(), from.display_id().size(), style_status);
-        appendStyledText(">", 1, style_status);
-        appendStyledText(" ", 1);
+        _insert_text("<", style_status);
+        _insert_text(from.display_id().c_str(), style_status);
+        _insert_text(">", style_status);
+        _insert_text(" ", style_status);
 
         /** Message Contents **/
-        _styled_content(msg.c_str(), msg.size(), style_status);
-        appendStyledText("\n", 1);
+        _styled_content(msg, style_status);
+        _insert_text("\n", style_status);
     }
     _cond_scroll();
 }
@@ -362,19 +253,14 @@ chat::status_message(const std::string &msg) {
     _cond_scroll_prepare();
     {
         /** Message Header **/
-        appendStyledText("*", 1, style_status);
-        appendStyledText(" ", 1);
+        _insert_text("*", style_status);
+        _insert_text(" ", style_status);
 
         /** Message Contents **/
-        appendStyledText(msg.c_str(), msg.size(), style_status);
-        appendStyledText("\n", 1);
+        _insert_text(msg.c_str(), style_status);
+        _insert_text("\n", style_status);
     }
     _cond_scroll();
-}
-
-void
-chat::private_message(const FXString &fromUser, const FXString &msg) {
-    // public_message(fromUser, msg);
 }
 
 void
@@ -382,34 +268,39 @@ chat::_cond_scroll_prepare() {
     // Chack that if the last line before new text is entered is not visible,
     // then do not do the scrolling because it means user has scrolled the
     // buffer back and wants to view older text.
+    QScrollBar *vbar = verticalScrollBar();
+    int maximum = vbar->maximum();
+    int value = vbar->value();
+    int single_step = vbar->singleStep();
+    _saved_pre_insert_vertical_value = value;
 
-    FXint last_pos = getLength() - 1;
-    // Use rowStart() to find the position of the start of the row
-    // FXint last_row_start_pos = rowStart(last_pos);
-    _allow_scroll = isPosVisible(last_pos);
+    _allow_scroll = (maximum - value < single_step);
+
+    ACE_DEBUG((LM_DEBUG, "chat::_cond_scroll_prepare: max %d, val %d, singleStep %d, allow_scroll: %d\n", maximum, value, single_step, _allow_scroll));
+
+    // Ensure text is inserted at the end of the buffer
+    QTextCursor c = this->textCursor();
+    c.movePosition(QTextCursor::End);
+    setTextCursor(c);
 }
 
 void
 chat::_cond_scroll() {
-    int cx, cy;
-    getPosition(cx, cy);
-    // ACE_DEBUG((LM_DEBUG, "chat::_cond_scroll: curr x/y: %d/%d\n", cx, cy));
-    if (_allow_scroll && getContentHeight() > getViewportHeight()) {
-        // ACE_DEBUG((LM_DEBUG, "chat::_cond_scroll: do scroll "
-        // "content/viewport height: %d/%d\n",
-        // getContentHeight(), getViewportHeight()));
-
-        // Fox uses negative Y for down below???
-        setPosition(0, getViewportHeight() - getContentHeight());
+    if (_allow_scroll) {
+        ACE_DEBUG((LM_DEBUG, "chat::_cond_scroll: scrolling to visible\n"));
+        ensureCursorVisible();
+    } else {
+        ACE_DEBUG((LM_DEBUG, "chat::_cond_scroll: not scrolling to visible\n"));
+        verticalScrollBar()->setValue(_saved_pre_insert_vertical_value);
     }
 }
 
 void
-chat::_styled_content(const char *msg, size_t len, int base_style) {
+chat::_styled_content(const std::string &msg, enum _style text_style) {
     ACE_DEBUG((LM_DEBUG, "chat::_styled_content\n"));
-    const char *guard = msg + len;
-    const char *base  = msg;
-    const char *p     = msg;
+    const char *base  = msg.c_str();
+    const char *guard = base + msg.size();
+    const char *p     = base;
 
     parser::url::dfa url_parser;
 
@@ -422,11 +313,13 @@ chat::_styled_content(const char *msg, size_t len, int base_style) {
 
         parser::url::dfa::status status = url_parser.parse(p, guard);
         if (status == parser::url::dfa::success) {
-            if (base != p)
-                appendStyledText(base, (int)(p - base), base_style);
+            if (base != p) {
+                std::string non_url(base, (size_t)(p - base));
+                _insert_text(non_url.c_str(), text_style);
+            }
             base = p;
             p    = url_parser.end();
-            appendStyledText(base, (int)(p - base), style_url);
+            _insert_url(base, (int)(p - base));
             base = p;
         } else {
             // Eat until separator character
@@ -434,10 +327,21 @@ chat::_styled_content(const char *msg, size_t len, int base_style) {
                 if (is_word_separator(*p)) break;
                 else continue;
             }
-            appendStyledText(base, (int)(p - base), base_style);
+            std::string non_url(base, (size_t)(p - base));
+            _insert_text(non_url.c_str(), text_style);
             base = p;
         }
     }
+}
+
+void
+chat::_insert_url(const char *url, size_t len) {
+    std::string stdurl(url, len);
+    ACE_DEBUG((LM_DEBUG, "chat::_insert_url: raw url '%s'\n", stdurl.c_str()));
+    QTextCharFormat url_style(_styles[style_url]);
+    url_style.setAnchor(true);
+    url_style.setAnchorHref(stdurl.c_str());
+    _insert_text(stdurl.c_str(), url_style);
 }
 
 void

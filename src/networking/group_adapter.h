@@ -3,7 +3,6 @@
 
 #include <string>
 
-#include <fx.h>
 #include <ace/Reactor.h>
 
 #include "../chat_gaming/user.h"

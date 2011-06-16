@@ -1,5 +1,5 @@
-#ifndef _MAIN_H_
-#define _MAIN_H_
+#ifndef MAIN_H_
+#define MAIN_H_
 
 #include "accessor.h"
 
@@ -20,9 +20,16 @@ namespace lang {
 
 namespace gui {
     class house_app;
+    class house_app;
+
+    namespace window {
+        class house;
+    }
 }
 
 extern accessor<class gui::house_app *>    app;
+extern accessor<class gui::house_app *>    app;
+extern accessor<class gui::window::house *>    house_win;
 extern accessor<class config_file *>  conf;
 extern accessor<class config_file *>  user_conf;
 extern accessor<class config_file *>  pref;
@@ -36,9 +43,10 @@ extern accessor<class executable::launcher *> launcher_file;
 extern accessor<class executable::launcher *> launcher_rvtm;
 extern accessor<class win_registry *>  game_registry;
 extern accessor<class icon_store *>    app_icons;
+extern accessor<class icon_store *> app_icons;
 extern accessor<class lang::manager *> lang_mngr;
 
 extern class lang::mapper lang_mapper;
 extern class app_options app_opts;
 
-#endif //_MAIN_H_
+#endif //MAIN_H_

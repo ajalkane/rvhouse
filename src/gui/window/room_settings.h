@@ -1,9 +1,19 @@
-#ifndef _ROOM_SETTINGS_WINDOW_H_
-#define _ROOM_SETTINGS_WINDOW_H_
+#ifndef ROOM_SETTINGS_WINDOW_H_
+#define ROOM_SETTINGS_WINDOW_H_
 
 #include <string>
 
-#include <fx.h>
+#include <QDialog>
+#include <QLineEdit>
+#include <QMenu>
+#include <QAction>
+#include <QActionGroup>
+#include <QPushButton>
+#include <QRadioButton>
+#include <QString>
+#include <QSpinBox>
+#include <QCheckBox>
+#include <QWidget>
 
 #include "../../common.h"
 #include "../../messaging/messenger.h"
@@ -16,22 +26,30 @@
 namespace gui {
 namespace window {
 
-class room_settings : public FXDialogBox {
-    FXDECLARE(room_settings)
+class room_settings : public QDialog {
+    Q_OBJECT
 
-    FXTextField *_topic_field;
-    FXTextField *_pass_field;
-    FXSpinner   *_laps_field;
-    FXSpinner   *_players_field;
-    FXCheckButton *_pickups_check;
-    FXCheckButton *_version_check;
-    FXRadioButton *_version_all;
-    FXRadioButton *_version_12_only;
-    
-    FXHorizontalFrame *_toolbar;
-    
+    typedef QDialog super;
+
+    QLineEdit *_topic_field;
+    QLineEdit *_pass_field;
+    QSpinBox  *_laps_field;
+    QSpinBox  *_players_field;
+    QCheckBox *_pickups_check;
+    QCheckBox *_version_check;
+    QActionGroup *_version_group;
+    QRadioButton *_version_all;
+    QRadioButton *_version_12_only;
+    QPushButton  *_ok_button;
+    QPushButton  *_cancel_button;
+
     chat_gaming::room::id_type _room_id_prev;
     
+    void _create_actions();
+    void _create_widgets();
+    void _create_layout();
+    void _connect_signals();
+
     void _room_to_form(const chat_gaming::room &r);
     void _form_to_room(chat_gaming::room &r) const;
     void _registry_to_room(chat_gaming::room &r) const;
@@ -39,24 +57,20 @@ class room_settings : public FXDialogBox {
 
     ::message *_to_settings_and_form_room_message();
     void _from_settings_to_form();
-protected:
-    room_settings() {}
 
 public:
-    enum {
-        ID_MY_ACCEPT = FXDialogBox::ID_LAST,
-        ID_MY_CANCEL,
-        ID_VERSION,
-    };
-
-    room_settings(FXWindow *owner);
-    virtual void create();
+    room_settings(QWidget *parent);
         
-    long on_command(FXObject *from, FXSelector sel, void *);    
-    long on_version(FXObject *from, FXSelector sel, void *);
+public slots:
+     void version_state_changed(int state);
+
+     // Overrides of QDialog
+     virtual void accept();
+     virtual void reject();
+
 };
 
 } // ns window
 } // ns gui
 
-#endif //_ROOM_SETTINGS_WINDOW_H_
+#endif //ROOM_SETTINGS_WINDOW_H_

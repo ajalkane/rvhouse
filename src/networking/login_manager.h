@@ -3,7 +3,6 @@
 
 #include <string>
 
-#include <fx.h>
 #include <ace/Reactor.h>
 
 #include "../messaging/messenger.h"

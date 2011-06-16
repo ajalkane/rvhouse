@@ -1,8 +1,18 @@
-#ifndef _ROOM_WINDOW_H_
-#define _ROOM_WINDOW_H_
+#ifndef ROOM_WINDOW_H_
+#define ROOM_WINDOW_H_
 
 #include <string>
-#include <fx.h>
+
+#include <QLineEdit>
+#include <QMainWindow>
+#include <QMenu>
+#include <QAction>
+#include <QActionGroup>
+#include <QLabel>
+#include <QString>
+#include <QWidget>
+#include <QVBoxLayout>
+#include <QSplitter>
 
 #include "../../chat_gaming/house.h"
 #include "../../chat_gaming/room.h"
@@ -11,32 +21,44 @@
 #include "../view/chat.h"
 #include "../view/users.h"
 #include "../message_handler.h"
-#include "../watched_window.h"
 #include "../util/flood_control.h"
+#include "size_restoring_window.h"
 
 namespace gui {
 namespace window {
 
-class room 
-  // : public FXMainWindow, 
-  : public FXTopWindow, 
-    public message_handler, 
-    public watched_window,
+class room :
+    public size_restoring_window<QMainWindow>,
+    public message_handler,
     public view::users::observer
 {
-    typedef FXTopWindow super;
-    FXDECLARE(room)
+    Q_OBJECT
 
-    FXTextField       *_msg_field;
-    FXButton          *_edit_button;
-    FXButton          *_launch_button;
-    FXButton          *_share_button;
-    FXLabel           *_info_picks;
-    FXLabel           *_info_laps;
-    FXLabel           *_info_players;
+    typedef size_restoring_window<QMainWindow> super;
+
+    view::chat  *_chat_view;
+    view::users *_users_view;
+    QLineEdit      *_msg_field;
+
+    QAction *_action_quit;
+    QAction *_action_settings;
+    QAction *_action_launch;
+
+    QWidget *_info_container;
+    QLabel  *_info_picks;
+    QLabel  *_info_laps;
+    QLabel  *_info_players;
+
+    QSplitter *_chat_users_splitter;
+
+//    FXTextField       *_msg_field;
+//    FXButton          *_edit_button;
+//    FXButton          *_launch_button;
+//    FXButton          *_share_button;
+//    FXLabel           *_info_picks;
+//    FXLabel           *_info_laps;
+//    FXLabel           *_info_players;
     
-    view::chat        *_chat_view;
-    view::users       *_users_view;
     bool               _running_modal;
     bool               _hosting;
     bool               _host_sharing;
@@ -47,6 +69,12 @@ class room
 
     util::flood_control _flood_control;
         
+    void _create_actions();
+    void _create_toolbars();
+    void _create_widgets();
+    void _create_layout();
+    void _connect_signals();
+
     void _handle_room_launch(::message *msg);
     void _handle_room_kick  (::message *msg);
     void _launcher_error(int err);
@@ -59,37 +87,12 @@ class room
     void _room_message(const chat_gaming::user &u, int grp);
     void _button_sharing_tracks_enable(bool enable_if_possible);
     void _set_room_cmdline(rv_cmdline_builder &builder);
-protected:
-    room() {}
 
 public:
-    enum {
-        ID_EDIT_ROOM = FXMainWindow::ID_LAST,
-        ID_SEND_MSG,
-        ID_LAUNCH,
-        ID_SHARE_TRACKS,
-        ID_LAST,
-    };
-    
-    room(FXApp *a,        const chat_gaming::room::id_type &id);
-    room(FXWindow *owner, const chat_gaming::room::id_type &id);
-    ~room();
-    virtual void create();
+    room(const chat_gaming::room::id_type &id, QWidget *owner);
+    virtual ~room();
 
     void update(int grp);
-    
-    // If this function enabled, _host_id must be reset too
-    // inline void room_id(const chat_gaming::room::id_type &rid) {
-    //  _room_id = rid;
-    //}
-    
-    // inline const chat_gaming::room &room() { return _room; }
-    // const chat_gaming::room &room(const chat_gaming::room &r);
-
-    long on_edit_room(FXObject *from, FXSelector sel, void *);
-    long on_send_message(FXObject *from, FXSelector sel, void *);
-    long on_launch(FXObject *from, FXSelector sel, void *);
-    long on_share_tracks(FXObject *from, FXSelector sel, void *);
     
     void handle_message    (::message *msg);    
 
@@ -102,9 +105,15 @@ public:
                                         bool value);
     virtual void getting_tracks_changed(const chat_gaming::user &u,
                                         bool value);
+
+public slots:
+    void show();
+    void edit_room();
+    void launch_rv();
+    void send_message();
 };
 
 } // ns window
 } // ns gui
 
-#endif //_ROOM_WINDOW_H_
+#endif //ROOM_WINDOW_H_

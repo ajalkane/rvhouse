@@ -3,7 +3,6 @@
 
 #include <string>
 
-#include <fx.h>
 #include <ace/Reactor.h>
 
 #include "../login_manager.h"

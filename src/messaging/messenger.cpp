@@ -7,7 +7,6 @@
 using namespace std;
 
 messenger::messenger()
-    : _lock(true)
 {
 }
 

@@ -1,3 +1,5 @@
+#include <ace/Log_Msg.h>
+
 #include "util.h"
 
 // Dummy implementation, maybe do more general when time

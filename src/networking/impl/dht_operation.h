@@ -7,7 +7,6 @@
  * of updating contact lists with different DHT implementations
  */
  
-#include <fx.h>
 #include <dht/client.h>
 
 #include "../../config_file.h"

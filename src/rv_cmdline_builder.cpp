@@ -1,3 +1,4 @@
+#include "os_util.h"
 #include "rv_cmdline_builder.h"
 #include "main.h"
 #include "config_file.h"
@@ -56,7 +57,7 @@ rv_cmdline_builder::_add_to_cmdline(const char *opt) {
 
 void
 rv_cmdline_builder::_preset_cmdline() {
-    std::string cmdline_switch = pref()->get<std::string>("advanced", "cmdline_switch", "cmdline_autoset");
+    std::string cmdline_switch = pref()->get<std::string>("advanced/cmdline_switch", "cmdline_autoset");
     if (cmdline_switch == "cmdline_autoset") {
         ACE_DEBUG((LM_DEBUG, "cmdline_builder::_set_rv_cmdline: autoset commandline\n"));
         if (os::is_windows_vista_or_later()) {
@@ -67,7 +68,7 @@ rv_cmdline_builder::_preset_cmdline() {
         }
     } else if (cmdline_switch == "cmdline_manual") {
         ACE_DEBUG((LM_DEBUG, "cmdline_builder::_set_rv_cmdline: manual commandline\n"));
-        _add_to_cmdline(pref()->get<std::string>("advanced", "cmdline", "").c_str());
+        _add_to_cmdline(pref()->get<std::string>("advanced/cmdline", "").c_str());
     }
 }
 

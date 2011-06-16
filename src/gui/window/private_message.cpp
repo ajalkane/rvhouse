@@ -1,18 +1,15 @@
 #include <unistd.h>
 #include <utility>
 
-#include <fx.h>
-#include <fxkeys.h>
+#include <QtGui>
 
 #include "../../messaging/message_user.h"
 #include "../../messaging/message_room.h"
 #include "../../messaging/message_channel.h"
 #include "../../messaging/message_send_room.h"
 #include "../../messaging/message_room_command.h"
-#include "../../util.h"
 #include "../../model/house.h"
 #include "../../model/self.h"
-#include "../../executable/launcher.h"
 #include "../../icon_store.h"
 #include "../house_app.h"
 #include "../util/util.h"
@@ -22,179 +19,126 @@ namespace gui {
 namespace window {
 
 // Static variable, as must be shared between private_message instances.
-util::slots<16> private_message::_slots;
+// IMPROVE Qt. Probably needs to be moved to rv_house class
+// util::bit_slots<16> private_message::_slots;
 
-FXDEFMAP(private_message) private_message_map[]= {
-  FXMAPFUNC(SEL_COMMAND,  private_message::ID_SEND_MSG, 
-                          private_message::on_send_message),
-};
-
-// FXIMPLEMENT(private_message, FXMainWindow, private_message_map, ARRAYNUMBER(private_message_map))
-FXIMPLEMENT(private_message, private_message::super, private_message_map, ARRAYNUMBER(private_message_map))
-
-// FXIMPLEMENT(private_message, FXMainWindow, NULL, 0)
-
-private_message::private_message(FXApp *a, const std::string &id)
-    : super(a, "", NULL, NULL, DECOR_ALL, 0, 0, 350, 300), // , 0,0,0,0,0,0),
-      _chat_view(NULL), _users_view(NULL), _user_id_str(id)
-    // : FXMainWindow(a, "", NULL, NULL, DECOR_ALL, 0, 0, 350, 300),
+private_message::private_message(const std::string &id, QWidget *parent)
+    // IMPROVE Qt slot of private_message?
+    : size_restoring_window<QMainWindow>("private_message", parent),
+      _chat_view(NULL), _users_view(NULL), _channel(util::private_message_channel_with(id)), _user_id_str(id)
 {
-    _init2();
-}
+    ACE_DEBUG((LM_DEBUG, "private_message::ctor\n"));
+    this->setWindowIcon(app_icons()->get("private_message"));
+    this->setContextMenuPolicy(Qt::NoContextMenu);
 
-/*
-private_message::private_message(FXWindow *owner, const std::string &id)
-    : super(owner, "",  NULL, NULL, DECOR_ALL, 0, 0, 350, 300, 0,0,0,0,0,0),
-      _user_id_str(id)
-    // : FXMainWindow(a, "", NULL, NULL, DECOR_ALL, 0, 0, 350, 300),
-{
+    _create_actions();
+    _create_widgets();
+    _create_toolbars();
+    _create_layout();
+
+    _connect_signals();
+
     _init();
 }
-*/
 
 void
-private_message::_init2() {
-    ACE_DEBUG((LM_DEBUG, "private_message::ctor %d\n", (FXWindow *)this));
+private_message::_create_actions() {
+    _action_quit     = new QAction(app_icons()->get("close"), langstr("private_message_win/close"), this);
 
-    setIcon(app_icons()->get("private_message"));
-    setMiniIcon(app_icons()->get("private_message"));
+}
 
+void
+private_message::_create_toolbars() {
+    QToolBar *tool_bar = addToolBar("room_controls");
+    tool_bar->setObjectName("private_message_toolbarclose");
+    tool_bar->addAction(_action_quit);
+}
+
+void
+private_message::_create_widgets() {
+    _chat_view  = new view::chat(this, _channel);
+    _users_view = new view::users(this);
+    _msg_field  = new QLineEdit(this);
+    _msg_field->setMaxLength((int)app_opts.limit_chat_msg());
+}
+
+void
+private_message::_connect_signals() {
+    connect(_msg_field,       SIGNAL(returnPressed()), this, SLOT(send_message()));
+    connect(_action_quit,     SIGNAL(triggered()),     this, SLOT(close()));
+}
+
+void
+private_message::_create_layout() {
+    QVBoxLayout *l = new QVBoxLayout;
+    // This is used in _create_toolbars
+
+    _chat_users_splitter = new QSplitter(Qt::Horizontal);
+    QSplitter *vsplitter = new QSplitter(Qt::Vertical);
+    vsplitter->addWidget(_chat_view);
+    _chat_users_splitter->addWidget(vsplitter);
+    _chat_users_splitter->addWidget(_users_view);
+
+    l->addWidget(_chat_users_splitter);
+    l->addWidget(_msg_field);
+
+    vsplitter->setStretchFactor(1, -1);
+    _chat_users_splitter->setStretchFactor(0, -1);
+
+    QWidget *centralWidget = new QWidget;
+    centralWidget->setLayout(l);
+    this->setCentralWidget(centralWidget);
+}
+
+void
+private_message::show() {
+    super::show();
+
+    QList<int> _chat_users_splitter_sizes = _chat_users_splitter->sizes();
+    _chat_users_splitter_sizes.back() = 150;
+    _chat_users_splitter->setSizes(_chat_users_splitter_sizes);
+}
+
+void
+private_message::_init() {
     model::house::user_iterator ui = house_model()->user_find(_user_id_str);
     if (ui != house_model()->user_end())
-        setTitle(ui->display_id().c_str());
+        this->setWindowTitle(ui->display_id().c_str());
 
-    int button_opts = ICON_ABOVE_TEXT|BUTTON_TOOLBAR|FRAME_RAISED;
-
-    FXVerticalFrame *c = new FXVerticalFrame(
-        this, LAYOUT_FILL_X|LAYOUT_FILL_Y,
-        0,0,0,0, 0,0,0,0, 0,0
-    );    
-    FXComposite *toolbarcontainer = new FXHorizontalFrame(
-        c, LAYOUT_SIDE_TOP|LAYOUT_FILL_X,
-        0,0,0,0, 0,0,0,0, 0,0
-    );
-    new FXToolBarTab(toolbarcontainer,NULL,0,FRAME_RAISED);
-    FXComposite *toolbar = new FXToolBar(
-        toolbarcontainer,
-        FRAME_RAISED|
-        LAYOUT_SIDE_TOP|LAYOUT_FILL_X,
-        0,0,0,0, 4,4,4,4, 0,0
-    );
-
-    new FXButton(toolbar, 
-                 util::button_text(NULL, langstr("private_message_win/close")),
-                 app_icons()->get("close"), 
-                 this, ID_CLOSE, button_opts);
-
-    // new FXVerticalSeparator(toolbar);
-
-    FXSplitter *house     = new FXSplitter(c, SPLITTER_HORIZONTAL |
-                                                 SPLITTER_REVERSED   |
-                                                 LAYOUT_FILL_X |
-                                                 LAYOUT_FILL_Y);
-    FXSplitter *sections  = new FXSplitter(house, LAYOUT_FILL_X | 
-                                                  LAYOUT_FILL_Y |
-                                                  SPLITTER_VERTICAL);
-
-    _users_view = new view::users(util::framed_container(house), NULL); // , 0, FRAME_SUNKEN|FRAME_THICK);
-
-    _chat_view = new view::chat(util::framed_container(sections));
-
-    // _chat_view->channel(_room_id);
-    // FXFrame *f = new FXFrame(this);
-    FXVerticalFrame *b = new FXVerticalFrame(
-        c, LAYOUT_FILL_X,
-        0,0,0,0,
-        0,0);
-
-    _msg_field = new FXTextField(b, 0, this, ID_SEND_MSG, 
-                                 FRAME_SUNKEN|FRAME_THICK|
-                                 LAYOUT_FILL_X|TEXTFIELD_ENTER_ONLY);
-
-    _msg_field->setFocus(); 
-    
-    house->setSplit(1, 150);
-
-    // Find a free slot for this private message window
-    _slot = _slots.reserve();
-    if (_slot.valid()) {
-        std::string win_name = "private_message" + _slot.as_str();
-        // For some reason, restore_size has to be in constructor
-        // if FXMainWindow and in create otherwise
-        util::restore_size(this, win_name.c_str());
-    }
-
-    // _users_view->setWidth(150);
     _users_view->observer_set(this);
-    
-    getAccelTable()->addAccel(MKUINT(KEY_F4,ALTMASK),this,FXSEL(SEL_COMMAND,ID_CLOSE));
-
-    _channel = util::private_message_channel_with(_user_id_str);
-    _chat_view->channel(_channel);
-    
-    ACE_DEBUG((LM_DEBUG, "private_message::ctor channel %s\n",
-              _channel.c_str()));   
-    ACE_DEBUG((LM_DEBUG, "private_message::ctor done\n"));
 }
 
 private_message::~private_message() {
-    ACE_DEBUG((LM_DEBUG, "private_message: dtor\n"));
-
-    if (_slot.valid()) {
-        std::string win_name = "private_message" + _slot.as_str();
-        // For some reason, restore_size has to be in constructor
-        // if FXMainWindow and in create if FXDialogBox.
-        util::store_size(this, win_name.c_str());
-
-        _slots.free(_slot);
-    }
-    
-    delete _users_view;
-    delete _chat_view;
-    
-    ACE_DEBUG((LM_DEBUG, "private_message: dtor done\n"));  
+    ACE_DEBUG((LM_DEBUG, "private_message::dtor\n"));
 }
 
 void
-private_message::create() {
-    super::create();
-    watched_window::create(this);
+private_message::send_message() {
+    QString t = _msg_field->text();
 
-    // show(PLACEMENT_SCREEN);
-    show();
-}
+    if (t.isEmpty()) return;
 
-long 
-private_message::on_send_message(FXObject *from, FXSelector sel, void *) {
-    FXString t = _msg_field->getText();
-
-    if (t.empty()) return 1;
-    
-    if (!_flood_control.allow_send(t)) {
+    if (!_flood_control.allow_send()) {
         _chat_view->status_message(langstr("chat/flood_control"));
-        return 0;        
+        return;
     }
-    
-    if (t.length() > (int)app_opts.limit_chat_msg()) 
-        t.trunc(app_opts.limit_chat_msg());
-    t.substitute("\r", "");
 
-    // TODO away
-    // ACE_OS::sleep(5);
+    if (t.length() > (int)app_opts.limit_chat_msg())
+        t.truncate(app_opts.limit_chat_msg());
+    // IMPROVE Qt is this needed?
+    // t.substitute("\r", "");
 
-    // Sending a private message
+    // Sending a room message
     message_channel *msg = 
       new message_channel(::message::send_private,
-                          t.text(),
+                          t.toLatin1().constData(),
                           _user_id_str,
                           _channel,
                           self_model()->sequence(),
                           0);
     net_messenger()->send_msg(msg);
-        
+
     _msg_field->setText("");
-    
-    return 1;
 }
 
 void

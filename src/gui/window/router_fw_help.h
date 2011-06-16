@@ -8,8 +8,9 @@ namespace gui {
 namespace window {
     
 class router_fw_help : public modal_dialog_guard {
-protected:
-    virtual void display();
+public:
+    router_fw_help(QWidget *parent);
+    virtual ~router_fw_help();
 };
 
 } // ns window

@@ -1,0 +1,150 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>The SCons qt4 tool</title><link rel="stylesheet" href="scons.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.75.2"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="article" title="The SCons qt4 tool"><div class="titlepage"><div><div><h2 class="title"><a name="id329263"></a>The SCons qt4 tool</h2></div><div><div class="author"><h3 class="author"><span class="surname">Dirk Baechle</span></h3></div></div><div><p class="pubdate">2010-11-18</p></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="#basics">1. Basics</a></span></dt><dt><span class="section"><a href="#suggested_boilerplate">2. Suggested boilerplate</a></span></dt><dt><span class="section"><a href="#a_first_project">3. A first project</a></span></dt><dt><span class="section"><a href="#moc_it_up">4. MOC it up</a></span></dt><dt><span class="section"><a href="#forms_(.ui)">5. Forms (.ui)</a></span></dt><dt><span class="section"><a href="#resource_files_(.qrc)">6. Resource files (.qrc)</a></span></dt><dt><span class="section"><a href="#translation_files">7. Translation files</a></span></dt></dl></div><div class="section" title="1. Basics"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="basics"></a>1. Basics</h2></div></div></div><p>This tool can be used to compile Qt projects, designed for versions
+    4.x.y and higher. It is not usable for Qt3 and older versions, since some
+    of the helper tools (<code class="literal">moc</code>, <code class="literal">uic</code>)
+    behave different.</p><p>For activating the tool "qt4", you have to add its name to the
+    Environment constructor, like this</p><pre class="screen">env = Environment(tools=['default','qt4'])
+</pre><p>On its startup, the Qt4 tool tries to read the variable
+    <code class="literal">QT4DIR</code> from the current Environment and
+    <code class="literal">os.environ</code>. If it is not set, the value of
+    <code class="literal">QTDIR</code> (in Environment/<code class="literal">os.environ</code>) is
+    used as a fallback.</p><p>So, you either have to explicitly give the path of your Qt4
+    installation to the Environment with</p><pre class="screen">env['QT4DIR'] = '/usr/local/Trolltech/Qt-4.2.3'
+</pre><p>or set the <code class="literal">QT4DIR</code> as environment variable in your
+    shell.</p><p>Under Linux, "qt4" uses the system tool
+    <code class="literal">pkg-config</code> for automatically setting the required
+    compile and link flags of the single Qt4 modules (like QtCore, QtGui,...).
+    This means that</p><div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem"><p>you should have <code class="literal">pkg-config</code> installed,
+        and</p></li><li class="listitem"><p>you additionally have to set <code class="literal">PKG_CONFIG_PATH</code>
+        in your shell environment, such that it points to
+        $<code class="literal">QT4DIR/lib/pkgconfig</code> (or
+        $<code class="literal">QT4DIR/lib</code> for some older versions).</p></li></ol></div><p>Based on these two environment variables (<code class="literal">QT4DIR</code>
+    and <code class="literal">PKG_CONFIG_PATH</code>), the "qt4" tool initializes all
+    <code class="literal">QT4_*</code> construction variables listed in the Reference
+    manual. This happens when the tool is "detected" during Environment
+    construction. As a consequence, the setup of the tool gets a two-stage
+    process, if you want to override the values provided by your current shell
+    settings:</p><pre class="screen"># Stage 1: create plain environment
+qtEnv = Environment()
+# Set new vars
+qtEnv['QT4DIR'] = '/usr/local/Trolltech/Qt-4.2.3
+qtEnv['ENV']['PKG_CONFIG_PATH'] = '/usr/local/Trolltech/Qt-4.2.3/lib/pkgconfig'
+# Stage 2: add qt4 tool
+qtEnv.Tool('qt4')
+</pre></div><div class="section" title="2. Suggested boilerplate"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="suggested_boilerplate"></a>2. Suggested boilerplate</h2></div></div></div><p>Based on the requirements above, we suggest a simple ready-to-go
+    setup as follows:</p><p>SConstruct</p><pre class="screen"># Detect Qt version
+qtdir = detectLatestQtDir()
+
+# Create base environment
+baseEnv = Environment()
+#...further customization of base env
+
+# Clone Qt environment
+qtEnv = baseEnv.Clone()
+# Set QT4DIR and PKG_CONFIG_PATH
+qtEnv['ENV']['PKG_CONFIG_PATH'] = os.path.join(qtdir, 'lib/pkgconfig')
+qtEnv['QT4DIR'] = qtdir
+# Add qt4 tool
+qtEnv.Tool('qt4')
+#...further customization of qt env
+
+# Export environments
+Export('baseEnv qtEnv')
+
+# Your other stuff...
+# ...including the call to your SConscripts
+</pre><p>In a SConscript</p><pre class="screen"># Get the Qt4 environment
+Import('qtEnv')
+# Clone it
+env = qtEnv.clone()
+# Patch it
+env.Append(CCFLAGS=['-m32']) # or whatever
+# Use it
+env.StaticLibrary('foo', Glob('*.cpp'))
+</pre><p>The detection of the Qt directory could be as simple as directly
+    assigning a fixed path</p><pre class="screen">def detectLatestQtDir():
+    return "/usr/local/qt4.3.2"
+</pre><p>or a little more sophisticated</p><pre class="screen"># Tries to detect the path to the installation of Qt with
+# the highest version number
+def detectLatestQtDir():
+    if sys.platform.startswith("linux"):
+        # Simple check: inspect only '/usr/local/Trolltech'
+        paths = glob.glob('/usr/local/Trolltech/*')
+        if len(paths):
+            paths.sort()
+            return paths[-1]
+        else:
+            return ""
+    else:
+        # Simple check: inspect only 'C:\Qt'
+        paths = glob.glob('C:\\Qt\\*')
+        if len(paths):
+            paths.sort()
+            return paths[-1]
+        else:
+            return os.environ.get("QTDIR","")
+</pre></div><div class="section" title="3. A first project"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="a_first_project"></a>3. A first project</h2></div></div></div><p>The following SConscript is for a simple project with some cxx
+    files, using the QtCore, QtGui and QtNetwork modules:</p><pre class="screen">Import('qtEnv')
+env = qtEnv.Clone()
+env.EnableQt4Modules([
+                      'QtGui',
+                      'QtCore',
+                      'QtNetwork'
+                     ])
+# Add your CCFLAGS and CPPPATHs to env here...
+
+env.Program('foo', Glob('*.cpp')) 
+</pre></div><div class="section" title="4. MOC it up"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="moc_it_up"></a>4. MOC it up</h2></div></div></div><p>For the basic support of automocing, nothing needs to be done by the
+    user. The tool usually detects the <code class="literal">Q_OBJECT</code> macro and
+    calls the <span class="quote">&#8220;<span class="quote"><code class="literal">moc</code></span>&#8221;</span> executable
+    accordingly.</p><p>If you don't want this, you can switch off the automocing by
+    a</p><pre class="screen">env['QT4_AUTOSCAN'] = 0
+</pre><p>in your SConscript file. Then, you have to moc your files
+    explicitly, using the Moc4 builder.</p><p>You can also switch to an extended automoc strategy with</p><pre class="screen">env['QT4_AUTOSCAN_STRATEGY'] = 1
+</pre><p>Please read the description of the
+    <code class="literal">QT4_AUTOSCAN_STRATEGY</code> variable in the Reference manual
+    for details.</p><p>For debugging purposes, you can set the variable
+    <code class="literal">QT4_DEBUG</code> with</p><pre class="screen">env['QT4_DEBUG'] = 1
+</pre><p>which outputs a lot of messages during automocing.</p></div><div class="section" title="5. Forms (.ui)"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="forms_(.ui)"></a>5. Forms (.ui)</h2></div></div></div><p>The header files with setup code for your GUI classes, are not
+    compiled automatically from your <code class="literal">.ui</code> files. You always
+    have to call the Uic4 builder explicitly like</p><pre class="screen">env.Uic4(Glob('*.ui'))
+env.Program('foo', Glob('*.cpp'))
+</pre></div><div class="section" title="6. Resource files (.qrc)"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="resource_files_(.qrc)"></a>6. Resource files (.qrc)</h2></div></div></div><p>Resource files are not built automatically, you always have to add
+    the names of the <code class="literal">.qrc</code> files to the source list for your
+    program or library:</p><pre class="screen">env.Program('foo', Glob('*.cpp')+Glob('*.qrc'))
+</pre><p>For each of the Resource input files, its prefix defines the name of
+    the resulting resource. An appropriate
+    <span class="quote">&#8220;<span class="quote"><code class="literal">-name</code></span>&#8221;</span> option is added to the call of the
+    <code class="literal">rcc</code> executable by default.</p><p>You can also call the Qrc4 builder explicitly as</p><pre class="screen">qrccc = env.Qrc4('foo') # ['foo.qrc'] -&gt; ['qrc_foo.cc']
+</pre><p>or (overriding the default suffix)</p><pre class="screen">qrccc = env.Qrc4('myprefix_foo.cxx','foo.qrc') # -&gt; ['qrc_myprefix_foo.cxx']
+</pre><p>and then add the resulting cxx file to the sources of your
+    Program/Library:</p><pre class="screen">env.Program('foo', Glob('*.cpp') + qrccc)
+</pre></div><div class="section" title="7. Translation files"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="translation_files"></a>7. Translation files</h2></div></div></div><p>The update of the <code class="literal">.ts</code> files and the conversion to
+    binary <code class="literal">.qm</code> files is not done automatically. You have to
+    call the corresponding builders on your own.</p><p>Example for updating a translation file:</p><pre class="screen">env.Ts4('foo.ts','.') # -&gt; ['foo.ts']
+</pre><p>By default, the <code class="literal">.ts</code> files are treated as
+    <span class="emphasis"><em>precious</em></span> targets. This means that they are not
+    removed prior to a rebuild, but simply get updated. Additionally, they do
+    not get cleaned on a <span class="quote">&#8220;<span class="quote"><code class="literal">scons -c</code></span>&#8221;</span>. If you
+    want to delete the translation files on the
+    <span class="quote">&#8220;<span class="quote"><code class="literal">-c</code></span>&#8221;</span> SCons command, you can set the
+    variable <span class="quote">&#8220;<span class="quote"><code class="literal">QT4_CLEAN_TS</code></span>&#8221;</span> like this</p><pre class="screen">env['QT4_CLEAN_TS']=1
+</pre><p>Example for releasing a translation file, i.e. compiling it to a
+    <code class="literal">.qm</code> binary file:</p><pre class="screen">env.Qm4('foo') # ['foo.ts'] -&gt; ['foo.qm']
+</pre><p>or (overriding the output prefix)</p><pre class="screen">env.Qm4('myprefix','foo') # ['foo.ts'] -&gt; ['myprefix.qm']
+</pre><p>As an extension both, the Ts4() and Qm4 builder, support the
+    definition of multiple targets. So, calling</p><pre class="screen">env.Ts4(['app_en','app_de'], Glob('*.cpp'))
+</pre><p>and</p><pre class="screen">env.Qm4(['app','copy'], Glob('*.ts'))
+</pre><p>should work fine.</p><p>Finally, two short notes about the support of directories for the
+    Ts4() builder. You can pass an arbitrary mix of cxx files and subdirs to
+    it, as in</p><pre class="screen">env.Ts4('app_en',['sub1','appwindow.cpp','main.cpp']))
+</pre><p>where <code class="literal">sub1</code> is a folder that gets scanned
+    recursively for cxx files by <code class="literal">lupdate</code>. But like this,
+    you lose all dependency information for the subdir, i.e. if a file inside
+    the folder changes, the .ts file is not updated automatically! In this
+    case you should tell SCons to always update the target:</p><pre class="screen">ts = env.Ts4('app_en',['sub1','appwindow.cpp','main.cpp'])
+env.AlwaysBuild(ts)
+</pre><p>Last note: specifying the current folder
+    <span class="quote">&#8220;<span class="quote"><code class="literal">.</code></span>&#8221;</span> as input to Ts4() and storing the
+    resulting .ts file in the same directory, leads to a dependency cycle! You
+    then have to store the .ts and .qm files outside of the current folder, or
+    use <code class="literal">Glob('*.cpp'))</code> instead.</p></div></div></body></html>

@@ -5,6 +5,8 @@
 #include <sys/stat.h>
 #include <stdio.h>
 
+#include <QDir>
+
 #include "common.h"
 #include "os_util.h"
 #include "util.h"
@@ -13,14 +15,15 @@ std::string
 app_rel_path(const char *path) {
     std::string apprel = path;
     // First must change path separation character to the one OS uses
-    if (PATHSEP != '/') {
+    // IMPROVE Qt: this might not be needed with Qt, just using "/" may be enough.
+    if (QDir::separator().toLatin1() != '/') {
         std::transform(apprel.begin(), apprel.end(),
-                       apprel.begin(), element_replace<char>('/', PATHSEP));
+                       apprel.begin(), element_replace<char>('/', QDir::separator().toLatin1()));
                        
         ACE_DEBUG((LM_DEBUG, "Transformed path %s -> %s\n", path, apprel.c_str()));
     }
     
-    apprel.insert(0, 1, PATHSEP);
+    apprel.insert(0, 1, QDir::separator().toLatin1());
     apprel.insert(0, os::app_dir());
 
     ACE_DEBUG((LM_DEBUG, "Returning app_rel_path %s\n", apprel.c_str()));

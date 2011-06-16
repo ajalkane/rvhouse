@@ -3,15 +3,13 @@
 #include <utility>
 #include <climits>
 
-#include <fx.h>
-#include <fxkeys.h>
+#include <QtGui>
 
 #include "../../messaging/message_user.h"
 #include "../../messaging/message_room.h"
 #include "../../messaging/message_channel.h"
 #include "../../messaging/message_send_room.h"
 #include "../../messaging/message_room_command.h"
-#include "../../util.h"
 #include "../../os_util.h"
 #include "../../config_file.h"
 #include "../../model/house.h"
@@ -21,54 +19,124 @@
 #include "../../rv_cmdline_builder.h"
 #include "../../win_registry.h"
 #include "../house_app.h"
-#include "../util/util.h"
 #include "room_settings.h"
 #include "room.h"
+#include "house.h"
 
 namespace gui {
 namespace window {
 
-FXDEFMAP(room) room_map[]= {
-  FXMAPFUNC(SEL_COMMAND,  room::ID_SEND_MSG,
-                          room::on_send_message),
-  FXMAPFUNC(SEL_COMMAND,  room::ID_EDIT_ROOM,
-                          room::on_edit_room),
-  FXMAPFUNC(SEL_COMMAND,  room::ID_SHARE_TRACKS,
-                          room::on_share_tracks),
-  FXMAPFUNC(SEL_COMMAND,  room::ID_LAUNCH,
-                          room::on_launch),
-  FXMAPFUNC(SEL_TIMEOUT,  room::ID_LAUNCH,
-                          room::on_launch),
-};
-
-// FXIMPLEMENT(room, FXMainWindow, room_map, ARRAYNUMBER(room_map))
-FXIMPLEMENT(room, room::super, room_map, ARRAYNUMBER(room_map))
-
-#define STRING_JOIN(target, sep, src) \
-target = (target.empty() ? src : (src.empty() ? target : target + sep + src))
-
-// FXIMPLEMENT(room, FXMainWindow, NULL, 0)
-
-room::room(FXApp *a, const chat_gaming::room::id_type &id)
-    : super(a, "", NULL, NULL, DECOR_ALL, 0, 0, 350, 300, 0,0,0,0,0,0),
+room::room(const chat_gaming::room::id_type &id, QWidget *parent) :
+        // WindowFlagst Qt::Dialog to make the room window stay on top of the parent (main window)
+      size_restoring_window<QMainWindow>("room_win", parent, Qt::Dialog),
       _running_modal(false), _room_id(id)
-    // : FXMainWindow(a, "", NULL, NULL, DECOR_ALL, 0, 0, 350, 300),
 {
-    _init();
-}
+    ACE_DEBUG((LM_DEBUG, "room::ctor, parent %d\n", parent));
+    this->setWindowIcon(app_icons()->get("rv_house"));
+    this->setContextMenuPolicy(Qt::NoContextMenu);
 
-room::room(FXWindow *owner, const chat_gaming::room::id_type &id)
-    : super(owner, "",  NULL, NULL, DECOR_ALL, 0, 0, 350, 300, 0,0,0,0,0,0),
-      _running_modal(false), _room_id(id)
-    // : FXMainWindow(a, "", NULL, NULL, DECOR_ALL, 0, 0, 350, 300),
-{
+    _create_actions();
+    _create_widgets();
+    _create_toolbars();
+    _create_layout();
+
+    _connect_signals();
+
     _init();
 }
 
 void
-room::_init() {
-    ACE_DEBUG((LM_DEBUG, "room::ctor %d\n", (FXWindow *)this));
+room::_create_actions() {
+    _action_quit     = new QAction(app_icons()->get("close"),    langstr("room_win/leave"),    this);
+    _action_settings = new QAction(app_icons()->get("settings"), langstr("room_win/settings"), this);
+    _action_launch   = new QAction(app_icons()->get("launch"),   langstr("room_win/launch"),   this);
 
+}
+
+void
+room::_create_toolbars() {
+    QToolBar *tool_bar = addToolBar("room_controls");
+    tool_bar->setObjectName("room_toolbar_controls");
+    tool_bar->addAction(_action_quit);
+    tool_bar->addAction(_action_settings);
+    tool_bar->addAction(_action_launch);
+
+    tool_bar = addToolBar("room_infos");
+    tool_bar->setObjectName("room_toolbar_infos");
+    _info_container = new QWidget(tool_bar);
+
+    tool_bar->addWidget(_info_container);
+}
+
+void
+room::_create_widgets() {
+    _chat_view  = new view::chat(this, _room_id);
+    _users_view = new view::users(this, _room_id);
+    _msg_field  = new QLineEdit(this);
+    _msg_field->setMaxLength((int)app_opts.limit_chat_msg());
+
+    _info_players = new QLabel(langstr("words/players"), this);
+    _info_laps    = new QLabel(langstr("words/laps"),    this);
+    _info_picks   = new QLabel(langstr("words/pickups"), this);
+
+}
+
+void
+room::_connect_signals() {
+    connect(_msg_field,       SIGNAL(returnPressed()), this, SLOT(send_message()));
+    connect(_action_quit,     SIGNAL(triggered()),     this, SLOT(close()));
+    connect(_action_settings, SIGNAL(triggered()),     this, SLOT(edit_room()));
+    connect(_action_launch,   SIGNAL(triggered()),     this, SLOT(launch_rv()));
+    connect(_users_view,      SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), house_win(), SLOT(open_private_room(QTreeWidgetItem *, int)));
+}
+
+void
+room::_create_layout() {
+    QVBoxLayout *l = new QVBoxLayout;
+    QGridLayout *info_layout = new QGridLayout;
+
+    // This is used in _create_toolbars
+
+    _chat_users_splitter = new QSplitter(Qt::Horizontal);
+    QSplitter *vsplitter = new QSplitter(Qt::Vertical);
+    vsplitter->addWidget(_chat_view);
+    _chat_users_splitter->addWidget(vsplitter);
+    _chat_users_splitter->addWidget(_users_view);
+
+    l->addWidget(_chat_users_splitter);
+    l->addWidget(_msg_field);
+
+    vsplitter->setStretchFactor(1, -1);
+    _chat_users_splitter->setStretchFactor(0, -1);
+
+    _users_view->observer_set(this);
+
+    QWidget *centralWidget = new QWidget;
+    centralWidget->setLayout(l);
+    this->setCentralWidget(centralWidget);
+
+    info_layout->setHorizontalSpacing(15);
+    info_layout->setVerticalSpacing(0);
+    info_layout->addWidget(new QLabel(langstr("words/players")), 0, 0);
+    info_layout->addWidget(new QLabel(langstr("words/laps")),    1, 0);
+    info_layout->addWidget(new QLabel(langstr("words/pickups")), 0, 2);
+    info_layout->addWidget(_info_players, 0, 1);
+    info_layout->addWidget(_info_laps,    1, 1);
+    info_layout->addWidget(_info_picks,   0, 3);
+    _info_container->setLayout(info_layout);
+}
+
+void
+room::show() {
+    super::show();
+
+    QList<int> _chat_users_splitter_sizes = _chat_users_splitter->sizes();
+    _chat_users_splitter_sizes.back() = 150;
+    _chat_users_splitter->setSizes(_chat_users_splitter_sizes);
+}
+
+void
+room::_init() {
     _hosting = (_room_id == self_model()->hosting_room().id());
     _host_sharing = false;
 
@@ -89,169 +157,42 @@ room::_init() {
                    " room id %s\n", _room_id.c_str()));
     }
 
-    // new FXToolTip(getApp());
+    _buttons_state();
 
-    setIcon(app_icons()->get("rv_house"));
-    setMiniIcon(app_icons()->get("rv_house"));
+    if (_hosting &&
+        pref()->get("general/send_ip", true) &&
+        pref()->get("one_time_alert/send_ip", true))
+    {
+        pref()->set("one_time_alert/send_ip", false);
+        const char *topic   = langstr("room_win/send_ip_info_title");
+        const char *content = langstr("room_win/send_ip_info");
 
-    int button_opts = ICON_ABOVE_TEXT|BUTTON_TOOLBAR|FRAME_RAISED;
+        variable_guard<bool> guard(_running_modal); _running_modal = true;
 
-    // FXVerticalFrame *c = new FXVerticalFrame(this, LAYOUT_FILL_X|LAYOUT_FILL_Y);
-
-   //  toolbar  = new FXHorizontalFrame(c);
-
-    FXVerticalFrame *c = new FXVerticalFrame(
-        this, LAYOUT_FILL_X|LAYOUT_FILL_Y,
-        0,0,0,0, 0,0,0,0, 0,0
-    );
-    FXComposite *toolbarcontainer = new FXHorizontalFrame(
-        c, LAYOUT_SIDE_TOP|LAYOUT_FILL_X,
-        0,0,0,0, 0,0,0,0, 0,0
-    );
-    new FXToolBarTab(toolbarcontainer,NULL,0,FRAME_RAISED);
-    FXComposite *toolbar = new FXToolBar(
-        toolbarcontainer,
-        FRAME_RAISED|
-        LAYOUT_SIDE_TOP|LAYOUT_FILL_X,
-        0,0,0,0, 4,4,4,4, 0,0
-    );
-
-    new FXButton(toolbar,
-                 util::button_text(NULL, langstr("room_win/leave")),
-                 app_icons()->get("close"),
-                 this, ID_CLOSE, button_opts);
-
-    _edit_button =
-      new FXButton(toolbar,
-                   util::button_text(NULL, langstr("room_win/settings")),
-                   app_icons()->get("settings"), this, ID_EDIT_ROOM,
-                   button_opts);
-    _launch_button =
-      new FXButton(toolbar,
-                   util::button_text(NULL, langstr("room_win/launch")),
-                   app_icons()->get("launch"), this, ID_LAUNCH,
-                   button_opts);
-
-    new FXVerticalSeparator(toolbar);
-
-    std::string share_btn_text("\t");
-    share_btn_text += (_hosting
-                       ? langstr("room_win/share_tracks")
-                       : langstr("room_win/dload_tracks"));
-    _share_button  = new FXButton(toolbar, share_btn_text.c_str(),
-                     app_icons()->get("tracks_share"), this, ID_SHARE_TRACKS,
-                     button_opts);
-    // NOTE: the external track sharing application (RVTM) does not seem to work,
-    // and don't seem to be fixed. So for now hide the track sharing to not confuse
-    _share_button->hide();
-
-    new FXVerticalSeparator(toolbar);
-
-    FXComposite *infoframe =
-     new FXMatrix(
-        toolbar, 2, MATRIX_BY_COLUMNS,
-        0,0,0,0,
-        DEFAULT_SPACING,
-        DEFAULT_SPACING,
-        0,0,15,0
-        );
-    new FXLabel(infoframe, langstr("words/players"),NULL,LABEL_NORMAL,0,0,0,0,0,0,0,0);
-    _info_players =
-    new FXLabel(infoframe, "",NULL,LABEL_NORMAL,0,0,0,0,0,0,0,0);
-    new FXLabel(infoframe, langstr("words/laps"),NULL,LABEL_NORMAL,0,0,0,0,0,0,0,0);
-    _info_laps    =
-    new FXLabel(infoframe, "",NULL,LABEL_NORMAL,0,0,0,0,0,0,0,0);
-    new FXLabel(infoframe, langstr("words/pickups"),NULL,LABEL_NORMAL,0,0,0,0,0,0,0,0);
-    _info_picks   =
-    new FXLabel(infoframe, "",NULL,LABEL_NORMAL,0,0,0,0,0,0,0,0);
-
-    // If not host, disable Edit and Launch buttons
-    if (!_hosting) {
-        _edit_button->disable();
-        _launch_button->disable();
-        _share_button->disable();
+        QMessageBox msg_box(this);
+        msg_box.setWindowTitle(topic);
+        msg_box.setText(content);
+        msg_box.setIcon(QMessageBox::Critical);
+        msg_box.exec();
     }
-    FXSplitter *house     = new FXSplitter(c, SPLITTER_HORIZONTAL |
-                                                 SPLITTER_REVERSED   |
-                                                 LAYOUT_FILL_X |
-                                                 LAYOUT_FILL_Y);
-    FXSplitter *sections  = new FXSplitter(house, LAYOUT_FILL_X |
-                                                  LAYOUT_FILL_Y |
-                                                  SPLITTER_VERTICAL);
-    _users_view = new view::users(util::framed_container(house), NULL); // , 0, FRAME_SUNKEN|FRAME_THICK);
-    _users_view->room_id(_room_id);
 
-    // new FXFrame(_users_view);
-    // new FXLabel(house, "Users View", NULL, FRAME_SUNKEN|FRAME_THICK);
-    // _rooms_view = new rooms_view(sections);
-    // new FXLabel(sections, "Rooms View", NULL, FRAME_SUNKEN|FRAME_THICK);
-    _chat_view = new view::chat(util::framed_container(sections));
-    _chat_view->channel(_room_id);
+    if (!_hosting) {
+        // If not host, disable Edit and Launch buttons
+        _action_settings->setDisabled(true);
+        _action_launch->setDisabled(true);
 
-    // new FXLabel(sections, "Chat Window View", NULL, FRAME_SUNKEN|FRAME_THICK);
-    FXVerticalFrame *b = new FXVerticalFrame(
-        c, LAYOUT_FILL_X,
-        0,0,0,0,
-        0,0);
+    }
 
-    _msg_field = new FXTextField(b, 0,  this, ID_SEND_MSG,
-                                 FRAME_SUNKEN|FRAME_THICK|
-                                 LAYOUT_FILL_X|TEXTFIELD_ENTER_ONLY);
-    _msg_field->setFocus();
-    // _status->getStatusLine()->setNormalText("Waiting...");
-
-    // For some reason, restore_size has to be in constructor
-    // if FXMainWindow and in create if FXDialogBox.
-    util::restore_size(this, "room_win");
-
-    house->setSplit(1, 150);
-
-    _users_view->setWidth(150);
-    _users_view->observer_set(this);
-
-    getAccelTable()->addAccel(MKUINT(KEY_F4,ALTMASK),this,FXSEL(SEL_COMMAND,ID_CLOSE));
 }
 
 room::~room() {
     ACE_DEBUG((LM_DEBUG, "room::dtor\n"));
 
-    util::store_size(this, "room_win");
-
     // Set ourself to be in no room anymore, and off we go
     self_model()->user().room_id(chat_gaming::room::id_type());
     self_model()->hosting_room().id(chat_gaming::room::id_type());
     self_model()->user_send();
-    getApp()->removeTimeout(this, ID_LAUNCH);
-
-    delete _users_view;
-    delete _chat_view;
-
     ACE_DEBUG((LM_DEBUG, "room: dtor done\n"));
-}
-
-void
-room::create() {
-    super::create();
-    watched_window::create(this);
-    // show(PLACEMENT_SCREEN);
-    show();
-
-    // util::restore_size(this, "room", "win");
-
-    _buttons_state();
-
-    if (_hosting &&
-        pref()->get("general", "send_ip", true) &&
-        pref()->get("one_time_alert", "send_ip", true))
-    {
-        pref()->set("one_time_alert", "send_ip", false);
-        const char *topic   = langstr("room_win/send_ip_info_title");
-        const char *content = langstr("room_win/send_ip_info");
-
-        variable_guard<bool> guard(_running_modal); _running_modal = true;
-        FXMessageBox::information(this, FX::MBOX_OK, topic, content);
-    }
-
 }
 
 void
@@ -266,7 +207,7 @@ room::update(int grp) {
     }
     ACE_DEBUG((LM_DEBUG, "room: setting title to %s\n",
                r->topic().c_str()));
-    setTitle(r->topic().c_str());
+    this->setWindowTitle(r->topic().c_str());
 
     _info_picks->setText(
         r->pickups()
@@ -281,25 +222,26 @@ room::update(int grp) {
     _info_laps   ->setText(conv_laps.str().c_str());
 }
 
-long
-room::on_send_message(FXObject *from, FXSelector sel, void *) {
-    FXString t = _msg_field->getText();
+void
+room::send_message() {
+    QString t = _msg_field->text();
 
-    if (t.empty()) return 1;
+    if (t.isEmpty()) return;
 
-    if (!_flood_control.allow_send(t)) {
+    if (!_flood_control.allow_send()) {
         _chat_view->status_message(langstr("chat/flood_control"));
-        return 0;
+        return;
     }
 
     if (t.length() > (int)app_opts.limit_chat_msg())
-        t.trunc(app_opts.limit_chat_msg());
-    t.substitute("\r", "");
+        t.truncate(app_opts.limit_chat_msg());
+    // IMPROVE Qt is this needed?
+    // t.substitute("\r", "");
 
     // Sending a room message
     message_send_room *msg =
       new message_send_room(::message::send_room,
-                            t.text(),
+                            t.toLatin1().constData(),
                             self_model()->user().id(),
                             _room_id,
                             self_model()->sequence(),
@@ -308,26 +250,19 @@ room::on_send_message(FXObject *from, FXSelector sel, void *) {
     net_messenger()->send_msg(msg);
 
     _msg_field->setText("");
-
-    return 1;
 }
 
-long
-room::on_edit_room(FXObject *from, FXSelector sel, void *) {
+void
+room::edit_room() {
+    ACE_DEBUG((LM_DEBUG, "room::edut:room()\n"));
     if (_room_id == self_model()->hosting_room().id()) {
-        window::room_settings *win = new window::room_settings(this);
-        if (!win->execute(PLACEMENT_SCREEN)) {
-            ACE_DEBUG((LM_DEBUG, "room::Room create cancelled\n"));
-            return 1;
-            // handle(this, FXSEL(SEL_COMMAND, ID_QUIT), NULL);
-        }
+        room_settings *win = new room_settings(this);
+        win->exec();
     }
-
-    return 0;
 }
 
-long
-room::on_launch(FXObject *from, FXSelector sel, void *) {
+void
+room::launch_rv() {
     rv_cmdline_builder cmdline_builder;
     _set_room_cmdline(cmdline_builder);
     cmdline_builder.set_rv_cmdline();
@@ -340,7 +275,7 @@ room::on_launch(FXObject *from, FXSelector sel, void *) {
         if (playing_host != house_model()->user_end()) {
             // Check how long the host has been playing and don't
             // allow join if too long played
-            int rejoin_time = conf()->get<int>("play", "rejoin_time", INT_MAX);
+            int rejoin_time = conf()->get<int>("play/rejoin_time", INT_MAX);
             ACE_DEBUG((LM_DEBUG, "room::on_launch "
                       "rejoin_time/time/statustime/dif: %d/%d/%d/%d\n",
                       rejoin_time, time(NULL), playing_host->status_time(),
@@ -358,16 +293,12 @@ room::on_launch(FXObject *from, FXSelector sel, void *) {
                 ACE_DEBUG((LM_DEBUG, "room::on_launch "
                           "raw: %s\n", langstr("room_win/join_too_late")));
 
-                FXMessageBox::information(
-                    this, FX::MBOX_OK, topic, content.c_str()
-                );
+                QMessageBox::information(this, topic, content.c_str());
             } else {
                 _launch_join(playing_host);
             }
         }
     }
-
-    return 1;
 }
 
 void
@@ -381,21 +312,6 @@ room::_set_room_cmdline(rv_cmdline_builder &builder) {
             builder.add_option(rv_cmdline_builder::rv12_version_12_only);
         }
     }
-}
-
-long
-room::on_share_tracks(FXObject *from, FXSelector sel, void *) {
-    if (_hosting) {
-        ::app()->launch_rvtm();
-    } else {
-        model::house::user_iterator host_ui = house_model()->user_find(_host_id);
-
-        if (host_ui != house_model()->user_end()) {
-            ::app()->launch_rvtm(host_ui->ip_as_string());
-        }
-    }
-
-    return 1;
 }
 
 void
@@ -412,12 +328,12 @@ room::_launcher_error(int err) {
     }
 
     variable_guard<bool> guard(_running_modal); _running_modal = true;
-    FXMessageBox::error(this, FX::MBOX_OK, topic, content);
+    QMessageBox::warning(this, topic, content);
 }
 
 void
 room::handle_message(::message *msg) {
-    ACE_DEBUG((LM_DEBUG, "room::handle_message\n"));
+    ACE_DEBUG((LM_DEBUG, "room::handle_message %d\n", msg->id()));
 
     _users_view->handle_message(msg);
     _chat_view->handle_message(msg);
@@ -488,7 +404,7 @@ room::handle_message(::message *msg) {
             if (m->channel() == _chat_view->channel()) {
                 ACE_DEBUG((LM_DEBUG,
                     "window::room: msg_send flashing\n"));
-                os::flash_window(this->getOwner());
+                os::flash_window(this->parentWidget());
             }
         }
         break;
@@ -500,6 +416,7 @@ room::handle_message(::message *msg) {
         // Refuse closing of window if a modal window is running
         // on this window! Doing that would make the application
         // confused.
+        // IMPROVE Qt is this anymore a problem with Qt?
         if (!_running_modal) {
             this->close();
         }
@@ -537,7 +454,8 @@ room::_handle_room_launch(::message *msg) {
     }
 
     _chat_view->status_message(langstr("room_win/host_launched"));
-    getApp()->addTimeout(this, ID_LAUNCH, 5000, NULL);
+
+    QTimer::singleShot(5000, this, SLOT(launch_rv()));
 }
 
 void
@@ -576,15 +494,14 @@ room::_handle_room_kick(::message *msg) {
         _chat_view->status_message(
             langstr("chat/host_kicks_user", ui_kicked->display_id().c_str())
         );
-        // content = "Kicking someone else";
     } else {
         ::app()->status_message(langstr("chat/host_kicks_you", ri->topic().c_str()));
-        // content = "Kicking me!";
     }
 
     if (ui_kicked->id().id_str() == self_model()->user().id().id_str()) {
         // Close room if been kicked out... TODO, as can be seen
         // this can't be done when running modal...
+        // IMPROVE Qt is this anymore a problem with Qt
         if (!_running_modal) {
             this->close();
         }
@@ -593,7 +510,7 @@ room::_handle_room_kick(::message *msg) {
 
 void
 room::_launch_host() {
-    if (conf()->get<bool>("play", "no_launch", false) == false) {
+    if (conf()->get<bool>("play/no_launch", false) == false) {
         int ret = launcher_game()->start_host();
         if (ret) {
             _launcher_error(ret);
@@ -617,7 +534,7 @@ room::_launch_host() {
 
 void
 room::_launch_join(chat_gaming::house::user_iterator host_ui) {
-    if (conf()->get<bool>("play", "no_launch", false) == false) {
+    if (conf()->get<bool>("play/no_launch", false) == false) {
         int ret = launcher_game()->start_client(host_ui->ip_as_string());
         if (ret) {
             _launcher_error(ret);
@@ -636,7 +553,7 @@ room::_launched_display() {
     const char *content = langstr("rv_launch/text");
 
     variable_guard<bool> guard(_running_modal); _running_modal = true;
-    FXMessageBox::information(this, FX::MBOX_OK, topic, content);
+    QMessageBox::information(this, topic, content);
 
     self_model()->user().status(chat_gaming::user::status_chatting);
     self_model()->user_send();
@@ -658,10 +575,10 @@ room::_buttons_state() {
 
     if (playing_host != house_model()->user_end()) {
         ACE_DEBUG((LM_DEBUG, "room::_buttons_state: showing launch button\n"));
-        _launch_button->enable();
+        _action_launch->setEnabled(true);
     } else {
-        ACE_DEBUG((LM_DEBUG, "room::_buttons_state: hiding launch button\n"));
-        _launch_button->disable();
+        ACE_DEBUG((LM_DEBUG, "room::_buttons_state: disabling launch button\n"));
+        _action_launch->setEnabled(false);
     }
 }
 
@@ -712,7 +629,7 @@ room::user_added(const chat_gaming::user &u) {
                u.id().id_str().c_str(), self_model()->user().id().id_str().c_str()));
 
     if (_hosting
-        && pref()->get("general", "send_ip", true)
+        && pref()->get("general/send_ip", true)
         && u.id().id_str() != self_model()->user().id().id_str()) {
         // Send our IP to the new joiner. The channel used
         // is this particular room, which will cause the
@@ -791,10 +708,13 @@ void
 room::_button_sharing_tracks_enable(bool enable_if_possible) {
     if (enable_if_possible &&
         !self_model()->user().sharing_tracks() &&
-        !self_model()->user().getting_tracks())
-        _share_button->enable();
-    else
-        _share_button->disable();
+        !self_model()->user().getting_tracks()) {
+        // Sharing tracks has been deprecated for now. Requires work for Qt if enabled again.
+        // _share_button->enable();
+    } else {
+       // Sharing tracks has been deprecated for now. Requires work for Qt if enabled again.
+       // _share_button->disable();
+   }
 }
 
 } // ns window

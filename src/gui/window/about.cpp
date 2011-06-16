@@ -1,14 +1,10 @@
-#include <utility>
-#include <algorithm>
 #include <string>
 #include <list>
-#include <sstream>
 
-#include <fx.h>
-#include <fxkeys.h>
-#include "../component/FXLinkLabel.h"
+#include <QtGui>
 
 #include "../../app_version.h"
+#include "../../icon_store.h"
 #include "../../lang/manager.h"
 #include "../../lang/info.h"
 #include "../../lang/util.h"
@@ -17,47 +13,53 @@
 namespace gui {
 namespace window {
 
-using component::FXLinkLabel;
 
-FXIMPLEMENT(about, FXDialogBox, NULL, 0);
-
-about::about(FXWindow *owner)
-    : FXDialogBox(owner, langstr("about_win/title"))
+about::about(QWidget *parent)
+    : QDialog(parent)
 {
-    std::ostringstream str;
-    using std::endl;
+    this->setWindowTitle(langstr("about_win/title"));
+    this->setWindowIcon(app_icons()->get("about"));
 
-    str << APP_NAME << " " << APP_VERSION << endl
-        << endl
-        << "Copyright (C) 2006-2011 Arto Jalkanen" << endl
-        << endl
-        << langstr("about_win/license", "GPL") << endl
-        << endl
-        << langstr("about_win/icons_by", "ADX") << endl
-        << langstr("about_win/house_icon_by", "Pigasque") << endl
-        << endl
-        << langstr("about_win/other_sites") << endl;
-    new FXLabel(this, str.str().c_str(), NULL, JUSTIFY_LEFT);
-    new FXLinkLabel(this, "http://house.rvzt.net");
-    // RST didn't want the link in RV House so removed it.
-    // new FXLinkLabel(this, "http://z8.invisionfree.com/Revolt_RC_Racing");
-    new FXLinkLabel(this, "http://www.revoltrace.com");
-    new FXLinkLabel(this, "http://www.rvtt.com");
-    new FXLinkLabel(this, "http://www.revolt-cars.com");
-    new FXLinkLabel(this, "http://www.frappr.com/revoltgame");
-    str.str("");
-    str << endl
-        << langstr("about_win/using") << endl
-        << langstr("about_win/using_lib",
-                   "FOX C++ GUI Library", "Jeroen van der Zijp") << endl
-        << langstr("about_win/using_lib",
-                   "ACE network library", "Douglas C. Schmidth") << endl
-        << langstr("about_win/using_lib",
-                   "KadC P2P library", "Enzo Michelangeli") << endl
-        << langstr("about_win/using_lib",
-                   "libdht, libreudp, libnetcomgrp", "ajalkane") << endl
-        << langstr("about_win/using_lib",
-                   "Boost serialization", "Robert Ramey");
+    QVBoxLayout *l = new QVBoxLayout;
+    l->setSpacing(0);
+    l->addWidget(new QLabel(APP_NAME " " APP_VERSION));
+    l->addWidget(new QLabel);
+    l->addWidget(new QLabel("Copyright (C) 2006-2011 Arto Jalkanen"));
+    l->addWidget(new QLabel);
+    l->addWidget(new QLabel(langstr("about_win/license", "GPL").c_str()));
+    l->addWidget(new QLabel);
+    l->addWidget(new QLabel(langstr("about_win/icons_by", "ADX").c_str()));
+    // l->addWidget(new QLabel("<br>"));
+    l->addWidget(new QLabel(langstr("about_win/house_icon_by", "Pigasque").c_str()));
+    l->addWidget(new QLabel);
+    l->addWidget(new QLabel(langstr("about_win/other_sites")));
+    l->addWidget(new QLabel);
+
+    std::list<const char *> urls;
+    urls.push_back("http://rvzt.zackattackgames.com/main/");
+    urls.push_back("http://www.revoltrace.com");
+    urls.push_back("http://rv12.zackattackgames.com");
+    for (std::list<const char *>::iterator i = urls.begin(); i != urls.end(); ++i) {
+        std::string ahref = "<a href=\"";
+        ahref.append(*i);
+        ahref.append("\">");
+        ahref.append(*i);
+        ahref.append("</a>");
+        QLabel *label = new QLabel(ahref.c_str());
+        label->setOpenExternalLinks(true);
+        l->addWidget(label);
+    }
+
+    l->addWidget(new QLabel);
+
+    l->addWidget(new QLabel(langstr("about_win/using")));
+    l->addWidget(new QLabel(langstr("about_win/using_lib", "FOX C++ GUI Library", "Jeroen van der Zijp").c_str()));
+    l->addWidget(new QLabel(langstr("about_win/using_lib", "ACE network library", "Douglas C. Schmidth").c_str()));
+    l->addWidget(new QLabel(langstr("about_win/using_lib", "KadC P2P library", "Enzo Michelangeli").c_str()));
+    l->addWidget(new QLabel(langstr("about_win/using_lib", "libdht, libreudp, libnetcomgrp", "ajalkane").c_str()));
+    l->addWidget(new QLabel(langstr("about_win/using_lib", "Boost serialization", "Robert Ramey").c_str()));
+
+    l->addWidget(new QLabel);
 
     std::list<lang::info> lang_infos = lang_mngr()->lang_infos();
     // Remove english, as its the original language and not a translation,
@@ -67,36 +69,32 @@ about::about(FXWindow *owner)
                        lang::info_match_lang_fobj("English"));
     lang_infos.erase(new_end, lang_infos.end());
     if (lang_infos.size() > 0) {
-        str << endl << endl
-            << langstr("about_win/translations") << endl;
+        l->addWidget(new QLabel(langstr("about_win/translations")));
         std::list<lang::info>::const_iterator i = lang_infos.begin();
         for (; i != lang_infos.end(); i++) {
-            str << langstr("about_win/translation",
-                           i->lang().c_str(),
-                           i->author().c_str(),
-                           i->email().c_str(),
-                           i->version().c_str())
-                << endl;
+            l->addWidget(new QLabel(langstr("about_win/translation",
+                                            i->lang().c_str(),
+                                            i->author().c_str(),
+                                            i->email().c_str(),
+                                            i->version().c_str()).c_str()));
         }
     }
-    new FXLabel(this, str.str().c_str(), NULL, JUSTIFY_LEFT);
 
-    new FXSeparator(this);
-    FXHorizontalFrame *bframe = new FXHorizontalFrame(this, LAYOUT_CENTER_X);
+    /**
+     * Bottom part
+     */
+    l->addStretch(1);
+    QFrame      *separator = new QFrame;
+    separator->setFrameStyle(QFrame::HLine | QFrame::Sunken);
+    l->addWidget(separator);
+    QDialogButtonBox *button_box = new QDialogButtonBox;
+    QPushButton *ok_button = new QPushButton(langstr("common/ok_button"), this);
+    button_box->addButton(ok_button, QDialogButtonBox::AcceptRole);
+    l->addWidget(button_box);
 
-    new FXButton(
-        bframe, langstr("common/ok_button"), NULL, this, ID_CANCEL,
-        BUTTON_INITIAL|BUTTON_DEFAULT|LAYOUT_CENTER_X|
-        FRAME_RAISED|FRAME_THICK,
-        0,0,0,0,20,20
-    );
+    connect(ok_button, SIGNAL(clicked()), this, SLOT(accept()));
 
-    getAccelTable()->addAccel(MKUINT(KEY_F4,ALTMASK),this,FXSEL(SEL_COMMAND,ID_CANCEL));
-}
-
-void
-about::create() {
-    FXDialogBox::create();
+    this->setLayout(l);
 }
 
 } // ns window

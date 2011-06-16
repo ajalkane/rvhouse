@@ -1,8 +1,6 @@
 #ifndef _GUI_UTIL_FLOOD_CONTROL_H_
 #define _GUI_UTIL_FLOOD_CONTROL_H_
 
-#include <fx.h>
-
 #include "ace/Time_Value.h"
 
 #include "../../common.h"
@@ -17,8 +15,8 @@ protected:
     int            _flood_control;
 public:
     flood_control();
-    
-    bool allow_send(const FXString &t);
+
+    bool allow_send();
 };
 
 } // ns util

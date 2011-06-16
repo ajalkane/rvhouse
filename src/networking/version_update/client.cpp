@@ -23,7 +23,7 @@ client::~client() {
 void
 client::fetch() {
     ACE_DEBUG((LM_DEBUG, "version_update::client::fetch\n"));
-    std::string url = net_conf()->get<std::string>("main", "version_update", "");
+    std::string url = net_conf()->get<std::string>("main/version_update", "");
 
     if (url.empty()) {
         ACE_DEBUG((LM_DEBUG, "version_update::client::fetch: empty URL\n"));
@@ -54,7 +54,9 @@ client::handle_response(const http::response &resp)
     auto_ptr<message_version> m_guard(m);
     // Go through the file line by line
     for (; str_e; str_s = str_e + 1, str_e = strchr(str_s, '\n')) {
-        std::string line(str_s, (int)(str_e - str_s));
+        const char *end_of_cr = strchr(str_s, '\r');
+        const char *end_of_line = (end_of_cr > 0 && end_of_cr < str_e ? end_of_cr : str_e);
+        std::string line(str_s, (int)(end_of_line - str_s));
         std::vector<std::string> res(3);
 
         if (regexp::match("^- (.*)$", line, res.begin())) {

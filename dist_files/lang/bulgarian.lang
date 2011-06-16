@@ -42,102 +42,102 @@ conn_help       = "Помощ за свързване doc"
 about_house     = "За RV House"
 
 [login_win]
-title           = Влизане
-user_id         = &User ID:
-password        = &Парола:
-uses_rvzt_login = Използва RVZT акаунт
-login           = &Влез
-register        = &Регистрирай се
-quit            = &Изход
+title           = "Влизане"
+user_id         = "&User ID:"
+password        = "&Парола:"
+uses_rvzt_login = "Използва RVZT акаунт"
+login           = "&Влез"
+register        = "&Регистрирай се"
+quit            = "&Изход"
 
-login_err_topic = Грешка при Влизането
-fill_user       = Напишете вашия User ID
-fill_pass       = Напишете вашата парола
-invalid_user    = Грешен User ID, трябва да бъде от 3 до 20 букви и може да съдържа знаците: a-z, A-Z и _
-invalid_pass    = Грешна парола, трябва да бъде 3 или повече букви и може да съдържа знаците: a-z, A-Z и _
-server_down     = Грешка при свързването със сървъра, вашия User ID не беше актуализиран. Искате ли да продължите?
-validation_err  = Грешен User ID или парола
+login_err_topic = "Грешка при Влизането"
+fill_user       = "Напишете вашия User ID"
+fill_pass       = "Напишете вашата парола"
+invalid_user    = "Грешен User ID, трябва да бъде от 3 до 20 букви и може да съдържа знаците: a-z, A-Z и _"
+invalid_pass    = "Грешна парола, трябва да бъде 3 или повече букви и може да съдържа знаците: a-z, A-Z и _"
+server_down     = "Грешка при свързването със сървъра, вашия User ID не беше актуализиран. Искате ли да продължите?"
+validation_err  = "Грешен User ID или парола"
 
 
 [register_win]
-title           = Регистрирай Акаунт
-user_id         = &User ID:
-password        = &Парола:
-repassword      = &Re-type Парола:
-email           = &E-mail:
-register        = Регистрирай се
-cancel          = &Отказ
+title           = "Регистрирай Акаунт"
+user_id         = "&User ID:"
+password        = "&Парола:"
+repassword      = "&Re-type Парола:"
+email           = "&E-mail:"
+register        = "Регистрирай се"
+cancel          = "&Отказ"
 
-reg_err_topic   = Грешка при регистрирането
-reg_ok_topic    = Регистрирани сте
-fill_user       = Напишете вашия User ID
-fill_pass       = Напишете вашата парола
-pass_mismatch   = Паролите не съвпадат!
-invalid_user    = Грешен User ID, трябва да бъде от 3 до 20 букви и може да съдържа знаците: a-z, A-Z и _
-invalid_pass    = Грешна парола, трябва да бъде 3 или повече букви и може да съдържа знаците: a-z, A-Z и _
-invalid_email   = Грешен E-Mail адрес
-server_down     = Грешка при свързването със сървъра, не може да се регистрирате!
-user_reserved   = User ID който пробвахте е зает, моля пробвайте друг
-reg_ok          = Регистрирахте се успешно, можете да влезете с вашия User ID и парола
+reg_err_topic   = "Грешка при регистрирането"
+reg_ok_topic    = "Регистрирани сте"
+fill_user       = "Напишете вашия User ID"
+fill_pass       = "Напишете вашата парола"
+pass_mismatch   = "Паролите не съвпадат!"
+invalid_user    = "Грешен User ID, трябва да бъде от 3 до 20 букви и може да съдържа знаците: a-z, A-Z и _"
+invalid_pass    = "Грешна парола, трябва да бъде 3 или повече букви и може да съдържа знаците: a-z, A-Z и _"
+invalid_email   = "Грешен E-Mail адрес"
+server_down     = "Грешка при свързването със сървъра, не може да се регистрирате!"
+user_reserved   = "User ID който пробвахте е зает, моля пробвайте друг"
+reg_ok          = "Регистрирахте се успешно, можете да влезете с вашия User ID и парола"
 
 
 [about_win]
-title         = About
+title         = "About"
 # %1 is replace with the license. Example: Released under GPL
-license       = Излязъл през '%1'
+license       = "Излязъл през '%1'"
 # %1 is replaced by the author of used icons. Icons by ADX
-icons_by      = Икони от '%1'
+icons_by      = "Икони от '%1'"
 # %1 is replaced by the author of RV House icon. RV House icon by Pigasque
-house_icon_by = RV House икона от '%1'
-other_sites   = Няколко известни, полезни RV сайтове за онлайн общуване:
-using         = Използва:
+house_icon_by = "RV House икона от '%1'"
+other_sites   = "Няколко известни, полезни RV сайтове за онлайн общуване:"
+using         = "Използва:"
 # %1 is replaced by the library name, %2 by library author
 # ACE мрежова библиотека (от Douglas C. Schmidt)
-using_lib     = %1 (by %2)
-translations  = Преводи:
+using_lib     = "%1 (by %2)"
+translations  = "Преводи:"
 # %1 is replaced by the language name, %2 by author of translation
 # %3 by translation authors name %4 by the version of translation
 # Example:
 # Spanish by ADX <the.adx@gmail.com> for v0.81
-translation   = %1 от %2 <%3>, версия %4
+translation   = "%1 от %2 <%3>, версия %4"
 
 [app]
 rv_not_found_title = "Re-Volt е инсталиран?"
 rv_not_found       = "Re-Volt не е намерен в регистрите\nПуснахте ли играта след инсталация?"
 rv_house_running   = "RV House е вече пуснат!"
-join_room_full     = Играта е пълна!
-join_invalid_pass  = Грешна парола въведена!
-join_refused       = Домакинът отказа да се присъедини в играта
-join_err_topic     = Грешка при свързване със сървъра
+join_room_full     = "Играта е пълна!"
+join_invalid_pass  = "Грешна парола въведена!"
+join_refused       = "Домакинът отказа да се присъедини в играта"
+join_err_topic     = "Грешка при свързване със сървъра"
 dht_connect_err1   = "Грешка при свързването с децентрализираната мрежа"
-dht_connect_err2   = Това е може би защото сте зад router/firewall
+dht_connect_err2   = "Това е може би защото сте зад router/firewall"
 dht_connect_err3   = "не е инсталиран правилно.\n"
-dht_connect_err4   = Поправянето на това е важно защото
-dht_connect_err5   = иначе няма да виждате всички играчи.
-dht_connect_err6   = Тази част от RV House също заема централно място в моя
-dht_connect_err7   = университет, затова много ще го оценя ако
+dht_connect_err4   = "Поправянето на това е важно защото"
+dht_connect_err5   = "иначе няма да виждате всички играчи."
+dht_connect_err6   = "Тази част от RV House също заема централно място в моя"
+dht_connect_err7   = "университет, затова много ще го оценя ако"
 dht_connect_err8   = "можете да го поправите :).\n"
-dht_connect_err9   = Когато щракнете OK, ще бъдете препратени
-dht_connect_err10  = към помощ за настройване на router/firewall
+dht_connect_err9   = "Когато щракнете OK, ще бъдете препратени"
+dht_connect_err10  = "към помощ за настройване на router/firewall"
 dht_connect_err_title = "Грешка при свързването"
 
 self_on_global_ignore_topic = "Вие сте на листа за глобално игнорирани"
 self_on_global_ignore = "Вашия IP адрес беше намерен на глобалния лист за игнорирани.\nКато резултат повечето играчи няма да могат да ви виждат.\nАко мислите, че не сте направили нищо лошо\nи трябва да бъдете премахнати от глобалния лист за игнорирани?\nТогава пишете на RV Pub Forum за това\nпри адреса по-долу"
 
 [new_version_win]
-title     = Нова версия на RV House
-force_msg = Вие ТРЯБВА да ъпгрейднете вашия RV House! Старата версия не се поддържа!
+title     = "Нова версия на RV House"
+force_msg = "Вие ТРЯБВА да ъпгрейднете вашия RV House! Старата версия не се поддържа!"
 # %1 is replaced by latest RV House version number, %2 by
 # users RV House version.
-msg       = RV House версия '%1' е излязла, вашата версия е '%2'
-new_since = Новости след вашата версия:
-download  = Изтеглете новата версия от:
+msg       = "RV House версия '%1' е излязла, вашата версия е '%2'"
+new_since = "Новости след вашата версия:"
+download  = "Изтеглете новата версия от:"
 
 [rvtm_err]
-title     = Грешка със RV Track Manager
+title     = "Грешка със RV Track Manager"
 not_found = "RV Track Manager не беше намерен.\nЗа да можете да споделяте и теглите карти\nот други ви трябва най-малко\nверсия 1.5.0 на RV Track Manager\nМожете да го изтеглите от тук:"
-running   = RV Track Manager е вече стартиран!
-other     = Грешка при стартирането на RV Track Manager
+running   = "RV Track Manager е вече стартиран!"
+other     = "Грешка при стартирането на RV Track Manager"
 
 [message_box]
 ok     = "&OK"
@@ -148,106 +148,106 @@ quit   = "&Изход"
 save   = "&Запиши"
 
 [main_win]
-exit        = Изход
-create_room = Създай Игра
-join_room   = Присъедини се в Игра
-refresh     = Опресни
-cancel      = Отказ
-about       = За
+exit        = "Изход"
+create_room = "Създай Игра"
+join_room   = "Присъедини се в Игра"
+refresh     = "Опресни"
+cancel      = "Отказ"
+about       = "За"
 
-ask_room_pass_title = Игра защитена с парола
-ask_room_pass       = Въведете парола
+ask_room_pass_title = "Игра защитена с парола"
+ask_room_pass       = "Въведете парола"
 
-joining_room  = Присъединяване към игра
+joining_room  = "Присъединяване към игра"
 
-dht_connecting        = P2P се свързва
-dht_connected         = P2P е свързан
-dht_disconnecting     = P2P излиза
-dht_disconnected      = P2P излезе
-dht_upding_contacts   = P2P ъпдейтва контактните възли...
-dht_upd_contacts      = P2P cконтактни възли ъпдейтнати
-dht_upd_contacts_fail = P2P грешка при ъпдейтването на контактните възли
-dht_joining           = P2P се присъединява
-dht_joined            = P2P се присъедини
-dht_leaving           = P2P напуска
-dht_left              = P2P напусна
-dht_searching         = P2P търси потребители
-dht_announcing        = P2P обявява
+dht_connecting        = "P2P се свързва"
+dht_connected         = "P2P е свързан"
+dht_disconnecting     = "P2P излиза"
+dht_disconnected      = "P2P излезе"
+dht_upding_contacts   = "P2P ъпдейтва контактните възли..."
+dht_upd_contacts      = "P2P cконтактни възли ъпдейтнати"
+dht_upd_contacts_fail = "P2P грешка при ъпдейтването на контактните възли"
+dht_joining           = "P2P се присъединява"
+dht_joined            = "P2P се присъедини"
+dht_leaving           = "P2P напуска"
+dht_left              = "P2P напусна"
+dht_searching         = "P2P търси потребители"
+dht_announcing        = "P2P обявява"
 
-ctz_connecting        = Centralized се свързва
-ctz_connected         = Centralized е свързан
-ctz_disconnecting     = Centralized излиза
-ctz_disconnected      = Centralized излезе
+ctz_connecting        = "Centralized се свързва"
+ctz_connected         = "Centralized е свързан"
+ctz_disconnecting     = "Centralized излиза"
+ctz_disconnected      = "Centralized излезе"
 
 # %1 is replacedwith the site where user's IP is fetched from
-ip_detecting = Намиране IP от: %1
+ip_detecting = "Намиране IP от: %1"
 # %1 is replaced with the IP obtained
-ip_detected  = Намерено IP: %1
+ip_detected  = "Намерено IP: %1"
 # %1 is replaced with the error reason
-ip_failed    = Грешка при намирането на IP: %1
+ip_failed    = "Грешка при намирането на IP: %1"
 
 [chat]
 # %1 is replaced with user name
-user_entered = '%1' Влезе
-user_exited  = '%1' Излезе
+user_entered = "'%1' Влезе"
+user_exited  = "'%1' Излезе"
 # %1 is replaced with room name
-room_created = Игра '%1' създадена
-room_closed  = Игра '%1' затворена
+room_created = "Игра '%1' създадена"
+room_closed  = "Игра '%1' затворена"
 
-host_kicked_host = Домакинът се изгони от играта '%1'
-host_kicks_user  = Домакинът изгони '%1' от играта
-host_kicks_you   = Домакинът ви изгони от играта '%1'
+host_kicked_host = "Домакинът се изгони от играта '%1'"
+host_kicks_user  = "Домакинът изгони '%1' от играта"
+host_kicks_you   = "Домакинът ви изгони от играта '%1'"
 
 # %1 is replaced with user name
-user_joined_room         = '%1' се присъедини
-user_exited_room         = '%1' излезе
-user_shares_tracks       = '%1' споделя карти
-user_shares_tracks_stops = '%1' спря да споделя карти
-user_dloads_tracks       = '%1' тегли карти
-user_dloads_tracks_stops = '%1' спря да тегли карти
-user_ignored             = Вие игнорирате '%1'. Игнорирането може да бъде премахнато чрез рестартиране на RV House.
-user_ignores             = Вие сте игнориран от '%1'
+user_joined_room         = "'%1' се присъедини"
+user_exited_room         = "'%1' излезе"
+user_shares_tracks       = "'%1' споделя карти"
+user_shares_tracks_stops = "'%1' спря да споделя карти"
+user_dloads_tracks       = "'%1' тегли карти"
+user_dloads_tracks_stops = "'%1' спря да тегли карти"
+user_ignored             = "Вие игнорирате '%1'. Игнорирането може да бъде премахнато чрез рестартиране на RV House."
+user_ignores             = "Вие сте игнориран от '%1'"
 
-# %1 = the message that was refused/not received.
+# %1 = "the message that was refused/not received."
 # Caused because of user is playing or in do not disturb
 # mode so no windows are wanted to be opened.
-private_msg_refused      = User refused your message: %1
+private_msg_refused      = "User refused your message: %1"
 
-flood_control = Контрол над повтарянето
+flood_control = "Контрол над повтарянето"
 
-global_ignore = Following users are in global ignore list because of disruptive behaviour and are ignored by you automatically. You can disable global ignoring from Settings if you wish to.
+global_ignore = "Following users are in global ignore list because of disruptive behaviour and are ignored by you automatically. You can disable global ignoring from Settings if you wish to."
 # %1 is replaced by user name
 # %2 is replaced with reason
-user_global_ignore = Глобално игнориране на '%1', причина: %2
+user_global_ignore = "Глобално игнориране на '%1', причина: %2"
 
-host_ip = Вашият IP адрес е '%1'. Може да ви трябва ако имате Windows Vista.
+host_ip = "Вашият IP адрес е '%1'. Може да ви трябва ако имате Windows Vista."
 
 [room_settings_win]
-title       = Настройки на играта
-topic       = &Топик:
-password    = &Парола:
-pickups     = P&ickups
-laps        = &Обиколки:
-players     = Иг&рачи:
+title       = "Настройки на играта"
+topic       = "&Топик:"
+password    = "&Парола:"
+pickups     = "P&ickups"
+laps        = "&Обиколки:"
+players     = "Иг&рачи:"
 
-version         = Версия
-version_all     = Всички
-version_12_only = Само RV 1.2
-version_tip     = Задайте онлайн съвместимост за Re-Volt 1.2
-version_all_tip = Разреши всички RV версии да се присъединят
-version_12_tip  = Само RV 1.2 версии могат да се присъединят
+version         = "Версия"
+version_all     = "Всички"
+version_12_only = "Само RV 1.2"
+version_tip     = "Задайте онлайн съвместимост за Re-Volt 1.2"
+version_all_tip = "Разреши всички RV версии да се присъединят"
+version_12_tip  = "Само RV 1.2 версии могат да се присъединят"
  
-error_title    = Грешка при настройките на играта
-topic_missing  = Попълнете топика на играта
+error_title    = "Грешка при настройките на играта"
+topic_missing  = "Попълнете топика на играта"
 
 [room_win]
-leave         = Напусни играта
-settings      = Редактирай настройки на играта
-launch        = Пусни Re-Volt
-share_tracks  = Сподели собствени карти с другите
-dload_tracks  = Изтегли собствени карти от домакина
+leave         = "Напусни играта"
+settings      = "Редактирай настройки на играта"
+launch        = "Пусни Re-Volt"
+share_tracks  = "Сподели собствени карти с другите"
+dload_tracks  = "Изтегли собствени карти от домакина"
 
-host_launched = Домакинът стартира Re-Volt. Вашата игра ще бъде автоматично пусната след няколко секунди.
+host_launched = "Домакинът стартира Re-Volt. Вашата игра ще бъде автоматично пусната след няколко секунди."
 # %1 is replaced with the limit (in minutes)
 join_too_late = "Не можете да се присъедините към състезанието ако домакинът\nиграе повече от %1 минути."
 join_too_late_title = "Твърде късно за да се присъедините"
@@ -255,94 +255,94 @@ send_ip_info_title = "Предупреждение!";
 send_ip_info = "Вашият IP адрес ще бъде автоматично изпратен на играчите, които се присъединят към играта.\nТова е най-вече за да помогне на Vista потребители които може да се нуждаят от него за да се присъединят към играта.\n\nАко не искате вашият IP адрес да бъде пращан можете да го изключите от Настройките.\n\nТова съобщение се показва само веднъж!";
 
 [private_message_win]
-close = Затвори Чат
+close = "Затвори Чат"
 
 [rv_launch]
-title_err = Грешка при стартирането на Re-Volt
-not_found = Грешка при намирането на Re-Volt. Моля преинсталирайте, пуснете веднъж и рестартирайте
-other     = Грешка при стартирането на Re-Volt
+title_err = "Грешка при стартирането на Re-Volt"
+not_found = "Грешка при намирането на Re-Volt. Моля преинсталирайте, пуснете веднъж и рестартирайте"
+other     = "Грешка при стартирането на Re-Volt"
 
-title     = Стартиране на Re-Volt
-text      = Щракнете OK когато искате да се върнете.
+title     = "Стартиране на Re-Volt"
+text      = "Щракнете OK когато искате да се върнете."
 
 
 [words]
-topic   = Топик
-host    = Домакин
+topic   = "Топик"
+host    = "Домакин"
 # For example, Note: room is password protected
-note    = Забележка
-players = Играчи
-laps    = Обиколки
-pickups = Pickups
-user_id = User ID
-warning = Предупреждение
-status  = Статус
-room    = Игра
-yes     = Да
-no      = Не
-creating = Създаване
+note    = "Забележка"
+players = "Играчи"
+laps    = "Обиколки"
+pickups = "Pickups"
+user_id = "User ID"
+warning = "Предупреждение"
+status  = "Статус"
+room    = "Игра"
+yes     = "Да"
+no      = "Не"
+creating = "Създаване"
 
-minutes_short = мин.
-dht           = P2P
-ctz           = Centralized
-connected     = Свързани
-disconnected  = Изключени
+minutes_short = "мин."
+dht           = "P2P"
+ctz           = "Centralized"
+connected     = "Свързани"
+disconnected  = "Изключени"
 
 
 [users_view]
-shares_tracks = Играча споделя собствени карти
-dloads_tracks = Играча получава собствени карти
-dht_not_found = Не е намерена съществува на децентрализираната мрежа
-natted        = Връзката на играча изглежда че е зад NAT
+shares_tracks = "Играча споделя собствени карти"
+dloads_tracks = "Играча получава собствени карти"
+dht_not_found = "Не е намерена съществува на децентрализираната мрежа"
+natted        = "Връзката на играча изглежда че е зад NAT"
 
 [user_popup]
-user_name     = Име на Играч
-share_tracks  = Сподели Карти
-dload_tracks  = Изтегли Карти
-kick          = Изгони
-private_msg   = Изпрати Лично Съобщение
-ignore_user   = Игнорирай играч
+user_name     = "Име на Играч"
+share_tracks  = "Сподели Карти"
+dload_tracks  = "Изтегли Карти"
+kick          = "Изгони"
+private_msg   = "Изпрати Лично Съобщение"
+ignore_user   = "Игнорирай играч"
 
 [status]
-chatting      = Онлайн
-waiting       = Чакащ в стая
-playing       = Играещ
-away          = Отсъстващ
-dont_disturb  = Отпочиващ
-unknown       = Неизвестен
+chatting      = "Онлайн"
+waiting       = "Чакащ в стая"
+playing       = "Играещ"
+away          = "Отсъстващ"
+dont_disturb  = "Отпочиващ"
+unknown       = "Неизвестен"
 [misc]
-user_not_validated = User ID не е доверен(не е актуализиран)
-pass_needed        = Нужна Парола
+user_not_validated = "User ID не е доверен(не е актуализиран)"
+pass_needed        = "Нужна Парола"
 
 
 [settings_win]
-title           = RV House Настройки
-general_tab     = General
-colors_tab      = Цветове
-advanced_tab    = Подробни
+title           = "RV House Настройки"
+general_tab     = "General"
+colors_tab      = "Цветове"
+advanced_tab    = "Подробни"
 
-flash_main_chat = Премигвай ако се появи съобщение на основния чат
-flash_room_chat = Премигвай ако се появи съобщение на чата на игра
-flash_new_room  = Премигвай ако се създаде нова игра
-flash_new_user  = Премигвай ако нов играч се появи
-flash_new_user_in_room  = Премигвай ако нов играч се появи в стаята
-flash_nick      = Премигвай ако твоето име е написано на основния чат
-away_minimize   = Превключвай на отсъстващ когато главния прозорец се минимизира
-global_ignore   = Използвай глобалния лист за игнорирани
-send_ip         = Изпращай IP адрес когато си домакин
+flash_main_chat = "Премигвай ако се появи съобщение на основния чат"
+flash_room_chat = "Премигвай ако се появи съобщение на чата на игра"
+flash_new_room  = "Премигвай ако се създаде нова игра"
+flash_new_user  = "Премигвай ако нов играч се появи"
+flash_new_user_in_room  = "Премигвай ако нов играч се появи в стаята"
+flash_nick      = "Премигвай ако твоето име е написано на основния чат"
+away_minimize   = "Превключвай на отсъстващ когато главния прозорец се минимизира"
+global_ignore   = "Използвай глобалния лист за игнорирани"
+send_ip         = "Изпращай IP адрес когато  си домакин"
 
-base_color      = Основен Цвят
-border_color    = Граничен Цвят
-text_color      = Цвят на Текста
-bg_color        = Цвят на Фона
-sel_text_color  = Цвят на избрания Текст
-sel_bg_color    = Цвят на избрания Фон
-sel_mt_color    = Цвят на избрания текст на менюто
-sel_mbg_color   = Цвят на избрания Фон на менюто
-tip_text_color  = Цвят на Съвет на Текста
-tip_bg_color    = Цвят на съвет на Фона
+base_color      = "Основен Цвят"
+border_color    = "Граничен Цвят"
+text_color      = "Цвят на Текста"
+bg_color        = "Цвят на Фона"
+sel_text_color  = "Цвят на избрания Текст"
+sel_bg_color    = "Цвят на избрания Фон"
+sel_mt_color    = "Цвят на избрания текст на менюто"
+sel_mbg_color   = "Цвят на избрания Фон на менюто"
+tip_text_color  = "Цвят на Съвет на Текста"
+tip_bg_color    = "Цвят на съвет на Фона"
 
-cmdline_autoset = Автоматично избери command-line
-cmdline_dontset = Не задавай command-line
-cmdline_manual  = Посочен command-line:
+cmdline_autoset = "Автоматично избери command-line"
+cmdline_dontset = "Не задавай command-line"
+cmdline_manual  = "Посочен command-line:"
 

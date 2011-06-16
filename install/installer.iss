@@ -27,7 +27,7 @@ OutputBaseFilename=rv_house_setup
 OutputDir=..\install.bin
 Compression=lzma
 SolidCompression=yes
-SetupIconFile=..\dist_files\img\rv_house.ico
+SetupIconFile=..\dist_files\img\rv_house_win_installer.ico
 
 [Languages]
 Name: english; MessagesFile: compiler:Default.isl

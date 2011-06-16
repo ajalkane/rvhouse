@@ -1,10 +1,12 @@
-#ifndef _GUI_VIEW_CHAT_H_
-#define _GUI_VIEW_CHAT_H_
+#ifndef GUI_VIEW_CHAT_H_
+#define GUI_VIEW_CHAT_H_
 
 #include <string>
 
-#include <fx.h>
-#include <FXText.h>
+#include <QTextEdit>
+#include <QTextBrowser>
+#include <QWidget>
+#include <QTextFormat>
 
 #include "../../chat_gaming/user.h"
 #include "../../common.h"
@@ -13,15 +15,15 @@
 namespace gui {
 namespace view {
 
-class chat : public FXText {
-    FXDECLARE(chat)
+class chat : public QTextBrowser {
+    Q_OBJECT
 
     std::string _channel;
 
 protected:
     chat() {}
-    enum {
-        style_name_tag = 1,
+    enum _style {
+        style_name_tag = 0,
         style_name,
         style_name_notauth,
         style_text,
@@ -30,39 +32,25 @@ protected:
         style_url,
         style_last,
     };
-    FXDefaultCursor _current_cursor;
-    FXHiliteStyle  *_styles;
-    FXWindow       *_flash_window;
-
+    QTextCharFormat *_styles;
+    QWidget         *_flash_window;
+    int _saved_pre_insert_vertical_value;
     bool _allow_scroll;
     void _cond_scroll();
     void _cond_scroll_prepare();
-    void _styled_content(const char *msg, size_t len, int base_style);
+    void _styled_content(const std::string &msg, _style style);
+    void _insert_url(const char *url, size_t len);
+    void _insert_text(const char *text, const QTextCharFormat &format);
+    void _insert_text(const char *text, _style style);
+
     void _handle_global_ignore(::message *msg);
 public:
-    enum {
-        ID_INPUT = FXText::ID_LAST,
-        ID_TIMER,
-        ID_CONFIGURE,
-        ID_LAST,
-    };
 
-    chat(FXComposite *c, FXObject *tgt=NULL,
-         FXSelector sel=0,
-         FXuint opts=TEXT_READONLY|TEXT_WORDWRAP|LAYOUT_FILL_X|LAYOUT_FILL_Y,
-         FXint x=0, FXint y=0,
-         FXint w=0, FXint h=0,
-         FXint pl=3, FXint pr=3,
-         FXint pt=2, FXint pb=2);
+    chat(QWidget *parent, const std::string &channel = std::string());
     virtual ~chat();
-    virtual void create();
 
-    inline void flash_window(FXWindow *w) { _flash_window = w; }
+    inline void flash_window(QWidget *w) { _flash_window = w; }
 
-    inline const std::string &channel(const std::string &s) {
-
-        return _channel = s;
-    }
     inline const std::string &channel() const {
         return _channel;
     }
@@ -71,13 +59,6 @@ public:
     void notification_message (const chat_gaming::user::id_type &user_id,
                                const std::string &msg, int grp);
     void status_message (const std::string &msg);
-    void private_message(const FXString &fromUser, const FXString &msg);
-
-    long on_input      (FXObject *from, FXSelector sel, void *);
-    long on_motion     (FXObject *from, FXSelector sel, void *);
-    long on_left_button(FXObject *from, FXSelector sel, void *);
-    long on_timer      (FXObject *from, FXSelector sel, void *);
-    long on_configure  (FXObject *from, FXSelector sel, void *);
 
     void handle_message(::message *msg);
 };
@@ -85,4 +66,4 @@ public:
 } // ns view
 } // ns gui
 
-#endif //_GUI_VIEW_CHAT_H_
+#endif //GUI_VIEW_CHAT_H_

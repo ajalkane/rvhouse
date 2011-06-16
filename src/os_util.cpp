@@ -5,6 +5,10 @@
 #include <stdio.h>
 #endif
 
+#include <QApplication>
+#include <QDir>
+#include <QString>
+
 #include "os_util.h"
 #include "exception.h"
 #include "app_version.h"
@@ -21,7 +25,11 @@ int alert(const char *topic, const char *text) {
 }
 
 namespace {
-    void _app_dir(FXString *dir) {
+    void _app_dir(QString *dir) {
+        // IMPROVE Qt: using QApplication::applicationDirPath() would work on
+        // all platforms, but it will require refactoring of the code so that
+        // QApplication is instantiated always before using this method
+        // before constructing (rvhouse.ini configuration reader for example)
     #ifdef WIN32
         TCHAR filepath[MAX_PATH];
     
@@ -31,9 +39,8 @@ namespace {
         *dir = FXFile::directory(filepath);
         ACE_DEBUG((LM_DEBUG, "os_app_dir: %s -> %s\n", filepath, dir->text()));
     #else
-        *dir = FXFile::getCurrentDirectory();
+        *dir = QDir::currentPath();
     #endif
-        
     }
 }
 
@@ -43,19 +50,16 @@ app_dir() {
     static std::string app_dir_cache;
     
     if (app_dir_cache.empty()) {
-        FXString d;
+        QString d;
         _app_dir(&d);
-        app_dir_cache = d.text();
+        app_dir_cache = d.toLatin1().constData();
     }
     
     return app_dir_cache;
 }
 
-void flash_window(FXWindow *win) {
-#ifdef WIN32
-    if (!win->hasFocus())
-        FlashWindow((HWND)win->id(), TRUE);
-#endif  
+void flash_window(QWidget *obj) {
+    QApplication::alert(obj);
 }
 
 bool ensure_single_app_instance() {

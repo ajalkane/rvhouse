@@ -43,9 +43,10 @@ worker::worker()
 }
 
 worker::~worker() {
-    delete net_messenger();
-    delete net_conf();
-    delete net_ip_block();
+    ACE_DEBUG((LM_DEBUG, "networking::~worker\n"));
+    delete net_messenger(); net_messenger.instance(NULL);
+    delete net_conf();      net_conf.instance(NULL);
+    delete net_ip_block();  net_ip_block.instance(NULL);
 }
 
 int
@@ -73,8 +74,8 @@ void
 worker::_main() {
     // Configure reudp if need to
     {
-        long tout_msec = net_conf()->get<long>("net_reudp", "timeout", 0);
-        long send_amnt = net_conf()->get<long>("net_reudp", "send_try_count", 0);
+        long tout_msec = net_conf()->get<long>("net_reudp/timeout", 0);
+        long send_amnt = net_conf()->get<long>("net_reudp/send_try_count", 0);
 
         if (tout_msec != 0) {
             reudp::time_value_type tout;

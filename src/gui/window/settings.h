@@ -1,95 +1,100 @@
-#ifndef _GUI_WINDOW_SETTINGS_H_
-#define _GUI_WINDOW_SETTINGS_H_
+#ifndef GUI_WINDOW_SETTINGS_H_
+#define GUI_WINDOW_SETTINGS_H_
 
 #include <string>
 #include <map>
-#include <fx.h>
+#include <list>
+
+#include <QMainWindow>
+#include <QLineEdit>
+#include <QWidget>
+#include <QCheckBox>
+#include <QPushButton>
+#include <QRadioButton>
+#include <QTabWidget>
+#include <QVBoxLayout>
 
 #include "../../common.h"
 #include "../message_handler.h"
-#include "../watched_window.h"
+#include "size_restoring_window.h"
 
 namespace gui {
 namespace window {
 
-class settings 
-  : public FXMainWindow, 
-    public message_handler, 
-    public watched_window
+class sub_settings : public QWidget {
+    Q_OBJECT
+public:
+    virtual const char *title() = 0;
+    virtual ~sub_settings();
+public slots:
+    virtual void load_settings() = 0;
+    virtual void save_settings() = 0;
+};
+
+class settings :
+    public size_restoring_window<QMainWindow>
 {
-    typedef FXMainWindow super;
-    FXDECLARE(settings)
+    Q_OBJECT
+
+    typedef size_restoring_window<QMainWindow> super;
     
-    FXFont *_font;
-    FXFont *_titlefont;
+    QPushButton *_ok_button;
+    QPushButton *_cancel_button;
+    QTabWidget  *_section_tab;
 
-    FXColor _base;
-    FXColor _back;
-    FXColor _border;
-    FXColor _fore;
-    FXColor _hilite;
-    FXColor _shadow;
-    FXColor _selfore;
-    FXColor _selback;
-    FXColor _tipfore;
-    FXColor _tipback;
-    FXColor _menufore;
-    FXColor _menuback;
+    typedef std::list<sub_settings *> _sub_settings_type;
+    _sub_settings_type _sub_settings;
 
-    FXTextField *_cmdline_field;
-
-    FXDataTarget  _target_base;
-    FXDataTarget  _target_back;
-    FXDataTarget  _target_border;
-    FXDataTarget  _target_fore;
-    FXDataTarget  _target_hilite;
-    FXDataTarget  _target_shadow;
-    FXDataTarget  _target_selfore;
-    FXDataTarget  _target_selback;
-    FXDataTarget  _target_tipfore;
-    FXDataTarget  _target_tipback;
-    FXDataTarget  _target_menufore;
-    FXDataTarget  _target_menuback;
-    
-   typedef std::map<std::string, FXCheckButton *> _check_map_type;
-    _check_map_type _check_map;
-
-    typedef std::map<std::string, FXRadioButton *> _cmdline_switch_map_type;
-    _cmdline_switch_map_type _cmdline_switch_map;
+    void _create_actions();
+    void _create_widgets();
+    void _create_layout();
+    void _connect_signals();
 
     void _init();
-    void _setup();
-    void _pref_to_form();
-    void _form_to_pref();
-    void _set_cmdline_switch_state(const std::string &);
-    void _set_cmdline_field_state();
-protected:
-    settings() {}
 
 public:
-    enum {
-        ID_COLORS = super::ID_LAST,
-        ID_OK,
-        ID_CHOOSE_FONT,
-        ID_CMDLINE_AUTOSET,
-        ID_CMDLINE_DONTSET,
-        ID_CMDLINE_MANUAL,
-        ID_LAST,
-    };
-    
-    settings(FXApp *a);
+    settings(QWidget *parent = 0);
     ~settings();
-    virtual void create();
-    
-    // long on_send_message(FXObject *from, FXSelector sel, void *);
-    
-    void handle_message    (::message *msg);
-    long on_ok(FXObject *from, FXSelector sel, void *);    
-    long on_cmdline_switch_changed(FXObject *from, FXSelector sel, void *);
-    
+
+public slots:
+    void accept();
+    void reject();
+};
+
+class settings_general : public sub_settings {
+    typedef std::map<std::string, QCheckBox *> _check_map_type;
+     _check_map_type _check_map;
+
+public:
+    settings_general();
+    const char *title();
+public:
+    void load_settings();
+    void save_settings();
+};
+
+class settings_advanced : public sub_settings {
+    Q_OBJECT
+
+    typedef std::map<std::string, QCheckBox *> _check_map_type;
+     _check_map_type _check_map;
+
+    typedef std::map<std::string, QRadioButton *> _cmdline_switch_map_type;
+    _cmdline_switch_map_type _cmdline_switch_map;
+
+    QLineEdit *_cmdline_field;
+
+    void _set_cmdline_switch_state(const std::string &cmdline_switch);
+
+public:
+    settings_advanced();
+    const char *title();
+public:
+    void load_settings();
+    void save_settings();
 };
 
 } // ns window
 } // ns gui
 
-#endif //_GUI_WINDOW_SETTINGS_H_
+#endif //GUI_WINDOW_SETTINGS_H_

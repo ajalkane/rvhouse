@@ -1,7 +1,4 @@
-#include <fx.h>
-#include <FXGIFIcon.h>
-#include <FXJPGIcon.h>
-#include <FXICOIcon.h>
+#include <QtGui>
 
 #include <list>
 
@@ -71,25 +68,27 @@ const static unsigned char _missing_icon_gif[]={
   0x55,0xa1,0xd3,0xa8,0x32,0xa9,0x5e,0x0d,0x5a,0x95,0x67,0x40,0x00,0x3b
   };
 
-FXIcon *
+QIcon *
 icon_store::_icon_factory(const std::string &file) {
-    // TODO recognize by file extension or something
-    FXString ext = FXFile::extension(file.c_str()).lower();
-    if (ext == "ico")
-        return new FXICOIcon(_app);
-    if (ext == "gif")
-        return new FXGIFIcon(_app);
-    if (ext == "jpg" || ext == "jpeg")
-        return new FXJPGIcon(_app);
-    
-    ACE_DEBUG((LM_DEBUG, "icon_store::_icon_factory could not create icon for "
-              "extension '%s' from file '%s'\n", ext.text(), file.c_str()));
-    return NULL;
+    QIcon *icon = new QIcon(file.c_str());
+    if (icon->isNull()) {
+        delete icon;
+        icon = NULL;
+    }
+    return icon;
 }
 
-icon_store::icon_store(FXApp *app) : _app(app) {
+icon_store::icon_store(QApplication *app) : _app(app) {
     ACE_DEBUG((LM_DEBUG, "icon_store::ctor\n"));
-    _missing_icon = new FXGIFIcon(_app, _missing_icon_gif);
+    QPixmap missing_icon_pix;
+    missing_icon_pix.loadFromData(_missing_icon_gif, sizeof(_missing_icon_gif));
+    _missing_icon = new QIcon(missing_icon_pix);
+
+    QList<QByteArray> fs = QImageReader::supportedImageFormats();
+    for (int i = 0; i < fs.size(); i++) {
+        QByteArray s = fs.at(i);
+        ACE_DEBUG((LM_DEBUG, "icon_store::supported image format %s\n", s.constData()));
+    }
 }
 
 icon_store::~icon_store() {
@@ -108,36 +107,25 @@ icon_store::load(const char *key, const std::string &file) {
     ACE_DEBUG((LM_DEBUG, "icon_store::load key %s file %s\n",
               key, file.c_str()));  
               
-    FXIcon *icon = _icon_factory(file);
+    QIcon *icon = _icon_factory(file);
     if (icon == NULL) {
         ACE_ERROR((LM_ERROR, 
-                   "icon_store::load key '%s' file %s, could not " 
+                   "icon_store::load key '%s' file %s, could not "
                    "find a handler for the type\n",
                    key, file.c_str())); 
         return false;
     }
 
-    FXFileStream stream;
-    if (stream.open(file.c_str(), FXStreamLoad)) {
-        icon->loadPixels(stream);
-        stream.close();
-        icon->create();
-
-        _key_icon_map[key] = icon;
-    } else {
-        ACE_ERROR((LM_ERROR, "icon_store::load failed to load image file %s\n",
-                   file.c_str()));  
-        return false;
-    }
+    _key_icon_map[key] = icon;
     
     return true;
 }
     
-FXIcon *
-icon_store::get(const char *key) {
-    _key_icon_map_type::iterator i = _key_icon_map.find(key);
-    if (i == _key_icon_map.end()) return _missing_icon;
-    return i->second;
+const QIcon &
+icon_store::get(const char *key) const {
+    _key_icon_map_type::const_iterator i = _key_icon_map.find(key);
+    if (i == _key_icon_map.end()) return *_missing_icon;
+    return *(i->second);
 }
 
 void
@@ -161,26 +149,25 @@ icon_store::scan_from_dir(const std::string dir, const char *file_base_name, ...
     
     // Then find all the files matching one of the regexps and
     // try loading a corresponding icon resource for it
-    FXString *filelist = NULL;
-    FXint     files = FXFile::listFiles(filelist, dir.c_str(), "*", LIST_ALL_FILES);
-    ACE_DEBUG((LM_DEBUG, "icon_store.:scan_from_dir %d files found\n", files));
-    for (int file_ndx = 0; file_ndx < files; file_ndx++) {
+    QDir qdir(dir.c_str());
+    QFileInfoList file_infos = qdir.entryInfoList(QStringList(QString("*")));
+    QListIterator<QFileInfo> i(file_infos);
+    while (i.hasNext()) {
         // Do not require the case of the filename to be exact (lower)
-        FXString file       = filelist[file_ndx].lower();
-        FXString file_noext = FXFile::stripExtension(file);
-        
+        QFileInfo file_info = i.next();
+        QString file_noext  = file_info.baseName();
+
         ACE_DEBUG((LM_DEBUG, "icon_store::scan_from_dir inspecting file %s\n",
-                   file.text()));
-        
-        if (base_file_names.find(file_noext.text()) != 
-            base_file_names.end()) 
+                   file_info.absoluteFilePath().constData()));
+
+        if (base_file_names.find(file_noext.toLatin1().constData()) !=
+            base_file_names.end())
         {
             // Create the full file name path
-            std::string path(dir);
-            path += PATHSEP;
-            path += file.text();
-             
-            this->load(file_noext.text(), path);
+            std::string path(file_info.absoluteFilePath().toLatin1().constData());
+
+            this->load(file_noext.toLatin1().constData(), path);
         }
+
     }
 }

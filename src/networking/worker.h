@@ -6,7 +6,6 @@
 #include <ace/Reactor.h>
 #include <ace/Task.h>
 #include <ace/Event_Handler.h>
-#include <fx.h>
 
 #include <dht/client.h>
 #include <netcomgrp/group.h>

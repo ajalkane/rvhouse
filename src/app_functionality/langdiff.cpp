@@ -5,7 +5,7 @@
 #include <list>
 #include <vector>
 
-#include <fx.h>
+#include <QtGui>
 
 #include "../common.h"
 #include "../lang/manager.h"
@@ -23,13 +23,12 @@ const char *pair_first(const std::pair<const char *, const char *> &p) {
 }
 
 langdiff::langdiff(
-    int argc, char **argv,
+    int &argc, char **argv,
     const std::string &lang1, 
     const std::string &lang2
 ) /*: house(argc, argv) */ : _lang1(lang1), _lang2(lang2) {
 
-    _app = new FXApp;
-    _app->init(argc, argv);
+    _app = new QApplication(argc, argv);
 }
 
 langdiff::~langdiff() {
@@ -98,9 +97,8 @@ langdiff::run() {
     _print_uniq(keys1_uniq, _lang1);
     _print_uniq(keys2_uniq, _lang2);
 
-    _app->create(); 
-    FXMessageBox::information(
-        _app, FX::MBOX_OK, "Language diff", 
+    QMessageBox::information(
+        NULL, "Language diff",
         _out.str().c_str()
     );
 }

@@ -9,10 +9,10 @@ import glob
 ## KadC
 ## reudp
 ## netcomgrp
-## FOX
+## Qt
 ## Boost (for serialize)
 ## DirectX 7 lobby libs
-## libz (needed by KadC and FOX)
+## libz (needed by KadC)
 ## pthreadGC (needed by KadC)
 
 ## If libraries are in some non standard paths, specify them here
@@ -28,9 +28,8 @@ lib_search_path = ['#../../../libs/build/$BUILD_VARIANT',
 ## Where we should find things to include
 ## Modify to suit your compiling environment
 include_search_path =  ['#../../../libs/ACE_wrappers',
-                        '#../../../libs/fox-1.4.16/include',
                         'c:/Boost/include/boost-1_33',
-                        # For KadC
+                         # For KadC
                         '#../../../libs',
                         '#./src',
                         '#../../libreudp/trunk/src',
@@ -40,6 +39,11 @@ include_search_path =  ['#../../../libs/ACE_wrappers',
 libs = ['FOX-1.4','netcomgrp','reudp','dht','ACE',
         'KadC','pthreadGC','z',
         'liblibboost_serialization-mgw-s',
+         # Needed by Qt (platform dependent?)
+		'png',
+		'tiff',
+		'rt'
+        
         # Win32 libs, TODO maybe put to build/win32
         'comctl32','ws2_32','winspool','mpr','m',
         'dpnlobby','dxguid','ole32']

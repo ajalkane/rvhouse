@@ -1,8 +1,13 @@
-#ifndef _USERS_VIEW_H_
-#define _USERS_VIEW_H_
+#ifndef USERS_VIEW_H_
+#define USERS_VIEW_H_
 
-#include <fx.h>
-#include <FXText.h>
+#include <QAction>
+#include <QActionGroup>
+#include <QEvent>
+#include <QMenu>
+#include <QString>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
 
 #include <map>
 
@@ -15,18 +20,21 @@
 #include "../../model/house.h"
 #include "../../multi_feed/user_item.h"
 #include "../../multi_feed/user_map.h"
-#include "../component/house_tree_item.h"
+// #include "../component/house_tree_item.h"
 
 namespace gui {
+
+// Have to make a forward declaration to avoid cyclical dependency
+namespace window {
+    class house;
+}
+
 namespace view {
 
-class user_item : public component::house_tree_item {
-    FXDECLARE(user_item)
+class user_item : public QTreeWidgetItem {
+    typedef QTreeWidgetItem super;
 public:
     typedef chat_gaming::user user_type;
-    // Maps users source group -> user id
-    // typedef std::map<int, chat_gaming::user::id_type> user_map_type;
-    // typedef std::map<int, std::string>                group_desc_map_type;   
     
     enum {
         // Have to be in the same order as they'll be 
@@ -39,11 +47,9 @@ public:
         group_size,
     };
 private:
-    const static FXColor col_dht_conn;
-    const static FXColor col_ctz_conn;
-    const static FXColor col_dht_ctz_conn;
-    const static FXColor col_nat_dht_ctz_conn;
-    const static FXColor col_not_validated;
+    enum {
+        column_name = 0
+    };
 
     bool _dht_conn;
     bool _ctz_conn;
@@ -55,7 +61,7 @@ private:
     int                     _display_group;
     multi_feed::user_item   _user_feed;
 
-    FXString _tip_str;
+    QString _tip_str;
     
     bool _resolve_user_id();
     bool _resolve_tip();
@@ -65,13 +71,13 @@ private:
                 ? std::string() 
                 : s + '\n');        
     }
+
 public:
     user_item();
         
     // Getter and setter for user
     inline void user(const chat_gaming::user::id_type &id, int grp_base) {
         _user_feed.set_feed(id, grp_base);
-    //  _user_map[grp_base] = id;
     }
 
     inline const multi_feed::user_item &feed_item() const { return _user_feed; }
@@ -85,38 +91,20 @@ public:
     // Returns true if the (visible) user state has changed in a way
     // that needs redrawing
     bool resolve_user_state();
-
+    bool update_tip();
+    inline const QString &get_tip() const { return _tip_str; }
     inline bool sharing_tracks() const { return _sharing_tracks; }
     inline bool getting_tracks() const { return _getting_tracks; }
-    
-    long on_query_tip(FXObject *sender,FXSelector sel,void *ptr);
-protected:
-    // user_item() {}
 };
 
-class users : public FXTreeList {
-    FXDECLARE(users)
+class users : public QTreeWidget {
+    Q_OBJECT
+
 public:
-    typedef FXTreeList super;
-    typedef FXTreeItem tree_item_type;
+    typedef QTreeWidget super;
+    typedef QTreeWidgetItem tree_item_type;
     typedef user_item  item_type;
 
-    enum {
-        ID_STATUS_CHATTING = super::ID_LAST,
-        ID_STATUS_PLAYING,
-        ID_STATUS_AWAY,
-        ID_STATUS_DONT_DISTURB,
-        
-        ID_USER_KICK,
-        ID_USER_BLOCK,
-        ID_SHARE_TRACKS,
-        ID_GET_TRACKS,
-        
-        ID_PRIV_MSG,
-        
-        ID_LAST,
-    };
-    
     class observer {
     public:
         virtual void user_added(const chat_gaming::user &u)   {}
@@ -129,73 +117,43 @@ public:
                                             bool value) {}
         
         virtual void user_rightclick(const multi_feed::user_item &uf,
-                                     FXEvent *e) {}
+                                     QEvent *e) {}
         
     };
     
-    users(FXComposite *c, FXObject *tgt=NULL, 
-              FXSelector sel=0, 
-              FXuint opts=TREELIST_SINGLESELECT|
-                          TREELIST_SHOWS_BOXES |
-                          TREELIST_ROOT_BOXES  |
-                          LAYOUT_FILL_X|
-                          LAYOUT_FILL_Y,
-              FXint x=0, FXint y=0, FXint w=0, FXint h=0);
-    virtual void create();
+    users(QWidget *parent, const chat_gaming::room::id_type &rid = std::string());
     virtual ~users();
 
-    inline void room_id(const chat_gaming::room::id_type &rid) {
-        _room_id = rid;
-    }
-    
     inline item_type *find_item(const chat_gaming::room::id_type &id) {
         return _user_item_map.find(id);
     }
-    // DUMMY implementation, TODO there must be a better way    
+
     inline item_type *selected_item() const {
-        FXTreeItem *last = getLastItem();
-        FXTreeItem *iter = getFirstItem();
-        ACE_DEBUG((LM_DEBUG, "users::selected_item: first/last: %d/%d\n",
-                  iter, last));
-        for (; iter; iter = iter->getBelow()) {
-            ACE_DEBUG((LM_DEBUG, "users::selected_item: iter: %s/%d\n",
-                      iter->getText().text()));
-            if (isItemSelected(iter)) return dynamic_cast<item_type *>(iter);
-        }
-        ACE_DEBUG((LM_DEBUG, "users::selected_item: not found\n",
-                  iter, last));
-        return NULL;
+        QTreeWidgetItem *item = this->currentItem();
+        return static_cast<item_type *>(item);
     }
-    
+
     void handle_message(::message *msg);
 
-    long on_query_tip(FXObject *sender,FXSelector sel,void *ptr);
-    long on_user_rightclick(FXObject *sender,FXSelector sel,void *ptr);
-    long on_status_change(FXObject *sender,FXSelector sel,void *ptr);
-    long on_user_kick(FXObject *sender,FXSelector sel,void *ptr);
-    long on_user_block(FXObject *sender,FXSelector sel,void *ptr);
-    long on_share(FXObject *sender,FXSelector sel,void *ptr);
-    long on_doubleclick(FXObject *sender,FXSelector sel,void *ptr);
-    long on_priv_msg(FXObject *sender,FXSelector sel,void *ptr);
-    
     inline void observer_set(observer *o) { _observer = o; }
 protected:
-    users() {}
+    bool eventFilter(QObject *obj, QEvent *event);
 private:
-    FXMenuPane    *_popup;
-    FXMenuPane    *_popup_status;
-    FXMenuCascade *_popup_status_cascade;
-    FXMenuCommand *_popup_user;
-    FXMenuCommand *_popup_share;
-    FXMenuCommand *_popup_priv;
-    FXMenuCommand *_popup_block;
-    
+    QMenu *_context_menu;
+    QAction *_action_user;
+
+    QMenu *_status_submenu;
+    QActionGroup *_action_statusgroup;
+    QAction *_action_chatting;
+    QAction *_action_playing;
+    QAction *_action_away;
+    QAction *_action_donotdisturb;
+    QAction *_action_block;
+    QAction *_action_private_message;
+    QAction *_action_kick;
+
     observer *_observer;
     
-    // tree_item_type *_item_chatting;
-    // tree_item_type *_item_waiting;
-    // tree_item_type *_item_playing;   
-    // tree_item_type *_item_idling;
     struct _parent_item {
         tree_item_type *item;
         int             children;
@@ -209,18 +167,18 @@ private:
     tree_item_type *_item_players; // only one category for now
     chat_gaming::room::id_type _room_id;    
     
-    // Maps a user to the list item displaying it.
-    // typedef std::map<chat_gaming::user::id_type, item_type *> _user_item_map_type;
-
-    // typedef std::map<std::string, item_type *> _user_item_map_type;  
-    //_user_item_map_type _user_item_map;
-    
     multi_feed::user_map<item_type> _user_item_map;
     
+    void _create_actions();
+    void _create_context_menu();
+    void _create_signals();
+
     void _add_user_item(item_type *, int dgrp = -1);
+    void _add_user_to_group(tree_item_type *parent, item_type *item);
+
     void _del_user_item(item_type *,  int dgrp = -1);
-    tree_item_type *_add_user_item2(int dgrp);
-    void _del_user_item2(int dgrp);
+    tree_item_type *_reserve_place_for_item_in_group(int dgrp);
+    void _remove_place_for_item_in_group(int dgrp);
 
     void _update_user_item(item_type *,int old_dgrp);
     
@@ -242,10 +200,15 @@ private:
     void _room_update(const chat_gaming::room::id_type &rid, int grp_base);
 
     bool _priv_msg_enable(const item_type *item) const;
-    
+
+public slots:
+    void on_context_menu(const QPoint &pos);
+    void block_selected_user();
+    void kick_selected_user();
+    void open_private_msg_to_selected_user();
 };
 
 } // ns view
 } // ns gui
 
-#endif //_USERS_VIEW_H_
+#endif //USERS_VIEW_H_

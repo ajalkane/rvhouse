@@ -1,5 +1,3 @@
-#include <fx.h>
-
 #include <netcomgrp/serverless/util.h>
 
 #include "group_adapter_serverless.h"
@@ -12,6 +10,7 @@
 #include "../reporter/client.h"
 
 #include "../../file_util.h"
+#include "../../regexp.h"
 #include "../../util.h"
 #include "../../messaging/message_string.h"
 #include "../../messaging/message_user.h"
@@ -25,7 +24,7 @@ group_adapter_serverless::group_adapter_serverless(
     _self(NULL),
     _connect_try(0)
 {
-    // TODO needs global config.h or from fxsettings
+    // TODO needs global config.h or from qsettings
     _grp_id = net_conf()->get<std::string>(
         "net_serverless", "group_id", "house://1.0/re-volt"
     );
@@ -164,8 +163,8 @@ group_adapter_serverless::_external_ip_fetch() {
         return;
     }
 
-    std::string ip      = net_conf()->get("net_serverless", "ip");
-    std::string ip_site = net_conf()->get("net_serverless", "ip_site");
+    std::string ip      = net_conf()->get("net_serverless/ip");
+    std::string ip_site = net_conf()->get("net_serverless/ip_site");
     
     if (!ip.empty()) {
         _external_ip_set(ip);
@@ -207,7 +206,7 @@ void
 group_adapter_serverless::_external_ip_set(const std::string &ip) {
     ACE_DEBUG((LM_DEBUG, "group_adapter_serverless: " \
               "parsing IP: %s\n", ip.c_str()));
-    u_short port = net_conf()->get<int>("net_serverless", "port", 0);
+    u_short port = net_conf()->get<int>("net_serverless/port", 0);
     _external_ip.set(port, ip.c_str());
 
     ACE_DEBUG((LM_DEBUG, "group_adapter_serverless: " \
@@ -223,7 +222,7 @@ group_adapter_serverless::_external_ip_set(const std::string &ip) {
                          "Could not parse IP address from %s:%s, " \
                          "got: %s:%d (ip:port)",
                          ip.c_str(), 
-                         net_conf()->get("net_serverless", "port").c_str(),
+                         net_conf()->get("net_serverless/port").c_str(),
                           _external_ip.get_host_addr(), 
                           _external_ip.get_port_number());
     }
@@ -232,15 +231,14 @@ group_adapter_serverless::_external_ip_set(const std::string &ip) {
 // http::handler interface
 int 
 group_adapter_serverless::handle_response(const http::response &resp) {
-    FXRex ip_rex("\\d{1,3}(\\.\\d{1,3}){3}", REX_NEWLINE);
-    FXint beg, end;
     
+    std::vector<std::string> res(2);
+
     ACE_DEBUG((LM_DEBUG, "group_adapter_serverless: trying to find " \
               "IP address from response: \n%s\n", resp.content()));
-                        
-    if (ip_rex.match(resp.content(), &beg, &end)) {
-        std::string ipstr;
-        ipstr.assign(resp.content() + beg, end - beg);
+
+    if (regexp::match("(\\d{1,3}(\\.\\d{1,3}){3})", resp.content(), res.begin())) {
+        const std::string &ipstr = res[0];
         ACE_DEBUG((LM_DEBUG, "Got ip string: %s\n", ipstr.c_str()));
         _external_ip_set(ipstr);
         gui_messenger()->send_msg(new message_string(message::external_ip_fetch_done,

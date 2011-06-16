@@ -1,328 +1,328 @@
 [common]
-ok_button       = "&¿¹"
-cancel_button   = "&Ãë¼ÒÇÏ´Ù"
+ok_button       = "&ï¿½ï¿½"
+cancel_button   = "&ï¿½ï¿½ï¿½ï¿½Ï´ï¿½"
 apply_button    = "&Apply"
 
 [menu_file]
-title           = "&ÆÄÀÏ"
-quit            = "&³ª°¡±â\tCtl-Q"
+title           = "&ï¿½ï¿½ï¿½ï¿½"
+quit            = "&ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\tCtl-Q"
 
 [menu_edit]
-title           = "&¿¡µðÆ®"
-settings        = "&È¯°æ¼³Á¤\tAlt-S"
+title           = "&ï¿½ï¿½ï¿½ï¿½Æ®"
+settings        = "&È¯ï¿½æ¼³ï¿½ï¿½\tAlt-S"
 
 [menu_player]
-title           = "&»ç¿ëÀÚ"
-status          = "»óÈ²¸ñ·Ï"
-create_room     = "¹æ¸¸µé±â\tCtl-R"
-join_room       = "ÀÔÀåÇÏ´Ù"
-chatting        = "Ã¤ÆÃ\tShift-Alt-C"
-playing         = "°ÔÀÓÁß\tShift-Alt-P"
-away            = "´Ù¸¥¿ë¹«Áß\tShift-Alt-A"
-dont_disturb    = "ÀÚ¸®ºñ¿ò\tShift-Alt-D"
+title           = "&ï¿½ï¿½ï¿½ï¿½ï¿½"
+status          = "ï¿½ï¿½È²ï¿½ï¿½ï¿½"
+create_room     = "ï¿½æ¸¸ï¿½ï¿½ï¿½\tCtl-R"
+join_room       = "ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½"
+chatting        = "Ã¤ï¿½ï¿½\tShift-Alt-C"
+playing         = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\tShift-Alt-P"
+away            = "ï¿½Ù¸ï¿½ï¿½ë¹«ï¿½ï¿½\tShift-Alt-A"
+dont_disturb    = "ï¿½Ú¸ï¿½ï¿½ï¿½ï¿½\tShift-Alt-D"
 
 [menu_comp]
-title           = "&½ÃÇÕ"
-rvl             = "¸®º¼Æ® ¸®±×"
-rvl_home        = "WWW-»çÀÌÆ®"
-rvl_champ       = "Ã¨ÇÇ¾ð½±"
-rvl_cup         = "ÄÅ"
+title           = "&ï¿½ï¿½ï¿½ï¿½"
+rvl             = "ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½"
+rvl_home        = "WWW-ï¿½ï¿½ï¿½ï¿½Æ®"
+rvl_champ       = "Ã¨ï¿½Ç¾ï¿½"
+rvl_cup         = "ï¿½ï¿½"
 
-rvr             = "¸®º¼Æ® ·¹ÀÌ½º"
-rvr_home        = "WWW-»çÀÌÆ®"
-rvr_1vs1        = "1:1 Ã¨ÇÇ¾ð½±"
-rvr_players     = "»ç¿ëÀÚ ÇÁ·ÎÇÊ"
-rvr_teams       = "ÆÀ"
+rvr             = "ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½Ì½ï¿½"
+rvr_home        = "WWW-ï¿½ï¿½ï¿½ï¿½Æ®"
+rvr_1vs1        = "1:1 Ã¨ï¿½Ç¾ï¿½"
+rvr_players     = "ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
+rvr_teams       = "ï¿½ï¿½"
 
 [menu_help]
-title           = "&µµ¿ò¸»"
-router_help     = "¶ó¿ìÅÍ/¹æÈ­º® µµ¿ò¸»"
-faq             = "¸®º¼Æ® ÇÏ¿ì½º FAQ"
-conn_help       = "Á¢¼Ó µµ¿ò¸» doc"
-about_house     = "¸®º¼Æ®ÇÏ¿ì½º °üÇÏ¿©.."
+title           = "&ï¿½ï¿½ï¿½ï¿½"
+router_help     = "ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½ï¿½È­ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½"
+faq             = "ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Ï¿ì½º FAQ"
+conn_help       = "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ doc"
+about_house     = "ï¿½ï¿½ï¿½ï¿½Æ®ï¿½Ï¿ì½º ï¿½ï¿½ï¿½Ï¿ï¿½.."
 
 [login_win]
-title           = Login
-user_id         = &User ID:
-password        = &Password:
-uses_rvzt_login = Uses RVZT login
-Login           = &Login
-register        = &Register
-quit            = &Quit
+title           = "Login"
+user_id         = "&User ID:"
+password        = "&Password:"
+uses_rvzt_login = "Uses RVZT login"
+Login           = "&Login"
+register        = "&Register"
+quit            = "&Quit"
 
-login_err_topic = Can't login
-fill_user       = Fill in your User ID
-fill_pass       = Fill in your password
-invalid_user    = Invalid User ID, must be 3 to 20 characters and can contain characters a-z, A-Z and _
-invalid_pass    = Invalid password, must be 3 or more characters and have only characters a-z, A-Z and _
-server_down     = Login server could not be contacted, your user id has not been authenticated. Do you want to continue anyway?
-validation_err  = Invalid user ID or password
+login_err_topic = "Can't login"
+fill_user       = "Fill in your User ID"
+fill_pass       = "Fill in your password"
+invalid_user    = "Invalid User ID, must be 3 to 20 characters and can contain characters a-z, A-Z and _"
+invalid_pass    = "Invalid password, must be 3 or more characters and have only characters a-z, A-Z and _"
+server_down     = "Login server could not be contacted, your user id has not been authenticated. Do you want to continue anyway?"
+validation_err  = "Invalid user ID or password"
 
 
 [register_win]
-title           = Register User
-user_id         = &User ID:
-password        = &Password:
-repassword      = &Re-type password:
-email           = &E-mail:
-register        = Register
-cancel          = &Cancel
+title           = "Register User"
+user_id         = "&User ID:"
+password        = "&Password:"
+repassword      = "&Re-type password:"
+email           = "&E-mail:"
+register        = "Register"
+cancel          = "&Cancel"
 
-reg_err_topic   = Can't register user
-reg_ok_topic    = Registered
-fill_user       = Fill in your User ID
-fill_pass       = Fill in your password
-pass_mismatch   = Passwords don't match!
-invalid_user    = Invalid User ID, must be 3 to 20 characters and can contain characters a-z, A-Z and _
-invalid_pass    = Invalid password, must be 3 or more characters and have only characters a-z, A-Z and _
-invalid_email   = Invalid E-mail address
-server_down     = Could not contact server, can't register
-user_reserved   = The User ID you tried to register is reserved, please choose another one
-reg_ok          = Registered successfully, you can login now with your User ID and password
+reg_err_topic   = "Can't register user"
+reg_ok_topic    = "Registered"
+fill_user       = "Fill in your User ID"
+fill_pass       = "Fill in your password"
+pass_mismatch   = "Passwords don't match!"
+invalid_user    = "Invalid User ID, must be 3 to 20 characters and can contain characters a-z, A-Z and _"
+invalid_pass    = "Invalid password, must be 3 or more characters and have only characters a-z, A-Z and _"
+invalid_email   = "Invalid E-mail address"
+server_down     = "Could not contact server, can't register"
+user_reserved   = "The User ID you tried to register is reserved, please choose another one"
+reg_ok          = "Registered successfully, you can login now with your User ID and password"
 
 
 [about_win]
-title         = About
-# %1 is replace with the license. Example: Released under GPL
-license       = Released under %1
-# %1 is replaced by the author of used icons. Icons by ADX
-icons_by      = Icons by %1
-# %1 is replaced by the author of RV House icon. RV House icon by Pigasque
-house_icon_by = RV House icon by %1
-other_sites   = Some popular, useful RV sites for online community:
-using         = Using:
-# %1 is replaced by the library name, %2 by library author
-# ACE network library (by Douglas C. Schmidt)
-using_lib     = %1 (by %2)
-translations  = Translations:
-# %1 is replaced by the language name, %2 by author of translation
-# %3 by translation authors name %4 by the version of translation
-# Example:
-# Spanish by ADX <the.adx@gmail.com> for v0.81
-translation   = %1 by %2 <%3> for v%4
+title         = "About"
+; %1 is replace with the license. Example: Released under GPL
+license       = "Released under %1"
+; %1 is replaced by the author of used icons. Icons by ADX
+icons_by      = "Icons by %1"
+; %1 is replaced by the author of RV House icon. RV House icon by Pigasque
+house_icon_by = "RV House icon by %1"
+other_sites   = "Some popular, useful RV sites for online community:"
+using         = "Using:"
+; %1 is replaced by the library name, %2 by library author
+; ACE network library (by Douglas C. Schmidt)
+using_lib     = "%1 (by %2)"
+translations  = "Translations:"
+; %1 is replaced by the language name, %2 by author of translation
+; %3 by translation authors name %4 by the version of translation
+; Example:
+; Spanish by ADX <the.adx@gmail.com> for v0.81
+translation   = "%1 by %2 <%3> for v%4"
 
 [app]
 rv_not_found_title = "Re-Volt installed?"
 rv_not_found       = "Re-Volt not found from registry\nHave you installed and run it\nbefore starting this application?"
 rv_house_running   = "RV House is already running!"
-join_room_full     = Room is full!
-join_invalid_pass  = Invalid password given!
-join_refused       = Host refused joining room
-join_err_topic     = Could not join room
+join_room_full     = "Room is full!"
+join_invalid_pass  = "Invalid password given!"
+join_refused       = "Host refused joining room"
+join_err_topic     = "Could not join room"
 dht_connect_err1   = "Could not connect to decentralized network"
-dht_connect_err2   = This is probably because your router or firewall
+dht_connect_err2   = "This is probably because your router or firewall"
 dht_connect_err3   = "is not setup correctly.\n"
-dht_connect_err4   = Correcting this up is important because
-dht_connect_err5   = otherwise you might not see all players.
-dht_connect_err6   = Also, this part of RV House is central to my
-dht_connect_err7   = university thesis so I'd appreciate it a lot if
+dht_connect_err4   = "Correcting this up is important because"
+dht_connect_err5   = "otherwise you might not see all players."
+dht_connect_err6   = "Also, this part of RV House is central to my"
+dht_connect_err7   = "university thesis so I'd appreciate it a lot if"
 dht_connect_err8   = "you can fix it :).\n"
-dht_connect_err9   = When you press OK, you will be directed
-dht_connect_err10  = to a router/firewall settings help page.
+dht_connect_err9   = "When you press OK, you will be directed"
+dht_connect_err10  = "to a router/firewall settings help page."
 dht_connect_err_title = "Error connecting"
 
 [new_version_win]
-title     = New RV House version
-force_msg = You MUST upgrade RV House! Old version is not compatible!
-# %1 is replaced by latest RV House version number, %2 by
-# users RV House version.
-msg       = RV House version %1 available, your version is %2
-new_since = New since your version:
-download  = Download new version from here:
+title     = "New RV House version"
+force_msg = "You MUST upgrade RV House! Old version is not compatible!"
+; %1 is replaced by latest RV House version number, %2 by
+; users RV House version.
+msg       = "RV House version %1 available, your version is %2"
+new_since = "New since your version:"
+download  = "Download new version from here:"
 
 [rvtm_err]
-title     = Failed to launch RV Track Manager
+title     = "Failed to launch RV Track Manager"
 not_found = "Could not find RV Track Manager.\nTo be able to share and download tracks\nfrom others, you need at least\nversion 1.5.0 of RV Track Manager\nYou can download it from here:"
-running   = RV Track Manager has already been launched
-other     = Could not launch RV Track manager
+running   = "RV Track Manager has already been launched"
+other     = "Could not launch RV Track manager"
 
 [message_box]
-ok     = "&¿¹"
-cancel = "&Ãë¼ÒÇÏ´Ù"
-yes    = "&¿¹"
-no     = "&¾Æ´Ï¿À"
-quit   = "&³ª°¡±â"
-save   = "&ÀúÀå"
+ok     = "&ï¿½ï¿½"
+cancel = "&ï¿½ï¿½ï¿½ï¿½Ï´ï¿½"
+yes    = "&ï¿½ï¿½"
+no     = "&ï¿½Æ´Ï¿ï¿½"
+quit   = "&ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
+save   = "&ï¿½ï¿½ï¿½ï¿½"
 
 [main_win]
-exit        = ³ª°¡±â
-create_room = ¹æ ¸¸µé±â
-join_room   = ¹æ¿¡ ÀÔÀå
-refresh     = »õ·Î°íÄ§
-cancel      = Ãë¼Ò
-about       = ..¿¡°üÇÏ¿©
+exit        = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
+create_room = "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½"
+join_room   = "ï¿½æ¿¡ ï¿½ï¿½ï¿½ï¿½"
+refresh     = "ï¿½ï¿½ï¿½Î°ï¿½Ä§"
+cancel      = "ï¿½ï¿½ï¿½"
+about       = "..ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½"
 
-ask_room_pass_title = Password protected room
-ask_room_pass       = Enter password
+ask_room_pass_title = "Password protected room"
+ask_room_pass       = "Enter password"
 
-joining_room  = Joining room
+joining_room  = "Joining room"
 
-dht_connecting        = P2P connecting
-dht_connected         = P2P connected
-dht_disconnecting     = P2P disconnecting
-dht_disconnected      = P2P disconnected
-dht_upding_contacts   = P2P updating contact nodes...
-dht_upd_contacts      = P2P contact nodes updated
-dht_upd_contacts_fail = P2P could not update contact nodes
-dht_joining           = P2P joining
-dht_joined            = P2P joined
-dht_leaving           = P2P leaving
-dht_left              = P2P left
-dht_searching         = P2P searching users
-dht_announcing        = P2P announcing
+dht_connecting        = "P2P connecting"
+dht_connected         = "P2P connected"
+dht_disconnecting     = "P2P disconnecting"
+dht_disconnected      = "P2P disconnected"
+dht_upding_contacts   = "P2P updating contact nodes..."
+dht_upd_contacts      = "P2P contact nodes updated"
+dht_upd_contacts_fail = "P2P could not update contact nodes"
+dht_joining           = "P2P joining"
+dht_joined            = "P2P joined"
+dht_leaving           = "P2P leaving"
+dht_left              = "P2P left"
+dht_searching         = "P2P searching users"
+dht_announcing        = "P2P announcing"
 
-ctz_connecting        = Centralized connecting
-ctz_connected         = Centralized connected
-ctz_disconnecting     = Centralized disconnecting
-ctz_disconnected      = Centralized disconnected
+ctz_connecting        = "Centralized connecting"
+ctz_connected         = "Centralized connected"
+ctz_disconnecting     = "Centralized disconnecting"
+ctz_disconnected      = "Centralized disconnected"
 
-# %1 is replacedwith the site where user's IP is fetched from
-ip_detecting = Detecting IP from: %1
-# %1 is replaced with the IP obtained
-ip_detected  = Detected IP: %1
-# %1 is replaced with the error reason
-ip_failed    = Detecting IP failed: %1
+; %1 is replacedwith the site where user's IP is fetched from
+ip_detecting = "Detecting IP from: %1"
+; %1 is replaced with the IP obtained
+ip_detected  = "Detected IP: %1"
+; %1 is replaced with the error reason
+ip_failed    = "Detecting IP failed: %1"
 
 [chat]
-# %1 is replaced with user name
-user_entered = %1 has entered
-user_exited  = %1 has exited
-# %1 is replaced with room name
-room_created = New room created (%1)
-room_closed  = Room closed (%1)
+; %1 is replaced with user name
+user_entered = "%1 has entered"
+user_exited  = "%1 has exited"
+; %1 is replaced with room name
+room_created = "New room created (%1)"
+room_closed  = "Room closed (%1)"
 
-host_kicked_host = Dumbass host kicked himself from room %1
-host_kicks_user  = Host is kicking %1 from the room
-host_kicks_you   = Host kicked you from the room %1
+host_kicked_host = "Dumbass host kicked himself from room %1"
+host_kicks_user  = "Host is kicking %1 from the room"
+host_kicks_you   = "Host kicked you from the room %1"
 
-# %1 is replaced with user name
-user_joined_room         = %1 has joined the room
-user_exited_room         = %1 has exited the room
-user_shares_tracks       = %1 is sharing tracks
-user_shares_tracks_stops = %1 stopped sharing tracks
-user_dloads_tracks       = %1 is downloading tracks
-user_dloads_tracks_stops = %1 stopped downloading tracks
-user_ignored             = Ignoring user %1
-user_ignores             = You are being ignored by %1
+; %1 is replaced with user name
+user_joined_room         = "%1 has joined the room"
+user_exited_room         = "%1 has exited the room"
+user_shares_tracks       = "%1 is sharing tracks"
+user_shares_tracks_stops = "%1 stopped sharing tracks"
+user_dloads_tracks       = "%1 is downloading tracks"
+user_dloads_tracks_stops = "%1 stopped downloading tracks"
+user_ignored             = "Ignoring user %1"
+user_ignores             = "You are being ignored by %1"
 
-# %1 = the message that was refused/not received.
-# Caused because of user is playing or in do not disturb
-# mode so no windows are wanted to be opened.
-private_msg_refused      = User refused your message: %1
+; %1 = "the message that was refused/not received."
+; Caused because of user is playing or in do not disturb
+; mode so no windows are wanted to be opened.
+private_msg_refused      = "User refused your message: %1"
 
-flood_control = Flood control
+flood_control = "Flood control"
 
-global_ignore = Following users are in global ignore list because of disruptive behaviour and are ignored by you automatically. You can disable global ignoring from Settings if you wish to.
-# %1 is replaced by user name
-# %2 is replaced with reason
-user_global_ignore = Global ignore on user '%1', reason: %2
+global_ignore = "Following users are in global ignore list because of disruptive behaviour and are ignored by you automatically. You can disable global ignoring from Settings if you wish to."
+; %1 is replaced by user name
+; %2 is replaced with reason
+user_global_ignore = "Global ignore on user '%1', reason: %2"
 
 [room_settings_win]
-title       = Room settings
-topic       = &Topic:
-password    = &Password:
-pickups     = P&ickups
-laps        = &Laps:
-players     = Pl&ayers:
+title       = "Room settings"
+topic       = "&Topic:"
+password    = "&Password:"
+pickups     = "P&ickups"
+laps        = "&Laps:"
+players     = "Pl&ayers:"
 
 
-error_title    = Room settings error
-topic_missing  = Fill in room topic
+error_title    = "Room settings error"
+topic_missing  = "Fill in room topic"
 
 [room_win]
-leave         = Leave room
-settings      = Edit room settings
-launch        = Launch game
-share_tracks  = Share custom tracks with others
-dload_tracks  = Download custom tracks from host
+leave         = "Leave room"
+settings      = "Edit room settings"
+launch        = "Launch game"
+share_tracks  = "Share custom tracks with others"
+dload_tracks  = "Download custom tracks from host"
 
-host_launched = Host has launched Re-Volt. Your game will be automatically started in few seconds
-# %1 is replaced with the limit (in minutes)
+host_launched = "Host has launched Re-Volt. Your game will be automatically started in few seconds"
+; %1 is replaced with the limit (in minutes)
 join_too_late = "Can not join the race if the host has been\nplaying more than %1 minutes."
 join_too_late_title = "Too late to join"
 
 [private_message_win]
-close = Close chat
+close = "Close chat"
 
 [rv_launch]
-title_err = Failed to launch game
-not_found = Could not find Re-Volt. Please install (and run once) Re-Volt and restart application
-other     = Could not launch Re-Volt
+title_err = "Failed to launch game"
+not_found = "Could not find Re-Volt. Please install (and run once) Re-Volt and restart application"
+other     = "Could not launch Re-Volt"
 
-title     = Launching game
-text      = Click OK when you want to return.
+title     = "Launching game"
+text      = "Click OK when you want to return."
 
 
 [words]
-topic   = Topic
-host    = Host
-# For example, Note: room is password protected
-note    = Note
-players = Players
-laps    = Laps
-pickups = Pickups
-user_id = User ID
-warning = Warning
-status  = Status
-room    = Room
-yes     = ¿¹
-no      = ¾Æ´Ï¿À
-creating = Creating
+topic   = "Topic"
+host    = "Host"
+; For example, Note: room is password protected
+note    = "Note"
+players = "Players"
+laps    = "Laps"
+pickups = "Pickups"
+user_id = "User ID"
+warning = "Warning"
+status  = "Status"
+room    = "Room"
+yes     = "ï¿½ï¿½"
+no      = "ï¿½Æ´Ï¿ï¿½"
+creating = "Creating"
 
-minutes_short = mins
-dht           = P2P
-ctz           = Centralized
-connected     = Connected
-disconnected  = Disconnected
+minutes_short = "mins"
+dht           = "P2P"
+ctz           = "Centralized"
+connected     = "Connected"
+disconnected  = "Disconnected"
 
 
 [users_view]
-shares_tracks = User is sharing custom tracks
-dloads_tracks = User is getting custom tracks
-dht_not_found = Not found from decentralized network
-natted        = User's connection seems to be behind NAT
+shares_tracks = "User is sharing custom tracks"
+dloads_tracks = "User is getting custom tracks"
+dht_not_found = "Not found from decentralized network"
+natted        = "User's connection seems to be behind NAT"
 
 [user_popup]
-user_name     = User Name
-share_tracks  = Share tracks
-dload_tracks  = Download tracks
-kick          = Kick
-private_msg   = Send Private Message
-ignore_user   = Ignore user
+user_name     = "User Name"
+share_tracks  = "Share tracks"
+dload_tracks  = "Download tracks"
+kick          = "Kick"
+private_msg   = "Send Private Message"
+ignore_user   = "Ignore user"
 
 [status]
-chatting      = Chatting
-waiting       = Waiting in room
-playing       = Playing
-away          = Away
-dont_disturb  = Do Not Disturb
-unknown       = Unknown
+chatting      = "Chatting"
+waiting       = "Waiting in room"
+playing       = "Playing"
+away          = "Away"
+dont_disturb  = "Do Not Disturb"
+unknown       = "Unknown"
 
 [misc]
-user_not_validated = User ID untrusted (not validated)
-pass_needed        = Password required
+user_not_validated = "User ID untrusted (not validated)"
+pass_needed        = "Password required"
 
 
 [settings_win]
-title           = RV House Settings
-general_tab     = General
-colors_tab      = Colors
+title           = "RV House Settings"
+general_tab     = "General"
+colors_tab      = "Colors"
 
-flash_main_chat = Flash if message on main chat
-flash_room_chat = Flash if message on room chat
-flash_new_room  = Flash if new room created
-flash_new_user  = Flash if new user arrives
-flash_nick      = Flash if your nick seen on main chat
-away_minimize   = Away when main window minimized
-global_ignore   = Use global ignore list
+flash_main_chat = "Flash if message on main chat"
+flash_room_chat = "Flash if message on room chat"
+flash_new_room  = "Flash if new room created"
+flash_new_user  = "Flash if new user arrives"
+flash_nick      = "Flash if your nick seen on main chat"
+away_minimize   = "Away when main window minimized"
+global_ignore   = "Use global ignore list"
 
-base_color      = Base Color
-border_color    = Border Color
-text_color      = Text Color
-bg_color        = Background Color
-sel_text_color  = Selected Text Color 
-sel_bg_color    = Selected Background Color
-sel_mt_color    = Selected Menu Text Color
-sel_mbg_color   = Selected Menu Background Color
-tip_text_color  = Tip Text Color
-tip_bg_color    = Tip Background Color
+base_color      = "Base Color"
+border_color    = "Border Color"
+text_color      = "Text Color"
+bg_color        = "Background Color"
+sel_text_color  = "Selected Text Color "
+sel_bg_color    = "Selected Background Color"
+sel_mt_color    = "Selected Menu Text Color"
+sel_mbg_color   = "Selected Menu Background Color"
+tip_text_color  = "Tip Text Color"
+tip_bg_color    = "Tip Background Color"

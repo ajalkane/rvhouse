@@ -1,89 +1,92 @@
 #include <utility>
 
-#include <fx.h>
-#include <fxkeys.h>
+#include <QtGui>
 
 #include "../../messaging/message_login.h"
+#include "../../messaging/message_string.h"
+#include "../../messaging/messenger.h"
 #include "../../util.h"
 #include "../../validation.h"
-#include "../util/util.h"
+//#include "../util/util.h"
 #include "login.h"
 #include "register_user.h"
 
 namespace gui {
 namespace window {
 
-FXDEFMAP(login) login_map[]= {
-    FXMAPFUNCS(SEL_COMMAND, login::ID_LOGIN, 
-                            login::ID_REGISTER,
-                            login::on_network_command),
-};
-
-FXIMPLEMENT(login, FXDialogBox, login_map, ARRAYNUMBER(login_map));
-// FXIMPLEMENT(login, FXMainWindow, NULL, 0);
-
-login::login(FXWindow *owner) 
-    : FXDialogBox(owner, langstr("login_win/title")),
+login::login(QWidget *owner)
+    : QDialog(owner),
+      watched_object(this),
       _user_validated(false)
 {
-    FXMatrix *m = new FXMatrix(this, 2, MATRIX_BY_COLUMNS);
+    ACE_DEBUG((LM_DEBUG, "login::login\n"));
+    this->setWindowTitle(langstr("login_win/title"));
     
-    new FXLabel(m, langstr("login_win/user_id")); // "User ID:");
-    _user_field = new FXTextField(m, 16);
-    new FXLabel(m, langstr("login_win/password"));
-    _pass_field = new FXTextField(m, 16, NULL, 0,
-                                  TEXTFIELD_PASSWD|FRAME_SUNKEN|FRAME_THICK);
-    FXComposite *f = new FXHorizontalFrame(this, LAYOUT_CENTER_X);
-    FXLabel *l = new FXLabel(f, langstr("login_win/uses_rvzt_login"), NULL, LABEL_NORMAL,
-                             0,0,0,0, 0,0,0,0); // , NULL, JUSTIFY_CENTER_X|ICON_BEFORE_TEXT);
-    l->disable();
-    
-    _connect_check = new FXCheckButton(this, "Auto connect");
-    _connect_check->setCheck(true);
-    // Hide for now, always connect automatically until disconnect/connect
-    // functionality is implemented
-    _connect_check->hide();
-    
-    new FXSeparator(this);
-    FXHorizontalFrame *bframe = new FXHorizontalFrame(this, LAYOUT_CENTER_X);
-    _log_button = new FXButton(
-        bframe, langstr("login_win/login"), NULL, 
-        this, ID_LOGIN, 
-        BUTTON_NORMAL|BUTTON_INITIAL|BUTTON_DEFAULT /*,
-        0,0,0,0,20,20*/
-    );
-    _reg_button = new FXButton(
-        bframe, langstr("login_win/register"), NULL, 
-        this, ID_REGISTER /*,
-        BUTTON_NORMAL,
-        0,0,0,0,20,20 */ 
-    );
-    new FXButton(
-        bframe, langstr("login_win/quit"), NULL, 
-        this, ID_CANCEL /*,
-        BUTTON_NORMAL,
-        0,0,0,0,20,20 */   
-    );
-    
-    _log_button->setFocus();
-    
-    getAccelTable()->addAccel(MKUINT(KEY_F4,ALTMASK),this,FXSEL(SEL_COMMAND,ID_CANCEL));
+    _create_actions();
+    _create_widgets();
+    _create_layout();
+    _connect_signals();
+
 }
 
 void
-login::create() {
-    ACE_DEBUG((LM_DEBUG, "login::create2\n"));
-    FXDialogBox::create();
-    watched_window::create(this);
+login::_create_actions() {
+    ACE_DEBUG((LM_DEBUG, "login::_create_actions\n"));
+}
 
-    // For some reason, restore_size has to be in constructor
-    // if FXMainWindow and in create if FXDialogBox.
-    util::restore_size(this, "login_win");    
+void
+login::_create_widgets() {
+    ACE_DEBUG((LM_DEBUG, "login::_create_widgets\n"));
+    _user_field = new QLineEdit(this);
+    _pass_field = new QLineEdit(this);
+    _pass_field->setEchoMode(QLineEdit::Password);
+    
+    _log_button  = new QPushButton(langstr("login_win/login"), this);
+    _reg_button  = new QPushButton(langstr("login_win/register"), this);
+    _quit_button = new QPushButton(langstr("login_win/quit"), this);
+}
+
+void
+login::_connect_signals() {
+    ACE_DEBUG((LM_DEBUG, "login::_connect_signals\n"));
+
+    connect(_log_button,  SIGNAL(clicked()), this, SLOT(login_clicked()));
+    connect(_reg_button,  SIGNAL(clicked()), this, SLOT(register_clicked()));
+    connect(_quit_button, SIGNAL(clicked()), this, SLOT(reject()));
+}
+
+void
+login::_create_layout() {
+    ACE_DEBUG((LM_DEBUG, "login::_create_layout\n"));
+    QVBoxLayout      *l          = new QVBoxLayout;
+    QFormLayout      *form       = new QFormLayout;
+    QDialogButtonBox *button_box = new QDialogButtonBox;
+
+    QLabel      *label     = new QLabel(langstr("login_win/uses_rvzt_login"));
+    QFrame      *separator = new QFrame;
+
+    label->setDisabled(true);
+    label->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
+    separator->setFrameStyle(QFrame::HLine | QFrame::Sunken);
+    separator->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+
+    form->addRow(langstr("login_win/user_id"),  _user_field);
+    form->addRow(langstr("login_win/password"), _pass_field);
+
+    _log_button->setDefault(true);
+    button_box->addButton(_log_button, QDialogButtonBox::ActionRole);
+    button_box->addButton(_reg_button, QDialogButtonBox::ActionRole);
+    button_box->addButton(_quit_button, QDialogButtonBox::RejectRole);
+
+    l->addLayout(form);
+    l->addWidget(label, 1, Qt::AlignHCenter|Qt::AlignBottom);
+    l->addWidget(separator, 0, Qt::AlignBottom);
+    l->addWidget(button_box);
+
+    this->setLayout(l);
 }
 
 login::~login() {
-    ACE_DEBUG((LM_DEBUG, "login::dtor\n"));
-    util::store_size(this, "login_win");
 }
 
 const std::string &
@@ -100,8 +103,6 @@ const std::string &
 login::user(const std::string &u) {
     _user = u;
     _user_field->setText(_user.c_str());
-    if (!_user.empty() && !_pass.empty())
-        _log_button->setFocus();
     return _user;
 }
 
@@ -109,8 +110,6 @@ const std::string &
 login::pass(const std::string &p) {
     _pass = p;
     _pass_field->setText(_pass.c_str());
-    if (!_user.empty() && !_pass.empty())
-        _log_button->setFocus();
     return _pass;
 }
 
@@ -121,106 +120,102 @@ login::user_validated() const {
 
 bool
 login::auto_connect() const {
-    return _connect_check->getCheck();
+    // Always auto connect for now. RV House does not have disconnect/connect buttons at the moment
+    return true;
+    // return _connect_check->getCheck();
 }
 
-long 
-login::on_network_command(FXObject *from, FXSelector sel, void *) {
-    ::message *msg = NULL;
+void
+login::login_clicked() {
+    ::message *msg = _login_message();
+    if (msg) {
+        _user           = _user_field->text().toLatin1().constData();
+        _pass           = _pass_field->text().toLatin1().constData();
+        _user_validated = false;
+        _log_button->setDisabled(true);
+        _reg_button->setDisabled(true);
 
-    switch (FXSELID(sel)) {
-    case ID_LOGIN:
-        msg = _login_message();
-        if (msg) {
-            _user           = _user_field->getText().text();
-            _pass           = _pass_field->getText().text();
-            _user_validated = false;
-            _log_button->disable();
-            _reg_button->disable();
-        }
-        break;
-    case ID_REGISTER:
-    {
-        ACE_DEBUG((LM_DEBUG, "Register window message received\n"));
-        // Deleted automatically by house_app as is watched_window type     
-        register_user *reg_win = new register_user(this);
-        reg_win->show(PLACEMENT_SCREEN);
-        if (!reg_win->execute(PLACEMENT_SCREEN)) {
-            ACE_DEBUG((LM_DEBUG, "Reg cancel\n"));
-        }
-        delete reg_win;
+        net_messenger()->send_msg(msg);
     }
-        break;
-    }
-    
-    if (msg) net_messenger()->send_msg(msg);
+}
 
-    return 1;       
+void
+login::register_clicked() {
+    register_user reg_win(this);
+    reg_win.exec();
 }
 
 ::message *
 login::_login_message() {
-    if (_user_field->getText().empty()) {
-        FXMessageBox::error(this, FX::MBOX_OK, 
-                            langstr("login_win/login_err_topic"),
-                            langstr("login_win/fill_user"));
+    const char *error = NULL;
+    if (_user_field->text().isEmpty()) {
+        error = langstr("login_win/fill_user");
+    }
+    else if (_pass_field->text().isEmpty()) {
+        error = langstr("login_win/fill_pass");
+    }
+    else if (!validate_user_id(_user_field->text().toLatin1().constData())) {
+        error = langstr("login_win/invalid_user");
+    }
+    else if (!validate_password(_pass_field->text().toLatin1().constData())) {
+        error = langstr("login_win/invalid_pass");
+    }
+
+    if (error != NULL) {
+        QMessageBox msg_box(this);
+        msg_box.setWindowTitle(langstr("login_win/login_err_topic"));
+        ACE_DEBUG((LM_DEBUG, "login::_login_message setting box text to '%s'\n", error));
+        msg_box.setText(error);
+        msg_box.setIcon(QMessageBox::Critical);
+        msg_box.exec();
         return NULL;
     }
-    if (_pass_field->getText().empty()) {
-        FXMessageBox::error(this, FX::MBOX_OK, langstr("login_win/login_err_topic"),
-                            langstr("login_win/fill_pass"));
-        return NULL;
-    }
-    
-    if (!validate_user_id(_user_field->getText().text())) {
-        FXMessageBox::error(this, FX::MBOX_OK, langstr("login_win/login_err_topic"),
-                            langstr("login_win/invalid_user"));
-        return NULL;
-    }
-    if (!validate_password(_pass_field->getText().text())) {
-        FXMessageBox::error(this, FX::MBOX_OK, langstr("login_win/login_err_topic"),
-                            langstr("login_win/invalid_pass"));
-        return NULL;
-    }
-            
+
     return new message_login(::message::login,
-                             _user_field->getText().text(),
-                             _pass_field->getText().text());
+                             _user_field->text().toLatin1().constData(),
+                             _pass_field->text().toLatin1().constData());
 }
 
 void
 login::handle_message(::message *msg) {
     ACE_DEBUG((LM_DEBUG, "login: received msg id %d\n", msg->id()));
-    
     switch (msg->id()) {
     case ::message::login_err:
     {
-        int ret = FXMessageBox::error(this, FX::MBOX_YES_NO, 
-                  langstr("login_win/login_err_topic"),
-                  langstr("login_win/server_down"));
-        _log_button->enable();
-        _reg_button->enable();
-        if (ret == MBOX_CLICKED_YES) {
-            handle(this, FXSEL(SEL_COMMAND, ID_ACCEPT), NULL);      
+        QMessageBox msg_box(this);
+        msg_box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msg_box.setWindowTitle(langstr("login_win/login_err_topic"));
+        msg_box.setText(langstr("login_win/server_down"));
+        msg_box.setIcon(QMessageBox::Warning);
+        int ret = msg_box.exec();
+
+        _log_button->setEnabled(true);
+        _reg_button->setEnabled(true);
+        if (ret == QMessageBox::Yes) {
+            this->accept();
         }
     }
         break;
     case ::message::login_fail:
-        FXMessageBox::error(this, FX::MBOX_OK, 
-                            langstr("login_win/login_err_topic"),
-                            langstr("login_win/validation_err"));
-        _log_button->enable();
-        _reg_button->enable();
+    {
+        QMessageBox msg_box(this);
+        msg_box.setWindowTitle(langstr("login_win/login_err_topic"));
+        msg_box.setText(langstr("login_win/validation_err"));
+        msg_box.setIcon(QMessageBox::Information);
+        msg_box.exec();
+
+        _log_button->setEnabled(true);
+        _reg_button->setEnabled(true);
+    }
         break;
     case ::message::login_done:
     {
         message_login *m = dynamic_ptr_cast<message_login>(msg);
-        _log_button->enable();
-        _reg_button->enable();
+        _log_button->setEnabled(true);
+        _reg_button->setEnabled(true);
         _user           = m->user();
         _user_validated = true;
-        handle(this, FXSEL(SEL_COMMAND, ID_ACCEPT), NULL);
-        
+        this->accept();
     }
         break;
     }

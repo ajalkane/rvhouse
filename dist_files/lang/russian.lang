@@ -1,313 +1,313 @@
 [common]
-ok_button       = "&ДА"
-cancel_button   = "&Отмена"
-apply_button    = "&Применить"
+ok_button       = "&пїЅпїЅ"
+cancel_button   = "&пїЅпїЅпїЅпїЅпїЅпїЅ"
+apply_button    = "&пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
 
 [menu_file]
-title           = "&Файл"
-quit            = "&Выход\tCtl-Q"
+title           = "&пїЅпїЅпїЅпїЅ"
+quit            = "&пїЅпїЅпїЅпїЅпїЅ\tCtl-Q"
 
 [menu_edit]
-title           = "&Изменить"
-settings        = "&Настройки...\tAlt-S"
+title           = "&пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+settings        = "&пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ...\tAlt-S"
 
 [menu_player]
-title           = "&Игрок"
-status          = "Состояние"
-create_room     = "Создать комнату...\tCtl-R"
-join_room       = "Войти в комнату"
-chatting        = "В чате\tShift-Alt-C"
-playing         = "Играю\tShift-Alt-P"
-away            = "Отошел\tShift-Alt-A"
-dont_disturb    = "Не беспокоить\tShift-Alt-D"
+title           = "&пїЅпїЅпїЅпїЅпїЅ"
+status          = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+create_room     = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ...\tCtl-R"
+join_room       = "пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+chatting        = "пїЅ пїЅпїЅпїЅпїЅ\tShift-Alt-C"
+playing         = "пїЅпїЅпїЅпїЅпїЅ\tShift-Alt-P"
+away            = "пїЅпїЅпїЅпїЅпїЅпїЅ\tShift-Alt-A"
+dont_disturb    = "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ\tShift-Alt-D"
 
 [menu_comp]
-title           = "&Соревнования"
+title           = "&пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
 rvl             = "RV League"
-rvl_home        = "WWW-сайт"
-rvl_champ       = "Турниры"
-rvl_cup         = "Кубки"
+rvl_home        = "WWW-пїЅпїЅпїЅпїЅ"
+rvl_champ       = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+rvl_cup         = "пїЅпїЅпїЅпїЅпїЅ"
 
 [menu_help]
-title           = "&Справка"
-router_help     = "Как настроить Router/Firewall"
-faq             = "Вопросы про RV House"
-conn_help       = "Помощь по подключению"
-about_house     = "Про RV House"
+title           = "&пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+router_help     = "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Router/Firewall"
+faq             = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ RV House"
+conn_help       = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+about_house     = "пїЅпїЅпїЅ RV House"
 
 [login_win]
-title           = Вход
-user_id         = &Имя:
-password        = &Пароль:
-uses_rvzt_login = Uses RVZT login
-login           = &Вход
-register        = &Регистрация
-quit            = &Выход
+title           = "пїЅпїЅпїЅпїЅ"
+user_id         = "&пїЅпїЅпїЅ:"
+password        = "&пїЅпїЅпїЅпїЅпїЅпїЅ:"
+uses_rvzt_login = "Uses RVZT login"
+login           = "&пїЅпїЅпїЅпїЅ"
+register        = "&пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+quit            = "&пїЅпїЅпїЅпїЅпїЅ"
 
-login_err_topic = Не удалось войти
-fill_user       = Впишите имя
-fill_pass       = Впишите пароль
-invalid_user    = Недопустимое имя, должно состоять из 3 -- 20 символов: a-z, A-Z и _
-invalid_pass    = Недопустимый пароль, должен состоять из 3 -- 20 символов: a-z, A-Z и _
-server_down     = Нет связи с сервером регистрации, Ваше имя не опознано. Всё равно продолжить?
-validation_err  = Неверное имя или пароль
+login_err_topic = "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ"
+fill_user       = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ"
+fill_pass       = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"
+invalid_user    = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 3 -- 20 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: a-z, A-Z пїЅ _"
+invalid_pass    = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 3 -- 20 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: a-z, A-Z пїЅ _"
+server_down     = "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?"
+validation_err  = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"
 
 
 [register_win]
-title           = Регистрация
-user_id         = &Имя:
-password        = &Пароль:
-repassword      = &Повторите пароль:
-email           = &E-mail:
-register        = Подтвердить
-cancel          = &Отмена
+title           = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+user_id         = "&пїЅпїЅпїЅ:"
+password        = "&пїЅпїЅпїЅпїЅпїЅпїЅ:"
+repassword      = "&пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ:"
+email           = "&E-mail:"
+register        = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+cancel          = "&пїЅпїЅпїЅпїЅпїЅпїЅ"
 
-reg_err_topic   = Невозможно зарегистрировать пользователя
-reg_ok_topic    = Регистрация успешна
-fill_user       = Впишите имя
-fill_pass       = Впишите пароль
-pass_mismatch   = Пароли не совпадают!
-invalid_user    = Недопустимое имя, должно состоять из 3 -- 20 символов: a-z, A-Z и _
-invalid_pass    = Недопустимый пароль, должен состоять из 3 -- 20 символов: a-z, A-Z и _
-invalid_email   = Недопустимый адрес E-mail 
-server_down     = Нет связи с сервером, регистрация невозможна.
-user_reserved   = Указанное имя уже используется. Пожалуйста, выберите другое
-reg_ok          = Регистрация прошла успешно, можете войти со своим именем и паролем
+reg_err_topic   = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+reg_ok_topic    = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+fill_user       = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ"
+fill_pass       = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"
+pass_mismatch   = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!"
+invalid_user    = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 3 -- 20 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: a-z, A-Z пїЅ _"
+invalid_pass    = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ 3 -- 20 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: a-z, A-Z пїЅ _"
+invalid_email   = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ E-mail "
+server_down     = "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ."
+user_reserved   = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"
+reg_ok          = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
 
 
 [about_win]
-title         = О программе
-# %1 is replace with the license. Example: Released under GPL
-license       = Вид лицензии: %1
-# %1 is replaced by the author of used icons. Icons by ADX
-icons_by      = Автор значков %1
-# %1 is replaced by the author of RV House icon. RV House icon by Pigasque
-house_icon_by = Автор значков RV House: %1
-other_sites   = Полезные сылки:
-using         = Используются:
-# %1 is replaced by the library name, %2 by library author
-# ACE network library (by Douglas C. Schmidt)
-using_lib     = %1 (by %2)
-translations  = Переводы:
-# %1 is replaced by the language name, %2 by author of translation
-# %3 by translation authors name %4 by the version of translation
-# Example:
-# Spanish by ADX <the.adx@gmail.com> for v0.81
-translation   = %1, автор перевода: %2 <%3>, для версии v%4
+title         = "пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+; %1 is replace with the license. Example: Released under GPL
+license       = "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: %1"
+; %1 is replaced by the author of used icons. Icons by ADX
+icons_by      = "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ %1"
+; %1 is replaced by the author of RV House icon. RV House icon by Pigasque
+house_icon_by = "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ RV House: %1"
+other_sites   = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ:"
+using         = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:"
+; %1 is replaced by the library name, %2 by library author
+; ACE network library (by Douglas C. Schmidt)
+using_lib     = "%1 (by %2)"
+translations  = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:"
+; %1 is replaced by the language name, %2 by author of translation
+; %3 by translation authors name %4 by the version of translation
+; Example:
+; Spanish by ADX <the.adx@gmail.com> for v0.81
+translation   = "%1, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: %2 <%3>, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ v%4"
 
 [app]
-rv_not_found_title = "Re-Volt установлен?"
+rv_not_found_title = "Re-Volt пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?"
 rv_not_found       = "Re-Volt not found from registry\nHave you installed and run it\nbefore starting this application?"
 rv_house_running   = "RV House is already running!"
-join_room_full     = В комнате тесно!
-join_invalid_pass  = Invalid password given!
-join_refused       = Host refused joining room
-join_err_topic     = Could not join room
+join_room_full     = "пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ!"
+join_invalid_pass  = "Invalid password given!"
+join_refused       = "Host refused joining room"
+join_err_topic     = "Could not join room"
 dht_connect_err1   = "Could not connect to decentralized network"
-dht_connect_err2   = This is probably because your router or firewall
+dht_connect_err2   = "This is probably because your router or firewall"
 dht_connect_err3   = "is not setup correctly.\n"
-dht_connect_err4   = Correcting this up is important because
-dht_connect_err5   = otherwise you might not see all players.
-dht_connect_err6   = Also, this part of RV House is central to my
-dht_connect_err7   = university thesis so I'd appreciate it a lot if
+dht_connect_err4   = "Correcting this up is important because"
+dht_connect_err5   = "otherwise you might not see all players."
+dht_connect_err6   = "Also, this part of RV House is central to my"
+dht_connect_err7   = "university thesis so I'd appreciate it a lot if"
 dht_connect_err8   = "you can fix it :).\n"
-dht_connect_err9   = When you press OK, you will be directed
-dht_connect_err10  = to a router/firewall settings help page.
-dht_connect_err_title = "Ошибка подключения"
+dht_connect_err9   = "When you press OK, you will be directed"
+dht_connect_err10  = "to a router/firewall settings help page."
+dht_connect_err_title = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
 
 [new_version_win]
-title     = New RV House version
-force_msg = Надо обновить RV House! Старая версия не подходит!
-# %1 is replaced by latest RV House version number, %2 by
-# users RV House version.
-msg       = доступна версия RV House v%1, у вас - v%2
-new_since = Что изменилось:
-download  = Загрузить обновление отсюда:
+title     = "New RV House version"
+force_msg = "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ RV House! пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!"
+; %1 is replaced by latest RV House version number, %2 by
+; users RV House version.
+msg       = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ RV House v%1, пїЅ пїЅпїЅпїЅ - v%2"
+new_since = "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:"
+download  = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ:"
 
 [rvtm_err]
-title     = RV Track Manager не запускается! \n Вот облом.
-not_found = "Не найден RV Track Manager.\nдля обмена трэками нужна версия \n RV Track Manager не ниже 1.5.0 \nКачни отсюда:"
-running   = RV Track Manager уже запущен 
-other     = RV Track Manager не запускается!
+title     = "RV Track Manager пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ! \n пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ."
+not_found = "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ RV Track Manager.\nпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ \n RV Track Manager пїЅпїЅ пїЅпїЅпїЅпїЅ 1.5.0 \nпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ:"
+running   = "RV Track Manager пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ "
+other     = "RV Track Manager пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!"
 
 [message_box]
-ok     = "&ДА"
-cancel = "&Отмена"
-yes    = "&Да"
-no     = "&Нет"
-quit   = "&Выход"
-save   = "&Сохранить"
+ok     = "&пїЅпїЅ"
+cancel = "&пїЅпїЅпїЅпїЅпїЅпїЅ"
+yes    = "&пїЅпїЅ"
+no     = "&пїЅпїЅпїЅ"
+quit   = "&пїЅпїЅпїЅпїЅпїЅ"
+save   = "&пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
 
 [main_win]
-exit        = Выйти
-create_room = Создать комнату
-join_room   = Войти в комнату
-refresh     = Обновить
-cancel      = Отмена
-about       = Информация
+exit        = "пїЅпїЅпїЅпїЅпїЅ"
+create_room = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+join_room   = "пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+refresh     = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+cancel      = "пїЅпїЅпїЅпїЅпїЅпїЅ"
+about       = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
 
-ask_room_pass_title = Защищено паролем
-ask_room_pass       = Введите пароль
+ask_room_pass_title = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+ask_room_pass       = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"
 
-joining_room  = Присоединяемся
+joining_room  = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
 
-dht_connecting        = P2P соединяем
-dht_connected         = P2P есть контакт
-dht_disconnecting     = P2P отключаем
-dht_disconnected      = P2P отключено
-dht_upding_contacts   = P2P смотрим кто в чате...
-dht_upd_contacts      = P2P список обновлён 
-dht_upd_contacts_fail = P2P список не обновился
-dht_joining           = P2P входим
-dht_joined            = P2P соединён
-dht_leaving           = P2P нас покидает
-dht_left              = P2P оставлено
-dht_searching         = P2P поиск людей
-dht_announcing        = P2P регистрация
+dht_connecting        = "P2P пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+dht_connected         = "P2P пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+dht_disconnecting     = "P2P пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+dht_disconnected      = "P2P пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+dht_upding_contacts   = "P2P пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ..."
+dht_upd_contacts      = "P2P пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ "
+dht_upd_contacts_fail = "P2P пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+dht_joining           = "P2P пїЅпїЅпїЅпїЅпїЅпїЅ"
+dht_joined            = "P2P пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+dht_leaving           = "P2P пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+dht_left              = "P2P пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+dht_searching         = "P2P пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ"
+dht_announcing        = "P2P пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
 
-ctz_connecting        = Подключение к центральной
-ctz_connected         = Есть соединение с центром
-ctz_disconnecting     = Отключение от центра
-ctz_disconnected      = Отключен от центральной
+ctz_connecting        = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+ctz_connected         = "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+ctz_disconnecting     = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"
+ctz_disconnected      = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
 
-# %1 is replacedwith the site where user's IP is fetched from
-ip_detecting = Определение IP с помощью %1
-# %1 is replaced with the IP obtained
-ip_detected  = Обнаружен IP: %1
-# %1 is replaced with the error reason
-ip_failed    = Определение IP невозможно: %1
+; %1 is replacedwith the site where user's IP is fetched from
+ip_detecting = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ IP пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ %1"
+; %1 is replaced with the IP obtained
+ip_detected  = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ IP: %1"
+; %1 is replaced with the error reason
+ip_failed    = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ IP пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: %1"
 
 [chat]
-# %1 is replaced with user name
-user_entered = %1 с нами
-user_exited  = %1 нас покидает
-# %1 is replaced with room name
-room_created = Создана комната: "%1"
-room_closed  = Комната закрыта: "%1"
+; %1 is replaced with user name
+user_entered = "%1 пїЅ пїЅпїЅпїЅпїЅ"
+user_exited  = "%1 пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+; %1 is replaced with room name
+room_created = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: "%1""
+room_closed  = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: "%1""
 
-host_kicked_host = Хозяин комнаты %1 выгнал сам себя.
-host_kicks_user  = Хозяин прогнал %1 из комнаты
-host_kicks_you   = Хозяин вас выгнал из комнаты %1
+host_kicked_host = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ %1 пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ."
+host_kicks_user  = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ %1 пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+host_kicks_you   = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ %1"
 
-# %1 is replaced with user name
-user_joined_room         = %1 входит в комнату
-user_exited_room         = %1 уходит из комнаты
-user_shares_tracks       = %1 делится трэками
-user_shares_tracks_stops = %1 не делится трэками
-user_dloads_tracks       = %1 качает трэк
-user_dloads_tracks_stops = %1 прекратил скачивать трэки
+; %1 is replaced with user name
+user_joined_room         = "%1 пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+user_exited_room         = "%1 пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+user_shares_tracks       = "%1 пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+user_shares_tracks_stops = "%1 пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+user_dloads_tracks       = "%1 пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ"
+user_dloads_tracks_stops = "%1 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ"
 
-# %1 = the message that was refused/not received.
-# Caused because of user is playing or in do not disturb
-# mode so no windows are wanted to be opened.
-private_msg_refused      = Сообщение не дошло: %1
+; %1 = "the message that was refused/not received."
+; Caused because of user is playing or in do not disturb
+; mode so no windows are wanted to be opened.
+private_msg_refused      = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ: %1"
 
-flood_control = Контроль болтливости
+flood_control = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
 
 [room_settings_win]
-title       = Настройки комнаты
-topic       = &Заголовок:
-password    = &Пароль:
-pickups     = P&ickups
-laps        = &Кругов:
-players     = И&гроков:
+title       = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+topic       = "&пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:"
+password    = "&пїЅпїЅпїЅпїЅпїЅпїЅ:"
+pickups     = "P&ickups"
+laps        = "&пїЅпїЅпїЅпїЅпїЅпїЅ:"
+players     = "пїЅ&пїЅпїЅпїЅпїЅпїЅпїЅ:"
 
-error_title    = Недопустимые настройки
-topic_missing  = Впишите заголовок
+error_title    = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+topic_missing  = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
 
 [room_win]
-leave         = Выйти
-settings      = Изменить настройки
-launch        = Запуск игры
-share_tracks  = раздавать свои трэки
-dload_tracks  = Скачать нестандартные трэки у хозяина
+leave         = "пїЅпїЅпїЅпїЅпїЅ"
+settings      = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+launch        = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ"
+share_tracks  = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ"
+dload_tracks  = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
 
-host_launched = Хозяин запустил игру. Через несколько секунд и у вас запустится.
-# %1 is replaced with the limit (in minutes)
-join_too_late = "Невозможно соединиться,\nигра длится более %1 мин."
-join_too_late_title = "Слишком поздно"
+host_launched = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ."
+; %1 is replaced with the limit (in minutes)
+join_too_late = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ,\nпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ %1 пїЅпїЅпїЅ."
+join_too_late_title = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"
 
 [private_message_win]
-close = Закрыть окно 
+close = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ "
 
 [rv_launch]
-title_err = Игра не запускается
-not_found = Re-Volt не найден. Установите (и запустите 1 раз) Re-Volt и перезапустите программу
-other     = Игра не запускается
+title_err = "пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+not_found = "Re-Volt пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 1 пїЅпїЅпїЅ) Re-Volt пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+other     = "пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
 
-title     = Запуск игры
-text      = Нажмите OK для возврата.
+title     = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ"
+text      = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ OK пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ."
 
 
 [words]
-topic   = Заголовок
-host    = Хозяин
-# For example, Note: room is password protected
-note    = Внимание
-players = Игроков
-laps    = Кругов
-pickups = Pickups
-user_id = Имя
-warning = Предупреждение
-status  = Состояние
-room    = Комната
-yes     = Да
-no      = Нет
-creating = Создаём
+topic   = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+host    = "пїЅпїЅпїЅпїЅпїЅпїЅ"
+; For example, Note: room is password protected
+note    = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+players = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+laps    = "пїЅпїЅпїЅпїЅпїЅпїЅ"
+pickups = "Pickups"
+user_id = "пїЅпїЅпїЅ"
+warning = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+status  = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+room    = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+yes     = "пїЅпїЅ"
+no      = "пїЅпїЅпїЅ"
+creating = "пїЅпїЅпїЅпїЅпїЅпїЅ"
 
-minutes_short = mins
-dht           = P2P
-ctz           = Centralized
-connected     = Connected
-disconnected  = Disconnected
+minutes_short = "mins"
+dht           = "P2P"
+ctz           = "Centralized"
+connected     = "Connected"
+disconnected  = "Disconnected"
 
 
 [users_view]
-shares_tracks = Чел делится дополнительными трэками
-dloads_tracks = Чел качает дополнительные трэки
-dht_not_found = Не найдено в центральной сети
-natted        = Чел, кажется, за забором NAT 
+shares_tracks = "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+dloads_tracks = "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ"
+dht_not_found = "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ"
+natted        = "пїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ NAT "
 
 [user_popup]
-user_name     = Имя 
-share_tracks  = Делиться трэками
-dload_tracks  = Качать трэки
-kick          = Выставить за дверь
-private_msg   = Послать сообщение
+user_name     = "пїЅпїЅпїЅ "
+share_tracks  = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+dload_tracks  = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ"
+kick          = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ"
+private_msg   = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
 
 [status]
-chatting      = В чате
-waiting       = В комнате
-playing       = Играют
-away          = Нет на месте
-dont_disturb  = Не беспокоить
-unknown       = хз
+chatting      = "пїЅ пїЅпїЅпїЅпїЅ"
+waiting       = "пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+playing       = "пїЅпїЅпїЅпїЅпїЅпїЅ"
+away          = "пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ"
+dont_disturb  = "пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+unknown       = "пїЅпїЅ"
 
 [misc]
-user_not_validated = Имя неопознано
-pass_needed        = Нужен пароль
+user_not_validated = "пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+pass_needed        = "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"
 
 
 [settings_win]
-title           = Настройки RV House
-general_tab     = Общие
-colors_tab      = Цвета
+title           = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ RV House"
+general_tab     = "пїЅпїЅпїЅпїЅпїЅ"
+colors_tab      = "пїЅпїЅпїЅпїЅпїЅ"
 
-flash_main_chat = Мигать при сообщениях в чате
-flash_room_chat = Мигать при сообщениях в комнатах
-flash_new_room  = Мигать при создании комнат
-flash_new_user  = Мигать про входе игроков
-flash_nick      = Мигать при виде своего имени в сообщении
+flash_main_chat = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ"
+flash_room_chat = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+flash_new_room  = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"
+flash_new_user  = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+flash_nick      = "пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
 
-away_minimize   = Ставить "нет на месте" при сворачивании окна
+away_minimize   = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ" пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ"
 
-base_color      = Основной цвет окна
-border_color    = Цвет границы
-text_color      = Цвет текста
-bg_color        = Цвет фона
-sel_text_color  = Цвет выделенного текста 
-sel_bg_color    = Цвет фона выделенного текста 
-sel_mt_color    = Цвет текста выделенного пункта меню
-sel_mbg_color   = Цвет фона текста выделенного пункта меню
-tip_text_color  = Цвет текста подсказки
-tip_bg_color    = Цвет фона подсказки
+base_color      = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ"
+border_color    = "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+text_color      = "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ"
+bg_color        = "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ"
+sel_text_color  = "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ "
+sel_bg_color    = "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ "
+sel_mt_color    = "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ"
+sel_mbg_color   = "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ"
+tip_text_color  = "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"
+tip_bg_color    = "пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ"

@@ -1,7 +1,7 @@
-#ifndef _GUI_WATCHED_OBJECT_H_
-#define _GUI_WATCHED_OBJECT_H_
+#ifndef GUI_WATCHED_OBJECT_H_
+#define GUI_WATCHED_OBJECT_H_
 
-#include <fx.h>
+#include <QObject>
 
 #include "../common.h"
 
@@ -10,15 +10,17 @@ namespace gui {
  * Reports back stuff between main application <-> object of states
  */
 class watched_object {
+private:
+    bool _object_destroyed_sent;
 protected:
-    FXObject *_self;
+    QObject *_self;
+
+    void _object_destroyed();
 public:
-    watched_object();
-    // watched_window(FXWindow *self);
-    virtual ~watched_object();  
-    void create(FXObject *self);
+    watched_object(QObject *self);
+    virtual ~watched_object();
 };
 
 } // ns gui
 
-#endif //_GUI_WATCHED_OBJECT_H_
+#endif //GUI_WATCHED_OBJECT_H_

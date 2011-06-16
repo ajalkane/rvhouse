@@ -1,3 +1,5 @@
+#include <QtGui>
+
 #include "../main.h"
 #include "../model/self.h"
 #include "../chat_gaming/user.h"
@@ -6,31 +8,25 @@
 
 namespace gui {
 
-FXIMPLEMENT(modal_dialog_guard, FXObject, NULL, 0);
 
-modal_dialog_guard::modal_dialog_guard() {
+modal_dialog_guard::modal_dialog_guard(QWidget *parent) : QDialog(parent), watched_object(this) {
     ACE_DEBUG((LM_DEBUG, "modal_dialog_guard::ctor\n"));
-    watched_object::create(this);
+    this->setModal(true);
+    this->setAttribute(Qt::WA_DeleteOnClose);
 }
     
 modal_dialog_guard::~modal_dialog_guard() {
     ACE_DEBUG((LM_DEBUG, "modal_dialog_guard::dtor\n"));
 }
 
-void
-modal_dialog_guard::display() {
-    // Must implement by derived classes
-    assert(0);  
-    }
-
-
 bool 
 modal_dialog_guard::can_display() {
     ACE_DEBUG((LM_DEBUG, "modal_dialog_guard::can_display\n"));
-    if (::app()->getModalWindow()) {
-        ACE_DEBUG((LM_DEBUG, "gui_dialog_guard::can_display: not because modal window\n"));     
-        return false;
-    }
+    // Qt doesn't seem to have problems displaying modal dialogs upon modal dialogs, so this code is commented out
+    //    if (::app()->activeModalWidget()) {
+    //        ACE_DEBUG((LM_DEBUG, "gui_dialog_guard::can_display: not because modal window\n"));
+    //        return false;
+    //    }
     if (self_model()->user().status() == chat_gaming::user::status_playing) {
         ACE_DEBUG((LM_DEBUG, "gui_dialog_guard::can_display: not because playing\n"));              
         return false;
@@ -43,8 +39,7 @@ bool
 modal_dialog_guard::display_if_possible() {
     ACE_DEBUG((LM_DEBUG, "modal_dialog_guard::display_if_possible()\n"));
     if (can_display()) {
-        display();
-        delete this;
+        this->show();
         return true;
     }
     return false;

@@ -1,5 +1,4 @@
 #include <ace/ACE.h>
-#include <fx.h>
 
 #include "../config_file.h"
 #include "reporter/client.h"

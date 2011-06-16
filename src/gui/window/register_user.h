@@ -1,52 +1,53 @@
-#ifndef _REGISTER_WINDOW_H_
-#define _REGISTER_WINDOW_H_
+#ifndef REGISTER_WINDOW_H_
+#define REGISTER_WINDOW_H_
 
-#include <fx.h>
+#include <QDialog>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QWidget>
 
 #include "../../common.h"
-#include "../../messaging/messenger.h"
 #include "../../messaging/message.h"
 #include "../../messaging/message_string.h"
 #include "../message_handler.h"
-#include "../watched_window.h"
+#include "../watched_object.h"
 
 namespace gui {
 namespace window {
 
 class register_user 
-  : public FXDialogBox, 
-    public message_handler,
-    public watched_window 
+    : public QDialog,
+      public message_handler,
+      public watched_object
 {
-    FXDECLARE(register_user)
+    Q_OBJECT
     
-    FXTextField *_user_field;
-    FXTextField *_pass_field;
-    FXTextField *_pas2_field;
-    FXTextField *_mail_field;
+    QLineEdit *_user_field;
+    QLineEdit *_pass_field;
+    QLineEdit *_pas2_field;
+    QLineEdit *_mail_field;
     
-    FXButton    *_reg_button;
+    QPushButton *_reg_button;
+    QPushButton *_cancel_button;
     
-    FXHorizontalFrame *_toolbar;
+    void _create_actions();
+    void _create_widgets();
+    void _create_layout();
+    void _connect_signals();
 
     ::message *_register_message();
     
-protected:
-    register_user() {}
-
 public:
-    enum {
-        ID_REGISTER = FXDialogBox::ID_LAST,
-    };
+    register_user(QWidget *parent);
     
-    register_user(FXWindow *owner);
-    virtual void create();
-    
-    long on_network_command(FXObject *from, FXSelector sel, void *);    
+    // long on_network_command(FXObject *from, FXSelector sel, void *);
     void handle_message(::message *msg);
+
+public slots:
+    void register_clicked();
 };
 
 } // ns window
 } // ns gui
 
-#endif //_REGISTER_WINDOW_H_
+#endif //REGISTER_WINDOW_H_

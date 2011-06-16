@@ -1,65 +1,90 @@
-#ifndef _HOUSE_WINDOW_H_
-#define _HOUSE_WINDOW_H_
+#ifndef HOUSE_WINDOW_H_
+#define HOUSE_WINDOW_H_
 
 #include <string>
 #include <map>
 #include <vector>
-#include <fx.h>
+
+#include <time.h>
+#include <stdlib.h>
+
+#include <QLineEdit>
+#include <QMainWindow>
+#include <QMenu>
+#include <QAction>
+#include <QActionGroup>
+#include <QWidget>
+#include <QString>
+#include <QSplitter>
 
 #include <ace/Time_Value.h>
 #include <time.h>
 
-#include "../../common.h"
-#include "../../messaging/messenger.h"
+#include "../../chat_gaming/user.h"
 #include "../../messaging/message.h"
-#include "../../messaging/message_string.h"
 #include "../../messaging/message_block_users.h"
 #include "../../multi_feed/user_item.h"
+#include "../util/flood_control.h"
 #include "../view/chat.h"
 #include "../view/users.h"
 #include "../view/rooms.h"
 #include "../message_handler.h"
-#include "../watched_window.h"
-#include "../util/flood_control.h"
 
 #include "../../networking/ip_block/store.h"
+
+#include "size_restoring_window.h"
 
 namespace gui {
 namespace window {
 
-class house 
-  : public FXMainWindow, 
-    public message_handler, 
-    public watched_window,
-    public view::users::observer,    
+class house :
+    public size_restoring_window<QMainWindow>,
+    public message_handler,
+    public view::users::observer,
     public view::rooms::observer
 {
-    FXDECLARE(house)
+    Q_OBJECT
 
-    // FXHorizontalFrame *_toolbar;
-    // FXComposite       *_toolbar;
-    // FXLabel       *_status;
-    FXStatusBar       *_status;
-    FXTextField       *_msg_field;
-    FXButton          *_interrupt_button;
-    FXButton          *_room_create_button;
-    FXButton          *_room_join_button;
-    FXButton          *_refresh_button;
-    // Menus
-    FXMenuBar         *_menubar;
-    FXMenuPane        *_menufile;
-    FXMenuPane        *_menuedit;
-    FXMenuPane        *_menuplayer;
-    FXMenuPane        *_menucomp;
-    FXMenuPane        *_menuhelp;
-    
-    FXMenuCommand     *_room_create_menu;
-    FXMenuCommand     *_room_join_menu;
-    
-    view::chat        *_chat_view;
-    view::users       *_users_view;
-    view::rooms       *_rooms_view;
-    
+    typedef size_restoring_window<QMainWindow> super;
+
+    QMenu *_menu_file;
+    QMenu *_menu_edit;
+    QMenu *_menu_player;
+    QMenu *_menu_comp;
+    QMenu *_menu_help;
+
+    QAction *_action_quit;
+    QAction *_action_settings;
+    QAction *_action_status;
+
+    QActionGroup *_actiongroup_status;
+    QAction *_action_chatting;
+    QAction *_action_playing;
+    QAction *_action_away;
+    QAction *_action_donotdisturb;
+
+    QAction *_action_rvr;
+    QAction *_action_rvr_wwwsite;
+    QAction *_action_rvr_1vs1;
+    QAction *_action_rvr_player_profiles;
+
+    QAction *_action_routerfw_help;
+    QAction *_action_rvh_faq;
+    QAction *_action_connection_help;
+    QAction *_action_about_rvh;
+
+    QAction *_action_create_room;
+    QAction *_action_join_room;
+    QAction *_action_refresh;
+    QAction *_action_cancel;
+
+    view::chat  *_chat_view;
+    view::users *_users_view;
+    view::rooms *_rooms_view;
+    QLineEdit      *_msg_field;
+
+    QSplitter *_chat_users_splitter;
+
     std::string _status_dht;
     std::vector<std::string> _status_dht_extra;
     std::string _status_ctz;
@@ -68,119 +93,86 @@ class house
     util::flood_control _flood_control;
 
     networking::ip_block::store _global_ip_block;
-    
-    typedef std::map<int, FXMenuRadio *> _menu_status_map_type;
-    _menu_status_map_type _menu_status_map;
 
-    typedef std::map<int, std::string> _menu_www_map_type;
-    _menu_www_map_type _menu_www_map;
-    
     time_t _last_connect;
     size_t _conn_tries;
-    
+
     bool _ctz_disconnected;
     int  _last_dht_status_message_id;
     bool _router_fw_help_showed;
-    
-    void _update_status();
-    void _update_menu_player_status();
-    void _room_buttons_status();
-    bool _chat_command(const FXString &t);
+
+    void _create_actions();
+    void _create_menus();
+    void _create_toolbars();
+    void _create_widgets();
+    void _create_layout();
+    void _connect_signals();
+
+    bool _chat_command(const QString &t);
     void _chat_command_model_rooms();
     void _chat_command_model_users();
     void _chat_command_model_self();
-    
-    void _check_if_self_blocked();
-/*    
-    inline FXComposite *_view_container(FXComposite *parent) {
-        return new FXVerticalFrame(
-                parent,
-                LAYOUT_FILL_X|LAYOUT_FILL_Y|
-                FRAME_SUNKEN|FRAME_THICK,
-                0,0,0,0, 0,
-                0,0,0
-        );        
-    }
-    */
-protected:
-    house() {}
 
+    void _check_if_self_blocked();
+
+    void _change_user_status(chat_gaming::user::status_enum user_status);
+
+    void _update_status();
+    void _room_buttons_status();
+
+protected:
     bool handle_dht_message(::message *msg);
     bool handle_ctz_message(::message *msg);
     bool handle_external_ip_message(::message *msg);
     void handle_global_block_users(::message_block_users *msg);
+
 public:
-    enum {
-        ID_CONNECT = FXMainWindow::ID_LAST,
-        ID_DISCONNECT,
-        ID_SEND_MSG,
-        ID_ROOM_CREATE,
-        ID_ROOM_JOIN,
-        ID_REFRESH,
-        ID_REFRESH_ENABLE,
-        ID_INTERRUPT,
-        ID_ABOUT,
-        ID_RECONNECT,
-        ID_DHT_DISCONNECTED,        
-        ID_SETTINGS,
-        ID_WWW_START,
-        ID_WWW_RVL_HOME,
-        ID_WWW_RVL_CHAMP,
-        ID_WWW_RVL_CUP,
-        ID_WWW_RVR_HOME,
-        ID_WWW_RVR_1VS1,
-        ID_WWW_RVR_PLAYERS,
-        ID_WWW_RVR_TEAMS,        
-        ID_WWW_HELP_ROUTER,
-        ID_WWW_HELP_CONN,
-        ID_WWW_HELP_FAQ,
-        ID_WWW_END,
-        ID_CONFIGURE,
-        
-        ID_LAST,
-    };
-    
-    house(FXApp *a);
-    ~house();
-    virtual void create();
+    house();
+    virtual ~house();
+
+    void net_connect();
+    void net_disconnect();
+
+    void handle_message(::message *msg);
+    inline void status_message(const std::string &msg) {
+        _chat_view->status_message(msg);
+    }
 
     void interruptable_action_update();
     void interruptable_action_update(const std::string &s);
-    
-    long on_network_command (FXObject *from, FXSelector sel, void *);   
-    long on_send_message    (FXObject *from, FXSelector sel, void *);
-    long on_room_create     (FXObject *from, FXSelector sel, void *);
-    long on_settings        (FXObject *from, FXSelector sel, void *);
-    long on_room_join       (FXObject *from, FXSelector sel, void *);
-    long on_interrupt       (FXObject *from, FXSelector sel, void *);
-    long on_refresh         (FXObject *from, FXSelector sel, void *);
-    long on_refresh_enable  (FXObject *from, FXSelector sel, void *);
-    long on_reconnect       (FXObject *from, FXSelector sel, void *);
-    long on_about           (FXObject *from, FXSelector sel, void *);
-    long on_www             (FXObject *from, FXSelector sel, void *);
-    long on_dht_disconnected(FXObject *from, FXSelector sel, void *);
-    long on_minimize        (FXObject *from, FXSelector sel, void *);
-    long on_restore         (FXObject *from, FXSelector sel, void *);
-    long on_configure       (FXObject *from, FXSelector sel, void *);
-    
-    void handle_message    (::message *msg);    
 
-    inline void status_message(const std::string &msg) { 
-        _chat_view->status_message(msg); 
-    }
-    
     // view::users::observer interface  
     virtual void user_added  (const chat_gaming::user &u);
     virtual void user_removed(const chat_gaming::user &u);
     virtual void user_blocked(const std::string &display_id);
 
-    // view::rooms::observer interface  
+    // view::rooms::observer interface
     virtual void room_added  (const chat_gaming::room &r);
     virtual void room_removed(const chat_gaming::room &r);
-    
+
+public slots:
+    void show();
+    void interrupt();
+    void refresh();
+    void enable_refresh();
+    void reconnect();
+    void dht_disconnected();
+    void send_message();
+    void room_create();
+    void room_join_selected();
+    void room_join_selected(QTreeWidgetItem *item, int column);
+    void open_private_room (QTreeWidgetItem *item, int column);
+    void open_settings();
+    void open_url(const QString &url);
+    void open_about();
+    void change_user_status_to_chatting();
+    void change_user_status_to_playing();
+    void change_user_status_to_away();
+    void change_user_status_to_dont_disturb();
+
 };
 
 } // ns window
 } // ns gui
 
-#endif //_HOUSE_WINDOW_H_
+#endif //HOUSE_WINDOW_H_

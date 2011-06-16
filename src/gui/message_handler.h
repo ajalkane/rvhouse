@@ -1,5 +1,5 @@
-#ifndef _MESSAGE_HANDLER_H_
-#define _MESSAGE_HANDLER_H_
+#ifndef MESSAGE_HANDLER_H_
+#define MESSAGE_HANDLER_H_
 
 #include "../messaging/message.h"
 
@@ -11,4 +11,4 @@ public:
     virtual void handle_message(message *msg) = 0;
 };
 
-#endif //_MESSAGE_HANDLER_H_
+#endif //MESSAGE_HANDLER_H_

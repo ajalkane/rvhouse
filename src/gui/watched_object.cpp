@@ -4,25 +4,26 @@
 
 namespace gui {
 
-watched_object::watched_object() : _self(NULL)
+watched_object::watched_object(QObject *self) : _object_destroyed_sent(false), _self(self)
 {
     ACE_DEBUG((LM_DEBUG, "watched_object::ctor\n"));
+    app()->watched_object_created(_self);
     
 }
 
 watched_object::~watched_object() {
-    ACE_DEBUG((LM_DEBUG, "watched_object::dtor, sending message\n"));
-    if (_self)
-        app()->handle(_self, FXSEL(SEL_COMMAND, house_app::ID_OBJECT_DESTROY), NULL);
+    ACE_DEBUG((LM_DEBUG, "watched_object::dtor\n"));
+    _object_destroyed();
 }
 
-void 
-watched_object::create(FXObject *self)
-{
-    ACE_DEBUG((LM_DEBUG, "watched_object::create\n"));
-    assert(self);
-    _self = self;
-    app()->handle(_self, FXSEL(SEL_COMMAND, house_app::ID_OBJECT_CREATE), NULL); 
+void
+watched_object::_object_destroyed() {
+    ACE_DEBUG((LM_DEBUG, "watched_object::_object_destroyed\n"));
+    if (!_object_destroyed_sent) {
+        ACE_DEBUG((LM_DEBUG, "watched_object::_object_destroyed: calling app watched_object_destroyed\n"));
+        app()->watched_object_destroyed(_self);
+        _object_destroyed_sent = true;
+    }
 }
 
 } // ns gui

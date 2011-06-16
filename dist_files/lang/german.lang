@@ -3,76 +3,76 @@ ok_button       = " &OK "
 cancel_button   = " &Abbrechen "
 
 [login_win]
-title           = Login
-user_id         = &Benutzername:
-password        = &Passwort:
-uses_rvzt_login = Verwendet den RVZT Login
-login           = &Login
-register        = &Registrieren
-quit            = &Beenden
+title           = "Login"
+user_id         = "&Benutzername:"
+password        = "&Passwort:"
+uses_rvzt_login = "Verwendet den RVZT Login"
+login           = "&Login"
+register        = "&Registrieren"
+quit            = "&Beenden"
 
-login_err_topic = Einloggen nicht möglich!
-fill_user       = Gib deinen Benutzernamen ein
-fill_pass       = Gib dein Passwort ein
-invalid_user    = Ungültiger Benutzername, muss 3 bis 20 Zeichen lang sein und darf die Zeichen a-z, A-Z und _ enthalten
-invalid_pass    = Ungültiges Passwort, muss 3 oder mehr Zeichen lang sein und darf nur die Zeichen a-z, A-Z und _ enthalten
-server_down     = Login Server konnte nicht erreicht werden, dein Benutzername wurde nicht authentifiziert. Trotzdem fortsetzen?
-validation_err  = Benutzername oder Passwort ungültig
+login_err_topic = "Einloggen nicht mï¿½glich!"
+fill_user       = "Gib deinen Benutzernamen ein"
+fill_pass       = "Gib dein Passwort ein"
+invalid_user    = "Ungï¿½ltiger Benutzername, muss 3 bis 20 Zeichen lang sein und darf die Zeichen a-z, A-Z und _ enthalten"
+invalid_pass    = "Ungï¿½ltiges Passwort, muss 3 oder mehr Zeichen lang sein und darf nur die Zeichen a-z, A-Z und _ enthalten"
+server_down     = "Login Server konnte nicht erreicht werden, dein Benutzername wurde nicht authentifiziert. Trotzdem fortsetzen?"
+validation_err  = "Benutzername oder Passwort ungï¿½ltig"
 
 
 [register_win]
-title           = Benutzer registrieren
-user_id         = &Benutzername:
-password        = &Passwort:
-repassword      = &Passwort wiederholen:
-email           = &E-mail:
-register        = Registrieren
-cancel          = &Abbrechen
+title           = "Benutzer registrieren"
+user_id         = "&Benutzername:"
+password        = "&Passwort:"
+repassword      = "&Passwort wiederholen:"
+email           = "&E-mail:"
+register        = "Registrieren"
+cancel          = "&Abbrechen"
 
-reg_err_topic   = Benutzer kann nicht registriert werden
-reg_ok_topic    = Registriert
-fill_user       = Gib deinen Benutzernamen ein
-fill_pass       = Gib dein Passwort ein
-pass_mismatch   = Passwörter stimmen nicht überein!
-invalid_user    = Ungültiger Benutzername, muss 3 bis 20 Zeichen lang sein und darf die Zeichen a-z, A-Z und _ enthalten
-invalid_pass    = Ungültiges Passwort, muss 3 oder mehr Zeichen lang sein und darf nur die Zeichen a-z, A-Z und _ enthalten
-invalid_email   = Ungültige E-mail Adresse
-server_down     = Server konnte nicht erreicht werden, Registrierung nicht möglich
-user_reserved   = Der Benutzername den du registrieren wolltest wird schon verwendet, bitte einen anderen wählen.
-reg_ok          = Registriereung erfolgreich, du kannst dich nun mit deinem Benutzernamen und Passwort einloggen
+reg_err_topic   = "Benutzer kann nicht registriert werden"
+reg_ok_topic    = "Registriert"
+fill_user       = "Gib deinen Benutzernamen ein"
+fill_pass       = "Gib dein Passwort ein"
+pass_mismatch   = "Passwï¿½rter stimmen nicht ï¿½berein!"
+invalid_user    = "Ungï¿½ltiger Benutzername, muss 3 bis 20 Zeichen lang sein und darf die Zeichen a-z, A-Z und _ enthalten"
+invalid_pass    = "Ungï¿½ltiges Passwort, muss 3 oder mehr Zeichen lang sein und darf nur die Zeichen a-z, A-Z und _ enthalten"
+invalid_email   = "Ungï¿½ltige E-mail Adresse"
+server_down     = "Server konnte nicht erreicht werden, Registrierung nicht mï¿½glich"
+user_reserved   = "Der Benutzername den du registrieren wolltest wird schon verwendet, bitte einen anderen wï¿½hlen."
+reg_ok          = "Registriereung erfolgreich, du kannst dich nun mit deinem Benutzernamen und Passwort einloggen"
 
 
 [about_win]
-title         = Über
-license       = veröffentlicht unter \1
-icons_by      = Symbole von \1
-house_icon_by = RV House Symbol von \1
-other_sites   = Einige bekannte, nützliche RV Seiten für die Online Gemeinschaft:
-using         = Verwendet:
-using_lib     = \1 (von \2)
-translations  = Übersetzungen:
-translation   = \1 von \2 <\3>
+title         = "ï¿½ber"
+license       = "verï¿½ffentlicht unter \1"
+icons_by      = "Symbole von \1"
+house_icon_by = "RV House Symbol von \1"
+other_sites   = "Einige bekannte, nï¿½tzliche RV Seiten fï¿½r die Online Gemeinschaft:"
+using         = "Verwendet:"
+using_lib     = "\1 (von \2)"
+translations  = "ï¿½bersetzungen:"
+translation   = "\1 von \2 <\3>"
 
 [app]
 rv_not_found_title = "Ist Re-Volt installiert?"
 rv_not_found       = "Re-Volt in der Registrierung nicht gefunden\nHast du es installiert und gestartet\nbevor du diese Anwendung gestartet hast?"
-join_room_full     = Raum ist voll!
-join_invalid_pass  = Ungültiges Passwort angegeben!
-join_refused       = Der Host verweigert den Zutritt zum Raum
-join_err_topic     = Konnte Raum nich beitreten
+join_room_full     = "Raum ist voll!"
+join_invalid_pass  = "Ungï¿½ltiges Passwort angegeben!"
+join_refused       = "Der Host verweigert den Zutritt zum Raum"
+join_err_topic     = "Konnte Raum nich beitreten"
 
 [new_version_win]
-title     = Neue RV House Version
-force_msg = Du MUSST RV House aktualiseren! Die alte Version ist nicht kompatibel!
-msg       = RV House Version \1 verfügbar, deine Version ist \2
-new_since = Neu seit deiner Version:
-download  = Downloade die neue Version hier:
+title     = "Neue RV House Version"
+force_msg = "Du MUSST RV House aktualiseren! Die alte Version ist nicht kompatibel!"
+msg       = "RV House Version \1 verfï¿½gbar, deine Version ist \2"
+new_since = "Neu seit deiner Version:"
+download  = "Downloade die neue Version hier:"
 
 [rvtm_err]
-title     = Konnte RV Track Manager nicht starten
+title     = "Konnte RV Track Manager nicht starten"
 not_found = "Konnte RV Track Manager nicht finden.\nUm Strecken mit anderen zu downloaden\nund zu teilen, brauchst du mindestens\nVersion 1.5.0 des RV Track Manager\nDu kannst ihn hier downloaden:"
-running   = RV Track Manager wurde schon gestartet
-other     = Konnte RV Track manager nicht starten
+running   = "RV Track Manager wurde schon gestartet"
+other     = "Konnte RV Track manager nicht starten"
 
 [message_box]
 ok     = "&OK"
@@ -83,129 +83,129 @@ quit   = "&Beenden"
 save   = "&Speichern"
 
 [main_win]
-exit        = Verlassen
-create_room = Erstelle Raum
-join_room   = Raum beitreten
-refresh     = Aktualisieren
-cancel      = Abbrechen
-about       = Über
+exit        = "Verlassen"
+create_room = "Erstelle Raum"
+join_room   = "Raum beitreten"
+refresh     = "Aktualisieren"
+cancel      = "Abbrechen"
+about       = "ï¿½ber"
 
-ask_room_pass_title = Passwort-geschützter Raum
-ask_room_pass       = Passwort eingeben
+ask_room_pass_title = "Passwort-geschï¿½tzter Raum"
+ask_room_pass       = "Passwort eingeben"
 
-joining_room  = Raum beitreten
+joining_room  = "Raum beitreten"
 
-dht_connecting        = P2P verbinden
-dht_connected         = P2P verbunden
-dht_disconnecting     = P2P Verbindung getrennt
-dht_upding_contacts   = P2P Kontaktknoten aktualisieren...
-dht_upd_contacts      = P2P Kontaktknoten aktualisiert
-dht_upd_contacts_fail = P2P Kontaktknoten konnten nicht aktualisiert werden
-dht_joining           = P2P beitreten
-dht_joined            = P2P beigetreten
-dht_leaving           = P2P verlassen
-dht_left              = P2P verlassen
-dht_searching         = P2P Benutzer suchen
-dht_announcing        = P2P ankündigen
+dht_connecting        = "P2P verbinden"
+dht_connected         = "P2P verbunden"
+dht_disconnecting     = "P2P Verbindung getrennt"
+dht_upding_contacts   = "P2P Kontaktknoten aktualisieren..."
+dht_upd_contacts      = "P2P Kontaktknoten aktualisiert"
+dht_upd_contacts_fail = "P2P Kontaktknoten konnten nicht aktualisiert werden"
+dht_joining           = "P2P beitreten"
+dht_joined            = "P2P beigetreten"
+dht_leaving           = "P2P verlassen"
+dht_left              = "P2P verlassen"
+dht_searching         = "P2P Benutzer suchen"
+dht_announcing        = "P2P ankï¿½ndigen"
 
-ctz_connecting        = Zentralisiert verbinden
-ctz_connected         = Zentralisiert verbunden
-ctz_disconnecting     = Zentralisierte Verbindung trennen
-ctz_disconnected      = Zentralisierte Verbindung getrennt
+ctz_connecting        = "Zentralisiert verbinden"
+ctz_connected         = "Zentralisiert verbunden"
+ctz_disconnecting     = "Zentralisierte Verbindung trennen"
+ctz_disconnected      = "Zentralisierte Verbindung getrennt"
 
-ip_detecting = IP erkennen von: \1
-ip_detected  = Erkannte IP: \1
-ip_failed    = IP Erkennung fehlgeschlagen: \1
+ip_detecting = "IP erkennen von: \1"
+ip_detected  = "Erkannte IP: \1"
+ip_failed    = "IP Erkennung fehlgeschlagen: \1"
 
 [chat]
-user_entered = \1 ist beigetreten
-user_exited  = \1 ist gegangen
-room_created = Neuer Raum erstellt (\1)
-room_closed  = Raum geschlossen (\1)
+user_entered = "\1 ist beigetreten"
+user_exited  = "\1 ist gegangen"
+room_created = "Neuer Raum erstellt (\1)"
+room_closed  = "Raum geschlossen (\1)"
 
-host_kicked_host = Dämlicher Host hat sich selbst aus dem Raum \1 geschmissen
-host_kicks_user  = Der Host schmeißt \1 aus dem Raum
-host_kicks_you   = Der Host schmeißt dich aus dem Raum \1
+host_kicked_host = "Dï¿½mlicher Host hat sich selbst aus dem Raum \1 geschmissen"
+host_kicks_user  = "Der Host schmeiï¿½t \1 aus dem Raum"
+host_kicks_you   = "Der Host schmeiï¿½t dich aus dem Raum \1"
 
-user_joined_room         = \1 ist dem Raum beigetreten
-user_exited_room         = \1 hat den Raum verlassen
-user_shares_tracks       = \1 teilt Strecken
-user_shares_tracks_stops = \1 teilt keine Strecken mehr
-user_dloads_tracks       = \1 lädt Strecken herunter
-user_dloads_tracks_stops = \1 lädt keine Strecken mehr herunter
+user_joined_room         = "\1 ist dem Raum beigetreten"
+user_exited_room         = "\1 hat den Raum verlassen"
+user_shares_tracks       = "\1 teilt Strecken"
+user_shares_tracks_stops = "\1 teilt keine Strecken mehr"
+user_dloads_tracks       = "\1 lï¿½dt Strecken herunter"
+user_dloads_tracks_stops = "\1 lï¿½dt keine Strecken mehr herunter"
 
 [room_settings_win]
-title       = Raum Einstellungen
-topic       = &Thema:
-password    = &Passwort:
-pickups     = P&ick-ups
-laps        = &Runden:
-players     = &Spieler:
+title       = "Raum Einstellungen"
+topic       = "&Thema:"
+password    = "&Passwort:"
+pickups     = "P&ick-ups"
+laps        = "&Runden:"
+players     = "&Spieler:"
 
-error_title    = Raum Einstellungsfehler
-topic_missing  = Raum Thema eingeben
+error_title    = "Raum Einstellungsfehler"
+topic_missing  = "Raum Thema eingeben"
 
 [room_win]
-leave         = Raum verlassen
-settings      = Raum Einstellungen bearbeiten
-launch        = Spiel starten
-share_tracks  = Benutzerstrecken mit anderen teilen
-dload_tracks  = Benutzerstrecken vom Host downloaden
+leave         = "Raum verlassen"
+settings      = "Raum Einstellungen bearbeiten"
+launch        = "Spiel starten"
+share_tracks  = "Benutzerstrecken mit anderen teilen"
+dload_tracks  = "Benutzerstrecken vom Host downloaden"
 
-host_launched = Der Host hat Re-Volt gestartet. Spiel wird in wenigen Sekunden automatisch gestartet.
+host_launched = "Der Host hat Re-Volt gestartet. Spiel wird in wenigen Sekunden automatisch gestartet."
 
 
 [rv_launch]
-title_err = Spielstart fehlgeschlagen
-not_found = Konnte Re-Volt nicht finden. Bitte installiere Re-Volt (und starte es einmal), dann starte die Application erneut
-other     = Konnte Re-Volt nicht starten
+title_err = "Spielstart fehlgeschlagen"
+not_found = "Konnte Re-Volt nicht finden. Bitte installiere Re-Volt (und starte es einmal), dann starte die Application erneut"
+other     = "Konnte Re-Volt nicht starten"
 
-title     = Starte Spiel
-text      = Klicke OK wenn du zurückkehren willst
+title     = "Starte Spiel"
+text      = "Klicke OK wenn du zurï¿½ckkehren willst"
 
 
 [words]
-topic   = Thema
-host    = Host
-# For example, Note: room is password protected
-note    = Hinweis
-players = Spieler
-laps    = Runden
-pickups = Pick-ups
-user_id = Benutzername
-warning = Warnung
-status  = Status
-room    = Raum
-yes     = Ja
-no      = Nein
-creating = Erstellen
+topic   = "Thema"
+host    = "Host"
+; For example, Note: room is password protected
+note    = "Hinweis"
+players = "Spieler"
+laps    = "Runden"
+pickups = "Pick-ups"
+user_id = "Benutzername"
+warning = "Warnung"
+status  = "Status"
+room    = "Raum"
+yes     = "Ja"
+no      = "Nein"
+creating = "Erstellen"
 
-minutes_short = min
-dht           = P2P
-ctz           = Zentralisiert
-connected     = Verbunden
-disconnected  = Getrennt
+minutes_short = "min"
+dht           = "P2P"
+ctz           = "Zentralisiert"
+connected     = "Verbunden"
+disconnected  = "Getrennt"
 
 
 [users_view]
-shares_tracks = Benutzer teil Strecken
-dloads_tracks = Benutzer erhält strecken
-dht_not_found = Nicht gefunden im dezentralisierten Netzwerk
-natted        = Verbindung des Benutzers scheint hinter NAT zu sein
+shares_tracks = "Benutzer teil Strecken"
+dloads_tracks = "Benutzer erhï¿½lt strecken"
+dht_not_found = "Nicht gefunden im dezentralisierten Netzwerk"
+natted        = "Verbindung des Benutzers scheint hinter NAT zu sein"
 
 [user_popup]
-user_name     = Benutzername
-share_tracks  = Teile Strecken
-dload_tracks  = Downloade Strecken
-kick          = Rausschmeißen
+user_name     = "Benutzername"
+share_tracks  = "Teile Strecken"
+dload_tracks  = "Downloade Strecken"
+kick          = "Rausschmeiï¿½en"
 
 [status]
-chatting      = Chattet
-waiting       = Wartet im Raum
-playing       = Spielt
-away          = Abwesend
-unknown       = Unbekannt
+chatting      = "Chattet"
+waiting       = "Wartet im Raum"
+playing       = "Spielt"
+away          = "Abwesend"
+unknown       = "Unbekannt"
 
 [misc]
-user_not_validated = Benutzername vertrauensunwürdig (nicht bestätigt)
-pass_needed        = Passwort notwendig
+user_not_validated = "Benutzername vertrauensunwï¿½rdig (nicht bestï¿½tigt)"
+pass_needed        = "Passwort notwendig"

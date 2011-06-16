@@ -39,7 +39,9 @@ group_handler_base::group_handler_base(
     _house_adapter = new _house_adapter_type(grp, &_house, this);
 }
 
-group_handler_base::~group_handler_base() {}
+group_handler_base::~group_handler_base() {
+    delete _house_adapter;
+}
 
 void
 group_handler_base::handle_message(message *msg) {

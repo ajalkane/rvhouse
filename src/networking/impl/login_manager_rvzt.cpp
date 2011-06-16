@@ -26,6 +26,9 @@ login_manager_rvzt::login_manager_rvzt(ACE_Reactor *r)
     );
 
     // Ensure only expected authentiraztion urls are used
+    ACE_ERROR((LM_DEBUG, "login_manager_rvzt: _base_validate_url %s)\n",
+              _base_validate_url.c_str()));
+
     http::url validate_url = http::url(_base_validate_url);
     http::url register_url = http::url(_base_register_url);
 
@@ -101,7 +104,7 @@ login_manager_rvzt::_fetch_handler::handle_response(const http::response &resp)
     const char *str = resp.content();
     std::vector<std::string> res(2);
 
-    if (regexp::match("^([^:]{3,20}):(.*)", str, res.begin())) {
+    if (regexp::match("^([^:]{3,20}):(\\w*)", str, res.begin())) {
     // if (regexp::match("^([a-zA-Z0-9_]{3,20}):(.*)", str, res.begin())) {
         const std::string &user = res[0];
         const std::string &stat = res[1];

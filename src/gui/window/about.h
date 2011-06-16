@@ -1,25 +1,21 @@
-#ifndef _GUI_WINDOW_ABOUT_H_
-#define _GUI_WINDOW_ABOUT_H_
+#ifndef GUI_WINDOW_ABOUT_H_
+#define GUI_WINDOW_ABOUT_H_
 
-#include <fx.h>
+#include <QDialog>
 
 #include "../../common.h"
 
 namespace gui {
 namespace window {
     
-class about : public FXDialogBox {
-    FXDECLARE(about)
+class about : public QDialog {
+    Q_OBJECT
         
-protected:
-    about() {}
-
 public: 
-    about(FXWindow *owner);
-    virtual void create();
+    about(QWidget *parent);
 };
 
 } // ns window
 } // ns gui
 
-#endif //_GUI_WINDOW_ABOUT_H_
+#endif //GUI_WINDOW_ABOUT_H_

@@ -5,6 +5,10 @@
 #define APP_VERSION_ONLY "0.92.3"
 #define APP_VERSION APP_VERSION_ONLY
 
+// Needed for example by QSettings to organize where settings are stored
+#define APP_SETTINGS_ORG_KEY "ajalkane"
+#define APP_SETTINGS_APP_KEY "RV House"
+
 // #define RV_HOUSE_TEST
 
 // Returns negative if version a is less than version b

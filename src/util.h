@@ -4,7 +4,7 @@
 #include <string>
 #include <locale>
 
-#include "os_util.h"
+// #include "os_util.h"
 
 #define array_sizeof(a) (sizeof(a) / sizeof(a[0]))
 
@@ -88,5 +88,46 @@ struct no_space_as_ws_ctype : std::ctype<char> {
         return rc;
     }
 };  
+
+class char_array_copy {
+    int strings_size;
+    char **strings;
+public:
+    char_array_copy(int strings_size, char **strings) : strings_size(0), strings(NULL) {
+        this->strings_size = strings_size;
+        this->strings = new char *[strings_size];
+        for (int i = 0; i < strings_size; ++i) {
+            char *string = strdup(strings[i]);
+            this->strings[i] = string;
+        }
+    }
+
+    char_array_copy(int strings_size, const char **strings) : strings_size(0), strings(NULL) {
+        this->strings_size = strings_size;
+        this->strings = new char *[strings_size];
+        for (int i = 0; i < strings_size; ++i) {
+            char *string = strdup(strings[i]);
+            this->strings[i] = string;
+        }
+    }
+
+    ~char_array_copy() {
+        for (int i = 0; i < strings_size; ++i) {
+            free(this->strings[i]);
+            this->strings[i] = NULL;
+        }
+        delete[] this->strings;
+        this->strings = NULL;
+    }
+
+    char **array() {
+        return strings;
+    }
+
+    int size() {
+        return strings_size;
+    }
+
+};
 
 #endif //_UTIL_H_

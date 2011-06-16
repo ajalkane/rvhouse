@@ -1,334 +1,336 @@
 #include <utility>
 #include <iterator>
 
-#include <fx.h>
-#include <fxkeys.h>
+#include <QtGui>
 
+#include "house.h"
+
+#include "room_settings.h"
+#include "router_fw_help.h"
+#include "settings.h"
+#include "about.h"
+
+#include "../house_app.h"
+#include "../util/flood_control.h"
+#include "../util/util.h"
+#include "../../app_options.h"
+#include "../../app_version.h"
+#include "../../common.h"
+#include "../../icon_store.h"
+#include "../../main.h"
+#include "../../os_util.h"
+#include "../../executable/launcher.h"
+#include "../../messaging/message_block_users.h"
 #include "../../messaging/message_user.h"
+
 #include "../../messaging/message_room.h"
 #include "../../messaging/message_send.h"
 #include "../../messaging/message_channel.h"
-#include "../../executable/launcher.h"
-#include "../../util.h"
-#include "../../os_util.h"
+#include "../../messaging/messenger.h"
 #include "../../model/house.h"
 #include "../../model/self.h"
-#include "../../icon_store.h"
-#include "../../app_version.h"
 
-#include "../house_app.h"
-#include "../util/util.h"
-#include "about.h"
-#include "room_settings.h"
-#include "settings.h"
-#include "router_fw_help.h"
-#include "house.h"
-#include "house_message_box.h"
-
-namespace gui {
-namespace window {
-
-FXDEFMAP(house) house_map[]= {
-  FXMAPFUNCS(SEL_COMMAND, house::ID_CONNECT,
-                          house::ID_DISCONNECT,
-                          house::on_network_command),
-  FXMAPFUNCS(SEL_COMMAND, house::ID_WWW_START,
-                          house::ID_WWW_END,
-                          house::on_www),
-  FXMAPFUNC(SEL_COMMAND,  house::ID_SEND_MSG,
-                          house::on_send_message),
-  FXMAPFUNC(SEL_COMMAND,  house::ID_ROOM_CREATE,
-                          house::on_room_create),
-  FXMAPFUNC(SEL_COMMAND,  house::ID_ROOM_JOIN,
-                          house::on_room_join),
-  FXMAPFUNC(SEL_COMMAND,  house::ID_INTERRUPT,
-                          house::on_interrupt),
-  FXMAPFUNC(SEL_COMMAND,  house::ID_REFRESH,
-                          house::on_refresh),
-  FXMAPFUNC(SEL_TIMEOUT,  house::ID_REFRESH_ENABLE,
-                          house::on_refresh_enable),
-  FXMAPFUNC(SEL_COMMAND,  house::ID_ABOUT,
-                          house::on_about),
-  FXMAPFUNC(SEL_COMMAND,  house::ID_SETTINGS,
-                          house::on_settings),
-  FXMAPFUNC(SEL_MINIMIZE, 0,
-                          house::on_minimize),
-  FXMAPFUNC(SEL_RESTORE,  0,
-                          house::on_restore),
-  FXMAPFUNC(SEL_TIMEOUT,  house::ID_RECONNECT,
-                          house::on_reconnect),
-  FXMAPFUNC(SEL_TIMEOUT,  house::ID_DHT_DISCONNECTED,
-                          house::on_dht_disconnected),
-  FXMAPFUNC(SEL_CONFIGURE,  house::ID_CONFIGURE,
-                          house::on_configure)
-};
-
-FXIMPLEMENT(house, FXMainWindow, house_map, ARRAYNUMBER(house_map))
+// IMPROVE Qt these do not belong here, should be contained inside users
+#include "../../multi_feed/util.h"
+#include "../../multi_feed/algorithm.h"
+#include "../../multi_feed/user_accessors.h"
 
 #define STRING_JOIN(target, sep, src) \
 target = (target.empty() ? src : (src.empty() ? target : target + sep + src))
 
-// FXIMPLEMENT(house, FXMainWindow, NULL, 0)
+namespace gui {
+namespace window {
 
-house::house(FXApp *a)
-    : FXMainWindow(a, APP_NAME, NULL, NULL, DECOR_ALL, 0, 0, 800, 600),
-    _status_dht_extra(2),
-    _last_connect(0),
-    _conn_tries(0),
-    _ctz_disconnected(true),
-    _last_dht_status_message_id(0),
-    _router_fw_help_showed(false)
+house::house()
+    : size_restoring_window<QMainWindow>("house_win"),
+      _status_dht_extra(2),
+      _last_connect(0),
+      _conn_tries(0),
+      _ctz_disconnected(true),
+      _last_dht_status_message_id(0),
+      _router_fw_help_showed(false)
 {
-    setIcon(app_icons()->get("rv_house"));
-    setMiniIcon(app_icons()->get("rv_house"));
+    ACE_DEBUG((LM_DEBUG, "house::house\n"));
+    this->setWindowIcon(app_icons()->get("rv_house"));
+    this->setContextMenuPolicy(Qt::NoContextMenu);
 
-    // Make menu bar
-    _menubar = new FXMenuBar(this,LAYOUT_SIDE_TOP|LAYOUT_FILL_X|FRAME_RAISED);
-    // File menu
-    _menufile = new FXMenuPane(this);
-    new FXMenuTitle(_menubar, langstr("menu_file/title"), NULL, _menufile);
-    // Edit menu
-    _menuedit = new FXMenuPane(this);
-    new FXMenuTitle(_menubar, langstr("menu_edit/title"), NULL, _menuedit);
-    // Player menu
-    _menuplayer = new FXMenuPane(this);
-    new FXMenuTitle(_menubar, langstr("menu_player/title"), NULL, _menuplayer);
-    // Competitions menu
-    _menucomp = new FXMenuPane(this);
-    new FXMenuTitle(_menubar, langstr("menu_comp/title"), NULL, _menucomp);
-    // Help menu
-    _menuhelp = new FXMenuPane(this);
-    new FXMenuTitle(_menubar, langstr("menu_help/title"), NULL, _menuhelp);
+    // Instance must be set here in constructor because users constructor needs it
+    house_win.instance(this);
+    _create_actions();
+    _create_menus();
+    _create_toolbars();
+    _create_widgets();
+    _create_layout();
 
-
-    FXVerticalFrame *c = new FXVerticalFrame(
-        this, LAYOUT_FILL_X|LAYOUT_FILL_Y,
-        0,0,0,0, 0,0,0,0, 0,0
-    );
-    FXComposite *toolbarcontainer = new FXHorizontalFrame(
-        c, LAYOUT_SIDE_TOP|LAYOUT_FILL_X,
-        0,0,0,0, 0,0,0,0, 0,0
-    );
-    new FXToolBarTab(toolbarcontainer,NULL,0,FRAME_RAISED);
-    FXComposite *toolbar = new FXToolBar(
-        toolbarcontainer,
-        FRAME_RAISED|PACK_UNIFORM_WIDTH|
-        LAYOUT_SIDE_TOP|LAYOUT_FILL_X,
-        0,0,0,0, 4,4,4,4, 0,0
-    );
-
-    int button_opts = ICON_ABOVE_TEXT|BUTTON_TOOLBAR|FRAME_RAISED;
-    /* No connect/disconnect things for now
-    new FXButton(toolbar, "Connect",    NULL, this, ID_CONNECT);
-    new FXButton(toolbar, "Disconnect", NULL, this, ID_DISCONNECT);
-    */
-    // new FXButton(toolbar, "Exit",       NULL, getApp(), FXApp::ID_QUIT);
-    // new FXButton(toolbar, "Exit", NULL, this, ID_CLOSE,
-    //             button_opts);
-
-
-    new FXButton(toolbar,
-                 util::button_text(NULL, langstr("main_win/exit")),
-                 app_icons()->get("exit"), this, ID_CLOSE,
-                 button_opts);
-
-    new FXVerticalSeparator(toolbar);
-
-    _room_create_button =
-      new FXButton(toolbar,
-                   util::button_text(NULL, langstr("main_win/create_room")),
-                   app_icons()->get("room_create"),
-                   this, ID_ROOM_CREATE, button_opts);
-    _room_join_button =
-      new FXButton(toolbar,
-                   util::button_text(NULL, langstr("main_win/join_room")),
-                   app_icons()->get("room_join"),
-                   this, ID_ROOM_JOIN, button_opts);
-    _refresh_button =
-      new FXButton(toolbar,
-                   util::button_text(NULL, langstr("main_win/refresh")),
-                   app_icons()->get("refresh"),
-                   this, ID_REFRESH, button_opts);
-
-    _interrupt_button =
-      new FXButton(toolbar,
-                   util::button_text(NULL, langstr("main_win/cancel")),
-                   app_icons()->get("cancel"),
-                   this, ID_INTERRUPT, button_opts);
-
-    new FXVerticalSeparator(toolbar);
-
-    new FXButton(toolbar,
-                 util::button_text(NULL, langstr("main_win/about")),
-                 app_icons()->get("about"),
-                 this, ID_ABOUT, button_opts);
-
-    FXSplitter *house = new FXSplitter(
-        c,
-        SPLITTER_HORIZONTAL|
-        SPLITTER_REVERSED  |
-        LAYOUT_FILL_X |
-        LAYOUT_FILL_Y
-    );
-    FXSplitter *sections  = new FXSplitter(
-        house,
-        SPLITTER_VERTICAL |
-        LAYOUT_FILL_X |
-        LAYOUT_FILL_Y
-    );
-
-    _users_view = new view::users(util::framed_container(house), NULL);
-    _rooms_view = new view::rooms(util::framed_container(sections));
-    _rooms_view->target_item_doubleclicked(this, FXSEL(SEL_COMMAND, ID_ROOM_JOIN));
-
-    _chat_view = new view::chat(util::framed_container(sections));
-    _chat_view->flash_window(this);
-
-    FXVerticalFrame *b = new FXVerticalFrame(
-        c, LAYOUT_FILL_X,
-        0,0,0,0,
-        0,0);
-    _msg_field = new FXTextField(b, 0,  this, ID_SEND_MSG,
-                                 FRAME_SUNKEN|FRAME_THICK|
-                                 LAYOUT_FILL_X|TEXTFIELD_ENTER_ONLY);
-    _msg_field->setFocus();
-
-    _status   = new FXStatusBar(c, LAYOUT_FILL_X);
-
-    new FXMenuCommand(_menufile,langstr("menu_file/quit"),NULL,this,ID_CLOSE);
-    new FXMenuCommand(_menuedit,langstr("menu_edit/settings"),NULL,this,ID_SETTINGS);
-
-    (new FXMenuCommand(_menuplayer,langstr("menu_player/status"),NULL,NULL,0))->disable();
-    new FXMenuSeparator(_menuplayer);
-    _menu_status_map[chat_gaming::user::status_chatting] = new FXMenuRadio(
-        _menuplayer,
-        langstr("menu_player/chatting"),
-        _users_view, view::users::ID_STATUS_CHATTING
-    );
-    _menu_status_map[chat_gaming::user::status_playing] = new FXMenuRadio(
-        _menuplayer,
-        langstr("menu_player/playing"),
-        _users_view, view::users::ID_STATUS_PLAYING
-    );
-    _menu_status_map[chat_gaming::user::status_away] = new FXMenuRadio(
-        _menuplayer,
-        langstr("menu_player/away"),
-        _users_view, view::users::ID_STATUS_AWAY
-    );
-    _menu_status_map[chat_gaming::user::status_dont_disturb] = new FXMenuRadio(
-        _menuplayer,
-        langstr("menu_player/dont_disturb"),
-        _users_view, view::users::ID_STATUS_DONT_DISTURB
-    );
-    new FXMenuSeparator(_menuplayer);
-    _room_create_menu =
-        new FXMenuCommand(_menuplayer,langstr("menu_player/create_room"), NULL, this, ID_ROOM_CREATE);
-    _room_join_menu =
-        new FXMenuCommand(_menuplayer,langstr("menu_player/join_room"), NULL, this, ID_ROOM_JOIN);
-    _room_join_menu->hide();
-
-/* RV league is no more */
-/*    (new FXMenuCommand(_menucomp,langstr("menu_comp/rvl"),NULL,NULL,0))->disable();
-    new FXMenuSeparator(_menucomp);
-    new FXMenuCommand(_menucomp,langstr("menu_comp/rvl_home"),NULL,this,ID_WWW_RVL_HOME);
-    new FXMenuCommand(_menucomp,langstr("menu_comp/rvl_champ"),NULL,this,ID_WWW_RVL_CHAMP);
-    new FXMenuCommand(_menucomp,langstr("menu_comp/rvl_cup"),NULL,this,ID_WWW_RVL_CUP);
-
-    new FXMenuSeparator(_menucomp);
-*/
-    (new FXMenuCommand(_menucomp,langstr("menu_comp/rvr"),NULL,NULL,0))->disable();
-    new FXMenuSeparator(_menucomp);
-    new FXMenuCommand(_menucomp,langstr("menu_comp/rvr_home"),NULL,this,ID_WWW_RVR_HOME);
-    new FXMenuCommand(_menucomp,langstr("menu_comp/rvr_1vs1"),NULL,this,ID_WWW_RVR_1VS1);
-    new FXMenuCommand(_menucomp,langstr("menu_comp/rvr_players"),NULL,this,ID_WWW_RVR_PLAYERS);
-    new FXMenuCommand(_menucomp,langstr("menu_comp/rvr_teams"),NULL,this,ID_WWW_RVR_TEAMS);
-
-    new FXMenuCommand(_menuhelp,langstr("menu_help/router_help"),NULL,this,ID_WWW_HELP_ROUTER);
-    new FXMenuCommand(_menuhelp,langstr("menu_help/faq"),NULL,this,ID_WWW_HELP_FAQ);
-    new FXMenuCommand(_menuhelp,langstr("menu_help/conn_help"),NULL,this,ID_WWW_HELP_CONN);
-    new FXMenuSeparator(_menuhelp);
-    new FXMenuCommand(_menuhelp,langstr("menu_help/about_house"),NULL,this,ID_ABOUT);
+    _connect_signals();
 
     _update_status();
-    _update_menu_player_status();
+    _room_buttons_status();
 
-    // For some reason, restore_size has to be in constructor
-    // if FXMainWindow and in create if FXDialogBox.
-    util::restore_size(this, "house_win");
-
-    house->setSplit(1, 150);
-    sections->setSplit(0, 150);
-    _rooms_view->observer_set(this);
-    _users_view->observer_set(this);
-
-/*
-    _menu_www_map[ID_WWW_RVL_HOME]    = conf()->get("www", "rvl_home");
-    _menu_www_map[ID_WWW_RVL_CHAMP]   = conf()->get("www", "rvl_championship");
-    _menu_www_map[ID_WWW_RVL_CUP]     = conf()->get("www", "rvl_cup");
-*/
-    _menu_www_map[ID_WWW_RVR_HOME]    = conf()->get("www", "rvr_home");
-    _menu_www_map[ID_WWW_RVR_1VS1]    = conf()->get("www", "rvr_1vs1");
-    _menu_www_map[ID_WWW_RVR_PLAYERS] = conf()->get("www", "rvr_players");
-    _menu_www_map[ID_WWW_RVR_TEAMS]   = conf()->get("www", "rvr_teams");
-    _menu_www_map[ID_WWW_HELP_ROUTER] = conf()->get("www", "help_router");
-    _menu_www_map[ID_WWW_HELP_CONN]   = conf()->get("www", "help_connection");
-    _menu_www_map[ID_WWW_HELP_FAQ]    = conf()->get("www", "help_faq");
-
-    getAccelTable()->addAccel(MKUINT(KEY_F4,ALTMASK),this,FXSEL(SEL_COMMAND,ID_CLOSE));
+    interruptable_action_update();
 }
 
 void
-house::create() {
-    FXMainWindow::create();
-    watched_window::create(this);
+house::_create_actions() {
+    _action_quit = new QAction(app_icons()->get("exit"), langstr("menu_file/quit"), this);
+    _action_quit->setShortcut(QKeySequence::Quit);
 
-    interruptable_action_update();
+    _action_settings = new QAction(langstr("menu_edit/settings"), this);
+    _action_settings->setShortcut(Qt::ALT | Qt::Key_S);
 
-    _room_buttons_status();
-    // TODO away
-    on_dht_disconnected(this, 0, 0);
+    _action_status = new QAction(langstr("menu_player/status"), this);
+    _action_status->setDisabled(true);
+
+    _actiongroup_status = new QActionGroup(this);
+    _action_chatting = new QAction(langstr("menu_player/chatting"), this);
+    _action_chatting->setCheckable(true);
+    _action_chatting->setShortcut(Qt::ALT | Qt::SHIFT | Qt::Key_C);
+    _action_playing = new QAction(langstr("menu_player/playing"), this);
+    _action_playing->setCheckable(true);
+    _action_playing->setShortcut(Qt::ALT | Qt::SHIFT | Qt::Key_P);
+    _action_away = new QAction(langstr("menu_player/away"), this);
+    _action_away->setShortcut(Qt::ALT | Qt::SHIFT | Qt::Key_A);
+    _action_away->setCheckable(true);
+    _action_donotdisturb = new QAction(langstr("menu_player/dont_disturb"), this);
+    _action_donotdisturb->setCheckable(true);
+    _action_donotdisturb->setShortcut(Qt::ALT | Qt::SHIFT | Qt::Key_D);
+    _actiongroup_status->addAction(_action_chatting);
+    _actiongroup_status->addAction(_action_playing);
+    _actiongroup_status->addAction(_action_away);
+    _actiongroup_status->addAction(_action_donotdisturb);
+    _action_chatting->setChecked(true);
+
+    _action_rvr = new QAction(langstr("menu_comp/rvr"), this);
+    _action_rvr->setDisabled(true);
+    _action_rvr_wwwsite = new QAction(langstr("menu_comp/rvr_home"), this);
+    _action_rvr_1vs1 = new QAction(langstr("menu_comp/rvr_1vs1"), this);
+    _action_rvr_player_profiles = new QAction(langstr("menu_comp/rvr_players"), this);
+
+    _action_routerfw_help = new QAction(langstr("menu_help/router_help"), this);
+    _action_rvh_faq = new QAction(langstr("menu_help/faq"), this);
+    _action_connection_help = new QAction(langstr("menu_help/conn_help"), this);
+    _action_about_rvh = new QAction(app_icons()->get("about"), langstr("menu_help/about_house"), this);
+
+    _action_create_room = new QAction(app_icons()->get("room_create"), langstr("menu_player/create_room"), this);
+    _action_create_room->setShortcut(Qt::CTRL | Qt::Key_R);
+    _action_join_room   = new QAction(app_icons()->get("room_join"), langstr("main_win/join_room"), this);
+    _action_refresh     = new QAction(app_icons()->get("refresh"), langstr("main_win/refresh"), this);
+    _action_cancel      = new QAction(app_icons()->get("cancel"), langstr("main_win/cancel"), this);
+
+}
+
+void
+house::_create_menus() {
+    // File menu
+    _menu_file = new QMenu(langstr("menu_file/title"), this);
+    _menu_file->addAction(_action_quit);
+
+    // Edit menu
+    _menu_edit = new QMenu(langstr("menu_edit/title"), this);
+    _menu_edit->addAction(_action_settings);
+    // Player menu
+    _menu_player = new QMenu(langstr("menu_player/title"), this);
+    _menu_player->addAction(_action_status);
+    _menu_player->addSeparator();
+    _menu_player->addActions(_actiongroup_status->actions());
+    _menu_player->addSeparator();
+    _menu_player->addAction(_action_create_room);
+
+    // Competitions menu
+    _menu_comp = new QMenu(langstr("menu_comp/title"), this);
+    _menu_comp->addAction(_action_rvr);
+    _menu_comp->addSeparator();
+    _menu_comp->addAction(_action_rvr_wwwsite);
+    _menu_comp->addAction(_action_rvr_1vs1);
+    _menu_comp->addAction(_action_rvr_player_profiles);
+
+    // Help menu
+    _menu_help = new QMenu(langstr("menu_help/title"), this);
+    _menu_help->addAction(_action_routerfw_help);
+    _menu_help->addAction(_action_rvh_faq);
+    _menu_help->addAction(_action_connection_help);
+    _menu_help->addSeparator();
+    _menu_help->addAction(_action_about_rvh);
+
+    menuBar()->addMenu(_menu_file);
+    menuBar()->addMenu(_menu_edit);
+    menuBar()->addMenu(_menu_player);
+    menuBar()->addMenu(_menu_comp);
+    menuBar()->addMenu(_menu_help);
+}
+
+void
+house::_create_toolbars() {
+    QToolBar *tool_bar = addToolBar("Quit");
+    tool_bar->setObjectName("toolbar_quit");
+    tool_bar->addAction(_action_quit);
+    tool_bar = addToolBar("Room controls");
+    tool_bar->setObjectName("toolbar_roomcontrols");
+    tool_bar->addAction(_action_create_room);
+    tool_bar->addAction(_action_join_room);
+    tool_bar->addAction(_action_refresh);
+    tool_bar->addAction(_action_cancel);
+    tool_bar = addToolBar("Miscellaneous");
+    tool_bar->setObjectName("toolbar_misc");
+    tool_bar->addAction(_action_about_rvh);
+}
+
+void
+house::_create_widgets() {
+    _chat_view  = new view::chat(this);
+    _users_view = new view::users(this);
+    _rooms_view = new view::rooms(this);
+    _msg_field  = new QLineEdit(this);
+    _msg_field->setMaxLength((int)app_opts.limit_chat_msg());
+
+    _rooms_view->observer_set(this);
+    _users_view->observer_set(this);
+    _chat_view->flash_window(this);
+}
+
+void
+house::_connect_signals() {
+    connect(_action_quit,   SIGNAL(triggered()), this, SLOT(close()));
+    connect(_msg_field,     SIGNAL(returnPressed()), this, SLOT(send_message()));
+    connect(_action_cancel, SIGNAL(triggered()), this, SLOT(interrupt()));
+
+    connect(_action_chatting,     SIGNAL(triggered()), this, SLOT(change_user_status_to_chatting()));
+    connect(_action_away,         SIGNAL(triggered()), this, SLOT(change_user_status_to_away()));
+    connect(_action_playing,      SIGNAL(triggered()), this, SLOT(change_user_status_to_playing()));
+    connect(_action_donotdisturb, SIGNAL(triggered()), this, SLOT(change_user_status_to_dont_disturb()));
+
+    connect(_action_create_room, SIGNAL(triggered()), this, SLOT(room_create()));
+    connect(_action_join_room,   SIGNAL(triggered()), this, SLOT(room_join_selected()));
+    connect(_action_refresh,     SIGNAL(triggered()), this, SLOT(refresh()));
+
+    connect(_action_settings,  SIGNAL(triggered()), this, SLOT(open_settings()));
+
+    _menu_comp->addAction(_action_rvr_1vs1);
+    _menu_comp->addAction(_action_rvr_player_profiles);
+
+    connect(_action_about_rvh, SIGNAL(triggered()), this, SLOT(open_about()));
+    connect(_rooms_view,       SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(room_join_selected(QTreeWidgetItem *, int)));
+    connect(_users_view,       SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(open_private_room(QTreeWidgetItem *, int)));
+
+    QSignalMapper *openUrlSignalMapper = new QSignalMapper(this);
+    openUrlSignalMapper->setMapping(_action_rvr_wwwsite,         conf()->get("www/rvr_home").c_str());
+    openUrlSignalMapper->setMapping(_action_rvr_1vs1,            conf()->get("www/rvr_1vs1").c_str());
+    openUrlSignalMapper->setMapping(_action_rvr_player_profiles, conf()->get("www/rvr_players").c_str());
+
+    openUrlSignalMapper->setMapping(_action_routerfw_help,   conf()->get("www/help_router").c_str());
+    openUrlSignalMapper->setMapping(_action_connection_help, conf()->get("www/help_connection").c_str());
+    openUrlSignalMapper->setMapping(_action_rvh_faq,         conf()->get("www/help_faq").c_str());
+
+    connect(_action_rvr_wwwsite,         SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+    connect(_action_rvr_1vs1,            SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+    connect(_action_rvr_player_profiles, SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+
+    connect(_action_routerfw_help,   SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+    connect(_action_connection_help, SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+    connect(_action_rvh_faq,         SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+
+    connect(openUrlSignalMapper, SIGNAL(mapped(QString)), this, SLOT(open_url(QString)));
+
+}
+
+void
+house::_create_layout() {
+    QVBoxLayout *l = new QVBoxLayout;
+    _chat_users_splitter = new QSplitter(Qt::Horizontal);
+    QSplitter *vsplitter = new QSplitter(Qt::Vertical);
+    vsplitter->addWidget(_rooms_view);
+    vsplitter->addWidget(_chat_view);
+    _chat_users_splitter->addWidget(vsplitter);
+    _chat_users_splitter->addWidget(_users_view);
+
+    l->addWidget(_chat_users_splitter);
+    l->addWidget(_msg_field);
+
+    vsplitter->setStretchFactor(1, -1);
+    _chat_users_splitter->setStretchFactor(0, -1);
+
+    QWidget *centralWidget = new QWidget;
+    centralWidget->setLayout(l);
+    this->setCentralWidget(centralWidget);
+}
+
+void
+house::show() {
+    super::show();
+
+    QList<int> _chat_users_splitter_sizes = _chat_users_splitter->sizes();
+    _chat_users_splitter_sizes.back() = 150;
+    _chat_users_splitter->setSizes(_chat_users_splitter_sizes);
 }
 
 house::~house() {
-    util::store_size(this, "house_win");
-
-    getApp()->removeTimeout(this, ID_RECONNECT);
-    getApp()->removeTimeout(this, ID_REFRESH);
-    getApp()->removeTimeout(this, ID_DHT_DISCONNECTED);
-
-    ACE_DEBUG((LM_DEBUG, "Main window closed, sending quit request to APP\n"));
-
-    getApp()->handle(this, FXSEL(SEL_COMMAND,FXApp::ID_QUIT), NULL);
-
-    delete _menufile;
-    delete _menuedit;
-    delete _menuplayer;
-    delete _menucomp;
-    delete _menuhelp;
+    house_win.instance(NULL);
 }
 
-long
-house::on_send_message(FXObject *from, FXSelector sel, void *) {
-    FXString t = _msg_field->getText();
+void
+house::change_user_status_to_chatting() {
+    _change_user_status(chat_gaming::user::status_chatting);
+}
 
-    if (t.empty()) return 1;
+void
+house::change_user_status_to_playing() {
+    _change_user_status(chat_gaming::user::status_playing);
+}
 
-    if (!_flood_control.allow_send(t)) {
-        _chat_view->status_message(langstr("chat/flood_control"));
-        return 0;
+void
+house::change_user_status_to_away() {
+    _change_user_status(chat_gaming::user::status_away);
+}
+
+void
+house::change_user_status_to_dont_disturb() {
+    _change_user_status(chat_gaming::user::status_dont_disturb);
+}
+
+void
+house::_change_user_status(chat_gaming::user::status_enum user_status) {
+    ACE_DEBUG((LM_DEBUG, "house::_change_user_status: %d\n\n", user_status));
+
+    // Restrict status changing so that it can be done only once in a
+    // second
+    static time_t last_change = 0;
+    time_t now = time(NULL);
+    if (now - last_change < 1) {
+        ACE_DEBUG((LM_DEBUG, "house::_change_user_status: not done, now - last_change = %d\n\n", now - last_change));
+        return;
     }
-    // if (now - _last_send_message < 2) return 0;
 
+    if (user_status != self_model()->user().status()) {
+        ACE_DEBUG((LM_DEBUG, "house::_change_user_status: done, user_send\n"));
+        last_change = now;
+        self_model()->user().status(user_status);
+        self_model()->user_send();
+    }
+}
+
+void
+house::send_message() {
+    QString t = _msg_field->text();
+
+    if (t.isEmpty()) return;
+
+    if (!_flood_control.allow_send()) {
+        _chat_view->status_message(langstr("chat/flood_control"));
+        return;
+    }
     if (t.length() > (int)app_opts.limit_chat_msg())
-        t.trunc(app_opts.limit_chat_msg());
-    t.substitute("\r", "");
+        t.truncate(app_opts.limit_chat_msg());
+
+    // IMPROVE Qt check if this needed
+    // t.substitute("\r", "");
+
 
     // Check for a command
     if (!_chat_command(t)) {
         // Sending a public message
         message_send *msg =
           new message_send(::message::send,
-                           t.text(),
+                           t.toLatin1().constData(),
                            self_model()->user().id(),
                            self_model()->sequence(),
                            0);
@@ -337,13 +339,13 @@ house::on_send_message(FXObject *from, FXSelector sel, void *) {
 
     _msg_field->setText("");
 
-    return 1;
+    emit send_message();
 }
 
 bool
-house::_chat_command(const FXString &t) {
+house::_chat_command(const QString &t) {
     if (t[0] == '/') {
-        std::string cmd = t.text() + 1;
+        std::string cmd = t.toLatin1().constData() + 1;
         if (cmd == "model_rooms") {
             _chat_command_model_rooms();
         } else if (cmd == "model_users") {
@@ -391,7 +393,7 @@ house::_chat_command_model_rooms() {
 
                         for (ltype::iterator i = userids.begin();
                              i != userids.end(); i++)
-                            _chat_view->status_message(indent + i->c_str());
+                                _chat_view->status_message(indent + i->c_str());
                     }
                     indent.resize(indent_size -= 2, indent_char);
                     _chat_view->status_message(indent + "}");
@@ -493,108 +495,109 @@ house::_chat_command_model_self() {
     _chat_view->status_message(indent + "}");
 }
 
-long
-house::on_network_command(FXObject *from, FXSelector sel, void *) {
-    ::message *msg = NULL;
+void
+house::net_connect() {
+    chat_gaming::user u(self_model()->user());
 
-    switch (FXSELID(sel)) {
-    case ID_CONNECT:
-    {
-        chat_gaming::user u(self_model()->user());
-        // u.login_id(self_model()->user());
-        // if (self_model()->user_validated())
-        //  u.validation("1");
+    ACE_DEBUG((LM_DEBUG, "TODO debug user id str: %s\n",
+              self_model()->user().id().id_str().c_str()));
+    ::message *msg = new message_user(::message::connect,
+        self_model()->user(),
+        self_model()->sequence(), 0);
+    _conn_tries++;
+    _last_connect = time(NULL);
 
-        ACE_DEBUG((LM_DEBUG, "TODO debug user id str: %s\n",
-                  self_model()->user().id().id_str().c_str()));
-        msg = new message_user(::message::connect,
-                               self_model()->user(),
-                               self_model()->sequence(), 0);
-        _conn_tries++;
-        _last_connect = time(NULL);
-    }
-        break;
-    case ID_DISCONNECT:
-        msg = new ::message(::message::disconnect);
-        break;
-    default:
-        ACE_DEBUG((LM_DEBUG, "house::on_network_command: unrecognized " \
-                  " message id %d\n", FXSELID(sel)));
-    }
-
-    if (msg) net_messenger()->send_msg(msg);
-
-    return 1;
+    net_messenger()->send_msg(msg);
 }
 
-long
-house::on_room_create(FXObject *from, FXSelector sel, void *) {
+void
+house::net_disconnect() {
+
+    ::message *msg = new ::message(::message::disconnect);
+    net_messenger()->send_msg(msg);
+}
+
+void
+house::room_create() {
     ACE_DEBUG((LM_DEBUG, "house: creating room\n"));
 
     // TODO Don't allow creating a new room if the user is already in another
     // room.
     window::room_settings *win = new window::room_settings(this);
 
-    if (!win->execute(PLACEMENT_SCREEN)) {
+    int ret_value = win->exec();
+    if (ret_value == QDialog::Rejected) {
         ACE_DEBUG((LM_DEBUG, "house::Room create cancelled\n"));
-        return 1;
-        // handle(this, FXSEL(SEL_COMMAND, ID_QUIT), NULL);
+        return;
     }
 
     ACE_DEBUG((LM_DEBUG, "house::Room create successfull\n"));
-
-    return 1;
 }
 
-long
-house::on_room_join(FXObject *from, FXSelector sel, void *ptr) {
+void
+house::room_join_selected() {
+    ACE_DEBUG((LM_DEBUG, "house::room_join_selected\n"));
+    QTreeWidgetItem *item = _rooms_view->currentItem();
+    ACE_DEBUG((LM_DEBUG, "house::room_join_selected currentItem %d\n", item));
+    room_join_selected(item, 0);
+}
+
+void
+house::room_join_selected(QTreeWidgetItem *item, int column) {
     ACE_DEBUG((LM_DEBUG, "house: joining room\n"));
+
+    if (item->isDisabled()) {
+        ACE_DEBUG((LM_DEBUG, "house: room is disabled\n"));
+        return;
+    }
 
     if (!self_model()->user().room_id().empty()) {
         ACE_DEBUG((LM_DEBUG, "house: already in room id %s, ignored\n",
                    self_model()->user().id().c_str()));
-        return 0;
+        return;
     }
     if (!self_model()->joining_room().empty()) {
         ACE_DEBUG((LM_DEBUG, "house: already joining room id %s, ignored\n",
                    self_model()->joining_room().c_str()));
-        return 0;
+        return;
     }
 
-    int i = _rooms_view->selected_item_index();
-    ACE_DEBUG((LM_DEBUG, "house::index clicked is %d\n", i));
+    view::rooms::item_type *selected_item = static_cast<view::rooms::item_type *>(item);
+    ACE_DEBUG((LM_DEBUG, "house::selected_item is %d\n", selected_item));
 
-    if (i < 0) {
-        return 0;
+    if (selected_item == NULL) {
+        return;
     }
 
     // room_item *item = _rooms_view->item_at(i);
-    chat_gaming::room::id_type rid = _rooms_view->room_id_at(i);
+    chat_gaming::room::id_type rid = selected_item->room_id();
 
     if (rid.empty()) {
         ACE_DEBUG((LM_ERROR, "house::on_room_join no matching room "
-                  "found for index %d\n", i));
-        return 0;
+                  "found for room pointer %d\n", selected_item));
+        return;
     }
 
     model::house::house_type::room_iterator ri = house_model()->room_find(rid);
     if (ri == house_model()->room_end()) {
         ACE_DEBUG((LM_ERROR, "house::on_room_join no matching room "
                   "found from model for room id %s\n", rid.c_str()));
-        return 0;
+        return;
     }
 
     chat_gaming::room r(*ri);
     // Check if the room requires a password and ask for it if so
     if (r.has_password()) {
-        FXInputDialog passinp(this,
-                              langstr("main_win/ask_room_pass_title"),
-                              langstr("main_win/ask_room_pass"));
-        if (!passinp.execute()) {
-            // Join cancelled when asked for password
-            return 1;
+        bool ok = false;
+        QString pass = QInputDialog::getText(this,
+                                             langstr("main_win/ask_room_pass_title"),
+                                             langstr("main_win/ask_room_pass"),
+                                             QLineEdit::Normal, QString(),
+                                             &ok);
+        if (!ok) {
+            return;
         }
-        r.password(passinp.getText().text());
+        r.password(pass.toLatin1().constData());
     }
     // TODO message_room_join would be more appropriate, change when time
     // permits, this one will do for now
@@ -609,12 +612,68 @@ house::on_room_join(FXObject *from, FXSelector sel, void *ptr) {
     self_model()->joining_room(r.id());
     ::app()->interruptable_action_update(langstr("main_win/joining_room"));
     // return 0;
+}
 
-    return 1;
+// IMPROVE Qt: I think this would fit better into house_app().cpp
+void
+house::open_private_room(QTreeWidgetItem *widget_item, int column) {
+    ACE_DEBUG((LM_DEBUG, "house::open_private_room\n"));
+
+    view::users::item_type *item = static_cast<view::users::item_type *>(widget_item);
+
+    if (!item) {
+        ACE_DEBUG((LM_DEBUG, "house::open_private_room no item found\n"));
+        return;
+    }
+
+    // IMPROVE using multi_feed does not belong here, it should be contained within users.
+    std::string user_id = multi_feed::value(
+        item->feed_item(),
+        multi_feed::user_id_accessor(multi_feed::user_id_to_id_string())
+    );
+
+    ACE_DEBUG((LM_DEBUG, "users::on_priv_msg: got '%s'\n",
+              user_id.c_str()));
+
+    if (!user_id.empty()) {
+        ::app()->private_message_window_to(
+            util::private_message_channel_with(user_id),
+            user_id,
+            true
+        );
+    }
+}
+
+void
+house::open_settings() {
+    ACE_DEBUG((LM_DEBUG, "house::open_settings\n"));
+
+    settings *settings_win = new settings;
+    settings_win->setAttribute(Qt::WA_DeleteOnClose);
+    settings_win->show();
+}
+
+void
+house::open_url(const QString &url) {
+    const char *urlstr = url.toLatin1().constData();
+    ACE_DEBUG((LM_DEBUG, "house::open_url starting %s\n", urlstr));
+   launcher_file()->start(urlstr);
+
+}
+
+void
+house::open_about() {
+    ACE_DEBUG((LM_DEBUG, "house::open_about\n"));
+
+    gui::window::about about(this);
+
+    about.exec();
 }
 
 void
 house::handle_message(::message *msg) {
+    ACE_DEBUG((LM_DEBUG, "house: handle_message\n"));
+
     if (handle_dht_message(msg)         ||
         handle_ctz_message(msg)         ||
         handle_external_ip_message(msg))
@@ -625,27 +684,28 @@ house::handle_message(::message *msg) {
 
     switch(msg->id()) {
     case ::message::room:
-        _room_buttons_status(); break;
+        _room_buttons_status();
+        break;
     case ::message::user:
     {
-        message_user *u = dynamic_ptr_cast<message_user>(msg);
         _room_buttons_status();
-        // ACE_DEBUG((LM_DEBUG, "update_menu_player got user id %s, self user id %s",
-        //          u->user().id().c_str(), self_model()->user().id()))
-        if (u->user().id().id_str() == self_model()->user().id().id_str())
-            _update_menu_player_status();
-
     }
         break;
     case ::message::send:
         // Don't flash the window, however, if playing
         // already
+        ACE_DEBUG((LM_DEBUG, "house::handle_message: flash_main_chat %d\n",
+                  app_opts.flash_main_chat()));
         if (app_opts.flash_main_chat() &&
             self_model()->user().status() != chat_gaming::user::status_playing)
         {
             message_channel *m = dynamic_ptr_cast<message_channel>(msg);
-            if (m->channel() == _chat_view->channel())
+            ACE_DEBUG((LM_DEBUG, "house::handle_message send: m->channel() %s, _chat_view->channel() %s\n",
+                    m->channel().c_str(), _chat_view->channel().c_str()));
+            if (m->channel() == _chat_view->channel()) {
+                ACE_DEBUG((LM_DEBUG, "house::handle_message send flashing main window\n"));
                 os::flash_window(this);
+            }
         }
         break;
     case ::message::block_users:
@@ -662,8 +722,6 @@ house::handle_message(::message *msg) {
     _chat_view->handle_message(msg);
     _rooms_view->handle_message(msg);
 }
-
-
 
 bool
 house::handle_dht_message(::message *msg) {
@@ -703,15 +761,8 @@ house::handle_dht_message(::message *msg) {
         // thread might decide to retry right after. By starting a timer
         // and checking if the state is still dht_disconnected we
         // get a reliable result.
-        getApp()->addTimeout(this, ID_DHT_DISCONNECTED, 5000, NULL);
+        QTimer::singleShot(5000, this, SLOT(dht_disconnected()));
     }
-#if 0
-    if (msg->id() == message::dht_group_joined) {
-        // Must send updated status once joined in case the user has been
-        // doing something before full connect status reached.
-        self_model()->state_send();
-    }
-#endif
 
     return true;
 }
@@ -737,19 +788,12 @@ house::handle_ctz_message(::message *msg) {
             int conn_in_secs = 30 * _conn_tries;
             ACE_DEBUG((LM_DEBUG, "house::installing reconnect timer %d secs\n",
                        conn_in_secs));
-            getApp()->addTimeout(this, ID_RECONNECT, conn_in_secs*1000, NULL);
+            QTimer::singleShot(conn_in_secs*1000, this, SLOT(reconnect()));
         }
     }
         break;
     case message::ctz_group_server_unreachable:
     {
-        // TODO, maybe a dialog if both ctz and dht can not be reached.
-/*      message_string *m = dynamic_ptr_cast<message_string>(msg);
-        std::string cnt = "Connection timeout to centralized server: " +
-                          m->str();
-        FXMessageBox::error(this, FX::MBOX_OK, "Server unreachable",
-                            cnt.c_str());
-*/
     }
         break;
     default:
@@ -811,12 +855,16 @@ house::_check_if_self_blocked() {
 
     if (_global_ip_block.is_blocked(a.s_addr)) {
         // Let user know he is in global block list, how unfortunate for him
-        house_message_box::information(
-            ::app(), FX::MBOX_OK,
-            conf()->get("www", "pub_forum").c_str(),
-            langstr("app/self_on_global_ignore_topic"),
-            langstr("app/self_on_global_ignore")
-        );
+        // IMPROVE Qt test this
+        // IMPROVE Qt there used to be url to RV Pub Forum in here, see below. Not sure if it's really necessary anymore.
+        QMessageBox::information(::house_win(), langstr("app/self_on_global_ignore_topic"), langstr("app/self_on_global_ignore"));
+
+//        house_message_box::information(
+//            ::app(), FX::MBOX_OK,
+//            conf()->get("www", "pub_forum").c_str(),
+//            langstr("app/self_on_global_ignore_topic"),
+//            langstr("app/self_on_global_ignore")
+//        );
     }
 }
 
@@ -830,31 +878,7 @@ house::_update_status() {
     STRING_JOIN(status, "; ", _status_dht_extra[1]);
     STRING_JOIN(status, "; ", _status_tmp);
 
-    _status->getStatusLine()->setNormalText(status.c_str());
-    // _status->setText(status.c_str());
-}
-
-void
-house::_update_menu_player_status() {
-    ACE_DEBUG((LM_DEBUG, "house::_update_menu_player_status: for %d\n",
-              self_model()->user().status()));
-    _menu_status_map_type::iterator ci = _menu_status_map.find(
-        self_model()->user().status()
-    );
-    // if (ci != _menu_status_map.end()) {
-        _menu_status_map_type::iterator i = _menu_status_map.begin();
-        for (; i != _menu_status_map.end(); i++) {
-            ACE_DEBUG((LM_DEBUG, "house::_update_menu_player_status: setting %d to %d\n",
-                       i->first, i == ci));
-            // i->second->setCheck(TRUE);
-            i->second->setCheck(i == ci ? TRUE : FALSE);
-            ACE_DEBUG((LM_DEBUG, "house::_update_menu_player_status: after set %d\n",
-                       i->second->getCheck()));
-        }
-    //} else {
-    //    ACE_DEBUG((LM_DEBUG, "house::_update_menu_player_status: not found for %d\n",
-    //              self_model()->user().status()));
-    //}
+    this->statusBar()->showMessage(status.c_str());
 }
 
 void
@@ -862,21 +886,17 @@ house::_room_buttons_status() {
     if (self_model()->joining_room()   != chat_gaming::room::id_type() ||
         self_model()->user().room_id() != chat_gaming::room::id_type())
     {
-        _room_create_button->disable();
-        _room_create_menu->disable();
-        _room_join_button->disable();
-        _room_join_menu->disable();
+        _action_create_room->setDisabled(true);
+        _action_join_room->setDisabled(true);
 
     } else {
-        _room_create_button->enable();
-        _room_create_menu->enable();
-        _room_join_button->enable();
-        _room_join_menu->enable();
+        _action_create_room->setEnabled(true);
+        _action_join_room->setEnabled(true);
     }
 }
 
-long
-house::on_interrupt(FXObject *from, FXSelector sel, void *) {
+void
+house::interrupt() {
     if (!self_model()->joining_room().empty()) {
         self_model()->joining_room(chat_gaming::room::id_type());
         // If aborted before joined, necessary to do this update so that
@@ -885,105 +905,7 @@ house::on_interrupt(FXObject *from, FXSelector sel, void *) {
     }
 
     interruptable_action_update();
-    return 1;
 }
-
-long
-house::on_refresh  (FXObject *from, FXSelector sel, void *) {
-    ::message *m = new ::message(::message::refresh);
-    net_messenger()->send_msg(m);
-
-    // disable refresh button for 8 seconds
-    getApp()->addTimeout(this, ID_REFRESH_ENABLE, 8000, NULL);
-    _refresh_button->disable();
-    return 1;
-}
-
-long
-house::on_refresh_enable  (FXObject *from, FXSelector sel, void *) {
-    _refresh_button->enable();
-    return 1;
-}
-
-long
-house::on_reconnect (FXObject *from, FXSelector sel, void *) {
-    ACE_DEBUG((LM_DEBUG, "house::on_reconnect received\n"));
-    if (_ctz_disconnected) {
-        ACE_DEBUG((LM_DEBUG, "house::trying to reconnect\n"));
-        // If still disconnected, make a retry connecting
-        this->handle(this, FXSEL(SEL_COMMAND, ID_CONNECT), NULL);
-    }
-
-    return 1;
-}
-
-long
-house::on_about (FXObject *from, FXSelector sel, void *) {
-    gui::window::about *win  = new gui::window::about(this);
-
-    win->execute(PLACEMENT_SCREEN);
-
-    return 1;
-}
-
-long
-house::on_www(FXObject *from, FXSelector sel, void *) {
-    ACE_DEBUG((LM_DEBUG, "house::on_www\n"));
-    _menu_www_map_type::iterator ci = _menu_www_map.find(FXSELID(sel));
-    if (ci != _menu_www_map.end()) {
-        ACE_DEBUG((LM_DEBUG, "house::on_www starting %s\n", ci->second.c_str()));
-       launcher_file()->start(ci->second.c_str());
-    }
-
-    return 1;
-}
-
-long
-house::on_settings (FXObject *from, FXSelector sel, void *) {
-    settings *win = new window::settings(::app());
-    win->create();
-
-    return 1;
-}
-
-long
-house::on_minimize(FXObject *from, FXSelector sel, void *) {
-    ACE_DEBUG((LM_DEBUG, "window::house: on_minimize\n"));
-    return 1;
-}
-
-long
-house::on_restore(FXObject *from, FXSelector sel, void *) {
-    ACE_DEBUG((LM_DEBUG, "window::house: on_restore\n"));
-    return 1;
-}
-
-long
-house::on_configure(FXObject *from, FXSelector sel, void *) {
-   FXWindow *win = this;
-   ACE_DEBUG((LM_DEBUG, "house::on_configure %d/%d/%d/%d\n",
-              win->getX(),win->getY(),win->getWidth(), win->getHeight()));
-    return 1;
-}
-
-/*
-long
-house::on_configure(FXObject *from, FXSelector sel, void *p) {
-    ACE_DEBUG((LM_DEBUG, "window::house: on_configure\n"));
-    FXEvent *e = reinterpret_cast<FXEvent *>(p);
-    ACE_DEBUG((LM_DEBUG, "window::house: win_x/win_y: %d/%d\n",
-              e->win_x, e->win_y));
-    ACE_DEBUG((LM_DEBUG, "window::house: win_x/win_y: %d/%d\n",
-              e->root_x, e->root_y));
-    ACE_DEBUG((LM_DEBUG, "window::house: state: %d\n",
-              e->state));
-    ACE_DEBUG((LM_DEBUG, "window::house: code: %d\n",
-              e->code));
-    ACE_DEBUG((LM_DEBUG, "window::house: text: %s\n",
-              e->text.text()));
-    return 1;
-}
-*/
 
 void
 house::interruptable_action_update() {
@@ -993,34 +915,9 @@ house::interruptable_action_update() {
         intr = true;
     }
 
-    intr ? _interrupt_button->enable() : _interrupt_button->disable();
+    _action_cancel->setEnabled(intr);
     _status_tmp.clear();
     _update_status();
-}
-
-long
-house::on_dht_disconnected(FXObject *from, FXSelector sel, void *) {
-    ACE_DEBUG((LM_DEBUG, "house::on_dht_disconnected\n"));
-    if (_last_dht_status_message_id != message::dht_disconnected) {
-        ACE_DEBUG((LM_DEBUG, "house: was not disconnected anymore, "
-                  "%d/%d\n",
-                  _last_dht_status_message_id, message::dht_disconnected));
-        /* No more on disconnected state, either retrying or succeeded,
-         * so do nothing unless receive disconnected again
-         */
-        return 1;
-    }
-
-    if (conf()->get<bool>("main", "no_router_fw_help", false))
-        return 1;
-
-    if (!_router_fw_help_showed) {
-        ACE_DEBUG((LM_DEBUG, "house::on_dht_disconnected:help box\n"));
-        // Display a message box
-        (new router_fw_help)->show_when_possible();
-        _router_fw_help_showed = true;
-    }
-    return 1;
 }
 
 void
@@ -1029,6 +926,56 @@ house::interruptable_action_update(const std::string &s) {
 
     _status_tmp = s;
     _update_status();
+}
+
+void
+house::refresh() {
+    ::message *m = new ::message(::message::refresh);
+    net_messenger()->send_msg(m);
+
+    // disable refresh button for 8 seconds
+    QTimer::singleShot(8000, this, SLOT(enable_refresh()));
+    _action_refresh->setDisabled(true);
+}
+
+void
+house::enable_refresh() {
+    _action_refresh->setEnabled(true);
+}
+
+void
+house::reconnect () {
+    ACE_DEBUG((LM_DEBUG, "house::reconnect received\n"));
+    if (_ctz_disconnected) {
+        ACE_DEBUG((LM_DEBUG, "house::trying to reconnect\n"));
+        net_connect();
+    }
+}
+
+void
+house::dht_disconnected() {
+    ACE_DEBUG((LM_DEBUG, "house::on_dht_disconnected\n"));
+
+    if (_last_dht_status_message_id != message::dht_disconnected) {
+        ACE_DEBUG((LM_DEBUG, "house: was not disconnected anymore, "
+                  "%d/%d\n",
+                  _last_dht_status_message_id, message::dht_disconnected));
+        /* No more on disconnected state, either retrying or succeeded,
+         * so do nothing unless receive disconnected again
+         */
+        return;
+    }
+
+    if (conf()->get<bool>("main/no_router_fw_help", false))
+        return;
+
+    if (!_router_fw_help_showed) {
+        ACE_DEBUG((LM_DEBUG, "house::on_dht_disconnected:help box\n"));
+        // Display a message box
+        (new router_fw_help(this))->show_when_possible();
+        _router_fw_help_showed = true;
+    }
+    return;
 }
 
 // users_view::observer interface
@@ -1043,7 +990,7 @@ house::user_added(const chat_gaming::user &u) {
 
     std::string login_lowercase = u.login_id();
     std::transform(login_lowercase.begin(), login_lowercase.end(), login_lowercase.begin(), tolower);
-    if (user_conf()->get("users", login_lowercase.c_str()) == "block")
+    if (user_conf()->get("users", login_lowercase.c_str(), std::string()) == "block")
     {
         // TODO users.cpp uses the exact same functionality to create addr from string,
         // put into some utility function

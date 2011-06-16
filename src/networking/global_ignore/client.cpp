@@ -23,7 +23,7 @@ client::~client() {
 void
 client::fetch() {
     ACE_DEBUG((LM_DEBUG, "global_ignore::client::fetch\n"));
-    std::string url = net_conf()->get<std::string>("main", "global_ignore", "");
+    std::string url = net_conf()->get<std::string>("main/global_ignore", "");
 
     if (url.empty()) {
         ACE_DEBUG((LM_DEBUG, "global_ignore::client::fetch: empty URL\n"));

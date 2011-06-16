@@ -5,7 +5,7 @@
 #include <sstream>
 #include <list>
 
-#include <fx.h>
+#include <QApplication>
 
 #include "house.h"
 
@@ -17,14 +17,14 @@ class langdiff : public base {
 
     std::ostringstream _out;
     
-    FXApp *_app;
+    QApplication *_app;
             
     void _print_uniq(
         const std::list<std::string> &l, 
         const std::string &lang
     );
 public:
-    langdiff(int argc, char **argv,
+    langdiff(int &argc, char **argv,
              const std::string &lang1, 
              const std::string &lang2);
     virtual ~langdiff();

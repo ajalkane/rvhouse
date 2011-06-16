@@ -10,10 +10,8 @@ namespace window {
     
 class version_update : public modal_dialog_guard {
     message_version *_msg;
-protected:
-    virtual void display();
 public:
-    version_update(message_version *m);
+    version_update(message_version *m, QWidget *parent);
     virtual ~version_update();
 };
 

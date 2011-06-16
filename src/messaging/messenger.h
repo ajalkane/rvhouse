@@ -3,7 +3,9 @@
 
 #include <list>
 #include <functional>
-#include <fx.h>
+
+#include <ace/Mutex.h>
+#include <ace/Guard_T.h>
 
 #include "../common.h"
 #include "message.h"
@@ -18,7 +20,7 @@ protected:
     typedef std::list<message *> _msgs_type;
 
     _msgs_type _msgs;
-    FXMutex    _lock;
+    ACE_Mutex _lock;
 
     virtual void wake_target() = 0;     
 public:
@@ -34,7 +36,7 @@ public:
 
 template<typename OutIter> void
 messenger::collect_msgs(OutIter i) {
-    FXMutexLock guard(_lock);
+    ACE_Guard<ACE_Mutex> guard(_lock);
     
     std::copy(_msgs.begin(),
               _msgs.end(),
@@ -45,7 +47,7 @@ messenger::collect_msgs(OutIter i) {
 inline void
 messenger::send_msg(message *m) {
     ACE_DEBUG((LM_DEBUG, "messenger: locking for sending message to recipient\n"));
-    FXMutexLock guard(_lock);
+    ACE_Guard<ACE_Mutex> guard(_lock);
 
     ACE_DEBUG((LM_DEBUG, "messenger: appending to message queue\n"));
     

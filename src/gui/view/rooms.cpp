@@ -1,7 +1,7 @@
 #include <sstream>
 #include <functional>
 
-#include <fx.h>
+#include <QtGui>
 
 #include "../../main.h"
 #include "../../model/house.h"
@@ -24,35 +24,10 @@
 namespace gui {
 namespace view {
 
-FXDEFMAP(room_item) room_item_map[]={
-    FXMAPFUNC(SEL_QUERY_TIP,0,room_item::on_query_tip),
-};
-FXDEFMAP(rooms) rooms_map[]={
-    FXMAPFUNC(SEL_QUERY_TIP,0,rooms::on_query_tip),
-    FXMAPFUNC(SEL_DOUBLECLICKED,0,rooms::on_room_doubleclick),
-};
-
-FXIMPLEMENT(rooms, FXIconList, rooms_map, ARRAYNUMBER(rooms_map))
-FXIMPLEMENT(room_item, FXIconItem, room_item_map, ARRAYNUMBER(room_item_map))
-
-
 room_item::room_item(
     const chat_gaming::room::id_type &rid
 ) : _room_id(rid), _tip_str("<Empty>")
 {
-    // Set the data pointer to point to oneself by default, so that finding
-    // the item (and therefore it's index) is easy
-    setData(this);
-}
-
-room_item::room_item() {}
-
-long
-room_item::on_query_tip(FXObject *sender,FXSelector sel,void *ptr) {
-    _resolve_tip();
-    sender->handle(this,FXSEL(SEL_COMMAND,FXWindow::ID_SETSTRINGVALUE),
-                   (void*)&_tip_str);
-    return 1;   
 }
 
 bool
@@ -64,17 +39,15 @@ room_item::room_remove(const chat_gaming::room::id_type &id, int grp) {
 }
 
 
-bool
+void
 room_item::resolve_room_state() {
-    bool ret = false;
+    _resolve_columns();
+}
 
-    _resolve_columns() && (ret = true);
-    // _resolve_tip()     && (ret = true);
-
-    // At least for now always return true to force an update
-    ret = true;
-                    
-    return ret;
+bool
+room_item::update_tip() {
+    _resolve_tip();
+    return true;
 }
 
 bool
@@ -115,7 +88,7 @@ room_item::_resolve_tip() {
         
 
     _tip_str = str.str().c_str();
-    _tip_str.trim();
+    _tip_str = _tip_str.trimmed();
     
     return true;
 }
@@ -140,8 +113,6 @@ room_item::_tip_participants() {
 
 bool
 room_item::_resolve_columns() {
-    std::ostringstream str;
-
     using multi_feed::value;
     using multi_feed::room_value_accessor;
     using multi_feed::user_id_to_string;
@@ -150,15 +121,13 @@ room_item::_resolve_columns() {
     using multi_feed::players_slash_max_by_room_id_fobj;
     const multi_feed::room_item &rf = _room_feed; // Just a shorter alias
     
-    str << value(rf, room_value_accessor(&room_type::topic)) << "\t"
-        << value(rf, room_owner_id_accessor(user_id_to_string())) << "\t"
-        << value(rf, players_slash_max_by_room_id_fobj()) << "\t"
-        << value(rf, room_value_accessor(&room_type::laps, 
-                                         streamable_to_string<size_t>())) << "\t"
-        << value(rf, room_value_accessor(&room_type::pickups, 
-                                         bool_to_yes_no_string()));
-
-    setText(FXString(str.str().c_str()));
+    setText(rooms::column_topic,   value(rf, room_value_accessor(&room_type::topic)).c_str());
+    setText(rooms::column_host,    value(rf, room_owner_id_accessor(user_id_to_string())).c_str());
+    setText(rooms::column_players, value(rf, players_slash_max_by_room_id_fobj()).c_str());
+    setText(rooms::column_laps,    value(rf, room_value_accessor(&room_type::laps,
+                                                                    streamable_to_string<size_t>())).c_str());
+    setText(rooms::column_pickups, value(rf, room_value_accessor(&room_type::pickups,
+                                                                    bool_to_yes_no_string())).c_str());
 
     // Check if password is on
     multi_feed::feed_value_map_type vm;
@@ -174,33 +143,34 @@ room_item::_resolve_columns() {
     // If no password in any feed set, display no locked symbol... otherwise
     // if any feed has password display locked icon.
     if (pass == langstr("words/no") || vm.size() == 0) {
-        setMiniIcon(NULL);
+        setIcon(0, QIcon());
     } else {
-        setMiniIcon(app_icons()->get("locked_small"));
+        setIcon(0, app_icons()->get("locked_small"));
     }
     
     return true;
 }
 
-rooms::rooms(
-  FXComposite *c, FXObject *tgt, 
-  FXSelector sel, FXuint opts, 
-  FXint x, FXint y, FXint w, FXint h)
-: FXIconList(c, tgt, sel, opts, x, y, w, h),
-  _observer(NULL)
+rooms::rooms(QWidget *parent)
+  : super(parent), _observer(NULL)
 {
-    ACE_DEBUG((LM_DEBUG, "rooms opts: %d\n", opts));    
-    
-    appendHeader(langstr("words/topic"),   NULL, 200);
-    appendHeader(langstr("words/host"),    NULL, 100);
-    appendHeader(langstr("words/players"), NULL, 50);
-    appendHeader(langstr("words/laps"),    NULL, 35);
-    appendHeader(langstr("words/pickups"), NULL, 50);
+    this->setColumnCount(5);
+    this->setRootIsDecorated(false);
+    this->installEventFilter(this);
+
+    _create_header();
 }
 
 void
-rooms::create() {
-    super::create();
+rooms::_create_header() {
+    QStringList headers;
+    headers.append(langstr("words/topic"));
+    headers.append(langstr("words/host"));
+    headers.append(langstr("words/players"));
+    headers.append(langstr("words/laps"));
+    headers.append(langstr("words/pickups"));
+
+    this->setHeaderLabels(headers);
 }
 
 void
@@ -291,8 +261,7 @@ rooms::_update_room(const chat_gaming::room &r, int grp_base) {
 
 void
 rooms::_update_room_state(item_type *item) {
-    if (item->resolve_room_state())
-        this->updateItem(item);         
+    item->resolve_room_state();
 
     // Check if the room should be disabled (if the host
     // is playing then so should be done)
@@ -304,9 +273,9 @@ rooms::_update_room_state(item_type *item) {
     int disable_status = chat_gaming::user::status_playing;
     bool override_disable = pref()->get<bool>("advanced", "allow_started_race_join", false);
     if (!override_disable && status == chat_gaming::user::status_to_string(disable_status)) {
-        disableItem(item);
+        item->setDisabled(true);
     } else {
-        enableItem(item);
+        item->setDisabled(false);
     }   
 }
 
@@ -326,8 +295,7 @@ rooms::_remove_room(const chat_gaming::room &r, int grp_base) {
             if (_observer) _observer->room_removed(r);
         } else {
             _room_item_map.resolve(r.id());
-            if (item->resolve_room_state())
-                this->updateItem(item);
+            item->resolve_room_state();
         }   
     }
 }
@@ -338,8 +306,8 @@ rooms::_remove_dropped() {
     room_item *item = NULL;
     while ((item = _room_item_map.pop_dropped())) {
         ACE_DEBUG((LM_DEBUG, "rooms::_remove_dropped: item %d\n", item));
-        // removeItem deletes the allocated item also.
-        removeItem(item);
+        this->removeItemWidget(item, 0);
+        delete item;
     }
 }
 
@@ -354,55 +322,37 @@ rooms::_new_room(const chat_gaming::room &r, int grp_base) {
     
     item->room(r.id(), grp_base);
     
-    super::appendItem(item);
+    super::addTopLevelItem(item);
 
-    ACE_DEBUG((LM_DEBUG, "rooms::_new_user: resolve\n"));   
+    ACE_DEBUG((LM_DEBUG, "rooms::_new_user: resolve\n"));
     _update_room_state(item);
-    // item->resolve_room_state();
     
     if (_observer) _observer->room_added(r);    
 }
 
-int
-rooms::selected_item_index() const {
-    int i = 0;
-    int c = this->getNumItems();
-    const item_type *item;
-    for (; i < c; i++) {
-        item = item_at(i);
-        if (item->isSelected()) return i;
-    }
-    return -1;
-}
+bool
+rooms::eventFilter(QObject *obj, QEvent *event) {
+    // ACE_DEBUG((LM_DEBUG, "rooms::eventFilter: obj %d, event type %d\n", obj, event->type()));
+    if (event->type() == QEvent::ToolTip || event->type() == QEvent::WhatsThis) {
+        QHelpEvent *help_event = static_cast<QHelpEvent *>(event);
+        //ACE_DEBUG((LM_DEBUG, "rooms::eventFilter: toolTip x %d y %d\n", help_event->x(), help_event->y()));
+        // NOTE: if headers used, the position is not correct for itemAt,
+        // see QTBUG-16638 http://bugreports.qt.nokia.com/browse/QTBUG-16638
+        QPoint viewport_pos = this->viewport()->mapFromGlobal(help_event->globalPos());
 
-long
-rooms::on_query_tip(FXObject *sender,FXSelector sel,void *ptr) {
-    // ACE_DEBUG((LM_DEBUG, "rooms::on_query_tip called!\n"));
-
-    FXint x,y,i; FXuint buttons;
-    getCursorPosition(x,y,buttons);
-    FXIconItem *item = ((i = getItemAt(x,y)) >= 0 ? getItem(i) : NULL);
-    if (item) { 
-        if (item->handle(sender, sel, ptr)) return 1;
-        // else ACE_DEBUG((LM_DEBUG, "rooms::on_query_tip: target did not handle\n"));
-    }
-    
-    return 0;
-}
-
-long
-rooms::on_room_doubleclick(FXObject *sender,FXSelector sel,void *ptr) {
-    ACE_DEBUG((LM_DEBUG, "rooms::on_room_doubleclick called!\n"));
-    
-    if (_handler_item_doubleclicked.target) {
-        return _handler_item_doubleclicked.target->handle(
-            this,
-            _handler_item_doubleclicked.sel,
-            ptr
-        );
+        QTreeWidgetItem *item_raw = this->itemAt(viewport_pos);
+        item_type *item = static_cast<item_type *>(this->itemAt(viewport_pos));
+        //ACE_DEBUG((LM_DEBUG, "rooms::eventFilter: item_raw %d, item %d\n", item_raw, item));
+        // Returns null if item is not of type item_type (basically is a group item)
+        if (item != NULL) {
+            //ACE_DEBUG((LM_DEBUG, "rooms::eventFilter: toolTip updating item\n", help_event->x(), help_event->y()));
+            item->update_tip();
+            QToolTip::showText(help_event->globalPos(), item->get_tip());
+            return true;
+        }
     }
 
-    return 0;
+    return super::eventFilter(obj, event);
 }
 
 } // ns view

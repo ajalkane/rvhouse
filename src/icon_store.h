@@ -1,7 +1,8 @@
 #ifndef _ICON_STORE_H_
 #define _ICON_STORE_H_
 
-#include <fx.h>
+#include <QIcon>
+#include <QApplication>
 
 #include <map>
 #include <string>
@@ -9,14 +10,14 @@
 #include "common.h"
 
 class icon_store {
-    FXApp  *_app;
-    FXIcon *_icon_factory(const std::string &file);
-    FXIcon *_missing_icon;
+    QApplication  *_app;
+    QIcon *_icon_factory(const std::string &file);
+    QIcon *_missing_icon;
     
-    typedef std::map<std::string, FXIcon *> _key_icon_map_type;
+    typedef std::map<std::string, QIcon *> _key_icon_map_type;
     _key_icon_map_type _key_icon_map;
 public:
-    icon_store(FXApp *app);
+    icon_store(QApplication *app);
     virtual ~icon_store();
     
     // Returns true on success
@@ -26,7 +27,7 @@ public:
     void scan_from_dir(const std::string dir, const char *file_base_name, ...);
     
     // Returns the named resource, or NULL
-    FXIcon *get(const char *key);
+    const QIcon &get(const char *key) const;
 };
 
 #endif /*_ICON_STORE_H_*/

@@ -2,11 +2,14 @@
 #include <functional>
 #include <iterator>
 
-#include <fx.h>
+#include <QtGui>
 
+#include "../window/house.h"
+#include "../../app_options.h"
 #include "../../main.h"
 #include "../../util.h"
 #include "../../exception.h"
+#include "../../icon_store.h"
 #include "../../model/self.h"
 #include "../../messaging/messenger.h"
 #include "../../messaging/message_block_users.h"
@@ -18,63 +21,26 @@
 #include "../../multi_feed/util.h"
 #include "../../multi_feed/algorithm.h"
 #include "../../multi_feed/user_accessors.h"
-#include "../../app_options.h"
-#include "../../icon_store.h"
 
 #include "../house_app.h"
-#include "../util/util.h"
 #include "users.h"
+
+namespace {
+    const QColor col_dht_conn( 61, 89,171,255); // fxcolorfromname("Cobalt");
+    const QColor col_ctz_conn(69,139,116,255); //  fxcolorfromname("Aquamarine4");
+    const QColor col_dht_ctz_conn(69,139,116,255); // = fxcolorfromname("DarkBlue");
+    const QColor col_nat_dht_ctz_conn(156,102, 31,255); //  = fxcolorfromname("Brick");
+    const QColor col_not_validated("red"); // fxcolorfromname("Red");
+}
 
 namespace gui {
 namespace view {
 
-FXDEFMAP(user_item) user_item_map[]={
-    FXMAPFUNC(SEL_QUERY_TIP,0,user_item::on_query_tip),
-};
-FXDEFMAP(users) users_map[]={
-    FXMAPFUNC(SEL_QUERY_TIP,         0, users::on_query_tip),
-    FXMAPFUNC(SEL_RIGHTBUTTONRELEASE,0, users::on_user_rightclick),
-    FXMAPFUNC(SEL_COMMAND, users::ID_USER_KICK,  users::on_user_kick),
-    FXMAPFUNC(SEL_COMMAND, users::ID_USER_BLOCK, users::on_user_block),
-    FXMAPFUNC(SEL_COMMAND, users::ID_SHARE_TRACKS, users::on_share),
-    FXMAPFUNC(SEL_COMMAND, users::ID_GET_TRACKS,   users::on_share),
-    FXMAPFUNC(SEL_COMMAND, users::ID_PRIV_MSG,     users::on_priv_msg),
-    FXMAPFUNC(SEL_DOUBLECLICKED,0,users::on_doubleclick),   
-    FXMAPFUNCS(SEL_COMMAND, users::ID_STATUS_CHATTING, 
-                            users::ID_STATUS_DONT_DISTURB,
-                            users::on_status_change),
-    
-    
-};
-
-//FXIMPLEMENT(users, FXTreeList, NULL, 0)
-//FXIMPLEMENT(user_item, FXTreeItem, NULL, 0)
-
-FXIMPLEMENT(users, FXTreeList, users_map, ARRAYNUMBER(users_map))
-FXIMPLEMENT(user_item, component::house_tree_item, user_item_map, ARRAYNUMBER(user_item_map))
-
-const FXColor user_item::col_dht_conn = fxcolorfromname("Cobalt");
-const FXColor user_item::col_ctz_conn = fxcolorfromname("Aquamarine4");
-const FXColor user_item::col_dht_ctz_conn = fxcolorfromname("DarkBlue");
-const FXColor user_item::col_nat_dht_ctz_conn = fxcolorfromname("Brick");
-const FXColor user_item::col_not_validated = fxcolorfromname("Red");
 
 user_item::user_item(
 ) : _dht_conn(false), _ctz_conn(false), _validated(false), _natted(false),
     _display_group(group_chatting)
 {
-    color(col_dht_conn);
-}
-
-long
-user_item::on_query_tip(FXObject *sender,FXSelector sel,void *ptr) {
-    // ACE_DEBUG((LM_DEBUG, "user_item::on_query_tip called!\n"));
-    // sender->handle(this,FXSEL(SEL_COMMAND,FXWindow::ID_SETSTRINGVALUE),
-    //               (void*)&tmp); // _tip_str);
-    _resolve_tip();
-    sender->handle(this,FXSEL(SEL_COMMAND,FXWindow::ID_SETSTRINGVALUE),
-                   (void*)&_tip_str);
-    return 1;   
 }
 
 bool
@@ -82,12 +48,15 @@ user_item::user_remove(const chat_gaming::user::id_type &id, int grp) {
     _user_feed.erase_feed(grp);
     return (_user_feed.feeds_size() ? false : true);
 }
-
+//
+//
 
 bool
 user_item::resolve_user_state() {
+    ACE_DEBUG((LM_DEBUG, "user_item::_resolve_user_stats\n"));
+
     bool ret = false;
-    
+
     // Check if the user is in playing state
     // TODO better and
     // more general way needed here... perhaps to be done to multi_feed
@@ -96,32 +65,35 @@ user_item::resolve_user_state() {
     bool is_in_room = false;
     bool is_away    = false;
     bool is_dnd     = false; // do not disturb
-    
+
     _dht_conn  = false;
     _ctz_conn  = false;
     _natted    = false;
     _validated = false;
     _sharing_tracks = false;
     _getting_tracks = false;
-    
-    const 
+
+    const
     model::house::group_desc_type &g = house_model()->group_desc();
     model::house::group_desc_type::const_iterator gi = g.begin();
     for (; gi != g.end(); gi++) {
-        multi_feed::user_item::feed_id_map_type::const_iterator uid_i 
+        multi_feed::user_item::feed_id_map_type::const_iterator uid_i
           = _user_feed.find(gi->first);
         if (uid_i == _user_feed.end()) continue;
-        
-        model::house::user_iterator ui = 
+
+        model::house::user_iterator ui =
           house_model()->user_find(uid_i->second, gi->first);
         if (ui == house_model()->user_end()) continue;
-        
+
+        ACE_DEBUG((LM_DEBUG, "user_item::_resolve_user_stats: switch ui->status()\n"));
+
         switch (ui->status()) {
+        case chat_gaming::user::status_chatting: break;
         case chat_gaming::user::status_playing: is_playing = true; break;
         case chat_gaming::user::status_away   : is_away    = true; break;
         case chat_gaming::user::status_dont_disturb: is_dnd = true; break;
         }
-        
+
         if (ui->room_id() != chat_gaming::room::id_type())
             is_in_room = true;
         if (gi->first == message::dht_group_base) {
@@ -137,30 +109,29 @@ user_item::resolve_user_state() {
         if (ui->sharing_tracks()) _sharing_tracks = true;
         if (ui->getting_tracks()) _getting_tracks = true;
     }
-        
+
+    ACE_DEBUG((LM_DEBUG, "user_item::_resolve_user_stats iffing status\n"));
+
     if (is_playing) {
-        setOpenIcon(app_icons()->get("launch_small"));
-        setClosedIcon(app_icons()->get("launch_small"));
+        this->setIcon(column_name, app_icons()->get("launch_small"));
         _display_group = group_playing;
     } else if (is_away) {
-        setOpenIcon(app_icons()->get("user_away"));
-        setClosedIcon(app_icons()->get("user_away"));       
+        this->setIcon(column_name, app_icons()->get("user_away"));
         _display_group = (is_in_room ? group_in_room : group_away);
     } else if (is_dnd) {
-        setOpenIcon(app_icons()->get("user_dont_disturb"));
-        setClosedIcon(app_icons()->get("user_dont_disturb"));       
+        this->setIcon(column_name, app_icons()->get("user_dont_disturb"));
         _display_group = (is_in_room ? group_in_room : group_dnd);
     } else if (is_in_room) {
-        setOpenIcon(app_icons()->get("user_in_room_small"));
-        setClosedIcon(app_icons()->get("user_in_room_small"));      
+        this->setIcon(column_name, app_icons()->get("user_in_room_small"));
         _display_group = group_in_room;
     } else {
-        setOpenIcon(NULL);
-        setClosedIcon(NULL);
-        _display_group = group_chatting;        
+        this->setIcon(column_name, QIcon());
+        _display_group = group_chatting;
     }
-    
-    FXColor col = FXRGB(0,0,0);
+
+    ACE_DEBUG((LM_DEBUG, "user_item::_resolve_user_stats: resolving user_item color\n"));
+
+    QColor col = QApplication::palette().color(QPalette::Foreground);
     if (!_validated) {
         col = col_not_validated;
     } else if (_dht_conn && _ctz_conn) {
@@ -170,25 +141,20 @@ user_item::resolve_user_state() {
             col = col_dht_ctz_conn;
         }
     } else if (_dht_conn) {
-        col = col_dht_conn;     
+        col = col_dht_conn;
     } else if (_ctz_conn) {
         col = col_ctz_conn;
     }
-    
-    if (_sharing_tracks) {
-        extra_icon(app_icons()->get("tracks_share_small"));
-    } else {
-        extra_icon(NULL);       
-    }
-    this->color(col);
-    
+
+    ACE_DEBUG((LM_DEBUG, "user_item::_resolve_user_stats: setting color\n"));
+
+    this->setForeground(column_name, col);
+
+    ACE_DEBUG((LM_DEBUG, "user_item::_resolve_user_stats: resolving user id\n"));
+
     _resolve_user_id() && (ret = true);
-    // _resolve_tip()     && (ret = true);
-    
-    // At least for now always return true to force an update
-    ret = true;
-    
-    return ret;
+
+    return true;
 }
 
 bool
@@ -196,11 +162,17 @@ user_item::_resolve_user_id() {
     // FXString user_id;
     std::string display_id = _user_feed.unambiguous_display_id();
 
-    if (display_id.c_str() != getText()) {
-        setText(display_id.c_str());        
+    if (text(column_name) != display_id.c_str()) {
+        this->setText(column_name, display_id.c_str());
         return true;
     }
     return false;
+}
+
+bool
+user_item::update_tip() {
+    _resolve_tip();
+    return true;
 }
 
 bool
@@ -217,35 +189,35 @@ user_item::_resolve_tip() {
     using multi_feed::room_id_to_string;
     using multi_feed::user_to_status_string;
     const multi_feed::user_item &uf = _user_feed; // Just a shorter alias
-    
-    tip_s << _tip(header_value(uf, langstr("words/user_id"), 
+
+    tip_s << _tip(header_value(uf, langstr("words/user_id"),
                   user_value_accessor(&user_type::login_id)))
-          << _tip(header_non_empty_value(uf, langstr("words/warning"), 
-                  user_value_accessor(&user_type::validation, 
+          << _tip(header_non_empty_value(uf, langstr("words/warning"),
+                  user_value_accessor(&user_type::validation,
                                       validation_to_string()))
                  )
           << _tip(header_value(uf, langstr("words/status"),
                   user_accessor(user_to_status_string()))
                  )
-          << _tip(header_non_empty_value(uf, langstr("words/room"), 
+          << _tip(header_non_empty_value(uf, langstr("words/room"),
                   user_room_id_accessor(
                       room_id_to_string()))
                  )
-          << _tip(header_non_empty_value(uf, langstr("words/note"), 
+          << _tip(header_non_empty_value(uf, langstr("words/note"),
                   user_value_accessor(&user_type::sharing_tracks,
                   true_to_string(langstr("users_view/shares_tracks"))))
                  )
-          << _tip(header_non_empty_value(uf, "Note", 
+          << _tip(header_non_empty_value(uf, "Note",
                   user_value_accessor(&user_type::getting_tracks,
                   true_to_string(langstr("users_view/dloads_tracks"))))
                  );
-                 
+
 if (app_opts.debug()) {
-    tip_s << _tip(header_value(uf, "Room ID",   
+    tip_s << _tip(header_value(uf, "Room ID",
                   user_room_id_accessor(multi_feed::dummy_string_to_string()))
                  )
 
-          << _tip(header_value(uf, "IP",    
+          << _tip(header_value(uf, "IP",
                   user_value_accessor(&user_type::ip_as_string))
                  );
 }
@@ -262,12 +234,12 @@ if (app_opts.debug()) {
     }
 
     if (_natted) {
-        tip_s << _tip(header_value(langstr("words/note"), 
+        tip_s << _tip(header_value(langstr("words/note"),
                  langstr("users_view/natted")));
     }
 
     _tip_str = tip_s.str().c_str();
-    _tip_str.trim();
+    _tip_str = _tip_str.trimmed();
     return true;
 }
 
@@ -275,81 +247,109 @@ if (app_opts.debug()) {
 // otherwise empty
 
 
-users::users(
-  FXComposite *c, FXObject *tgt, 
-  FXSelector sel, FXuint opts, 
-  FXint x, FXint y, FXint w, FXint h)
-: FXTreeList(c, tgt, sel, opts, x, y, w, h), _observer(NULL)
+users::users(QWidget *parent, const chat_gaming::room::id_type &rid)
+: QTreeWidget(parent), _observer(NULL), _room_id(rid)
 {
-    ACE_DEBUG((LM_DEBUG, "users opts: %d\n", opts));
+    this->setColumnCount(1);
+    this->header()->hide();
 
     _group_items[user_item::group_chatting] = _parent_item(langstr("status/chatting"));
     _group_items[user_item::group_in_room]  = _parent_item(langstr("status/waiting"));
     _group_items[user_item::group_playing]  = _parent_item(langstr("status/playing"));
     _group_items[user_item::group_away]     = _parent_item(langstr("status/away"));
     _group_items[user_item::group_dnd]      = _parent_item(langstr("status/dont_disturb"));
-    
-  // Right mouse popup
-    _popup = new FXMenuPane(this);
-    
-    // new FXMenuCommand(popupmenu,"Undo",getApp()->undo,icon,&undolist,FXUndoList::ID_UNDO);
-    _popup_user = new FXMenuCommand(_popup, langstr("user_popup/user_name"));
-    _popup_user->disable();
-        
-    new FXMenuSeparator(_popup);
 
-    _popup_status = new FXMenuPane(this);
-    
-    // (new FXMenuCommand(_popup, "Set status:"))->disable();
-    new FXMenuCommand(_popup_status, 
-        chat_gaming::user::status_to_string(chat_gaming::user::status_chatting),
-        NULL, this, ID_STATUS_CHATTING);
-    new FXMenuCommand(_popup_status, 
-        chat_gaming::user::status_to_string(chat_gaming::user::status_playing),
-        NULL, this, ID_STATUS_PLAYING);
-    new FXMenuCommand(_popup_status, 
-        chat_gaming::user::status_to_string(chat_gaming::user::status_away),
-        NULL, this, ID_STATUS_AWAY);
-    new FXMenuCommand(_popup_status, 
-        chat_gaming::user::status_to_string(
-            chat_gaming::user::status_dont_disturb
-        ),
-        NULL, this, ID_STATUS_DONT_DISTURB);
+    _create_actions();
+    _create_context_menu();
+    _create_signals();
 
-    _popup_status_cascade = new FXMenuCascade(_popup, langstr("words/status"), NULL, _popup_status);
-    _popup_share = new FXMenuCommand(_popup, langstr("user_popup/share_tracks"), NULL, this);
-    _popup_priv  = new FXMenuCommand(_popup, langstr("user_popup/private_msg"), NULL, this, ID_PRIV_MSG);
-    _popup_block = new FXMenuCommand(_popup, langstr("user_popup/ignore_user"), NULL, this, ID_USER_BLOCK);
-}
+    this->installEventFilter(this);
 
-void
-users::create() {
-    super::create();
-    
     if (!_room_id.empty()) {
-        if (_room_id == self_model()->hosting_room().id()) {
-            // Add kick command if host...
-            new FXMenuCommand(_popup, langstr("user_popup/kick"), NULL, this, ID_USER_KICK);
-        }
         // Add items that are already in the room there
         const model::house::group_desc_type &grp_desc = house_model()->group_desc();
         model::house::group_desc_type::const_iterator gi = grp_desc.begin();
         for (; gi != grp_desc.end(); gi++) {
             _update_users(_room_id, gi->first);
         }
-    }   
-    
-    _popup_status->create();
-    _popup->create();   
+    }
+}
+
+
+void
+users::_create_actions() {
+    // IMPROVE: actions common with window::house should be created and handled in house_app for example.
+    // IMPROVE: seems like there is overlap in string names, there is menu_player/chatting and chat_gaming::user::status_to_string.
+    //      Is this necessary or should they be unified under one key?
+    _action_user = new QAction(langstr("user_popup/user_name"), this);
+    _action_user->setDisabled(true);
+
+    _action_chatting = new QAction(chat_gaming::user::status_to_string(chat_gaming::user::status_chatting), this);
+    _action_chatting->setCheckable(true);
+    _action_playing = new QAction(chat_gaming::user::status_to_string(chat_gaming::user::status_playing), this);
+    _action_playing->setCheckable(true);
+    _action_away = new QAction(chat_gaming::user::status_to_string(chat_gaming::user::status_away), this);
+    _action_away->setCheckable(true);
+    _action_donotdisturb = new QAction(chat_gaming::user::status_to_string(chat_gaming::user::status_dont_disturb), this);
+    _action_donotdisturb->setCheckable(true);
+    _action_chatting->setChecked(true);
+
+    _action_block           = new QAction(langstr("user_popup/ignore_user"), this);
+    _action_private_message = new QAction(langstr("user_popup/private_msg"), this);
+    _action_kick            = new QAction(langstr("user_popup/kick"), this);
+
+}
+
+void
+users::_create_context_menu() {
+    this->setContextMenuPolicy(Qt::CustomContextMenu);
+    _context_menu = new QMenu(this);
+
+    _context_menu->addAction(_action_user);
+    _context_menu->addSeparator();
+    _status_submenu = new QMenu(langstr("words/status"), _context_menu);
+    _action_statusgroup = new QActionGroup(_status_submenu);
+    _action_statusgroup->addAction(_action_chatting);
+    _action_statusgroup->addAction(_action_playing);
+    _action_statusgroup->addAction(_action_away);
+    _action_statusgroup->addAction(_action_donotdisturb);
+
+    _status_submenu->addActions(_action_statusgroup->actions());
+    _context_menu->addMenu(_status_submenu);
+
+    _context_menu->addAction(_action_private_message);
+    _context_menu->addAction(_action_block);
+
+    if (!_room_id.empty()) {
+        if (_room_id == self_model()->hosting_room().id()) {
+            _context_menu->addAction(_action_kick);
+        }
+    }
+
+    connect(this, SIGNAL(customContextMenuRequested(const QPoint&)),
+        this, SLOT(on_context_menu(const QPoint&)));
+}
+
+void
+users::_create_signals() {
+    connect(_action_chatting,     SIGNAL(triggered()), house_win(), SLOT(change_user_status_to_chatting()));
+    connect(_action_away,         SIGNAL(triggered()), house_win(), SLOT(change_user_status_to_away()));
+    connect(_action_playing,      SIGNAL(triggered()), house_win(), SLOT(change_user_status_to_playing()));
+    connect(_action_donotdisturb, SIGNAL(triggered()), house_win(), SLOT(change_user_status_to_dont_disturb()));
+
+    connect(_action_block,           SIGNAL(triggered()), this, SLOT(block_selected_user()));
+    connect(_action_private_message, SIGNAL(triggered()), this, SLOT(open_private_msg_to_selected_user()));
+    connect(_action_kick,            SIGNAL(triggered()), this, SLOT(kick_selected_user()));
+
 }
 
 users::~users() {
-    delete _popup;
-    delete _popup_status;
 }
 
 void
 users::handle_message(::message *msg) {
+    ACE_DEBUG((LM_DEBUG, "users::handle_message: id=%d\n", msg->id()));
+
     switch (msg->id()) {
     case message::user:
     {
@@ -392,7 +392,7 @@ users::_update_user(const chat_gaming::user &u, int grp_base) {
     item_type *item = _user_item_map.find(u.id()); // _find_item(u.id());
     
     if (item == NULL) {
-        // Create a new user, but if its users view to some room, only
+        // Create a new user, but if its user's view to some room, only
         // if the to be user is in the room
         
         if (_room_id.empty() || _room_id == u.room_id())
@@ -494,7 +494,6 @@ users::_remove_user(const chat_gaming::user &u, int grp_base) {
             int old_dgrp = item->display_group();
             if (item->resolve_user_state())
                 this->_update_user_item(item, old_dgrp);
-                // this->updateItem(item);
         }   
     }
 }
@@ -505,9 +504,7 @@ users::_remove_dropped() {
     user_item *item = NULL;
     while ((item = _user_item_map.pop_dropped())) {
         ACE_DEBUG((LM_DEBUG, "users::_remove_dropped: item %d\n", item));
-        // removeItem deletes the allocated item also.
         _del_user_item(item);
-        // super::removeItem(item);
     }
 }
 
@@ -522,15 +519,12 @@ users::_new_user(const chat_gaming::user &u, int grp_base) {
     
     item->user(u.id(), grp_base);
 
-    ACE_DEBUG((LM_DEBUG, "users::_new_user: resolve\n"));   
+    ACE_DEBUG((LM_DEBUG, "users::_new_user: resolve\n"));
     item->resolve_user_state();
     ACE_DEBUG((LM_DEBUG, "users::_new_user: add_user_item\n"));
     _add_user_item(item);
     ACE_DEBUG((LM_DEBUG, "users::_new_user: return\n"));
-    // super::appendItem(_item_players, item);
     
-    // model::house::user_iterator ui = house_model()->user_find(u.id(), grp_base);
-    //if (ui != house_model()->user_end()) {
     if (!u.login_id().empty()) {
         ACE_DEBUG((LM_DEBUG, "users::_new_user calling user added for %s\n",
                   u.login_id().c_str()));
@@ -542,17 +536,23 @@ void
 users::_add_user_item(user_item *item, int dgrp) {
     ACE_DEBUG((LM_DEBUG, "users::_add_user_item: dgrp %d\n", dgrp));
     if (dgrp == -1) dgrp = item->display_group();
-    tree_item_type *parent = _add_user_item2(dgrp);
-    this->appendItem(parent, item); 
+    tree_item_type *parent = _reserve_place_for_item_in_group(dgrp);
+    _add_user_to_group(parent, item);
+}
+
+void
+users::_add_user_to_group(tree_item_type *parent, item_type *item) {
+    parent->addChild(item);
+    item->setDisabled(false);
 }
 
 users::tree_item_type *
-users::_add_user_item2(int dgrp) {
-    ACE_DEBUG((LM_DEBUG, "users::_add_user_item2: dgrp %d\n", dgrp));
+users::_reserve_place_for_item_in_group(int dgrp) {
+    ACE_DEBUG((LM_DEBUG, "users::_reserve_place_for_item_in_group: dgrp %d\n", dgrp));
         
     _parent_item &parent = _get_group_item(dgrp);
 
-    ACE_DEBUG((LM_DEBUG, "users::_add_user_item2: dgrp %d children %d\n", 
+    ACE_DEBUG((LM_DEBUG, "users::_reserve_place_for_item_in_group: dgrp %d children %d\n",
                dgrp, parent.children));
     if (!parent.item) {
         _add_group_item(parent, dgrp);
@@ -565,15 +565,16 @@ void
 users::_del_user_item(user_item *item, int dgrp) {
     ACE_DEBUG((LM_DEBUG, "users::_del_user_item: dgrp %d\n", dgrp));
     if (dgrp == -1) dgrp = item->display_group();   
-    this->removeItem(item);
-    _del_user_item2(dgrp);
+    this->removeItemWidget(item, 0);
+    delete item;
+    _remove_place_for_item_in_group(dgrp);
 }
 
 void
-users::_del_user_item2(int dgrp) {
-    ACE_DEBUG((LM_DEBUG, "users::_del_user_item2: dgrp %d\n", dgrp));
+users::_remove_place_for_item_in_group(int dgrp) {
+    ACE_DEBUG((LM_DEBUG, "users::_remove_place_for_item_in_group: dgrp %d\n", dgrp));
     _parent_item &parent = _get_group_item(dgrp);
-    ACE_DEBUG((LM_DEBUG, "users::_del_user_item2: dgrp %d children %d\n", 
+    ACE_DEBUG((LM_DEBUG, "users::_remove_place_for_item_in_group: dgrp %d children %d\n",
                dgrp, parent.children));
     if (--parent.children <= 0) {
         _del_group_item(parent);
@@ -585,167 +586,123 @@ users::_update_user_item(user_item *item, int old_dgrp) {
     ACE_DEBUG((LM_DEBUG, "users::_update_user_item: old_dgrp %d\n", old_dgrp));
     int new_dgrp = item->display_group();
     if (new_dgrp == old_dgrp) {
-        this->updateItem(item);
         return;
     }
     
     // Move the item under new father (no tree operations done)
     // Add is before delete so that the existence of the target
     // tree item is quaranteed
-    _add_user_item2(new_dgrp);  
+    _reserve_place_for_item_in_group(new_dgrp);
+    _parent_item &old_group = _get_group_item(old_dgrp);
     _parent_item &new_group = _get_group_item(new_dgrp);
     // Do move
-    this->moveItem(NULL, new_group.item, item);
+    old_group.item->removeChild(item);
+    _add_user_to_group(new_group.item, item);
     
     // Delete without removing the item (possibly deletes the old group)
-    _del_user_item2(old_dgrp);
+    _remove_place_for_item_in_group(old_dgrp);
 }
 
 void 
 users::_add_group_item(_parent_item &group_item, int dgrp) {
-    ACE_DEBUG((LM_DEBUG, "users::_add_group_item dgrp %s/%d\n", 
+    ACE_DEBUG((LM_DEBUG, "users::_add_group_item dgrp %s/%d\n",
               group_item.text, dgrp));
-    tree_item_type *before = NULL;
-    for (int i = dgrp + 1; i < (int)array_sizeof(_group_items); i++) {
-        _parent_item &git = _get_group_item(i);
-        if (git.visible()) {
-            before = git.item;
-            break;
-        }
-    }
 
-    group_item.item = this->insertItem(before, NULL, group_item.text);
-    super::expandTree(group_item.item);
-    super::disableItem(group_item.item);
+    tree_item_type *item = new tree_item_type(this);
+    item->setText(0, group_item.text);
+    this->insertTopLevelItem(dgrp, item);
+
+    group_item.item = item;
+   item->setExpanded(true);
 }
 
 void
 users::_del_group_item(_parent_item &group_item) {
     ACE_DEBUG((LM_DEBUG, "users::_del_group_item '%s'\n", group_item.text));
-    this->removeItem(group_item.item);
+    this->removeItemWidget(group_item.item, 0);
+    delete group_item.item;
     group_item.item     = NULL;
     group_item.children = 0;
 }
 
-long
-users::on_query_tip(FXObject *sender,FXSelector sel,void *ptr) {
-    // ACE_DEBUG((LM_DEBUG, "users::on_query_tip called!\n"));
-
-    FXint x,y; FXuint buttons;
-    getCursorPosition(x,y,buttons);
-    FXTreeItem *item=getItemAt(x,y);
-    if (item) { 
-        if (item->handle(sender, sel, ptr)) return 1;
-        // else ACE_DEBUG((LM_DEBUG, "users::on_query_tip: target did not handle\n"));
+bool
+users::eventFilter(QObject *obj, QEvent *event) {
+    //ACE_DEBUG((LM_DEBUG, "users::eventFilter: obj %d, event type %d\n", obj, event->type()));
+    if (event->type() == QEvent::ToolTip || event->type() == QEvent::WhatsThis) {
+        QHelpEvent *help_event = dynamic_cast<QHelpEvent *>(event);
+        // ACE_DEBUG((LM_DEBUG, "users::eventFilter: toolTip x %d y %d\n", help_event->x(), help_event->y()));
+        // NOTE: if headers used, the position is not correct for itemAt,
+        // see QTBUG-16638 http://bugreports.qt.nokia.com/browse/QTBUG-16638
+        QPoint viewport_pos = this->viewport()->mapFromGlobal(help_event->globalPos());
+        item_type *item = dynamic_cast<item_type *>(this->itemAt(viewport_pos));
+        // Returns null if item is not of type item_type (basically is a group item)
+        if (item != NULL) {
+            // ACE_DEBUG((LM_DEBUG, "users::eventFilter: toolTip updating item\n", help_event->x(), help_event->y()));
+            item->update_tip();
+            QToolTip::showText(help_event->globalPos(), item->get_tip());
+            return true;
+        }
     }
-    
-    return 0;
+    return super::eventFilter(obj, event);
 }
 
-long
-users::on_user_rightclick(FXObject *sender,FXSelector sel,void *ptr) {
-    ACE_DEBUG((LM_DEBUG, "users::on_user_rightclick\n"));
-    FXEvent *e = reinterpret_cast<FXEvent *>(ptr);
+void
+users::on_context_menu(const QPoint &pos) {
+    QPoint globalPos = this->viewport()->mapToGlobal(pos);
 
-    if (e->moved) return 0;
-    
-    item_type *item = dynamic_cast<item_type *>(getItemAt(e->click_x,e->click_y));
+    item_type *item = dynamic_cast<item_type *>(this->itemAt(pos));
 
-    if (!item) return 0;
+    if (!item) return;
 
     /* User name displayed in the pop up */
     std::string user = item->feed_item().unambiguous_display_id();
-    /* multi_feed::value(
-        item->feed_item(),
-        multi_feed::user_value_accessor(&chat_gaming::user::display_id)
-    ); */
-    _popup_user->setText(user.c_str());
-    
+    _action_user->setText(user.c_str());
+
     /* Sharing of tracks */
-    bool share_enable = false;
     bool priv_enable  = _priv_msg_enable(item);
     bool block_enable = true;
+
+    ACE_DEBUG((LM_DEBUG, "users::on_context_menu: user '%s', self_model user '%s'\n",
+            user.c_str(), self_model()->user().login_id().c_str()));
     if (user == self_model()->user().login_id()) {
-        _popup_status_cascade->enable();
-        _popup_share->setText(langstr("user_popup/share_tracks"));
-        _popup_share->setSelector(ID_SHARE_TRACKS);
-        // _popup_share->setSelector(FXSEL(SEL_COMMAND, ID_SHARE_TRACKS));
-        share_enable = (item->sharing_tracks() || item->getting_tracks()
-                         ? false : true);
+        _status_submenu->setEnabled(true);
         block_enable = false;
     } else {
-        _popup_status_cascade->disable(); // ->show(); // disable();
-        _popup_share->setText(langstr("user_popup/dload_tracks"));
-        _popup_share->setSelector(ID_GET_TRACKS);
-        // _popup_share->setSelector(FXSEL(SEL_COMMAND, ID_GET_TRACKS));
-        share_enable = (item->sharing_tracks() && 
-                         !self_model()->user().getting_tracks() &&
-                         !self_model()->user().sharing_tracks()
-                         ? true : false);
+        _status_submenu->setEnabled(false);
     }
-    share_enable ? _popup_share->enable() : _popup_share->disable();
-    priv_enable  ? _popup_priv->enable()  : _popup_priv->disable();
-    block_enable ? _popup_block->enable() : _popup_block->disable();
-    
+    _action_private_message->setEnabled(priv_enable);
+    _action_block->setEnabled(block_enable);
+
     /* The item is selected so that when the user chooses an action
-     * from the popup, it can be targete
-     */ 
-    selectItem(item);
-        
-    _popup->popup(NULL, e->root_x, e->root_y);
-    getApp()->runModalWhileShown(_popup);   
+     * from the popup, it can be targeted
+     */
+    this->setCurrentItem(item);
+    _context_menu->popup(globalPos);
 
-    ACE_DEBUG((LM_DEBUG, "users::on_user_rightclick away\n"));
+    ACE_DEBUG((LM_DEBUG, "users::on_context_menu: away\n"));
 
-    return 0;
 }
 
-long
-users::on_status_change(FXObject *sender,FXSelector sel,void *ptr) {
-    int new_status = 0;
+void
+users::kick_selected_user() {
+    ACE_DEBUG((LM_DEBUG, "users::kick_selected_user\n"));
 
-    // Restrict status changing so that it can be done only once in a 
-    // second
-    static time_t last_change = 0;
-    time_t now = time(NULL);
-    if (now - last_change < 1) return 1;
-    
-    switch (FXSELID(sel)) {
-    case ID_STATUS_CHATTING: new_status = chat_gaming::user::status_chatting; break;
-    case ID_STATUS_PLAYING : new_status = chat_gaming::user::status_playing;  break;
-    case ID_STATUS_AWAY    : new_status = chat_gaming::user::status_away;     break;
-    case ID_STATUS_DONT_DISTURB : new_status = chat_gaming::user::status_dont_disturb; break;
-    }
-
-    if (new_status && new_status != self_model()->user().status()) {
-        last_change = now;
-        self_model()->user().status(new_status);
-        self_model()->user_send();      
-    }
-    
-    return 1;
-}
-
-long
-users::on_user_kick(FXObject *sender,FXSelector sel,void *ptr) {
-    ACE_DEBUG((LM_DEBUG, "users::on_user_kick\n"));
-        
     item_type *item = selected_item();
 
-    if (!item) return 0;
+    if (!item) return;
 
     std::string user_id = multi_feed::value(
         item->feed_item(),
         multi_feed::user_id_accessor(multi_feed::user_id_to_id_string())
     );
 
-    ACE_DEBUG((LM_DEBUG, "users::on_user_kick: got '%s'\n",
+    ACE_DEBUG((LM_DEBUG, "users::kick_selected_user: got '%s'\n",
               user_id.c_str()));
-    
+
     if (!user_id.empty()) {
         net_messenger()->send_msg(
           new message_room_command(
-            ::message::room_kick, 
+            ::message::room_kick,
             _room_id,
             chat_gaming::user::id_type(user_id),
             self_model()->user().id(),
@@ -754,17 +711,15 @@ users::on_user_kick(FXObject *sender,FXSelector sel,void *ptr) {
           )
         );
     }
-    
-    return 0;
 }
 
-long
-users::on_user_block(FXObject *sender,FXSelector sel,void *ptr) {
-    ACE_DEBUG((LM_DEBUG, "users::on_block\n"));
-        
+void
+users::block_selected_user() {
+    ACE_DEBUG((LM_DEBUG, "users::block_selected_user\n"));
+
     item_type *item = selected_item();
 
-    if (!item) return 0;
+    if (!item) return;
 
     std::string ipstr = multi_feed::uniq_value(
         item->feed_item(),
@@ -773,7 +728,7 @@ users::on_user_block(FXObject *sender,FXSelector sel,void *ptr) {
 
     ACE_DEBUG((LM_DEBUG, "users::on_user_block: got IP '%s'\n",
               ipstr.c_str()));
-    
+
     // Check, just to make sure, that it really looks like an IP
     // before converting to IP number
     // if (regexp::match("([0-9]{1,3}[.]){3}[0-9]{1,3}", ipstr) {
@@ -781,19 +736,19 @@ users::on_user_block(FXObject *sender,FXSelector sel,void *ptr) {
     if (!ACE_OS::inet_aton(ipstr.c_str(), &a)) {
         ACE_ERROR((LM_ERROR, "users::on_user_block: IP '%s' not "
                    "recognized\n", ipstr.c_str()));
-        return 0;
+        return;
     }
-    
+
     a.s_addr = ntohl(a.s_addr);
     if (a.s_addr == INADDR_ANY      ||
         a.s_addr == INADDR_LOOPBACK ||
-        a.s_addr == INADDR_NONE) 
+        a.s_addr == INADDR_NONE)
     {
         ACE_ERROR((LM_ERROR, "users::on_user_block: IP '%s' invalid as IP\n",
                    ipstr.c_str()));
-        return 0;
+        return;
     }
-        
+
     ACE_DEBUG((LM_DEBUG, "users::on_user_block: recognized IP\n"));
     message_block_users *m = new message_block_users(
         ::message::block_users,
@@ -805,88 +760,20 @@ users::on_user_block(FXObject *sender,FXSelector sel,void *ptr) {
     net_messenger()->send_msg(m);
 
     if (_observer)
-        _observer->user_blocked(item->feed_item().unambiguous_display_id());        
+        _observer->user_blocked(item->feed_item().unambiguous_display_id());
 
-    return 0;
+    return;
 }
 
+void
+users::open_private_msg_to_selected_user() {
+    ACE_DEBUG((LM_DEBUG, "users::block_selected_user\n"));
 
-long
-users::on_share(FXObject *sender,FXSelector sel,void *ptr) {
-    ACE_DEBUG((LM_DEBUG, "users::on_share\n"));
     item_type *item = selected_item();
 
-    if (!item) return 0;
+    if (!item) return;
 
-    std::string ip = multi_feed::value(
-        item->feed_item(),
-        multi_feed::user_value_accessor(&chat_gaming::user::ip_as_string)
-    );
-
-    switch (FXSELID(sel)) {
-    case ID_SHARE_TRACKS:
-        ::app()->launch_rvtm();
-        break;
-    case ID_GET_TRACKS: 
-        ::app()->launch_rvtm(ip);
-        break;
-    default:
-        ACE_ERROR((LM_ERROR, "users::on_share invalid id %d\n", FXSELID(sel)));
-    }
-    
-    return 0;
-}
-
-long
-users::on_doubleclick(FXObject *sender,FXSelector sel,void *ptr) {
-    ACE_DEBUG((LM_DEBUG, "users::on_user_doubleclick\n"));
-    FXEvent *e = reinterpret_cast<FXEvent *>(ptr);
-    
-    item_type *item = dynamic_cast<item_type *>(getItemAt(e->click_x,e->click_y));
-
-    if (!item) return 0;
-
-    /* The item is selected so that the even can be forwarded
-     * to priv message
-     */ 
-    selectItem(item);
-    
-    return this->on_priv_msg(sender, sel, ptr);
-}
-
-long
-users::on_priv_msg(FXObject *sender,FXSelector sel,void *ptr) {
-    ACE_DEBUG((LM_DEBUG, "users::on_priv_msg\n"));
-        
-    item_type *item = selected_item();
-
-    if (!item) {
-        ACE_DEBUG((LM_DEBUG, "users::on_priv_msg no item found\n"));
-        return 0;
-    }
-
-    if (!_priv_msg_enable(item)) {
-        ACE_DEBUG((LM_DEBUG, "users::on_priv_msg not enabled\n"));
-        return 0;
-    }
-    
-    std::string user_id = multi_feed::value(
-        item->feed_item(),
-        multi_feed::user_id_accessor(multi_feed::user_id_to_id_string())
-    );
-
-    ACE_DEBUG((LM_DEBUG, "users::on_priv_msg: got '%s'\n",
-              user_id.c_str()));
-    
-    if (!user_id.empty()) {
-        ::app()->private_message_window_to(
-            util::private_message_channel_with(user_id), 
-            user_id,
-            true
-        );
-    }
-    
-    return 0;
+    house_win()->open_private_room(item, 0);
 }
 
 bool

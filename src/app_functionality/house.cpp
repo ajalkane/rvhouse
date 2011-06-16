@@ -1,22 +1,27 @@
-#include <fx.h>
+#include <ace/ACE.h>
+
+#include <QtGui>
 
 #include "../common.h"
 #include "../gui/house_app.h"
+#include "../gui/window/house.h"
 #include "house.h"
 
 namespace app_functionality {
 
-house::house(int argc, char **argv) {
-    ACE_DEBUG((LM_DEBUG, "init_fox_app\n"));
-    app.instance(new gui::house_app);
-    app()->init(argc, argv);
-    new FXToolTip(app());   
+house::house(int &argc, char **argv) {
+    gui::house_app *house_app = new gui::house_app(argc, argv);
+    app.instance(house_app);
 }
 
 void
 house::run() {
-    app()->create();
-    app()->start(); 
+    if (app()->start()) {
+        app()->exec();
+    }
+
+    delete app();
+    app.instance(NULL);
 }
 
 } // ns

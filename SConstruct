@@ -6,18 +6,26 @@ import sys
 from build_support import *
 from build_config import *
 
-opts = Options('custom.py')
-opts.Add(EnumOption('debug', 'Build with debug symbols', 'no',
+variables = Variables('custom.py')
+variables.Add(EnumVariable('debug', 'Build with debug symbols', 'no',
                     ['yes','no']))
-env = Environment(options = opts, tools=['mingw'])
-Help(opts.GenerateHelpText(env))
+env = Environment(options=variables) #  = variables, tools=['mingw','qt4'])
+# env = Environment()
+env['QT4DIR'] = qt_dir
+env['ENV']['PKG_CONFIG_PATH'] = qt_pkg_config_path
+env.Tool('mingw');
+env.Tool('qt4');
+
+Help(variables.GenerateHelpText(env))
 
 mode = "Release"
 env.Append(CPPFLAGS = flgs)
+print "env debug: " + env.get('debug')
+
 if (env.get('debug') == 'yes'):
     print "Debug build"
     mode = "Debug"
-    env.Append(CPPFLAGS = ['-g'])
+    env.Append(CPPFLAGS = ['-g', '-O0'])
     env.Append(CPPDEFINES = 'DEBUG')
 else:
     env.Append(CPPFLAGS = ['-O3'])
@@ -27,7 +35,14 @@ else:
 # build variant
 env['BUILD_VARIANT']  = mode
 env['BUILD_PLATFORM'] = sys.platform
+#env['QT4DIR'] = qt_dir
+#env['ENV']['PKG_CONFIG_PATH'] = qt_pkg_config_path
 
+# Qt4 setup
+env.EnableQt4Modules(['QtGui', 
+                      'QtCore'
+                     ])
+                     
 # Construct target directories and names. Since the
 # build specific SConscript file is one level above
 # the build dir, some trickery is required.

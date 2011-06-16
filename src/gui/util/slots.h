@@ -27,7 +27,7 @@ private:
 };
 
 template <unsigned int N>
-class slots {
+class bit_slots {
 public:
     typedef std::bitset<N> container_type;
     

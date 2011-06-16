@@ -6,8 +6,8 @@ bool validate_user_id (const std::string &u) {
     if (u.size() > 20) return false;
     
     return regexp::match("^[a-zA-Z0-9_\\-\\[\\]=]+$", u);
-    return regexp::match("^[a-zA-Z0-9\\[\\]_-=]+$", u);
-    return regexp::match("^[a-zA-Z0-9_]+$", u);
+    //return regexp::match("^[a-zA-Z0-9\\[\\]_-=]+$", u);
+    //return regexp::match("^[a-zA-Z0-9_]+$", u);
 }
 
 bool validate_password(const std::string &p) {

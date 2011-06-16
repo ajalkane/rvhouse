@@ -24,7 +24,7 @@ namespace chat_gaming {
     public:
         typedef chat::user<user_key> super;
         
-        enum {
+        enum status_enum {
             status_chatting = 1,
             status_playing,
             status_away,
@@ -37,7 +37,7 @@ namespace chat_gaming {
         const static netcomgrp::addr_inet_type _addr_none;
         
         unsigned    _sequence;
-        int         _status;
+        status_enum _status;
         std::string _status_msg;
         std::string _login_id;
         std::string _validation;
@@ -138,8 +138,8 @@ namespace chat_gaming {
         }
         inline const std::string &display_id()   const { return _local.display_id;   }
     
-        inline int status() const { return _status; }
-        inline int status(int s) { 
+        inline status_enum status() const { return _status; }
+        inline int status(status_enum s) {
             _user_status_time = time(NULL);
             return _status = s;
         }
@@ -167,7 +167,7 @@ namespace chat_gaming {
     };
 
     user::user(const netcomgrp::node *n)
-      : super(n), _sequence(0), _status(0), _fields(0),
+      : super(n), _sequence(0), _status(status_chatting), _fields(0),
         _user_now(time(NULL)),
         _user_status_time(time(NULL)) {
         _init_extra_vars();

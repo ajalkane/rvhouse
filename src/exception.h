@@ -14,7 +14,8 @@
 #include <exception>
 #include <stdarg.h>
 #include <stdio.h>
-#include "common.h"
+
+#include <ace/Log_Msg.h>
 
 class exception : public std::exception {
 private:
