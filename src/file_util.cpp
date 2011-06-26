@@ -20,7 +20,7 @@ app_rel_path(const char *path) {
         std::transform(apprel.begin(), apprel.end(),
                        apprel.begin(), element_replace<char>('/', QDir::separator().toLatin1()));
                        
-        ACE_DEBUG((LM_DEBUG, "Transformed path %s -> %s\n", path.c_str(), apprel.c_str()));
+        ACE_DEBUG((LM_DEBUG, "Transformed path %s -> %s\n", path, apprel.c_str()));
     }
     
     apprel.insert(0, 1, QDir::separator().toLatin1());
