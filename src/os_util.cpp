@@ -36,8 +36,9 @@ namespace {
         if( !GetModuleFileName(NULL, filepath, MAX_PATH ) ) {
             throw exceptionf(0, "GetModuleFileName failed (%d)\n", GetLastError()); 
         }
-        *dir = FXFile::directory(filepath);
-        ACE_DEBUG((LM_DEBUG, "os_app_dir: %s -> %s\n", filepath, dir->text()));
+        QFileInfo file_info(filepath);
+        *dir = file_info.absoluteDir().absolutePath();
+        ACE_DEBUG((LM_DEBUG, "os_app_dir: %s -> %s\n", filepath, dir->toLatin1().constData()));
     #else
         *dir = QDir::currentPath();
     #endif

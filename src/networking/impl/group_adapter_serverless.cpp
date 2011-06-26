@@ -177,7 +177,7 @@ group_adapter_serverless::_external_ip_fetch() {
     // of the ip site, the program crashes.
     bool error = false;
     try {
-        ACE_DEBUG((LM_DEBUG, "group_adapter_serverless::fetching external ip\n"));
+        ACE_DEBUG((LM_DEBUG, "group_adapter_serverless::fetching external ip '%s'\n", ip_site.c_str()));
         // throw exceptionf(0, "Could not resolve address");
         
         // http::url testurl;

@@ -3,6 +3,7 @@
 
 #include <set>
 #include <list>
+#include <map>
 #include <utility>
 
 namespace chat {

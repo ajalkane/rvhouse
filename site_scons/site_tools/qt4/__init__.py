@@ -913,7 +913,9 @@ def enable_modules(self, modules, debug=False, crosscompiling=False) :
             modules.remove("QtAssistant")
             modules.append("QtAssistantClient")
         self.AppendUnique(LIBS=['qtmain'+debugSuffix])
-        self.AppendUnique(LIBS=[lib+debugSuffix+'4' for lib in modules if lib not in staticModules])
+        # NOTE: ajalkane@gmail 19.06.2011: replaced this without +4 version, at least in mingw there's no such appending of 4 to the lib name
+        # self.AppendUnique(LIBS=[lib+debugSuffix+'4' for lib in modules if lib not in staticModules])
+        self.AppendUnique(LIBS=[lib+debugSuffix for lib in modules if lib not in staticModules])
         self.PrependUnique(LIBS=[lib+debugSuffix for lib in modules if lib in staticModules])
         if 'QtOpenGL' in modules:
             self.AppendUnique(LIBS=['opengl32'])
