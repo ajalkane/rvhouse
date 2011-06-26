@@ -6,7 +6,7 @@
 #include "../global.h"
 #include "../../messaging/message.h"
 #include "../../app_version.h"
-#include "../../config_file.h"
+#include "../../config_memory.h"
 
 #ifdef SEP
 #undef SEP

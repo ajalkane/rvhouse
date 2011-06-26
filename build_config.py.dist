@@ -15,6 +15,12 @@ import glob
 ## libz (needed by KadC)
 ## pthreadGC (needed by KadC)
 
+qt_dir = '/path/to/qt_install'
+# Only needed under Linux
+# qt_pkg_config_path = os.path.join(qt_dir, 'lib/pkgconfig')
+# Under windows can be empty:
+qt_pkg_config_path = '';
+
 ## If libraries are in some non standard paths, specify them here
 ## Use convention <platform>/[Debug|Release]/library for the libs
 ## that support it
@@ -36,7 +42,7 @@ include_search_path =  ['#../../../libs/ACE_wrappers',
                         '#../../libdht/trunk/src',
                         '#../../netcomgrp/src']
 
-libs = ['FOX-1.4','netcomgrp','reudp','dht','ACE',
+libs = ['netcomgrp','reudp','dht','ACE',
         'KadC','pthreadGC','z',
         'liblibboost_serialization-mgw-s',
          # Needed by Qt (platform dependent?)

@@ -3,7 +3,7 @@
 
 #include "../accessor.h"
 
-class config_file;
+class config_memory;
 
 namespace networking {
 
@@ -16,7 +16,7 @@ namespace ip_block {
     class store;
 }
 
-extern accessor<class config_file *>      net_conf;
+extern accessor<class config_memory *>    net_conf;
 extern accessor<class reporter::client *> net_report;
 extern accessor<class ip_block::store *>  net_ip_block;
 

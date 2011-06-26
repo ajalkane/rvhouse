@@ -31,19 +31,19 @@ dht_operation::dht_operation(dht_target *t)
 std::string 
 dht_operation::conf_kadc_ini() {
     return conf<std::string>("kadc_inifile", std::string());
-    // return net_conf()->get("net_serverless_kadc/kadc_inifile");
+    // return net_conf()->get_value("net_serverless_kadc/kadc_inifile");
 }
 
 std::string
 dht_operation::conf_contacts_server() {
     return conf<std::string>("contacts_server", std::string());
-    // return net_conf()->get("net_serverless_kadc/contacts_server");
+    // return net_conf()->get_value("net_serverless_kadc/contacts_server");
 }
 
 std::string 
 dht_operation::conf_contacts_dload() {
     return conf<std::string>("contacts_dload", std::string());
-    // return net_conf()->get("net_serverless_kadc/contacts_dload");
+    // return net_conf()->get_value("net_serverless_kadc/contacts_dload");
 }
 
 dht_operation::~dht_operation() {

@@ -12,8 +12,8 @@ group_adapter_centralized::group_adapter_centralized(
 ) : group_adapter_base(r), _cgrp(NULL)
 {
     // TODO needs global config.h or from fxsettings
-    _grp_id = net_conf()->get("net_centralized/server") + ':' +
-              net_conf()->get("net_centralized/port");
+    _grp_id = net_conf()->get_value("net_centralized/server") + ':' +
+              net_conf()->get_value("net_centralized/port");
 
     ACE_DEBUG((LM_DEBUG, "group_adapter_centralized: group id: %s\n",
               _grp_id.c_str()));              

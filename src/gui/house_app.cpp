@@ -128,7 +128,7 @@ house_app::~house_app() {
 
 void
 house_app::_init_language() {
-    std::string sel_lang = conf()->get("main/lang");
+    std::string sel_lang = conf()->get_value("main/lang");
 
     lang_mngr()->init(app_rel_path("lang"));
 

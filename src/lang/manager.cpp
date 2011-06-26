@@ -30,9 +30,9 @@ manager::init(const std::string &dir) {
         df.load(path_noext + ".def");
 
         std::list<info>::iterator i = _infos.insert(_infos.end(), info());
-        i->_lang    = df.get("info/language");
-        i->_author  = df.get("info/author");
-        i->_email   = df.get("info/email");
+        i->_lang    = df.get_value("info/language");
+        i->_author  = df.get_value("info/author");
+        i->_email   = df.get_value("info/email");
         i->_version = df.get<std::string>("info/version", "0.81");
         i->_file    = path_noext + ".lang";
 

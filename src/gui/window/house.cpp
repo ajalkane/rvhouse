@@ -213,13 +213,13 @@ house::_connect_signals() {
     connect(_users_view,       SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(open_private_room(QTreeWidgetItem *, int)));
 
     QSignalMapper *openUrlSignalMapper = new QSignalMapper(this);
-    openUrlSignalMapper->setMapping(_action_rvr_wwwsite,         conf()->get("www/rvr_home").c_str());
-    openUrlSignalMapper->setMapping(_action_rvr_1vs1,            conf()->get("www/rvr_1vs1").c_str());
-    openUrlSignalMapper->setMapping(_action_rvr_player_profiles, conf()->get("www/rvr_players").c_str());
+    openUrlSignalMapper->setMapping(_action_rvr_wwwsite,         conf()->get_value("www/rvr_home").c_str());
+    openUrlSignalMapper->setMapping(_action_rvr_1vs1,            conf()->get_value("www/rvr_1vs1").c_str());
+    openUrlSignalMapper->setMapping(_action_rvr_player_profiles, conf()->get_value("www/rvr_players").c_str());
 
-    openUrlSignalMapper->setMapping(_action_routerfw_help,   conf()->get("www/help_router").c_str());
-    openUrlSignalMapper->setMapping(_action_connection_help, conf()->get("www/help_connection").c_str());
-    openUrlSignalMapper->setMapping(_action_rvh_faq,         conf()->get("www/help_faq").c_str());
+    openUrlSignalMapper->setMapping(_action_routerfw_help,   conf()->get_value("www/help_router").c_str());
+    openUrlSignalMapper->setMapping(_action_connection_help, conf()->get_value("www/help_connection").c_str());
+    openUrlSignalMapper->setMapping(_action_rvh_faq,         conf()->get_value("www/help_faq").c_str());
 
     connect(_action_rvr_wwwsite,         SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
     connect(_action_rvr_1vs1,            SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));

@@ -12,7 +12,7 @@
 
 #include "../messaging/messenger.h"
 #include "../messaging/message.h"
-#include "../config_file.h"
+#include "../config_memory.h"
 
 #include "version_update/client.h"
 #include "global_ignore/client.h"

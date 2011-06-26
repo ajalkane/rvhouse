@@ -163,8 +163,8 @@ group_adapter_serverless::_external_ip_fetch() {
         return;
     }
 
-    std::string ip      = net_conf()->get("net_serverless/ip");
-    std::string ip_site = net_conf()->get("net_serverless/ip_site");
+    std::string ip      = net_conf()->get_value("net_serverless/ip");
+    std::string ip_site = net_conf()->get_value("net_serverless/ip_site");
     
     if (!ip.empty()) {
         _external_ip_set(ip);
@@ -222,7 +222,7 @@ group_adapter_serverless::_external_ip_set(const std::string &ip) {
                          "Could not parse IP address from %s:%s, " \
                          "got: %s:%d (ip:port)",
                          ip.c_str(), 
-                         net_conf()->get("net_serverless/port").c_str(),
+                         net_conf()->get_value("net_serverless/port").c_str(),
                           _external_ip.get_host_addr(), 
                           _external_ip.get_port_number());
     }

@@ -5,10 +5,6 @@
 #include "exception.h"
 #include "app_version.h"
 
-// no_space_as_ws_ctype config_file::_loc_facet = new no_space_as_ws_ctype();
-std::locale          config_file::_loc =
-  std::locale(std::locale(), new no_space_as_ws_ctype());
-
 config_file::config_file(config_file::config_type type) :
     _no_delete(false)
 {
@@ -79,19 +75,27 @@ config_file::load_conditionally(const std::string &file) {
     return no_error;
 }
 
+std::string
+config_file::get_value(const char *key) const {
+    QVariant v_value = _conf->value(key, "");
+    return std::string(v_value.toString().toLatin1().constData());
+}
+
+bool
+config_file::contains(const char *key) const {
+    return _conf->contains(key);
+}
+
+void
+config_file::set_value(const char *key, const char *value) {
+    _conf->setValue(key, QVariant(value));
+}
+
 void
 config_file::save() {
     _conf->sync();
 }
 
-config_file &
-config_file::operator=(const config_file &o) {
-    // First delete old configuration, and then create a copy of the
-    // other
-    delete _conf;
-    _conf = copy_qsettings(*(o._conf));
-    return *this;
-}
 
 size_t
 config_file::keys_and_values_as_map(key_value_map_type &m) const {

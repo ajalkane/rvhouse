@@ -13,7 +13,7 @@
 #include "global.h"
 
 #include "../util.h"
-#include "../config_file.h"
+#include "../config_memory.h"
 #include "../messaging/message.h"
 #include "../messaging/message_string.h"
 #include "../messaging/message_user.h"
@@ -37,7 +37,7 @@ worker::worker()
 {
     _reactor   = ACE_Reactor::instance();
     net_messenger.instance(new ace_messenger(_reactor, this));
-    net_conf.instance(new config_file(*(conf())));
+    net_conf.instance(new config_memory(*(conf())));
     net_ip_block.instance(new ip_block::store);
     _version_update_client = NULL;
 }

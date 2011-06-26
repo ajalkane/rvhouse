@@ -8,7 +8,7 @@
 
 #include "../../global.h"
 
-#include "../../../config_file.h"
+#include "../../../config_memory.h"
 #include "../../remote_file_saver/fetcher.h"
 #include "../dht_operation.h"
 

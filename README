@@ -16,6 +16,18 @@ http://www.scons.org/
 Stand-alone Windows build available also:
 https://developer.berlios.de/project/showfiles.php?group_id=2672
 
+For building Qt (Qt 4.7.2 used, later versions may work also):
+ - On Linux:
+   ./configure.exe -prefix=<path to where to install qt> -static -no-sql-sqlite -no-sql-sqlite2 -no-sql-sqlite_symbian
+   make
+   
+ - On Windows with MinGW:
+   export QTDIR=<path to extracted qt directory>/
+   export PATH=${PATH}:${QTDIR}
+   export QMAKESPEC=$QTDIR/mkspecs/win32-g++
+   ./configure.exe -prefix=<path to where to install qt> -static -release
+   mingw32-make
+   
 Under windows, you also need to build resource.o to the
 src directory from resource.rc & resource.h. If you are
 unsure how to do that, contact me.

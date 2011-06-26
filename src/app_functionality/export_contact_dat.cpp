@@ -26,7 +26,7 @@ export_contact_dat::run() {
                _export_to.c_str()));
 
     std::string kadcini_file = 
-        conf()->get("net_serverless_kadc/kadc_inifile");
+        conf()->get_value("net_serverless_kadc/kadc_inifile");
 
     ACE_DEBUG((LM_DEBUG, "Starting export_contact_dat %s -> %s\n", 
                kadcini_file.c_str(), _export_to.c_str()));
