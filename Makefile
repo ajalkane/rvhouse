@@ -37,6 +37,7 @@ dist: clean_all
 # tar package of the binary distribution
 linux_bin_dist:
 	strip build/linux2/Release/rv_house
+	upx build/linux2/Release/rv_house
 	mkdir -p linux_bin_dist/rv_house
 	cp -rp dist_files/* linux_bin_dist/rv_house
 	rm linux_bin_dist/rv_house/pthreadGC.dll
