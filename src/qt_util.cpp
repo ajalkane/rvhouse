@@ -3,6 +3,7 @@
 
 #include "qt_util.h"
 
+// TODO Qt I think this is not needed anymore
 QSettings *copy_qsettings(const QSettings &from)
 {
     ACE_DEBUG((LM_DEBUG, "copy_qsettings: format %d, scope %d, organizationName %s, applicationName %s\n",
