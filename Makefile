@@ -42,3 +42,9 @@ linux_bin_dist:
 	rm linux_bin_dist/rv_house/pthreadGC.dll
 	cp -p build/linux2/Release/rv_house linux_bin_dist/rv_house
 	cd linux_bin_dist; tar -cvf rv_house_linux.tar --exclude '.*' rv_house; gzip rv_house_linux.tar
+
+win_bin_dist:
+	strip build/win32/Release/rv_house.exe
+	upx --force build/win32/Release/rv_house.exe
+	start install/installer.iss
+	
