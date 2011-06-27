@@ -53,7 +53,7 @@ about::about(QWidget *parent)
     l->addWidget(new QLabel);
 
     l->addWidget(new QLabel(langstr("about_win/using")));
-    l->addWidget(new QLabel(langstr("about_win/using_lib", "FOX C++ GUI Library", "Jeroen van der Zijp").c_str()));
+    l->addWidget(new QLabel(langstr("about_win/using_lib", "Qt 4.7 GUI Library", "Nokia").c_str()));
     l->addWidget(new QLabel(langstr("about_win/using_lib", "ACE network library", "Douglas C. Schmidth").c_str()));
     l->addWidget(new QLabel(langstr("about_win/using_lib", "KadC P2P library", "Enzo Michelangeli").c_str()));
     l->addWidget(new QLabel(langstr("about_win/using_lib", "libdht, libreudp, libnetcomgrp", "ajalkane").c_str()));
