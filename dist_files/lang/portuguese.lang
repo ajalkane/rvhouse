@@ -19,10 +19,10 @@ join_room       = "Entrar na sala"
 chatting        = "Chat\tShift-Alt-C"
 playing         = "Jogando\tShift-Alt-P"
 away            = "Ausente\tShift-Alt-A"
-dont_disturb    = "Nï¿½o pertube\tShift-Alt-D"
+dont_disturb    = "Não pertube\tShift-Alt-D"
 
 [menu_comp]
-title           = "&Competiï¿½ï¿½es"
+title           = "&Competições"
 rvl             = "Liga RV"
 rvl_home        = "WWW-site"
 rvl_champ       = "Campeonato"
@@ -38,7 +38,7 @@ rvr_teams       = "Equipes"
 title           = "&Ajuda"
 router_help     = "Ajuda Roteador/Firewall"
 faq             = "RV House FAQ"
-conn_help       = "Ajuda de Conexï¿½o doc"
+conn_help       = "Ajuda de Conexão doc"
 about_house     = "Sobre RV House"
 
 [login_win]
@@ -50,12 +50,12 @@ login           = "&Logar"
 register        = "&Registrar"
 quit            = "&Sair"
 
-login_err_topic = "Nï¿½o pode logar"
+login_err_topic = "Não pode logar"
 fill_user       = "colocar seu usuario"
 fill_pass       = "Colocar sua senha"
 invalid_user    = "Usuario invalido, pode conter de 3 a 20 caracteres e pode conter a-z, A-Z y _"
 invalid_pass    = "Senha invalida, pode conter apartir de 3 caracteres e pode conter a-z, A-Z y _"
-server_down     = "Servidor nï¿½o responde, sua conta nï¿½o pode ser autenticada. Continuar assim mesmo?"
+server_down     = "Servidor não responde, sua conta não pode ser autenticada. Continuar assim mesmo?"
 validation_err  = "Usuario ou senha invalida"
 
 
@@ -72,78 +72,78 @@ reg_err_topic   = "Erro ao registrar usuario"
 reg_ok_topic    = "Registrado"
 fill_user       = "Colocar seu usuario"
 fill_pass       = "Colocar sua senha"
-pass_mismatch   = "As senhas nï¿½o coincidem!"
+pass_mismatch   = "As senhas não coincidem!"
 invalid_user    = "Usuario invalido, pode conter de 3 a 20 caracteres e pode conter a-z, A-Z y _"
 invalid_pass    = "Senha invalida, pode conter apartir de 3 caracteres e pode conter a-z, A-Z y _"
-invalid_email   = "Endereï¿½o de e-mail invalido"
+invalid_email   = "Endereço de e-mail invalido"
 server_down     = "Erro ao registrar no servidor, tentar mais tarde"
 user_reserved   = "O usuario escolhido esta sendo usado, escolher outro"
-reg_ok          = "Registro concluido! voce jï¿½ pode logar"
+reg_ok          = "Registro concluido! voce já pode logar"
 
 
 [about_win]
 title         = "Sobre"
-; %1 ï¿½ substituido com a licenï¿½a. Exemplo: lanï¿½ado sob a GPL
-license       = "Lanï¿½ado baixo %1"
-; %1 ï¿½ substituï¿½do pelo autor de utilizar ï¿½cones. ï¿½cones por ADX
+; %1 é substituido com a licença. Exemplo: lançado sob a GPL
+license       = "Lançado baixo %1"
+; %1 é substituído pelo autor de utilizar ícones. Ícones por ADX
 icons_by      = "Icones por %1"
-; %1 ï¿½ substituï¿½do pelo autor de RV House ï¿½cone. RV House ï¿½cone por Pigasque
+; %1 é substituído pelo autor de RV House ícone. RV House ícone por Pigasque
 house_icon_by = "Icone do RV House por %1"
 other_sites   = "Alguns RV sites da comunidade:"
 using         = "Usando:"
-; %1 ï¿½ substituï¿½do pelo nome da livraria, %2 livraria por autor
+; %1 é substituído pelo nome da livraria, %2 livraria por autor
 ; ACE rede livraria (por Douglas C. Schmidt)
 using_lib     = "%1 (por %2)"
-translations  = "Traduï¿½oes:"
-; %1 ï¿½ substituï¿½da pela linguagem, 2% pelo autor da traduï¿½ï¿½o
-; %3 por nome dos autores da traduï¿½ï¿½o %4 por versï¿½o da traduï¿½ï¿½o
+translations  = "Traduçoes:"
+; %1 é substituída pela linguagem, 2% pelo autor da tradução
+; %3 por nome dos autores da tradução %4 por versão da tradução
 ; Exemplo:
 ; Espanhol por ADX <the.adx@gmail.com> para v0.81
 translation   = "%1 por %2 <%3> para v%4"
 
 [app]
 rv_not_found_title = "Re-Volt esta instalado?"
-rv_not_found       = "Re-Volt nï¿½o encontrado nos registros\nInstalou Re-Volt\nAntes de abrir RVHouse?"
-rv_house_running   = "RV House jï¿½ estï¿½ sendo executado!"
+rv_not_found       = "Re-Volt não encontrado nos registros\nInstalou Re-Volt\nAntes de abrir RVHouse?"
+rv_house_running   = "RV House já está sendo executado!"
 join_room_full     = "Sala cheia!"
 join_invalid_pass  = "Senha invalida!"
 join_refused       = "Host recusado jogando na sala"
-join_err_topic     = "Erro nï¿½o pode entrar na sala"
-dht_connect_err1   = "Nï¿½o foi possï¿½vel conectar ï¿½ rede descentralizada"
-dht_connect_err2   = "Isto ï¿½ provavelmente por causa de seu roteador ou firewall"
-dht_connect_err3   = "nï¿½o estï¿½ configurado correctamente.\n"
-dht_connect_err4   = "Corrigir isso ï¿½ importante porque"
-dht_connect_err5   = "caso contrï¿½rio vocï¿½ nï¿½o poderï¿½ ver todos os jogadores."
-dht_connect_err6   = "Alï¿½m disso, esta parte da RV House ï¿½ central para a minha"
+join_err_topic     = "Erro não pode entrar na sala"
+dht_connect_err1   = "Não foi possível conectar à rede descentralizada"
+dht_connect_err2   = "Isto é provavelmente por causa de seu roteador ou firewall"
+dht_connect_err3   = "não está configurado correctamente.\n"
+dht_connect_err4   = "Corrigir isso é importante porque"
+dht_connect_err5   = "caso contrário você não poderá ver todos os jogadores."
+dht_connect_err6   = "Além disso, esta parte da RV House é central para a minha"
 dht_connect_err7   = "universidade tese de modo que eu aprecio muito se"
-dht_connect_err8   = "vocï¿½ pode corrigi-la :).\n"
-dht_connect_err9   = "Quando vocï¿½ pressionar OK, vocï¿½ serï¿½ direcionado"
+dht_connect_err8   = "você pode corrigi-la :).\n"
+dht_connect_err9   = "Quando você pressionar OK, você será direcionado"
 dht_connect_err10  = "para uma pagina de ajuda de preferencias do roteador/firewall."
-dht_connect_err_title = "Erro de conexï¿½o"
+dht_connect_err_title = "Erro de conexão"
 
-self_on_global_ignore_topic = "	Estï¿½ na lista global de ignorados"
-self_on_global_ignore = "Seu IP foi encontrado na lista global de ignorados.\nComo resultado muitas pessoas nï¿½o pode te ver.\nSe vocï¿½ acha que nï¿½o tenham feito nada errado\ne deve ser removido da ignoraï¿½ï¿½o global\nentï¿½o poste no forum RV sobre isto\nno endereï¿½o abaixo"
+self_on_global_ignore_topic = "	Está na lista global de ignorados"
+self_on_global_ignore = "Seu IP foi encontrado na lista global de ignorados.\nComo resultado muitas pessoas não pode te ver.\nSe você acha que não tenham feito nada errado\ne deve ser removido da ignoração global\nentão poste no forum RV sobre isto\nno endereço abaixo"
 
 [new_version_win]
-title     = "Nova versï¿½o do RV House!"
-force_msg = "Vocï¿½ deve atualizar o RV House! As versï¿½es antigas nï¿½o sï¿½o compativeis!"
-; %1 ï¿½ substituido pelo numero da ultima versï¿½o de RV House, %2 por
-; usuarios RV House versï¿½o.
-msg       = "Versï¿½o %1 disponivel, sua versï¿½o e %2"
-new_since = "versï¿½o atualizada:"
-download  = "Baixar nova versï¿½o em:"
+title     = "Nova versão do RV House!"
+force_msg = "Você deve atualizar o RV House! As versões antigas não são compativeis!"
+; %1 é substituido pelo numero da ultima versão de RV House, %2 por
+; usuarios RV House versão.
+msg       = "Versão %1 disponivel, sua versão e %2"
+new_since = "versão atualizada:"
+download  = "Baixar nova versão em:"
 
 [rvtm_err]
 title     = "Falha ao iniciar o RV Track Manager"
-not_found = "Nï¿½o pode encontrar o RV Track Manager.\nPreparar para compartilhar e baixar pistas\nde outros, voce precisa ter no minimo\nversï¿½o 1.5.0 de RV Track Manager\nVocï¿½ pode baixar daqui:"
+not_found = "Não pode encontrar o RV Track Manager.\nPreparar para compartilhar e baixar pistas\nde outros, voce precisa ter no minimo\nversão 1.5.0 de RV Track Manager\nVocê pode baixar daqui:"
 running   = "RV Track Manager esta pronto para ser iniciado"
-other     = "Nï¿½o pode iniciar RV Track manager"
+other     = "Não pode iniciar RV Track manager"
 
 [message_box]
 ok     = "&Aceitar"
 cancel = "&Cancelar"
 yes    = "&Sim"
-no     = "&Nï¿½o"
+no     = "&Não"
 quit   = "&Sair"
 save   = "&Salvar"
 
@@ -166,7 +166,7 @@ dht_disconnecting     = "P2p Disconectando"
 dht_disconnected      = "P2P Disconectado"
 dht_upding_contacts   = "Atualizando nosso contato de P2P..."
 dht_upd_contacts      = "Nosso contato de P2P atualizados"
-dht_upd_contacts_fail = "Nï¿½o pode atualizar nosso contato de P2P"
+dht_upd_contacts_fail = "Não pode atualizar nosso contato de P2P"
 dht_joining           = "Unindo-se ao P2P"
 dht_joined            = "Unido ao P2P"
 dht_leaving           = "Saindo P2P"
@@ -175,22 +175,22 @@ dht_searching         = "Procurando usuarios P2P"
 dht_announcing        = "Anunciando P2P"
 
 ctz_connecting        = "Conectando centralizado"
-ctz_connected         = "Conexï¿½o centralizada"
+ctz_connected         = "Conexão centralizada"
 ctz_disconnecting     = "Desconectando centralizado"
-ctz_disconnected      = "Desconexï¿½o centralizada"
+ctz_disconnected      = "Desconexão centralizada"
 
-; %1 ï¿½ substituido com site onde IP do usuario ï¿½ obtido de
+; %1 é substituido com site onde IP do usuario é obtido de
 ip_detecting = "Detectando IP de: %1"
-; %1 ï¿½ substituido com IP obtido
+; %1 é substituido com IP obtido
 ip_detected  = "IP detectado: %1"
-; %1 ï¿½ substituido com a razï¿½o do erro
-ip_failed    = "Detecï¿½ï¿½o de IP falhou: %1"
+; %1 é substituido com a razão do erro
+ip_failed    = "Detecção de IP falhou: %1"
 
 [chat]
-; %1 ï¿½ substituido com nome do usuario
+; %1 é substituido com nome do usuario
 user_entered = "%1 entrou"
 user_exited  = "%1 saiu"
-; %1 ï¿½ substituido com nome da sala
+; %1 é substituido com nome da sala
 room_created = "Nova sala criada (%1)"
 room_closed  = "Sala fechada (%1)"
 
@@ -198,7 +198,7 @@ host_kicked_host = "Burro do host kikou ele mesmo da sala %1"
 host_kicks_user  = "Host esta kikando %1 da sala"
 host_kicks_you   = "Host te kikou da sala %1"
 
-; %1 ï¿½ substituido com nome do usuario
+; %1 é substituido com nome do usuario
 user_joined_room         = "%1 entrou na sala"
 user_exited_room         = "%1 saiu da sala"
 user_shares_tracks       = "%1 esta compartilhando pistas"
@@ -206,52 +206,52 @@ user_shares_tracks_stops = "%1 parou compartilhamento de pistas"
 user_dloads_tracks       = "%1 esta baixando pistas"
 user_dloads_tracks_stops = "%1 parou de baixar pistas"
 user_ignored             = "Ignorando usuario %1. O ignoramento pode ser removido reiniciando RV House."
-user_ignores             = "Vocï¿½ estï¿½ sendo ignorado por %1"
+user_ignores             = "Você está sendo ignorado por %1"
 
 ; %1 = "A mensagem foi recusada/nada recebido."
-; Causado porque os usuario estï¿½ jogando ou em nï¿½o pertube
-; modo nenhuma janela estï¿½ para ser aberta.
+; Causado porque os usuario está jogando ou em não pertube
+; modo nenhuma janela está para ser aberta.
 private_msg_refused      = "O usuario %1 rejeitou sua mensagem."
 
 flood_control = "Controle de flood"
 
-global_ignore = "Listando os usuarios que estï¿½o na lista global de ignorados por causa do comportamento pertubador e estï¿½o sendo ignorados por vocï¿½ automaticamente. Vocï¿½ pode desabilitar a ignoraï¿½ï¿½o nas preferencias se vocï¿½ desejar."
-; %1 ï¿½ substituido por nome do usuario
-; %2 ï¿½ substituido pela razï¿½o
-user_global_ignore = "Ignorar usuario '%1', razï¿½o: %2"
+global_ignore = "Listando os usuarios que estão na lista global de ignorados por causa do comportamento pertubador e estão sendo ignorados por você automaticamente. Você pode desabilitar a ignoração nas preferencias se você desejar."
+; %1 é substituido por nome do usuario
+; %2 é substituido pela razão
+user_global_ignore = "Ignorar usuario '%1', razão: %2"
 
-host_ip = "Meu IP ï¿½ %1. Vocï¿½ deve precisar disto se estiver usando windows vista."
+host_ip = "Meu IP é %1. Você deve precisar disto se estiver usando windows vista."
 
 [room_settings_win]
-title       = "Opï¿½oes da sala"
+title       = "Opçoes da sala"
 topic       = "&Nome:"
 password    = "&Senha:"
 pickups     = "P&ickups"
 laps        = "&Voltas:"
 players     = "&Jogadores:"
 
-error_title    = "Erro nas opï¿½oes da sala"
+error_title    = "Erro nas opçoes da sala"
 topic_missing  = "Preencher topico da sala"
 
 [room_win]
 leave         = "Deixar sala"
-settings      = "Editar opï¿½oes da sala"
+settings      = "Editar opçoes da sala"
 launch        = "Carregar jogo"
 share_tracks  = "Compartilhar pistas com os outros"
 dload_tracks  = "Baixar pistas do host"
 
-host_launched = "O host iniciou o Re-Volt. A partida comeï¿½arï¿½ em alguns segundos..."
-; %1 ï¿½ substituido com o limite (em minutos)
-join_too_late = "Nï¿½o pode juntar-se a corrida se o host jï¿½ estiver\njogando a %1 minutos."
+host_launched = "O host iniciou o Re-Volt. A partida começará em alguns segundos..."
+; %1 é substituido com o limite (em minutos)
+join_too_late = "Não pode juntar-se a corrida se o host já estiver\njogando a %1 minutos."
 join_too_late_title = "Tarde de mais para juntar-se"
 
-send_ip_info_title = "Noticia!";
-send_ip_info = "Seu IP serï¿½ automaticamente enviado para pessoas que entram na sala.\nIsso ï¿½ principalmente para ajudar usuarios Vista que poderia precisar dele para entrar no jogo.\n\nSe vocï¿½ nï¿½o quiser que o seu IP nï¿½o seja enviado vocï¿½ pode desativar nas preferencias\n\nEsta mensagem ï¿½ mostrada apenas uma vez!";
+send_ip_info_title = "Noticia!";"
+send_ip_info = "Seu IP será automaticamente enviado para pessoas que entram na sala.\nIsso é principalmente para ajudar usuarios Vista que poderia precisar dele para entrar no jogo.\n\nSe você não quiser que o seu IP não seja enviado você pode desativar nas preferencias\n\nEsta mensagem é mostrada apenas uma vez!";"
 
 [rv_launch]
 title_err = "Erro ao abrir Re-Volt"
-not_found = "Re-Volt nï¿½o encontrado. Instala-lo (e abrir) e re-abrir o RVHouse"
-other     = "Nï¿½o pode carregar o Re-Volt"
+not_found = "Re-Volt não encontrado. Instala-lo (e abrir) e re-abrir o RVHouse"
+other     = "Não pode carregar o Re-Volt"
 
 title     = "Abrindo Re-Volt"
 text      = "Clicar em aceitar quando querer voltar."
@@ -272,7 +272,7 @@ warning = "Aviso"
 status  = "Status"
 room    = "Sala"
 yes     = "Sim"
-no      = "Nï¿½o"
+no      = "Não"
 creating = "Criando"
 
 minutes_short = "mins"
@@ -283,10 +283,10 @@ disconnected  = "Desconectado"
 
 
 [users_view]
-shares_tracks = "Estï¿½ compartilhando pistas"
-dloads_tracks = "Estï¿½ recebendo pistas"
-dht_not_found = "Nï¿½o encontrado de rede descentralizada"
-natted        = "A conexï¿½o do usuario parece estar baixo NAT"
+shares_tracks = "Está compartilhando pistas"
+dloads_tracks = "Está recebendo pistas"
+dht_not_found = "Não encontrado de rede descentralizada"
+natted        = "A conexão do usuario parece estar baixo NAT"
 
 [user_popup]
 user_name     = "Usuario"
@@ -301,11 +301,11 @@ chatting      = "Chat"
 waiting       = "Esperando na sala"
 playing       = "Jogando"
 away          = "Ausente"
-dont_disturb  = "Nï¿½o pertube"
+dont_disturb  = "Não pertube"
 unknown       = "Desconhecido"
 
 [misc]
-user_not_validated = "ID do usuario nï¿½o ï¿½ valida"
+user_not_validated = "ID do usuario não é valida"
 pass_needed        = "Senha requerida"
 
 
@@ -331,5 +331,5 @@ sel_text_color  = "Cor do texto selecionado"
 sel_bg_color    = "Cor de fundo selecionado"
 sel_mt_color    = "Cor do texto do menu selecionado"
 sel_mbg_color   = "Cor do fundo do menu selecionado"
-tip_text_color  = "Sugestï¿½o de cor do texto"
-tip_bg_color    = "Sugestï¿½o de cor de fundo"
+tip_text_color  = "Sugestão de cor do texto"
+tip_bg_color    = "Sugestão de cor de fundo"

@@ -5,7 +5,7 @@ cancel_button   = " &Cancelar "
 [login_win]
 title           = "Logearse"
 user_id         = "&Usuario:"
-password        = "&Contraseï¿½a:"
+password        = "&Contraseña:"
 uses_rvzt_login = "Usa los datos de RVZT"
 login           = "&Loguearse"
 register        = "&Registrarse"
@@ -13,18 +13,18 @@ quit            = "&Salir"
 
 login_err_topic = "No se puede loguear"
 fill_user       = "Pon un usuario"
-fill_pass       = "Pon una contraseï¿½a"
+fill_pass       = "Pon una contraseña"
 invalid_user    = "Usuario invalido, debe ser de 3 a 20 caracteres y puede contener a-z, A-Z y _"
-invalid_pass    = "Contraseï¿½a invalida, debe ser apartir de 3 caracteres y puede contener a-z, A-Z y _"
+invalid_pass    = "Contraseña invalida, debe ser apartir de 3 caracteres y puede contener a-z, A-Z y _"
 server_down     = "Servidor de logeo sin respuesta, tu cuenta no ha podido ser autentificada. Continuar de todas formas?"
-validation_err  = "Usuario o contraseï¿½a invalidos"
+validation_err  = "Usuario o contraseña invalidos"
 
 
 [register_win]
 title           = "Registrarse"
 user_id         = "&Usuario:"
-password        = "&Contraseï¿½a:"
-repassword      = "&Repite contraseï¿½a:"
+password        = "&Contraseña:"
+repassword      = "&Repite contraseña:"
 email           = "&E-mail:"
 register        = "Registrar"
 cancel          = "&Cancelar"
@@ -32,12 +32,12 @@ cancel          = "&Cancelar"
 reg_err_topic   = "Error registrando usuario"
 reg_ok_topic    = "Registrado"
 fill_user       = "Pon un usuario"
-fill_pass       = "Pon una contraseï¿½a"
-pass_mismatch   = "Las contraseï¿½as no coinciden!"
+fill_pass       = "Pon una contraseña"
+pass_mismatch   = "Las contraseñas no coinciden!"
 invalid_user    = "Usuario invalido, debe ser de 3 a 20 caracteres y puede contener a-z, A-Z y _"
-invalid_pass    = "Contraseï¿½a invalida, debe ser apartir de 3 caracteres y puede contener a-z, A-Z y _"
-invalid_email   = "Direcciï¿½n de e-mail invalida"
-server_down     = "Error registrando en el servidor, prueba mï¿½s tarde"
+invalid_pass    = "Contraseña invalida, debe ser apartir de 3 caracteres y puede contener a-z, A-Z y _"
+invalid_email   = "Dirección de e-mail invalida"
+server_down     = "Error registrando en el servidor, prueba más tarde"
 user_reserved   = "El usuario elegido esta reservado, coje otro"
 reg_ok          = "Registro correcto! Ya puedes logearte"
 
@@ -57,16 +57,16 @@ translation   = "%1 by %2 <%3>"
 rv_not_found_title = "Re-Volt instalado?"
 rv_not_found       = "Re-Volt no encontrado en el registro\nHas instalado Re-Volt\nAntes de abrir RVHouse?"
 join_room_full     = "Sala completa!"
-join_invalid_pass  = "Contraseï¿½a invalida!"
+join_invalid_pass  = "Contraseña invalida!"
 join_refused       = "Host refusado mientras entrabas en la sala"
 join_err_topic     = "Error entrando en la sala"
 
 [new_version_win]
-title     = "Nueva versiï¿½n!"
+title     = "Nueva versión!"
 force_msg = "DEBES actualizar RVHouse! Las versiones viejas no son compatibles!"
-msg       = "Versiï¿½n %1 disponible, tu versiï¿½n es %2"
-new_since = "Nuevo desde tu versiï¿½n:"
-download  = "Baja la nueva versiï¿½n de:"
+msg       = "Versión %1 disponible, tu versión es %2"
+new_since = "Nuevo desde tu versión:"
+download  = "Baja la nueva versión de:"
 
 [rvtm_err]
 title     = "Failed to launch RV Track Manager"
@@ -90,8 +90,8 @@ refresh     = "Actualizar"
 cancel      = "Cancelar"
 about       = "Acerca de"
 
-ask_room_pass_title = "Protegido con contraseï¿½a"
-ask_room_pass       = "Introduze la contraseï¿½a"
+ask_room_pass_title = "Protegido con contraseña"
+ask_room_pass       = "Introduze la contraseña"
 
 joining_room  = "Unirse al cuarto"
 
@@ -109,13 +109,13 @@ dht_searching         = "Buscando usuarios de P2P"
 dht_announcing        = "Anunciando P2P"
 
 ctz_connecting        = "Conectando centralizado"
-ctz_connected         = "Conexiï¿½n centralizada"
+ctz_connected         = "Conexión centralizada"
 ctz_disconnecting     = "Desconectando centralizado"
-ctz_disconnected      = "Desconexiï¿½n centralizada"
+ctz_disconnected      = "Desconexión centralizada"
 
 ip_detecting = "Detectando IP de: %1"
 ip_detected  = "IP detectada: %1"
-ip_failed    = "Detecciï¿½n de IP fallida: %1"
+ip_failed    = "Detección de IP fallida: %1"
 
 [chat]
 user_entered = "%1 ha entrado"
@@ -133,12 +133,12 @@ user_shares_tracks       = "%1 esta compartiendo tracks"
 user_shares_tracks_stops = "%1 ha parado de compartir tracks"
 user_dloads_tracks       = "%1 esta descargando tracks"
 user_dloads_tracks_stops = "%1 ha parado de descargar tracks"
-private_msg_refused      = "El usuario %1 rechazï¿½ tu mensaje."
+private_msg_refused      = "El usuario %1 rechazó tu mensaje."
 
 [room_settings_win]
 title       = "Opciones de la sala"
 topic       = "&Nombre:"
-password    = "&Contraseï¿½a:"
+password    = "&Contraseña:"
 pickups     = "P&ickups"
 laps        = "&Vueltas:"
 players     = "&Jugadores:"
@@ -153,12 +153,12 @@ launch        = "Lanzar juego"
 share_tracks  = "Compartir tracks con otros"
 dload_tracks  = "Descargar tracks del host"
 
-host_launched = "El host ha ejecutado Re-Volt. La partida darï¿½ comienzo en pocos segundos..."
+host_launched = "El host ha ejecutado Re-Volt. La partida dará comienzo en pocos segundos..."
 
 
 [rv_launch]
 title_err = "Error abriendo Re-Volt"
-not_found = "No se encontrï¿½ Re-Volt. Instalalo (y abrelo) y vuelve a abrir RVHouse"
+not_found = "No se encontró Re-Volt. Instalalo (y abrelo) y vuelve a abrir RVHouse"
 other     = "No se pudo abrir Re-Volt"
 
 title     = "Lanzando Re-Volt"
@@ -191,8 +191,8 @@ disconnected  = "Desconectado"
 
 
 [users_view]
-shares_tracks = "Estï¿½ compartiendo tracks"
-dloads_tracks = "Estï¿½ recibiendo tracks"
+shares_tracks = "Está compartiendo tracks"
+dloads_tracks = "Está recibiendo tracks"
 dht_not_found = "No encontrado de red descentralizada"
 natted        = "La conexion del usuario parece estar bajo NAT"
 
@@ -212,4 +212,4 @@ unknown       = "Desconocido"
 
 [misc]
 user_not_validated = "ID de usuario no validada"
-pass_needed        = "Contraseï¿½a requerida"
+pass_needed        = "Contraseña requerida"

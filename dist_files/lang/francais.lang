@@ -9,20 +9,20 @@ quit            = "&Quitter\tCtl-Q"
 
 [menu_edit]
 title           = "&Edition"
-settings        = "&Paramï¿½tres...\tAlt-S"
+settings        = "&Paramètres...\tAlt-S"
 
 [menu_player]
 title           = "&Joueur"
 status          = "Statut"
-create_room     = "Crï¿½er une salle...\tCtl-R"
+create_room     = "Créer une salle...\tCtl-R"
 join_room       = "Rejoindre une salle"
 chatting        = "Discute\tShift-Alt-C"
 playing         = "Joue\tShift-Alt-P"
 away            = "Absent\tShift-Alt-A"
-dont_disturb    = "Ne pas dï¿½ranger\tShift-Alt-D"
+dont_disturb    = "Ne pas déranger\tShift-Alt-D"
 
 [menu_comp]
-title           = "&Compï¿½titions"
+title           = "&Compétitions"
 rvl             = "RV League"
 rvl_home        = "WWW-site"
 rvl_champ       = "Championnat"
@@ -38,7 +38,7 @@ rvr_teams       = "Equipes"
 title           = "&Aide"
 router_help     = "Aide Routeur/Firewall"
 faq             = "FAQ RV House"
-conn_help       = "Aide ï¿½ la connexion"
+conn_help       = "Aide à la connexion"
 about_house     = "A Propos de RV House"
 
 [login_win]
@@ -53,9 +53,9 @@ quit            = "&Quitter"
 login_err_topic = "Login impossible"
 fill_user       = "Remplissez votre ID Utilisateur"
 fill_pass       = "Remplissez votre mot de passe"
-invalid_user    = "ID Utilisateur invalide, il doit ï¿½tre compris entre 3 et 20 caractï¿½res et peut contenir les caractï¿½res a-z, A-Z et _"
-invalid_pass    = "Mot de passe invalide, minimum 3 caractï¿½res et doit uniquement contenir les caractï¿½res a-z, A-Z et _"
-server_down     = "Le serveur d'identification n'a pu ï¿½tre contactï¿½, votre ID Utilisateur n'a pas ï¿½tï¿½ authentifiï¿½. Voulez-vous quand mï¿½me continuer?"
+invalid_user    = "ID Utilisateur invalide, il doit être compris entre 3 et 20 caractères et peut contenir les caractères a-z, A-Z et _"
+invalid_pass    = "Mot de passe invalide, minimum 3 caractères et doit uniquement contenir les caractères a-z, A-Z et _"
+server_down     = "Le serveur d'identification n'a pu être contacté, votre ID Utilisateur n'a pas été authentifié. Voulez-vous quand même continuer?"
 validation_err  = "ID Utilisateur ou mot de passe incorrect"
 
 
@@ -69,27 +69,27 @@ register        = "Enregistrer"
 cancel          = "&Annuler"
 
 reg_err_topic   = "Enregistrement impossible"
-reg_ok_topic    = "Enregistrï¿½"
+reg_ok_topic    = "Enregistré"
 fill_user       = "Remplissez votre ID Utilisateur"
 fill_pass       = "Remplissez votre Mot de Passe"
 pass_mismatch   = "Les mots de passe ne correspondent pas!"
-invalid_user    = "ID Utilisateur invalide, il doit ï¿½tre compris entre 3 et 20 caractï¿½res et peut contenir les caractï¿½res a-z, A-Z et _"
-invalid_pass    = "Mot de passe invalide, minimum 3 caractï¿½res et doit uniquement contenir les caractï¿½res a-z, A-Z et _"
+invalid_user    = "ID Utilisateur invalide, il doit être compris entre 3 et 20 caractères et peut contenir les caractères a-z, A-Z et _"
+invalid_pass    = "Mot de passe invalide, minimum 3 caractères et doit uniquement contenir les caractères a-z, A-Z et _"
 invalid_email   = "Adresse E-mail incorrecte"
-server_down     = "Impossible de contacter le serveur, enregistrement non effectuï¿½"
-user_reserved   = "L'ID Utilisateur choisi est dï¿½jï¿½ utilisï¿½, choisissez en un autre"
-reg_ok          = "Enregistrement rï¿½ussi, vous pouvez vous connecter avec votre ID Utilisateur et votre mot de passe"
+server_down     = "Impossible de contacter le serveur, enregistrement non effectué"
+user_reserved   = "L'ID Utilisateur choisi est déjà utilisé, choisissez en un autre"
+reg_ok          = "Enregistrement réussi, vous pouvez vous connecter avec votre ID Utilisateur et votre mot de passe"
 
 
 [about_win]
 title         = "A Propos"
 
-license       = "Distribuï¿½ sous %1"
+license       = "Distribué sous %1"
 
-icons_by      = "Icï¿½nes par %1"
+icons_by      = "Icônes par %1"
 
-house_icon_by = "Icï¿½ne RV House par %1"
-other_sites   = "Sites populaires, utiles pour la communautï¿½:"
+house_icon_by = "Icône RV House par %1"
+other_sites   = "Sites populaires, utiles pour la communauté:"
 using         = "Utilise:"
 
 
@@ -102,41 +102,41 @@ translations  = "Traductions:"
 translation   = "%1 par %2 <%3> pour v%4"
 
 [app]
-rv_not_found_title = "Re-Volt est-il installï¿½?"
-rv_not_found       = "Re-Volt n'a pas ï¿½tï¿½ trouvï¿½ dans le registre\nL'avez-vous installï¿½ et lancï¿½\navant de lancer RV-House?"
-rv_house_running   = "RV House est dï¿½jï¿½ en cours d'exï¿½cution!"
+rv_not_found_title = "Re-Volt est-il installé?"
+rv_not_found       = "Re-Volt n'a pas été trouvé dans le registre\nL'avez-vous installé et lancé\navant de lancer RV-House?"
+rv_house_running   = "RV House est déjà en cours d'exécution!"
 join_room_full     = "Salle pleine!"
 join_invalid_pass  = "Mot de passe incorrect!"
-join_refused       = "L'hï¿½te a refusï¿½ votre prï¿½sence"
+join_refused       = "L'hôte a refusé votre présence"
 join_err_topic     = "Impossible de rejoindre la salle"
-dht_connect_err1   = "Impossible de se connecter au rï¿½seau dï¿½centralisï¿½"
-dht_connect_err2   = "Ceci est probablement dï¿½ au fait que votre firewall"
-dht_connect_err3   = "ou router n'est pas correctement configurï¿½.\n""
-dht_connect_err4   = "Il est important de rï¿½soudre ce problï¿½me sinon"
+dht_connect_err1   = "Impossible de se connecter au réseau décentralisé"
+dht_connect_err2   = "Ceci est probablement dû au fait que votre firewall"
+dht_connect_err3   = "ou router n'est pas correctement configuré.\n"
+dht_connect_err4   = "Il est important de résoudre ce problème sinon"
 dht_connect_err5   = "vous risquez de ne pas voir tous les joueurs."
-dht_connect_err6   = "Aussi, cette partie de RV House est le but de ma thï¿½se"
-dht_connect_err7   = "et j'apprï¿½cierais beaucoup si"
-dht_connect_err8   = "vous pouviez le rï¿½soudre :).\n"
-dht_connect_err9   = "En appuyant sur OK, vous serez redirigï¿½"
-dht_connect_err10  = "vers la page d'aide ï¿½ la configuration de votre router/firewall."
+dht_connect_err6   = "Aussi, cette partie de RV House est le but de ma thèse"
+dht_connect_err7   = "et j'apprécierais beaucoup si"
+dht_connect_err8   = "vous pouviez le résoudre :).\n"
+dht_connect_err9   = "En appuyant sur OK, vous serez redirigé"
+dht_connect_err10  = "vers la page d'aide à la configuration de votre router/firewall."
 dht_connect_err_title = "Erreur de connexion"
 
-self_on_global_ignore_topic = "Vous ï¿½tes dans la liste noire gï¿½nï¿½rale"
-self_on_global_ignore = "Votre IP fait partie de la liste noire globale.\nLa plupart des joueurs ne pourront pas vous voir.\nSi vous pensez que vous n'avez rien fait de mal \net que vous souhaitï¿½s ï¿½tre supprimï¿½ de la liste noire,\nenvoyez un message sur le Forum RV Pub ï¿½ l'adresse ci-dessous:"
+self_on_global_ignore_topic = "Vous êtes dans la liste noire générale"
+self_on_global_ignore = "Votre IP fait partie de la liste noire globale.\nLa plupart des joueurs ne pourront pas vous voir.\nSi vous pensez que vous n'avez rien fait de mal \net que vous souhaités être supprimé de la liste noire,\nenvoyez un message sur le Forum RV Pub à l'adresse ci-dessous:"
 
 [new_version_win]
 title     = "Nouvelle version de RV House"
-force_msg = "Vous DEVEZ mettre ï¿½ jour RV House! L'ancienne version n'est plus compatible!"
+force_msg = "Vous DEVEZ mettre à jour RV House! L'ancienne version n'est plus compatible!"
 
 
 msg       = "RV House version %1 disponible, votre version est %2"
-new_since = "Nouveautï¿½s apportï¿½es:"
-download  = "Tï¿½lï¿½chargez la nouvelle version ici:"
+new_since = "Nouveautés apportées:"
+download  = "Téléchargez la nouvelle version ici:"
 
 [rvtm_err]
-title     = "Le lancement de Track Manager a ï¿½chouï¿½"
-not_found = "Impossible de trouver Track Manager.\nPour partager et tï¿½lï¿½charger vos circuits\navec les autres joueurs, vous avez besoin de la version 1.5.0\nou supï¿½rieure de Track Manager\nVous pouvez la tï¿½lï¿½charger ici:"
-running   = "Track Manager est dï¿½jï¿½ en cours d'exï¿½cution"
+title     = "Le lancement de Track Manager a échoué"
+not_found = "Impossible de trouver Track Manager.\nPour partager et télécharger vos circuits\navec les autres joueurs, vous avez besoin de la version 1.5.0\nou supérieure de Track Manager\nVous pouvez la télécharger ici:"
+running   = "Track Manager est déjà en cours d'exécution"
 other     = "Impossible de lancer Track manager"
 
 [message_box]
@@ -149,120 +149,120 @@ save   = "&Enregsitrer"
 
 [main_win]
 exit        = "Quitter"
-create_room = "Crï¿½er une salle"
+create_room = "Créer une salle"
 join_room   = "Rejoindre une salle"
-refresh     = "Rafraï¿½chir"
+refresh     = "Rafraîchir"
 cancel      = "Annuler"
 about       = "A Propos"
 
-ask_room_pass_title = "Salle protï¿½gï¿½e par mot de passe"
+ask_room_pass_title = "Salle protégée par mot de passe"
 ask_room_pass       = "Entrez le mot de passe"
 
 joining_room  = "Rejoint la salle"
 
 dht_connecting        = "Connexion au P2P"
-dht_connected         = "Connectï¿½ au P2P"
-dht_disconnecting     = "P2P en cours de dï¿½connexion"
-dht_disconnected      = "P2P dï¿½connectï¿½"
-dht_upding_contacts   = "Mise ï¿½ jour des nï¿½uds P2P..."
-dht_upd_contacts      = "Nï¿½uds P2P mis ï¿½ jour"
-dht_upd_contacts_fail = "Le P2P ne peut mettre ï¿½ jour les nï¿½uds"
-dht_joining           = "P2P sur le point d'ï¿½tre rejoint"
+dht_connected         = "Connecté au P2P"
+dht_disconnecting     = "P2P en cours de déconnexion"
+dht_disconnected      = "P2P déconnecté"
+dht_upding_contacts   = "Mise à jour des nœuds P2P..."
+dht_upd_contacts      = "Nœuds P2P mis à jour"
+dht_upd_contacts_fail = "Le P2P ne peut mettre à jour les nœuds"
+dht_joining           = "P2P sur le point d'être rejoint"
 dht_joined            = "P2P rejoint"
 dht_leaving           = "P2P en cours de sortie"
-dht_left              = "P2P quittï¿½"
+dht_left              = "P2P quitté"
 dht_searching         = "Le P2P Recherche les joueurs"
 dht_announcing        = "Annonce P2P"
 
-ctz_connecting        = "Connexion au serveur Centralisï¿½"
-ctz_connected         = "Connectï¿½ au serveur Centralisï¿½"
-ctz_disconnecting     = "Dï¿½connexion du serveur Centralisï¿½"
-ctz_disconnected      = "Dï¿½connectï¿½ du serveur Centralisï¿½"
+ctz_connecting        = "Connexion au serveur Centralisé"
+ctz_connected         = "Connecté au serveur Centralisé"
+ctz_disconnecting     = "Déconnexion du serveur Centralisé"
+ctz_disconnected      = "Déconnecté du serveur Centralisé"
 
 
-ip_detecting = "Dï¿½tection de l'adresse IP depuis: %1"
+ip_detecting = "Détection de l'adresse IP depuis: %1"
 
-ip_detected  = "IP Dï¿½tectï¿½e: %1"
+ip_detected  = "IP Détectée: %1"
 
-ip_failed    = "La dï¿½tection de l'IP a ï¿½chouï¿½: %1"
+ip_failed    = "La détection de l'IP a échoué: %1"
 
 [chat]
 
-user_entered = "%1 est entrï¿½"
+user_entered = "%1 est entré"
 user_exited  = "%1 est parti"
 
-room_created = "Nouvelle salle crï¿½ï¿½e (%1)"
-room_closed  = "Salle fermï¿½e (%1)"
+room_created = "Nouvelle salle créée (%1)"
+room_closed  = "Salle fermée (%1)"
 
-host_kicked_host = "L'hï¿½te est ï¿½jectï¿½ de sa partie %1"
-host_kicks_user  = "L'hï¿½te expulse %1 de la salle"
-host_kicks_you   = "L'hï¿½te vous a expulsï¿½ de la salle %1"
+host_kicked_host = "L'hôte est éjecté de sa partie %1"
+host_kicks_user  = "L'hôte expulse %1 de la salle"
+host_kicks_you   = "L'hôte vous a expulsé de la salle %1"
 
 
 user_joined_room         = "%1 a rejoint la salle"
-user_exited_room         = "%1 a quittï¿½ la salle"
+user_exited_room         = "%1 a quitté la salle"
 user_shares_tracks       = "%1 partage ses circuits"
 user_shares_tracks_stops = "%1 a fini de partager ses circuits"
-user_dloads_tracks       = "%1 tï¿½lï¿½charge les circuits"
-user_dloads_tracks_stops = "%1 a terminï¿½ de tï¿½lï¿½charger les circuits"
-user_ignored             = "Bloquer %1. Le blocage sera supprimï¿½ en redï¿½marrant RV House."
+user_dloads_tracks       = "%1 télécharge les circuits"
+user_dloads_tracks_stops = "%1 a terminé de télécharger les circuits"
+user_ignored             = "Bloquer %1. Le blocage sera supprimé en redémarrant RV House."
 user_ignores             = "%1 ne souhaite pas vous voir"
 
 ; %1 = "the message that was refused/not received."
 ; Caused because of user is playing or in do not disturb
 ; mode so no windows are wanted to be opened.
-private_msg_refused      = "L'utilisateur a refusï¿½ votre message: %1"
+private_msg_refused      = "L'utilisateur a refusé votre message: %1"
 
-flood_control = "Contrï¿½le du Flood"
+flood_control = "Contrôle du Flood"
 
-global_ignore = "Les utilisateurs suivant sont dans la Liste Noire pour leur comportement perturbateur et sont donc automatiquement ignorï¿½. Vous pouvez dï¿½sactiver la Liste Noire dans Paramï¿½tres > Gï¿½nï¿½ral si vous le souhaitez."
+global_ignore = "Les utilisateurs suivant sont dans la Liste Noire pour leur comportement perturbateur et sont donc automatiquement ignoré. Vous pouvez désactiver la Liste Noire dans Paramètres > Général si vous le souhaitez."
 
 
 user_global_ignore = "%1 est dans la liste noire, raison: %2"
 
-host_ip = "My IP is %1. Vous aurez surement besoin de ï¿½a si vous ï¿½tes sous Vista."
+host_ip = "My IP is %1. Vous aurez surement besoin de ça si vous êtes sous Vista."
 
 [room_settings_win]
-title       = "Paramï¿½tres de la salle"
+title       = "Paramètres de la salle"
 topic       = "&Titre:"
 password    = "&Mot de passe:"
 pickups     = "&Bonus"
 laps        = "&Tours:"
 players     = "&Joueurs:"
 
-error_title    = "Erreur dans les paramï¿½tres de la salle"
+error_title    = "Erreur dans les paramètres de la salle"
 topic_missing  = "Remplissez le titre de la salle"
 
 [room_win]
 leave         = "Quitter la salle"
-settings      = "Modifier les paramï¿½tres de la salle"
+settings      = "Modifier les paramètres de la salle"
 launch        = "Lancer le jeu"
 share_tracks  = "Partager ses circuits customs"
-dload_tracks  = "Tï¿½lï¿½charger les circuits customs chez l'hï¿½te"
+dload_tracks  = "Télécharger les circuits customs chez l'hôte"
 
-host_launched = "L'hï¿½te a lancï¿½ Re-Volt. Votre jeu va dï¿½marrer automatiquement dans quelques secondes"
+host_launched = "L'hôte a lancé Re-Volt. Votre jeu va démarrer automatiquement dans quelques secondes"
 
-join_too_late = "Impossible de rejoindre la course si l'hï¿½te\njoue depuis plus de %1 minutes."
+join_too_late = "Impossible de rejoindre la course si l'hôte\njoue depuis plus de %1 minutes."
 join_too_late_title = "Trop tard pour rejoindre la partie"
 
-send_ip_info_title = "Notice!";
-send_ip_info = "Votre adresse IP sera automatiquement envoyï¿½ aux joueurs ayant rejoint votre salle.\nCeci a pour but d'aider les utilisateurs de Vista qui en auraient besoin pour rejoindre la partie.\nVous pouvez dï¿½sactiver cette fonction dans Paramï¿½tres > Gï¿½nï¿½ral si vous ne souhaitez pas montrer votre IP.\n\nCe message ne s'affichera qu'une seule fois!";
+send_ip_info_title = "Notice!";"
+send_ip_info = "Votre adresse IP sera automatiquement envoyé aux joueurs ayant rejoint votre salle.\nCeci a pour but d'aider les utilisateurs de Vista qui en auraient besoin pour rejoindre la partie.\nVous pouvez désactiver cette fonction dans Paramètres > Général si vous ne souhaitez pas montrer votre IP.\n\nCe message ne s'affichera qu'une seule fois!";"
 
 [private_message_win]
-close = "Clï¿½turer la discussion"
+close = "Clôturer la discussion"
 
 [rv_launch]
-title_err = "La dï¿½marrage du jeu ï¿½ ï¿½chouï¿½"
-not_found = "Impossible de trouver Re-Volt. Installez (et lancez) Re-Volt et redï¿½marrez RV House"
+title_err = "La démarrage du jeu à échoué"
+not_found = "Impossible de trouver Re-Volt. Installez (et lancez) Re-Volt et redémarrez RV House"
 other     = "Impossible de lancer Re-Volt"
 
-title     = "Dï¿½marrage du jeu"
+title     = "Démarrage du jeu"
 text      = "Cliquez sur OK pour revenir dans la salle."
 
 
 [words]
 topic   = "Salle"
-host    = "Hï¿½te"
+host    = "Hôte"
 ; For example, Note: room is password protected
 note    = "Note"
 players = "Joueurs"
@@ -274,27 +274,27 @@ status  = "Statut"
 room    = "Salle"
 yes     = "Oui"
 no      = "Non"
-creating = "Crï¿½ation"
+creating = "Création"
 
 minutes_short = "mins"
 dht           = "P2P"
-ctz           = "Centralisï¿½"
-connected     = "Connectï¿½"
-disconnected  = "Dï¿½connectï¿½"
+ctz           = "Centralisé"
+connected     = "Connecté"
+disconnected  = "Déconnecté"
 
 
 [users_view]
 shares_tracks = "L'utilisateur partage ses circuits custom"
-dloads_tracks = "L'utilisateur rï¿½cupï¿½re des circuits customs"
-dht_not_found = "Non trouvï¿½ sur le rï¿½seau dï¿½centralisï¿½"
-natted        = "L'utilisateur semble ï¿½tre derriï¿½re un NAT"
+dloads_tracks = "L'utilisateur récupère des circuits customs"
+dht_not_found = "Non trouvé sur le réseau décentralisé"
+natted        = "L'utilisateur semble être derrière un NAT"
 
 [user_popup]
 user_name     = "Nom Utilisateur"
 share_tracks  = "Partager les circuits"
-dload_tracks  = "Tï¿½lï¿½charger les circuits"
+dload_tracks  = "Télécharger les circuits"
 kick          = "Expulser"
-private_msg   = "Envoyer un message privï¿½"
+private_msg   = "Envoyer un message privé"
 ignore_user   = "Ignorer l'utilisateur"
 
 [status]
@@ -302,41 +302,41 @@ chatting      = "Discute"
 waiting       = "Attend dans la salle"
 playing       = "Joue"
 away          = "Absent"
-dont_disturb  = "Ne Pas Dï¿½ranger"
+dont_disturb  = "Ne Pas Déranger"
 unknown       = "Inconnu"
 
 [misc]
-user_not_validated = "ID Utilisateur non certifiï¿½ (pas validï¿½)"
+user_not_validated = "ID Utilisateur non certifié (pas validé)"
 pass_needed        = "Mot de passe requis"
 
 
 [settings_win]
-title           = "Paramï¿½tres de RV House"
-general_tab     = "Gï¿½nï¿½ral"
+title           = "Paramètres de RV House"
+general_tab     = "Général"
 colors_tab      = "Couleurs"
-advanced_tab    = "Avancï¿½"
+advanced_tab    = "Avancé"
 
 flash_main_chat = "Clignoter si message dans le chat principal"
 flash_room_chat = "Clignoter si message dans le chat de la salle"
-flash_new_room  = "Clignoter si nouvelle salle crï¿½ï¿½e"
+flash_new_room  = "Clignoter si nouvelle salle créée"
 flash_new_user  = "Clignoter si quelqu'un se connecte"
 flash_nick      = "Clignoter si votre pseudo apparait dans le chat principal"
-away_minimize   = "Absent quand le fenï¿½tre est minimisï¿½e"
-global_ignore   = "Utiliser la liste noire gï¿½nï¿½rale"
+away_minimize   = "Absent quand le fenêtre est minimisée"
+global_ignore   = "Utiliser la liste noire générale"
 send_ip         = "Afficher IP lors du host"
 
 base_color      = "Couleur de Base"
 border_color    = "Couleur des Bordures"
 text_color      = "Couleur du Texte"
-bg_color        = "Couleur d'Arriï¿½re-Plan"
-sel_text_color  = "Couleur du Texte Sï¿½lectionnï¿½"
-sel_bg_color    = "Couleur de l'Arriï¿½re-Plan Sï¿½lectionnï¿½"
-sel_mt_color    = "Couleur du texte du menu sï¿½lectionnï¿½"
-sel_mbg_color   = "Couleur d'Arriï¿½re-Plan du Menu"
+bg_color        = "Couleur d'Arrière-Plan"
+sel_text_color  = "Couleur du Texte Sélectionné"
+sel_bg_color    = "Couleur de l'Arrière-Plan Sélectionné"
+sel_mt_color    = "Couleur du texte du menu sélectionné"
+sel_mbg_color   = "Couleur d'Arrière-Plan du Menu"
 tip_text_color  = "Couleur du Texte des Infobulles"
-tip_bg_color    = "Couleur d'Arriï¿½re-Plan des Infobulles"
+tip_bg_color    = "Couleur d'Arrière-Plan des Infobulles"
 
 cmdline_autoset = "Auto-configuration ligne de commande"
 cmdline_dontset = "Pas de ligne de commande"
-cmdline_manual  = "Prï¿½ciser vos lignes de commandes"
+cmdline_manual  = "Préciser vos lignes de commandes"
 

@@ -252,8 +252,8 @@ host_launched = "Host has launched Re-Volt. Your game will be automatically star
 join_too_late = "Can not join the race if the host has been\nplaying more than %1 minutes."
 join_too_late_title = "Too late to join"
 
-send_ip_info_title = "Notice!";
-send_ip_info = "Your detected IP will automatically be sent to people who join the room.\nThis is mainly to help Vista users who might need it for joining the game.\n\nIf you do not want your IP to be sent you can turn it off from Settings\n\nThis message is only shown once!";
+send_ip_info_title = "Notice!";"
+send_ip_info = "Your detected IP will automatically be sent to people who join the room.\nThis is mainly to help Vista users who might need it for joining the game.\n\nIf you do not want your IP to be sent you can turn it off from Settings\n\nThis message is only shown once!";"
 
 [private_message_win]
 close = "Close chat"

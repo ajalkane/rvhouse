@@ -83,22 +83,22 @@ reg_ok          = "Регистрирахте се успешно, можете да влезете с вашия User ID и
 
 [about_win]
 title         = "About"
-# %1 is replace with the license. Example: Released under GPL
+; %1 is replace with the license. Example: Released under GPL
 license       = "Излязъл през '%1'"
-# %1 is replaced by the author of used icons. Icons by ADX
+; %1 is replaced by the author of used icons. Icons by ADX
 icons_by      = "Икони от '%1'"
-# %1 is replaced by the author of RV House icon. RV House icon by Pigasque
+; %1 is replaced by the author of RV House icon. RV House icon by Pigasque
 house_icon_by = "RV House икона от '%1'"
 other_sites   = "Няколко известни, полезни RV сайтове за онлайн общуване:"
 using         = "Използва:"
-# %1 is replaced by the library name, %2 by library author
-# ACE мрежова библиотека (от Douglas C. Schmidt)
+; %1 is replaced by the library name, %2 by library author
+; ACE мрежова библиотека (от Douglas C. Schmidt)
 using_lib     = "%1 (by %2)"
 translations  = "Преводи:"
-# %1 is replaced by the language name, %2 by author of translation
-# %3 by translation authors name %4 by the version of translation
-# Example:
-# Spanish by ADX <the.adx@gmail.com> for v0.81
+; %1 is replaced by the language name, %2 by author of translation
+; %3 by translation authors name %4 by the version of translation
+; Example:
+; Spanish by ADX <the.adx@gmail.com> for v0.81
 translation   = "%1 от %2 <%3>, версия %4"
 
 [app]
@@ -127,8 +127,8 @@ self_on_global_ignore = "Вашия IP адрес беше намерен на глобалния лист за игнори
 [new_version_win]
 title     = "Нова версия на RV House"
 force_msg = "Вие ТРЯБВА да ъпгрейднете вашия RV House! Старата версия не се поддържа!"
-# %1 is replaced by latest RV House version number, %2 by
-# users RV House version.
+; %1 is replaced by latest RV House version number, %2 by
+; users RV House version.
 msg       = "RV House версия '%1' е излязла, вашата версия е '%2'"
 new_since = "Новости след вашата версия:"
 download  = "Изтеглете новата версия от:"
@@ -179,18 +179,18 @@ ctz_connected         = "Centralized е свързан"
 ctz_disconnecting     = "Centralized излиза"
 ctz_disconnected      = "Centralized излезе"
 
-# %1 is replacedwith the site where user's IP is fetched from
+; %1 is replacedwith the site where user's IP is fetched from
 ip_detecting = "Намиране IP от: %1"
-# %1 is replaced with the IP obtained
+; %1 is replaced with the IP obtained
 ip_detected  = "Намерено IP: %1"
-# %1 is replaced with the error reason
+; %1 is replaced with the error reason
 ip_failed    = "Грешка при намирането на IP: %1"
 
 [chat]
-# %1 is replaced with user name
+; %1 is replaced with user name
 user_entered = "'%1' Влезе"
 user_exited  = "'%1' Излезе"
-# %1 is replaced with room name
+; %1 is replaced with room name
 room_created = "Игра '%1' създадена"
 room_closed  = "Игра '%1' затворена"
 
@@ -198,7 +198,7 @@ host_kicked_host = "Домакинът се изгони от играта '%1'"
 host_kicks_user  = "Домакинът изгони '%1' от играта"
 host_kicks_you   = "Домакинът ви изгони от играта '%1'"
 
-# %1 is replaced with user name
+; %1 is replaced with user name
 user_joined_room         = "'%1' се присъедини"
 user_exited_room         = "'%1' излезе"
 user_shares_tracks       = "'%1' споделя карти"
@@ -208,16 +208,16 @@ user_dloads_tracks_stops = "'%1' спря да тегли карти"
 user_ignored             = "Вие игнорирате '%1'. Игнорирането може да бъде премахнато чрез рестартиране на RV House."
 user_ignores             = "Вие сте игнориран от '%1'"
 
-# %1 = "the message that was refused/not received."
-# Caused because of user is playing or in do not disturb
-# mode so no windows are wanted to be opened.
+; %1 = "the message that was refused/not received."
+; Caused because of user is playing or in do not disturb
+; mode so no windows are wanted to be opened.
 private_msg_refused      = "User refused your message: %1"
 
 flood_control = "Контрол над повтарянето"
 
 global_ignore = "Following users are in global ignore list because of disruptive behaviour and are ignored by you automatically. You can disable global ignoring from Settings if you wish to."
-# %1 is replaced by user name
-# %2 is replaced with reason
+; %1 is replaced by user name
+; %2 is replaced with reason
 user_global_ignore = "Глобално игнориране на '%1', причина: %2"
 
 host_ip = "Вашият IP адрес е '%1'. Може да ви трябва ако имате Windows Vista."
@@ -248,11 +248,11 @@ share_tracks  = "Сподели собствени карти с другите"
 dload_tracks  = "Изтегли собствени карти от домакина"
 
 host_launched = "Домакинът стартира Re-Volt. Вашата игра ще бъде автоматично пусната след няколко секунди."
-# %1 is replaced with the limit (in minutes)
+; %1 is replaced with the limit (in minutes)
 join_too_late = "Не можете да се присъедините към състезанието ако домакинът\nиграе повече от %1 минути."
 join_too_late_title = "Твърде късно за да се присъедините"
-send_ip_info_title = "Предупреждение!";
-send_ip_info = "Вашият IP адрес ще бъде автоматично изпратен на играчите, които се присъединят към играта.\nТова е най-вече за да помогне на Vista потребители които може да се нуждаят от него за да се присъединят към играта.\n\nАко не искате вашият IP адрес да бъде пращан можете да го изключите от Настройките.\n\nТова съобщение се показва само веднъж!";
+send_ip_info_title = "Предупреждение!";"
+send_ip_info = "Вашият IP адрес ще бъде автоматично изпратен на играчите, които се присъединят към играта.\nТова е най-вече за да помогне на Vista потребители които може да се нуждаят от него за да се присъединят към играта.\n\nАко не искате вашият IP адрес да бъде пращан можете да го изключите от Настройките.\n\nТова съобщение се показва само веднъж!";"
 
 [private_message_win]
 close = "Затвори Чат"
@@ -269,7 +269,7 @@ text      = "Щракнете OK когато искате да се върнете."
 [words]
 topic   = "Топик"
 host    = "Домакин"
-# For example, Note: room is password protected
+; For example, Note: room is password protected
 note    = "Забележка"
 players = "Играчи"
 laps    = "Обиколки"
@@ -329,7 +329,7 @@ flash_new_user_in_room  = "Премигвай ако нов играч се появи в стаята"
 flash_nick      = "Премигвай ако твоето име е написано на основния чат"
 away_minimize   = "Превключвай на отсъстващ когато главния прозорец се минимизира"
 global_ignore   = "Използвай глобалния лист за игнорирани"
-send_ip         = "Изпращай IP адрес когато  си домакин"
+send_ip         = "Изпращай IP адрес когато си домакин"
 
 base_color      = "Основен Цвят"
 border_color    = "Граничен Цвят"
