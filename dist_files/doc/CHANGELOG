@@ -1,5 +1,10 @@
 RV House change log
 
+Version 0.93.1 (29.06.2011)
+- Language files fixedUI improvements (Using Qt GUI toolkit)
+- Fix: crashed when trying to join room when none selected
+- If Re-Volt 1.2 selected, up-to 16 players possible
+
 Version 0.93.0 (28.06.2011)
 - UI improvements (Using Qt GUI toolkit)
 

@@ -15,6 +15,10 @@
 
 #include "room_settings.h"
 
+namespace {
+    const int max_rv_players = 12;
+    const int max_rv12_players = 16;
+}
 namespace gui {
 namespace window {
 
@@ -55,7 +59,7 @@ room_settings::_create_widgets() {
     _laps_field->setMinimum(1);
     _laps_field->setMaximum(20);
     _players_field->setMinimum(2);
-    _players_field->setMaximum(12);
+    _players_field->setMaximum(max_rv_players);
 
     _version_check->setToolTip(langstr("room_settings_win/version_tip"));
     _version_all->setToolTip(langstr("room_settings_win/version_all_tip"));
@@ -202,11 +206,13 @@ room_settings::version_state_changed(int state) {
         _version_12_only->setChecked(false);
         _version_12_only->setCheckable(false);
         _version_12_only->update();
+        _players_field->setMaximum(max_rv_players);
     } else {
         _version_all->setEnabled(true);
         _version_all->setCheckable(true);
         _version_12_only->setEnabled(true);
         _version_12_only->setCheckable(true);
+        _players_field->setMaximum(max_rv12_players);
         if (!_version_all->isChecked() && !_version_12_only->isChecked()) {
             _version_all->setChecked(true);
         }

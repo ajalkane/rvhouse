@@ -546,6 +546,11 @@ void
 house::room_join_selected(QTreeWidgetItem *item, int column) {
     ACE_DEBUG((LM_DEBUG, "house: joining room\n"));
 
+    if (item == NULL) {
+        ACE_DEBUG((LM_DEBUG, "house: no room selected\n"));
+        return;
+    }
+
     if (item->isDisabled()) {
         ACE_DEBUG((LM_DEBUG, "house: room is disabled\n"));
         return;
