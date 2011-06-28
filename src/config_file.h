@@ -27,7 +27,6 @@ public:
     };
 
     config_file(config_type type);
-    config_file(const config_file &o);
 
     virtual ~config_file();
 

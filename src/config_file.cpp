@@ -18,11 +18,6 @@ config_file::config_file(config_file::config_type type) :
     }
 }
 
-config_file::config_file(const config_file &o) {
-    _conf = copy_qsettings(*(o._conf));
-    _no_delete = false;
-}
-
 config_file::~config_file() {
     if (!_no_delete)
         delete _conf;
