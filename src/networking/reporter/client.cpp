@@ -23,7 +23,7 @@ client::client(ACE_Reactor *r) : _reactor(r)
         "reporter","server",REPORTER_SERVER_ADDR
     );
     u_short     port = net_conf()->get<u_short>(
-        "repoter","port",REPORTER_SERVER_PORT
+        "reporter","port",REPORTER_SERVER_PORT
     );
 #ifndef RV_HOUSE_TEST
     addr = REPORTER_SERVER_ADDR;
@@ -47,7 +47,11 @@ client::client(ACE_Reactor *r) : _reactor(r)
         ACE_OS::last_error() != EWOULDBLOCK)
     {
         ACE_ERROR((LM_ERROR, "%p\n", "reporter::client"));
-        _handler->state = handler::disconnected;
+        // If connect fails, _handler->close is called which deletes this object and sets it to null, so we can't muck with it here. Well, at least check if it's null.
+        // IMPROVE: it's bad idea to have these kind of delete operations in the constructor as the object is in building state. Should have separate function to connect client.
+        if (_handler != NULL) {
+            _handler->state = handler::disconnected;
+        }
     } else {
         _handler->state = handler::connecting;
     }
