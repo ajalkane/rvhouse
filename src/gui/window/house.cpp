@@ -252,6 +252,8 @@ house::_create_layout() {
     QWidget *centralWidget = new QWidget;
     centralWidget->setLayout(l);
     this->setCentralWidget(centralWidget);
+
+    _msg_field->setFocus();
 }
 
 void
@@ -624,10 +626,10 @@ void
 house::open_private_room(QTreeWidgetItem *widget_item, int column) {
     ACE_DEBUG((LM_DEBUG, "house::open_private_room\n"));
 
-    view::users::item_type *item = static_cast<view::users::item_type *>(widget_item);
+    view::users::item_type *item = dynamic_cast<view::users::item_type *>(widget_item);
 
     if (!item) {
-        ACE_DEBUG((LM_DEBUG, "house::open_private_room no item found\n"));
+        ACE_DEBUG((LM_DEBUG, "house::open_private_room not a room item\n"));
         return;
     }
 

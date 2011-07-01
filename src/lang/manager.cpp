@@ -54,6 +54,16 @@ manager::mapper_init(mapper &m, const std::string &name, const std::string &def)
     }
 }
 
+bool
+manager::language_exists(const std::string &name) const {
+    std::list<info>::const_iterator i = _infos.begin();
+    for (; i != _infos.end(); i++) {
+        if (i->lang() == name) break;
+    }
+
+    return i != _infos.end();
+}
+
 void
 manager::_mapper_fill(mapper &m, const std::string &name) {
     ACE_DEBUG((LM_DEBUG, "lang::manager: filling mapper for %s\n", name.c_str()));

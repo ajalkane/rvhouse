@@ -62,11 +62,15 @@ public:
     room_settings(QWidget *parent);
         
 public slots:
-     void version_state_changed(int state);
+    // IMPROVE: I'm pretty sure there's a better way to do this instead of having
+    // three functions.
+    void version_state_changed();
+    void version_state_changed(bool toggled);
+    void version_state_changed(int state);
 
-     // Overrides of QDialog
-     virtual void accept();
-     virtual void reject();
+    // Overrides of QDialog
+    virtual void accept();
+    virtual void reject();
 
 };
 

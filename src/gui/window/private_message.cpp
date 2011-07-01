@@ -88,6 +88,8 @@ private_message::_create_layout() {
     QWidget *centralWidget = new QWidget;
     centralWidget->setLayout(l);
     this->setCentralWidget(centralWidget);
+
+    _msg_field->setFocus();
 }
 
 void

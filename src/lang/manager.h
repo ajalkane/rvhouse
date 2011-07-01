@@ -2,6 +2,7 @@
 #define _LANG_MANAGER_H_
 
 #include <list>
+#include <string>
 
 #include "../common.h"
 #include "info.h"
@@ -18,6 +19,7 @@ public:
     virtual ~manager();
     
     void init(const std::string &lang_dir);
+    bool language_exists(const std::string &name) const;
     
     inline const std::list<info> &lang_infos() { return _infos; }
     

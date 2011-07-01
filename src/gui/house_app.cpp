@@ -131,6 +131,10 @@ house_app::_init_language() {
     std::string sel_lang = conf()->get_value("main/lang");
 
     lang_mngr()->init(app_rel_path("lang"));
+    // The language might have been removed, in that case force a reselect
+    if (!lang_mngr()->language_exists(sel_lang)) {
+        sel_lang.clear();
+    }
 
     if (sel_lang.empty()) {
         const std::list<lang::info> inf = lang_mngr()->lang_infos();

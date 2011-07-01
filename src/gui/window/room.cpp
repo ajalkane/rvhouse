@@ -124,6 +124,8 @@ room::_create_layout() {
     info_layout->addWidget(_info_laps,    1, 1);
     info_layout->addWidget(_info_picks,   0, 3);
     _info_container->setLayout(info_layout);
+
+    _msg_field->setFocus();
 }
 
 void

@@ -12,6 +12,7 @@
 #include "../../model/house.h"
 #include "../../model/self.h"
 #include "../../win_registry.h"
+#include "../../config_file.h"
 
 #include "room_settings.h"
 
@@ -30,9 +31,11 @@ room_settings::room_settings(QWidget *parent)
     _create_actions();
     _create_widgets();
     _create_layout();
-    _connect_signals();
 
     _from_settings_to_form();
+
+    _connect_signals();
+
     // Initialize version information
     version_state_changed(0);
 }
@@ -59,7 +62,6 @@ room_settings::_create_widgets() {
     _laps_field->setMinimum(1);
     _laps_field->setMaximum(20);
     _players_field->setMinimum(2);
-    _players_field->setMaximum(max_rv_players);
 
     _version_check->setToolTip(langstr("room_settings_win/version_tip"));
     _version_all->setToolTip(langstr("room_settings_win/version_all_tip"));
@@ -74,6 +76,8 @@ room_settings::_connect_signals() {
     ACE_DEBUG((LM_DEBUG, "room_settings::_connect_signals\n"));
 
     connect(_version_check,   SIGNAL(stateChanged(int)), this, SLOT(version_state_changed(int)));
+    connect(_version_all,     SIGNAL(toggled(bool)), this, SLOT(version_state_changed(bool)));
+    connect(_version_12_only, SIGNAL(toggled(bool)), this, SLOT(version_state_changed(bool)));
 
     connect(_ok_button,     SIGNAL(clicked()), this, SLOT(accept()));
     connect(_cancel_button, SIGNAL(clicked()), this, SLOT(reject()));
@@ -132,6 +136,8 @@ room_settings::_room_to_form(const chat_gaming::room &r)
     _laps_field->setValue(r.laps());
     _players_field->setValue(r.max_players());
     _pickups_check->setChecked(r.pickups());
+
+    ACE_DEBUG((LM_DEBUG, "room_settings::_room_to_form cars %d\n", r.max_players()));
 }
 
 void
@@ -148,22 +154,38 @@ room_settings::_form_to_room(chat_gaming::room &r) const
     r.laps(_laps_field->value());
     r.max_players(_players_field->value());
     r.pickups(_pickups_check->checkState() == Qt::Checked);
+
+    ACE_DEBUG((LM_DEBUG, "room_settings::_form_to_room cars %d\n", r.max_players()));
+
 }
 
 void
 room_settings::_registry_to_room(chat_gaming::room &r) const
 {
+    // RV has NCars registry field, unfortunately in multiplayer
+    // RV doesn't read it so using it doesn't matter. Furthermore
+    // RV can crash when it's more than 12, which is supported by
+    // RV 1.2. The solution is to remember the setting in user prefs.
     r.laps       (game_registry()->get<int>("NLaps", 10));
-    r.max_players(game_registry()->get<int>("NCars", 10));
     r.pickups    (game_registry()->get<int>("Pickups", 0));
+    r.max_players(pref()->get<int>("room_settings/cars", 10));
+
+    ACE_DEBUG((LM_DEBUG, "room_settings::_registry_to_room cars %d\n", r.max_players()));
+
 }
 
 void
 room_settings::_room_to_registry(const chat_gaming::room &r) const
 {
-    game_registry()->set("NLaps",   r.laps());
-    game_registry()->set("NCars",   r.max_players());
-    game_registry()->set("Pickups", r.pickups() ? 1 : 0);
+    // RV has NCars registry field, unfortunately in multiplayer
+    // RV doesn't read it so using it doesn't matter. Furthermore
+    // RV can crash when it's more than 12, which is supported by
+    // RV 1.2. The solution is to remember the setting in user prefs.
+    game_registry()->set("NLaps",     r.laps());
+    game_registry()->set("Pickups",   r.pickups() ? 1 : 0);
+    pref()->set("room_settings/cars", r.max_players());
+
+    ACE_DEBUG((LM_DEBUG, "room_settings::_room_to_registry cars %d\n", r.max_players()));
 }
 
 // Overridden from QDialog
@@ -195,6 +217,16 @@ room_settings::reject() {
 
 void
 room_settings::version_state_changed(int state) {
+    version_state_changed();
+}
+
+void
+room_settings::version_state_changed(bool toggled) {
+    version_state_changed();
+}
+
+void
+room_settings::version_state_changed() {
     ACE_DEBUG((LM_DEBUG, "room_settings::version_state_changed\n"));
     if (!_version_check->isChecked()) {
         // _version_all->setEnabled(false);
@@ -212,24 +244,32 @@ room_settings::version_state_changed(int state) {
         _version_all->setCheckable(true);
         _version_12_only->setEnabled(true);
         _version_12_only->setCheckable(true);
-        _players_field->setMaximum(max_rv12_players);
         if (!_version_all->isChecked() && !_version_12_only->isChecked()) {
             _version_all->setChecked(true);
         }
+
+        if (_version_all->isChecked()) {
+            _players_field->setMaximum(max_rv_players);
+        } else {
+            _players_field->setMaximum(max_rv12_players);
+        }
+
     }
+    ACE_DEBUG((LM_DEBUG, "room_settings::/version_state_changed\n"));
+
 }
 
 void
 room_settings::_from_settings_to_form() {
     chat_gaming::room &target_room = self_model()->hosting_room();
 
-    _registry_to_room(target_room);
-    _room_id_prev = target_room.id();
-    _room_to_form(target_room);
-
     _version_check->setChecked(self_model()->room_version());
     _version_all->setChecked(self_model()->room_version_all());
     _version_12_only->setChecked(self_model()->room_version_12_only());
+
+    _registry_to_room(target_room);
+    _room_id_prev = target_room.id();
+    _room_to_form(target_room);
 
     if (_room_id_prev.empty()) {
         // New room branch
