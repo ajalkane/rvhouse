@@ -91,16 +91,7 @@ house_app::house_app(int &argc, char **argv)
 
     _init_language();
 
-    if (!conf()->get<bool>("main", "no_instance_check", false)) {
-        if (!os::ensure_single_app_instance()) {
-            throw exception(0, langstr("app/rv_house_running"));
-        }
-    }
-
     ACE_DEBUG((LM_DEBUG, "house_app: creating main window\n"));
-
-    ACE_DEBUG((LM_DEBUG, "start network worker\n"));
-    _net_worker->activate();
 
     this->setWindowIcon(app_icons()->get("rv_house"));
 }
@@ -179,6 +170,14 @@ house_app::_init_language() {
 bool
 house_app::start() {
     ACE_DEBUG((LM_DEBUG, "house_app: arguments size before new window::house %d\n", this->arguments().size()));
+    if (!conf()->get<bool>("main", "no_instance_check", false)) {
+        if (!os::ensure_single_app_instance()) {
+            throw exception(0, langstr("app/rv_house_running"));
+        }
+    }
+    ACE_DEBUG((LM_DEBUG, "start network worker\n"));
+    _net_worker->activate();
+    
     _house_win  = new window::house;
 
     _house_win->show();

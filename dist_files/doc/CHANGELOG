@@ -1,12 +1,14 @@
 RV House change log
 
-Version 0.93.2 (1.07.2012)
+Version 0.93.2 (2.07.2012)
 - Fix: number of players not written to RV registry to avoid crashes when more than 12 players
 - Fix: Double clicking on user sections crashed RV House
 - Fix: Room settings selecting "All versions" did not return number of players to maximum 12
 - Fix: Input focus in main window/private message/room window is initialized to the chat input
 - Bulgarian translation removed, until someone fixes it, as it doesn't work in new RV House version
 - Fix: If a language is selected that doesn't exist anymore, language selection is displayed.
+- Fix: Correct title on main window
+- Fix: Only one instance of RV House can be launched
 
 Version 0.93.1 (29.06.2011)
 - Fix: non-english language files fixed

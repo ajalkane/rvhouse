@@ -51,6 +51,7 @@ house::house()
       _router_fw_help_showed(false)
 {
     ACE_DEBUG((LM_DEBUG, "house::house\n"));
+    this->setWindowTitle(APP_NAME);
     this->setWindowIcon(app_icons()->get("rv_house"));
     this->setContextMenuPolicy(Qt::NoContextMenu);
 
