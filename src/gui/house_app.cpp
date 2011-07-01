@@ -91,6 +91,12 @@ house_app::house_app(int &argc, char **argv)
 
     _init_language();
 
+    if (!conf()->get<bool>("main", "no_instance_check", false)) {
+        if (!os::ensure_single_app_instance()) {
+            throw exception(0, langstr("app/rv_house_running"));
+        }
+    }
+
     ACE_DEBUG((LM_DEBUG, "house_app: creating main window\n"));
 
     ACE_DEBUG((LM_DEBUG, "start network worker\n"));
