@@ -28,7 +28,7 @@
 namespace {
     const QColor col_dht_conn( 61, 89,171,255); // fxcolorfromname("Cobalt");
     const QColor col_ctz_conn(69,139,116,255); //  fxcolorfromname("Aquamarine4");
-    const QColor col_dht_ctz_conn(69,139,116,255); // = fxcolorfromname("DarkBlue");
+    const QColor col_dht_ctz_conn(0,0,139,255); // = fxcolorfromname("DarkBlue");
     const QColor col_nat_dht_ctz_conn(156,102, 31,255); //  = fxcolorfromname("Brick");
     const QColor col_not_validated("red"); // fxcolorfromname("Red");
 }
