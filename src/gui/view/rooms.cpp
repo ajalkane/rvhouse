@@ -171,6 +171,12 @@ rooms::_create_header() {
     headers.append(langstr("words/pickups"));
 
     this->setHeaderLabels(headers);
+
+    this->setColumnWidth(0, 200);
+    this->setColumnWidth(1, 100);
+    this->setColumnWidth(2, 50);
+    this->setColumnWidth(3, 35);
+    this->setColumnWidth(4, 50);
 }
 
 void
