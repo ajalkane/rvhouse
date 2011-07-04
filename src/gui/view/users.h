@@ -206,6 +206,7 @@ public slots:
     void block_selected_user();
     void kick_selected_user();
     void open_private_msg_to_selected_user();
+    void toggle_selection(QTreeWidgetItem *item, int column);
 };
 
 } // ns view

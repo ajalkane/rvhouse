@@ -341,6 +341,9 @@ users::_create_signals() {
     connect(_action_private_message, SIGNAL(triggered()), this, SLOT(open_private_msg_to_selected_user()));
     connect(_action_kick,            SIGNAL(triggered()), this, SLOT(kick_selected_user()));
 
+    connect(this,       SIGNAL(itemClicked(QTreeWidgetItem *, int)), this, SLOT(toggle_selection(QTreeWidgetItem *, int)));
+
+
 }
 
 users::~users() {
@@ -785,6 +788,25 @@ users::_priv_msg_enable(const item_type *item) const {
     }
 
     return false;
+}
+
+// IMPROVE: ugly hack so that selected items can be deselected by pressing on header
+// Optimally this would work like this:
+// - If user is selected and single clicked on it, it would be deselected.
+// - If clicked outside of tree area, user is deselected.
+void
+users::toggle_selection(QTreeWidgetItem *widget_item, int column) {
+    ACE_DEBUG((LM_DEBUG, "users::toggle_user\n"));
+
+    item_type *item = dynamic_cast<item_type *>(widget_item);
+
+    if (!item && widget_item) {
+        ACE_DEBUG((LM_DEBUG, "users::toggle_user not a room item, clearing selection\n"));
+        widget_item->treeWidget()->clearSelection();
+        return;
+    }
+
+    // item->setSelected(!item->isSelected());
 }
 
 } // ns view

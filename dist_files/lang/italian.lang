@@ -1,0 +1,352 @@
+[common]
+ok_button       = "&OK"
+cancel_button   = "&cancella"
+apply_button    = "&Applica"
+
+[menu_file]
+title           = "&File"
+quit            = "&Esci\tCtl-Q"
+
+[menu_edit]
+title           = "&Modifica"
+settings        = "&Impostazioni...\tAlt-S"
+
+[menu_player]
+title           = "&Giocatore"
+status          = "Stato"
+create_room     = "Crea partita...\tCtl-R"
+join_room       = "Unisciti alla partita"
+chatting        = "Disponibile\tShift-Alt-C"
+playing         = "Gioco avviato\tShift-Alt-P"
+away            = "Non al computer\tShift-Alt-A"
+dont_disturb    = "Occupato\tShift-Alt-D"
+
+[menu_comp]
+title           = "&Competizioni"
+rvl             = "Lega RV"
+rvl_home        = "Sito Internet"
+rvl_champ       = "Campionati"
+rvl_cup         = "Coppe"
+
+rvr             = "Re-Volt Race"
+rvr_home        = "Sito Web"
+rvr_1vs1        = "Best Laps"
+rvr_players     = "Giocatori"
+rvr_teams       = "Squadre"
+
+[menu_help]
+title           = "&Aiuto"
+router_help     = "Configurazione router/firewall"
+faq             = "FAQ RV House"
+conn_help       = "Guida alla connessione"
+about_house     = "Informazioni su RV House"
+
+[login_win]
+title           = "Login"
+user_id         = "&ID utente:"
+password        = "&Password:"
+uses_rvzt_login = "Usa login RVZT"
+login           = "&Accedi"
+register        = "&Registrati"
+quit            = "&Esci"
+
+login_err_topic = "Impossibile accedere"
+fill_user       = "Inserisci ID utente"
+fill_pass       = "Inserisci password"
+invalid_user    = "ID utente non valido, deve comprendere da 3 a 20 caratteri e puo contenere caratteri a-z, A-Z e _ "
+invalid_pass    = "Password non valida, deve comprendere almeno 3 caratteri e puo contenere solo caratteri a-z, A-Z e _"
+server_down     = "Impossibile conntattare il server, il tuo ID utente non potrà essere autenticato. Continuare?"
+validation_err  = "ID utente o password non validi"
+
+
+[register_win]
+title           = "Registra nuovo utente"
+user_id         = "&ID utente:"
+password        = "&Password:"
+repassword      = "&Conferma password:"
+email           = "&E-mail:"
+register        = "Registra"
+cancel          = "&Cancella"
+
+reg_err_topic   = "Impossibile registare utente"
+reg_ok_topic    = "Registrato"
+fill_user       = "Inserisci ID utente"
+fill_pass       = "Inserisci password"
+pass_mismatch   = "Password errata!"
+invalid_user    = "ID utente non valido, deve comprendere da 3 a 20 caratteri e puo contenere caratteri a-z, A-Z e _ "
+invalid_pass    = "Password non valida, deve comprendere almeno 3 caratteri e puo contenere solo caratteri a-z, A-Z e _"
+invalid_email   = "Indirizzo E-mail non valido"
+server_down     = "Server non raggiungibile, impossibile registrare"
+user_reserved   = "L'ID utente scelto per la registrazione è già in uso, scegline un altro"
+reg_ok          = "Registrazione avvenuta con successo, puoi effettuare il login digitando ID utente e password scelti"
+
+
+[about_win]
+title         = "Informazioni su RV House"
+; %1 is replace with the license. Example: Rilasciato sotto licenza GPL
+license       = "Rilasciato sotto licenza %1"
+; %1 is replaced by the author of used icons. Icone by ADX
+icons_by      = "Icone by %1"
+; %1 is replaced by the author of RV House icon. Icona RV House by Pigasque
+house_icon_by = "Icona RV House by %1"
+other_sites   = "Siti d'interesse e community del mondo di RV"
+using         = "Si utilizzano:"
+; %1 is replaced by the library name, %2 by library author
+; ACE network library (by Douglas C. Schmidt)
+using_lib     = "%1 (by %2)"
+translations  = "Traduzioni:"
+; %1 is replaced by the language name, %2 by author of translation
+; %3 by translation authors name %4 by the version of translation
+; Example:
+; Spanish by ADX <the.adx@gmail.com> for v0.81
+translation   = "%1 by %2 <%3> for v%4"
+
+[app]
+rv_not_found_title = "Re-Volt è installato?"
+rv_not_found       = "Re-Volt non rilevato da registro\nHai installato e avviato\nprima di avviare questa applicazione?"
+rv_house_running   = "RV House è già in esecuzione!"
+join_room_full     = "Sala piena!"
+join_invalid_pass  = "Password errata!"
+join_refused       = "L'host ha rifiutato la tua partecipazione"
+join_err_topic     = "Impossibile unirsi alla partita"
+dht_connect_err1   = "Impossibile connettersi alla rete decentralizzata"
+dht_connect_err2   = "Ciò è probabilmente dovuto al tuo router/firewall"
+dht_connect_err3   = "non configurato correttamente.\n"
+dht_connect_err4   = "Correggere ciò è importate perchè"
+dht_connect_err5   = "Altrimenti potresti non veder tutti i giocatori."
+dht_connect_err6   = "Inoltre questa è una parte centrale della mia"
+dht_connect_err7   = "tesi universitaria quindi apprezzerò non poco se"
+dht_connect_err8   = "tu puoi risolvere :).\n"
+dht_connect_err9   = "Quando premerai OK, verrai reindirizzato"
+dht_connect_err10  = "verso la pagina di aiuto per la configurazione router/firewall."
+dht_connect_err_title = "Errore in connessione"
+
+self_on_global_ignore_topic = "Sei sulla lista global ignore"
+self_on_global_ignore = "Il tuo IP risulta essere nella lista global ignore.\nCome risultato la maggior parte degli utenti nn potrà vederti.\nSe pensi di non aver fatto nulla di sbagliato\ne vorresti essere rimosso dal global ignore\nallora posta un messaggio sul RV Pub Forum  \nall'indirizzo qui sotto"
+
+[new_version_win]
+title     = "Nuova versione di Rv House"
+force_msg = "Devi aggiornare RV House! La vecchia versione non è compatibile!"
+; %1 is replaced by latest RV House version number, %2 by
+; users RV House version.
+msg       = "E' disponibile la versione %1 di RV House, tu hai la %2"
+new_since = "Novità rispetto alla tua versione:"
+download  = "Scarica la nuova versione da qui:"
+
+[rvtm_err]
+title     = "Avvio RV Track Manager fallito"
+not_found = "Impossibile trovare RV Track Manager.\nper essere in grado di condividere e scaricare piste\ndagli altri, hai bisogno almeno della\nversione 1.5.0 del RV Track Manager\nPuoi scaricarla da qui:"
+running   = "RV Track Manager è gia in esecuzione"
+other     = "Impossibile avviare RV Track manager"
+
+[message_box]
+ok     = "&OK"
+cancel = "&Cancella"
+yes    = "&Si"
+no     = "&No"
+quit   = "&Esci"
+save   = "&Salva"
+
+[main_win]
+exit        = "Esci"
+create_room = "Crea partita"
+join_room   = "Unisciti alla partita"
+refresh     = "Aggiorna"
+cancel      = "Cancella"
+about       = "Informazioni su"
+
+ask_room_pass_title = "Partita protetta da password"
+ask_room_pass       = "Digita password"
+
+joining_room  = "partecipando alla partita"
+
+dht_connecting        = "connessione P2P in corso"
+dht_connected         = "P2P connesso"
+dht_disconnecting     = "disconnessione P2P in corso"
+dht_disconnected      = "P2P disconnesso"
+dht_upding_contacts   = "Aggiornamento contatti P2P..."
+dht_upd_contacts      = "Contatti P2P aggiornati"
+dht_upd_contacts_fail = "Impossibile aggiornare contatti P2P"
+dht_joining           = "collegamento P2P in corso"
+dht_joined            = "P2P collegato"
+dht_leaving           = "Disconnessione P2P in corso"
+dht_left              = "P2P disconnesso"
+dht_searching         = "in cerca di utenti P2P"
+dht_announcing        = "Comunicazione P2P in corso"
+
+ctz_connecting        = "Connessione server in corso"
+ctz_connected         = "Server connesso"
+ctz_disconnecting     = "Disconnessione server in corso"
+ctz_disconnected      = "Server disconnesso"
+
+; %1 is replacedwith the site where user's IP is fetched from
+ip_detecting = "rilevamento IP da: %1"
+; %1 is replaced with the IP obtained
+ip_detected  = "rilevato IP: %1"
+; %1 is replaced with the error reason
+ip_failed    = "rilevamento IP fallito: %1"
+
+[chat]
+; %1 is replaced with user name
+user_entered = "%1 è online"
+user_exited  = "%1 è offline"
+; %1 is replaced with room name
+room_created = "Nuova partita creata (%1)"
+room_closed  = "Partita chiusa (%1)"
+
+host_kicked_host = "Il rimbambito host si è auto-espulso dalla partita %1"
+host_kicks_user  = "L'host sta cacciando %1 dalla partita"
+host_kicks_you   = "Sei stato espulso dalla partita %1"
+
+; %1 is replaced with user name
+user_joined_room         = "%1 si è unito alla partita"
+user_exited_room         = "%1 è uscito dalla partita"
+user_shares_tracks       = "%1 sta condividendo piste"
+user_shares_tracks_stops = "%1 ha smesso di condividere piste"
+user_dloads_tracks       = "%1 sta scaricando piste"
+user_dloads_tracks_stops = "%1 ha smesso di scaricare piste"
+user_ignored             = "stai ignorando %1. Puoi smettere di ignorarlo riavviando RV House."
+user_ignores             = "Sei ignorato da %1"
+
+; %1 = "the message that was refused/not received."
+; Caused because of user is playing or in do not disturb
+; mode so no windows are wanted to be opened.
+private_msg_refused      = "messaggio rifiutato dall' utente: %1"
+
+flood_control = "Controllo flood"
+
+global_ignore = "I seguenti utenti sono nella lista global ignore a causa del comportamento distruttivo e vengono ignorati automaticamente. Se lo desideri puoi disabilitare questa funzione nelle impostazioni."
+; %1 is replaced by user name
+; %2 is replaced with reason
+user_global_ignore = "Global ignore nei confronti di '%1', ragione: %2"
+
+host_ip = "Il mio IP è %1. Potresti averne bisogno se usi Windows Vista."
+
+[room_settings_win]
+title       = "Impostazioni partita"
+topic       = "&Nome partita:"
+password    = "&Password:"
+pickups     = "B&onus"
+laps        = "&Giri:"
+players     = "Gi&ocatori:"
+
+version         = "Versione"
+version_all     = "Tutte"
+version_12_only = "Solo RV 1.2"
+version_tip     = "Imposta compatibilità online per Re-Volt 1.2"
+version_all_tip = "Possono partecipare tutte le versioni di RV"
+version_12_tip  = "Possono partecipare solo le versioni 1.2 di RV"
+ 
+error_title    = "Errore nelle impostazioni della partita"
+topic_missing  = "Digita il nome della partita!"
+
+[room_win]
+leave         = "Abbandona partita"
+settings      = "Modifica impostazioni partita"
+launch        = "Avvia partita"
+share_tracks  = "Condividi piste custom con gli altri"
+dload_tracks  = "SCarica piste custom dall' host"
+
+host_launched = "L'Host ha avviato Re-Volt. il gioco verrà avviato in automatico entro pochi secondi"
+; %1 is replaced with the limit (in minutes)
+join_too_late = "Impossibile unirsi alla corse se l'host ha\ngiocato piu di %1 minuti."
+join_too_late_title = "Troppo tardi per partecipare"
+
+send_ip_info_title = "Attenzione!";"
+send_ip_info = "Il tuo IP verrà inviato a tutte le persone che si uniranno alla partita.\nQuesto perchè chi utilizza Windows Vista potrebbe averne bisogno per partecipare al gioco.\n\nSe non vuoi inviare il tuo IP agli altri puoi disabilitare questa funzione nelle impostazioni\n\nQuesto messaggio verrà mostrato solo una volta!";"
+
+[private_message_win]
+close = "Chiudi chat"
+
+[rv_launch]
+title_err = "Avvio del gioco fallito"
+not_found = "Impossibile avviare Re-Volt. Per favore installa (e avvia una volta) Re-Volt e riavvia Rv House"
+other     = "Impossibile avviare Re-Volt"
+
+title     = "Avvio del gioco in corso"
+text      = "Premi OK per tornare a RV House."
+
+
+[words]
+topic   = "Partita"
+host    = "Host"
+; For example, Note: room is password protected
+note    = "Note"
+players = "Giocatori"
+laps    = "Giri"
+pickups = "Bonus"
+user_id = "ID utente"
+warning = "Attenzione"
+status  = "Stato"
+room    = "Partita"
+yes     = "Si"
+no      = "No"
+creating = "Creando"
+
+minutes_short = "min"
+dht           = "P2P"
+ctz           = "Centralizzato"
+connected     = "Connesso"
+disconnected  = "Disconnesso"
+
+
+[users_view]
+shares_tracks = "L'utente sta condividendo piste custom"
+dloads_tracks = "L'utente sta scaricando piste custom"
+dht_not_found = "Non trovato dalla rete decentralizzata"
+natted        = "La connessione di questo utente sembra essere dietro NAT"
+
+[user_popup]
+user_name     = "Nome utente"
+share_tracks  = "Condividi piste"
+dload_tracks  = "Scarica piste"
+kick          = "Espelli"
+private_msg   = "Invia messaggio privato"
+ignore_user   = "Ignora utente"
+
+[status]
+chatting      = "Disponibile"
+waiting       = "Sala d'attesa"
+playing       = "Gioco avviato"
+away          = "Non al computer"
+dont_disturb  = "Occupato"
+unknown       = "Sconosciuto"
+
+[misc]
+user_not_validated = "ID utente non attendibile (non convalidato)"
+pass_needed        = "Password richiesta"
+
+
+[settings_win]
+title           = "Impostazioni RV House"
+general_tab     = "Generale"
+colors_tab      = "Colori"
+advanced_tab    = "Avanzate"
+
+flash_main_chat = "Avvisa all' arrivo di nuovi messaggi in chat pubblica"
+flash_room_chat = "Avvisa all' arrivo di nuovi messaggi in chat privata"
+flash_new_room  = "Avvisa se viene creata una partita"
+flash_new_user  = "Avvisa se un nuovo utente è online"
+flash_new_user_in_room  = "Avvisa se un nuovo utente entra in partita"
+flash_nick      = "Avvisa se il tuo nick è visibile in chat pubblica"
+away_minimize   = "Non al computer se ridotto a icona"
+global_ignore   = "Utilizza lista global ignore"
+send_ip         = "Invia IP quando hosti"
+
+base_color      = "Colore base"
+border_color    = "Colore bordo"
+text_color      = "Colore testo"
+bg_color        = "Colore sfondo"
+sel_text_color  = "Colore testo selezionato "
+sel_bg_color    = "Colore sfondo selezionato"
+sel_mt_color    = "Colore testo menu selezionato"
+sel_mbg_color   = "Scolore testo sfondo selezionato"
+tip_text_color  = "Suggerimento colore testo"
+tip_bg_color    = "Suggerimento colore sfondo"
+
+cmdline_title   = "Linea di comando multigiocatore"
+cmdline_autoset = "Linea di comando automatica"
+cmdline_dontset = "Non impostare linea di comando"
+cmdline_manual  = "Specifica linea di comando:"
+
+allow_started_race_join = "Abilita tentativi di partecipazione a partite avviate"

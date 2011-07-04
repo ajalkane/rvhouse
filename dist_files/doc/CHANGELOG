@@ -4,6 +4,8 @@ Version 0.93.3 (4.07.2012)
 - Fix: Close main window closes RV House, even if private message windows open
 - Fix: users with both P2P / server connection should appear dark blue
 - Fix: Message field keeps focus
+- Workaround: selected user can be deselected by clicking playing status
+- Italian translation
 
 Version 0.93.2 (2.07.2012)
 - Fix: number of players not written to RV registry to avoid crashes when more than 12 players
