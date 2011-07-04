@@ -20,14 +20,12 @@ namespace lang {
 
 namespace gui {
     class house_app;
-    class house_app;
 
     namespace window {
         class house;
     }
 }
 
-extern accessor<class gui::house_app *>    app;
 extern accessor<class gui::house_app *>    app;
 extern accessor<class gui::window::house *>    house_win;
 extern accessor<class config_file *>  conf;
