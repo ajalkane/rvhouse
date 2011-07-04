@@ -191,7 +191,7 @@ house::_create_widgets() {
 
 void
 house::_connect_signals() {
-    connect(_action_quit,   SIGNAL(triggered()), this, SLOT(close()));
+    connect(_action_quit,   SIGNAL(triggered()), app(), SLOT(quit()));
     connect(_msg_field,     SIGNAL(returnPressed()), this, SLOT(send_message()));
     connect(_action_cancel, SIGNAL(triggered()), this, SLOT(interrupt()));
 
