@@ -60,6 +60,12 @@ private_message::_create_widgets() {
     _users_view = new view::users(this);
     _msg_field  = new QLineEdit(this);
     _msg_field->setMaxLength((int)app_opts.limit_chat_msg());
+
+    // This ensures message field keeps the focus even if
+    // user scrolls or otherwise operates the other widgets.
+    // Is there a better way to do this?
+    _chat_view->setFocusProxy(_msg_field);
+    _users_view->setFocusProxy(_msg_field);
 }
 
 void

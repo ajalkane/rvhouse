@@ -187,6 +187,13 @@ house::_create_widgets() {
     _rooms_view->observer_set(this);
     _users_view->observer_set(this);
     _chat_view->flash_window(this);
+
+    // This ensures message field keeps the focus even if
+    // user scrolls or otherwise operates the other widgets.
+    // Is there a better way to do this?
+    _chat_view->setFocusProxy(_msg_field);
+    _users_view->setFocusProxy(_msg_field);
+    _rooms_view->setFocusProxy(_msg_field);
 }
 
 void

@@ -79,6 +79,11 @@ room::_create_widgets() {
     _info_laps    = new QLabel(langstr("words/laps"),    this);
     _info_picks   = new QLabel(langstr("words/pickups"), this);
 
+    // This ensures message field keeps the focus even if
+    // user scrolls or otherwise operates the other widgets.
+    // Is there a better way to do this?
+    _chat_view->setFocusProxy(_msg_field);
+    _users_view->setFocusProxy(_msg_field);
 }
 
 void
