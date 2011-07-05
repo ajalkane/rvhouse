@@ -1,0 +1,352 @@
+[common]
+ok_button       = "&OK"
+cancel_button   = "&Annuleer"
+apply_button    = "&Toepassen"
+
+[menu_file]
+title           = "&Bestand"
+quit            = "&Afsluiten\tCtl-Q"
+
+[menu_edit]
+title           = "&Bewerken"
+settings        = "&Opties...\tAlt-S"
+
+[menu_player]
+title           = "&Speler"
+status          = "Status"
+create_room     = "Maak kamer...\tCtl-R"
+join_room       = "Doe mee"
+chatting        = "Aan het Chatten\tShift-Alt-C"
+playing         = "Aan het Spelen\tShift-Alt-P"
+away            = "Weg\tShift-Alt-A"
+dont_disturb    = "Niet Storen\tShift-Alt-D"
+
+[menu_comp]
+title           = "&Competities"
+rvl             = "RV Competitie"
+rvl_home        = "WWW-site"
+rvl_champ       = "Kampioenschap"
+rvl_cup         = "Cup"
+
+rvr             = "Re-Volt Race"
+rvr_home        = "WWW-site"
+rvr_1vs1        = "1 tegen 1 Kampioenschap"
+rvr_players     = "Speler Profielen"
+rvr_teams       = "Teams"
+
+[menu_help]
+title           = "&Help"
+router_help     = "Router/Firewall Help"
+faq             = "RV House FAQ"
+conn_help       = "Connectie Help doc"
+about_house     = "Over RV House"
+
+[login_win]
+title           = "Aanmelden"
+user_id         = "&Gebruikers ID:"
+password        = "&Wachtwoord:"
+uses_rvzt_login = "Gebruikt RVTZ's Login gegevens"
+login           = "&Aanmelden"
+register        = "&Registreer"
+quit            = "&Afsluiten"
+
+login_err_topic = "Kan niet aanmelden"
+fill_user       = "Voer je Gebruikers ID in"
+fill_pass       = "Voer je wachtwoord in"
+invalid_user    = "Onjuiste Gebruikers ID. Je Gebruikers ID moet 3 - 20 tekens lang zijn, en alleen a-z, A-Z of _ mogen voorkomen in je Gebruikers ID."
+invalid_pass    = "Onjuist Wachtwoord. Je Wachtwoord moet minimaal 3 tekens lang zijn, en alleen a-z, A-Z of _ mogen voorkomen in het wachtwoord."
+server_down     = "De aanmeldserver kan niet worden gevonden, dus je Gebruikers ID is niet geverifieerd. Wil je toch doorgaan?"
+validation_err  = "Onjuiste Gebruikers ID of wachtwoord"
+
+
+[register_win]
+title           = "Registreer gebruiker"
+user_id         = "&Gebruikersnaam:"
+password        = "&Wachtwoord:"
+repassword      = "&Wachtwoord opnieuw:"
+email           = "&E-mail:"
+register        = "Registreer"
+cancel          = "&Annuleren"
+
+reg_err_topic   = "Kan gebruiker niet registreren"
+reg_ok_topic    = "Geregistreerd"
+fill_user       = "Voer je Gebruikers ID in"
+fill_pass       = "Voer je wachtwoord in"
+pass_mismatch   = "De wachtwoorden zijn niet hetzelfde!"
+invalid_user    = "Onjuiste Gebruikers ID. Je Gebruikers ID moet 3 - 20 tekens lang zijn, en alleen a-z, A-Z of _ mogen voorkomen in je Gebruikers ID."
+invalid_pass    = "Onjuist Wachtwoord. Je Wachtwoord moet minimaal 3 tekens lang zijn, en alleen a-z, A-Z of _ mogen voorkomen in het wachtwoord."
+invalid_email   = "Onjuist E-Mail adress"
+server_down     = "Kan geen verbinding maken met de server, dus kan niet registreren "
+user_reserved   = "De opgegeven Gebruikers ID is al in gebruik, probeer een andere naam"
+reg_ok          = "Registreren geslaagd! Je kan nu inloggen met je Gebruikers ID en je wachtwoord"
+
+
+[about_win]
+title         = "Over"
+; %1 is replace with the license. Example: Released under GPL
+license       = "Uitgegeven door %1"
+; %1 is replaced by the author of used icons. Icons by ADX
+icons_by      = "Icoontjes door %1"
+; %1 is replaced by the author of RV House icon. RV House icon by Pigasque
+house_icon_by = "RV House icoon door %1"
+other_sites   = "Andere populaire Re-Volt community sites:"
+using         = "Gebruikt:"
+; %1 is replaced by the library name, %2 by library author
+; ACE network library (by Douglas C. Schmidt)
+using_lib     = "%1 (by %2)"
+translations  = "Vertalingen:"
+; %1 is replaced by the language name, %2 by author of translation
+; %3 by translation authors name %4 by the version of translation
+; Example:
+; Spanish by ADX <the.adx@gmail.com> for v0.81
+translation   = "%1 door %2 <%3> voor v%4"
+
+[app]
+rv_not_found_title = "Re-Volt geinstaleerd?"
+rv_not_found       = "Re-Volt niet gevonden in het register.\nHeb je het spel geinstaleerd\nen offline getest voordat je begon?"
+rv_house_running   = "RV House staat al open!"
+join_room_full     = "Kamer is vol!"
+join_invalid_pass  = "Onjuist wachtwoord!"
+join_refused       = "Host weigerd joinen"
+join_err_topic     = "Kan de kamer niet joinen"
+dht_connect_err1   = "Kan geen verbinding maken met gedecentraliseerd netwerk"
+dht_connect_err2   = "Dit is vermoedelijk omdat er iets mis is met je"
+dht_connect_err3   = "Firewall of Router.\n"
+dht_connect_err4   = "Dit is belangrijk"
+dht_connect_err5   = "want anders kan je de andere spelers niet zien."
+dht_connect_err6   = "Dit gedeelte is ook een deel"
+dht_connect_err7   = "van mijn universitaire scriptie dus ik zou het op prijs stellen"
+dht_connect_err8   = "als je dit kan oplossen :).\n"
+dht_connect_err9   = "Als je op ok drukt, dan word je doorverwezen"
+dht_connect_err10  = "naar een pagina met hulp voor Firewall en Router instellingen."
+dht_connect_err_title = "Fout bij verbinden"
+
+self_on_global_ignore_topic = "Je staat op de algemene negeer lijst"
+self_on_global_ignore = "Je Ip adres staat op de algemene negeer lijst.\nHierdoor kunnen de meeste mensen je niet zien.\nAls je niks fout hebt gedaan\nen je wil jezelf verwijderd hebben uit de negeerlijst\ndan moet je hiervoor posten op Our Revolt Pub\nbij de aangegeven locatie hier beneden"
+
+[new_version_win]
+title     = "Nieuwe versie van RV House"
+force_msg = "Je moet Rv House upgraden, want de oude versie werkt niet met de nieuwe!"
+; %1 is replaced by latest RV House version number, %2 by
+; users RV House version.
+msg       = "RV House versie %1 is nu beschikbaar, jouw versie is %2"
+new_since = "Nieuw sinds jouw versie:"
+download  = "Download de nieuste versie hier:"
+
+[rvtm_err]
+title     = "Het laden van RV trackmanager is mislukt."
+not_found = "Rv Trackmanager is niet gevonden.\nAls je tracks van anderen wil downloaden en delen\ndan heb je minimaal\nversie 1.5.0 van RV Track Manager\n nodig. Je kan hem hier downloaden:"
+running   = "RV Track Manager staat al open."
+other     = "Kan RV Track manager niet starten"
+
+[message_box]
+ok     = "&OK"
+cancel = "&Annuleer"
+yes    = "&Ja"
+no     = "&Nee"
+quit   = "&Afsluiten"
+save   = "&Opslaan"
+
+[main_win]
+exit        = "Stoppen"
+create_room = "Maak Kamer"
+join_room   = "Doe mee met een kamer"
+refresh     = "Ververs"
+cancel      = "Annuleer"
+about       = "Over"
+
+ask_room_pass_title = "Wachtwoord beveiligde kamer"
+ask_room_pass       = "Voer wachtwoord in"
+
+joining_room  = "Mee aan het doen in de kamer"
+
+dht_connecting        = "P2P verbinden"
+dht_connected         = "P2P verbonden"
+dht_disconnecting     = "P2P verbreken"
+dht_disconnected      = "P2P verbroken"
+dht_upding_contacts   = "P2P updaten van contact knooppunten"
+dht_upd_contacts      = "P2P updaten van contact knooppunten geslaagd"
+dht_upd_contacts_fail = "P2P kan de contact knooppunten niet updaten"
+dht_joining           = "P2P joining"
+dht_joined            = "P2P joined"
+dht_leaving           = "P2P weggaan"
+dht_left              = "P2P weggegeaan"
+dht_searching         = "P2P zoeken naar gebruikers"
+dht_announcing        = "P2P aankondeging"
+
+ctz_connecting        = "gecentraliseerde verbinden"
+ctz_connected         = "gecentraliseerde verbonden"
+ctz_disconnecting     = "gecentraliseerde verbreken"
+ctz_disconnected      = "gecentraliseerde verbroken"
+
+; %1 is replacedwith the site where user's IP is fetched from
+ip_detecting = "Zoeken naar IP vanaf: %1"
+; %1 is replaced with the IP obtained
+ip_detected  = "Gevonden IP: %1"
+; %1 is replaced with the error reason
+ip_failed    = "Zoeken naar IP mislukt: %1"
+
+[chat]
+; %1 is replaced with user name
+user_entered = "%1 komt binnen"
+user_exited  = "%1 ging weg"
+; %1 is replaced with room name
+room_created = "Nieuwe kamer aangemaakt (%1)"
+room_closed  = "Kamer afgesloten (%1)"
+
+host_kicked_host = "Die mafkees van een Host heeft zichzelf uit de kamer gezet %1"
+host_kicks_user  = "De Host trapt %1 uit de kamer"
+host_kicks_you   = "De Host heeft je eruit getrapt! %1"
+
+; %1 is replaced with user name
+user_joined_room         = "%1 komt de kamer binnen"
+user_exited_room         = "%1 verlaat de kamer"
+user_shares_tracks       = "%1 is banen aan het delen"
+user_shares_tracks_stops = "%1 is gestopt met het delen van banen"
+user_dloads_tracks       = "%1 is banen aan het downloaden"
+user_dloads_tracks_stops = "%1 is gestopt met het downloaden van banen"
+user_ignored             = "Je negeerd %1. Om te stoppen met negeren, start je RVhouse opnieuw op."
+user_ignores             = "Je word genegeerd door %1"
+
+; %1 = "the message that was refused/not received."
+; Caused because of user is playing or in do not disturb
+; mode so no windows are wanted to be opened.
+private_msg_refused      = "Gebruiker weigerde dit bericht: %1"
+
+flood_control = "Overbelastingscontrole"
+
+global_ignore = "Deze gebruikers zijn automatisch op de negeerlijst gezet wegens abnormaal gedrag. Wil je dit aanpassen? Neem dan een kijkje bij Opties."
+; %1 is replaced by user name
+; %2 is replaced with reason
+user_global_ignore = "Globale negering van '%1', reden: %2"
+
+host_ip = "Mijn IP is %1. Vermoedelijk heb je dit nodig als je op Windows Vista zit."
+
+[room_settings_win]
+title       = "Kamer Opties"
+topic       = "&Naam:"
+password    = "&Wachtwoord:"
+pickups     = "P&ickups"
+laps        = "&Rondjes:"
+players     = "Sp&elers:"
+
+version         = "Versie"
+version_all     = "Alle"
+version_12_only = "Alleen Rv 1.2"
+version_tip     = "Stel online compatibiliteit met RV 1.2 in"
+version_all_tip = "Alle versies mogen meedoen"
+version_12_tip  = "Alleen Rv 1.2 mag meedoen"
+ 
+error_title    = "Fout in Kamer instellingen"
+topic_missing  = "Typ kamernaam in"
+
+[room_win]
+leave         = "Verlaat kamer"
+settings      = "Verander kamer opties"
+launch        = "Start spel"
+share_tracks  = "Deel zelfgemaakte banen met anderen"
+dload_tracks  = "Download zelfgemaakte banen van de Host"
+
+host_launched = "De Host heeft heeft het spel gestart. Jouw spel begint over enkele seconden."
+; %1 is replaced with the limit (in minutes)
+join_too_late = "Kan niet meedoen als de Host\nlanger aan het spelen is als %1 minuten."
+join_too_late_title = "Te laat om mee te doen"
+
+send_ip_info_title = "Opgelet!";
+send_ip_info = "Iedereen die in deze kamer komt ziet jouw IP adress.\nDit is zodat mensen die Windows Vista gebruiken, dan ook via IP kunnen joinen.\n\nAls je niet wilt dat mensen je IP adress kunnen zien, dan kan je dit uitzetten bij Opties.\n\nDit bericht word maar 1 keer weergegeven!";
+
+[private_message_win]
+close = "Sluit het gesprek"
+
+[rv_launch]
+title_err = "Starten van spel mislukt"
+not_found = "Kan Re-Volt niet vinden. Installeer alsublieft het spel en voer het 1x offline uit."
+other     = "Kan Re-Volt niet starten"
+
+title     = "Launching game"
+text      = "Click OK when you want to return."
+
+
+[words]
+topic   = "Naam"
+host    = "Host"
+; For example, Note: room is password protected
+note    = "Belangrijk"
+players = "Spelers"
+laps    = "Rondjes"
+pickups = "Power-Ups"
+user_id = "Gebruikers ID"
+warning = "Waarschuwing"
+status  = "Status"
+room    = "Kamer"
+yes     = "Ja"
+no      = "Nee"
+creating = "Kamer aan het aanmaken"
+
+minutes_short = "mins"
+dht           = "P2P"
+ctz           = "Gecentraliseerd"
+connected     = "Verbonden"
+disconnected  = "Verbroken"
+
+
+[users_view]
+shares_tracks = "Gebruiker is zelfgemaakte banen aan het delen"
+dloads_tracks = "Gebruiker krijgt zelfgemaakte banen"
+dht_not_found = "Niet gevonden van gedecentraliseerd netwerk"
+natted        = "Gebruikers verbinding zit vermoedelijk achter NAT"
+
+[user_popup]
+user_name     = "Gebruikersnaam"
+share_tracks  = "Gedeelde banen"
+dload_tracks  = "Banen Downloaden"
+kick          = "Trap eruit"
+private_msg   = "Stuur prive bericht"
+ignore_user   = "Negeer gebruiker"
+
+[status]
+chatting      = "Aan het Chatten"
+waiting       = "Wachten in een kamer"
+playing       = "Aan het spelen"
+away          = "Weg"
+dont_disturb  = "Niet storen"
+unknown       = "Onbekend"
+
+[misc]
+user_not_validated = "Gebruikers ID onbetrouwbaar (niet bevestigd)"
+pass_needed        = "Wachtwoord nodig"
+
+
+[settings_win]
+title           = "RV House Opties"
+general_tab     = "Algemeen"
+colors_tab      = "Kleuren"
+advanced_tab    = "Geavanceerd"
+
+flash_main_chat = "Knipper als er een bericht op de algemene chat is"
+flash_room_chat = "Knipper als er een bericht in de kamer is"
+flash_new_room  = "Knipper als er een kamer is aangemaakt"
+flash_new_user  = "Knipper als er iemand binnenkomt"
+flash_new_user_in_room  = "Knipper als er iemand de kamer binnenkomt"
+flash_nick      = "Knipper als mijn naam in the main chat staat"
+away_minimize   = "Weg waneer hoofdvenster geminimaliseerd is"
+global_ignore   = "Gebruik globale negeerlijst"
+send_ip         = "Stuur IP waneer ik host"
+
+base_color      = "Basis Kleur"
+border_color    = "Rand Kleur"
+text_color      = "Tekst Kleur"
+bg_color        = "Achtergrond Kleur"
+sel_text_color  = "Geselecteerde Tekstkleur "
+sel_bg_color    = "Geselecteerde Achtergrondkleur"
+sel_mt_color    = "Geselecteerde Tekstkleur van het menu"
+sel_mbg_color   = "Geselecteerde Achtergrondkleur van het menu"
+tip_text_color  = "Tekstkleur met muis erop"
+tip_bg_color    = "Achtergrondkleur met muis erop"
+
+cmdline_title   = "Multiplayer command-line"
+cmdline_autoset = "Automatische command-line"
+cmdline_dontset = "Plaats geen command-line"
+cmdline_manual  = "Gespecificeerde command-line:"
+
+allow_started_race_join = "Sta toe om aan races mee te doen die al zijn begonnen"
