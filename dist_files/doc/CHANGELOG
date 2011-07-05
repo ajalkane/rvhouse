@@ -7,6 +7,7 @@ Version 0.93.3 (4.07.2012)
 - Workaround: selected user can be deselected by clicking playing status
 - Italian translation
 - Sensible defaults for room column widths
+- Dutch translation
 
 Version 0.93.2 (2.07.2012)
 - Fix: number of players not written to RV registry to avoid crashes when more than 12 players
