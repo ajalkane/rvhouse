@@ -1,4 +1,6 @@
 RV House change log
+Version 0.93.4 (4.07.2012)
+- Selecting text in chat automatically copies to clipboard
 
 Version 0.93.3 (4.07.2012)
 - Fix: Close main window closes RV House, even if private message windows open

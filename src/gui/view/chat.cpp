@@ -63,6 +63,11 @@ chat::chat(QWidget *parent, const std::string &channel)
     _styles[style_url].setAnchor(true);
     _styles[style_url].setUnderlineStyle(QTextCharFormat::SingleUnderline);
     _styles[style_url].setForeground(QColor("blue"));
+
+    // Since the message writing box has always focus, copying text from chat
+    // is enabled automatically whenever text is selected. Perhaps not optimal,
+    // but easy to implement and quite convenient once gotten used to.
+    connect(this, SIGNAL(selectionChanged()), this, SLOT(copy()));
 }
 
 chat::~chat() {
