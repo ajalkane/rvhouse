@@ -15,7 +15,7 @@ router_fw_help::router_fw_help(QWidget *parent) : modal_dialog_guard(parent) {
     QVBoxLayout *l = new QVBoxLayout;
     l->setSpacing(0);
 
-    l->addWidget(new QLabel(langstr_range("app/dht_connect_err",1,10,"\n").c_str()));
+    l->addWidget(new QLabel(langstr_range("app/dht_connect_err",1,9,"\n").c_str()));
 
     /* Button part and layout */
     l->addStretch(1);
