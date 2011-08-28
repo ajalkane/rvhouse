@@ -78,6 +78,7 @@ invalid_pass    = "Invalid password, must be 6 or more characters and have only 
 invalid_email   = "Invalid E-mail address. Must be more than 7 characters"
 server_down     = "Could not contact server, can't register"
 user_reserved   = "The User ID you tried to register is reserved, please choose another one"
+mail_reserved   = "The e-mail address you tried to register is reserved, please choose another one"
 reg_ok          = "Registered successfully, you can login now with your User ID and password"
 
 

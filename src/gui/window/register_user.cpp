@@ -3,6 +3,7 @@
 #include <QtGui>
 
 #include "../../messaging/message_register.h"
+#include "../../messaging/message_login_fail.h"
 #include "../../messaging/messenger.h"
 #include "../../validation.h"
 #include "register_user.h"
@@ -136,7 +137,14 @@ register_user::handle_message(::message *msg) {
         error = langstr("register_win/server_down");
         break;
     case ::message::reg_fail:
-        error = langstr("register_win/user_reserved");
+    {
+        message_login_fail *fail = dynamic_cast<message_login_fail *>(msg);
+        if (fail != NULL && (fail->status() == "m" || fail->status() == "M")) {
+            error = langstr("register_win/mail_reserved");
+        } else {
+            error = langstr("register_win/user_reserved");
+        }
+    }
         break;
     case ::message::reg_done:
         success = langstr("register_win/reg_ok");

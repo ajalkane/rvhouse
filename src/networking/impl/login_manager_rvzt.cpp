@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "../../messaging/message_login.h"
+#include "../../messaging/message_login_fail.h"
 #include "../../messaging/message_register.h"
 #include "../../util.h"
 #include "../../regexp.h"
@@ -130,7 +131,7 @@ login_manager_rvzt::_fetch_handler::handle_response(const http::response &resp)
                                 user, ""));
         } else {
             gui_messenger()->send_msg(
-              new message(LOGIN_MESSAGE(message::login_fail)));
+              new message_login_fail(LOGIN_MESSAGE(message::login_fail), stat));
         }
 
     } else {
