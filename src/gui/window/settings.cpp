@@ -41,7 +41,7 @@ namespace {
     };
 
     bool advanced_check_defaults[] = {
-        false
+        true
     };
 
     const char *cmdline_autoset_key = "cmdline_autoset";

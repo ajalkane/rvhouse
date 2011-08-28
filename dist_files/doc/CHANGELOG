@@ -5,6 +5,7 @@ Version 0.93.4 (XX.09.2011)
 - Fixed ordering status (Chatting, Away ...) in users view
 - Fixed Settings/advanced to show the command-line
 - Rooms view's small columns size set according how much space required by language
+- Allowing by default late joining to races (only works with RV 1.2)
 
 Version 0.93.3 (4.07.2011)
 - Fix: Close main window closes RV House, even if private message windows open
