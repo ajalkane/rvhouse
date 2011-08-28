@@ -25,7 +25,8 @@
 #include "../messaging/impl/ace_messenger.h"
 #include "../chat_gaming/pdu/header.h"
 
-#include "reporter/client.h"
+// #include "reporter/client.h"
+#include "reporter/client_nop.h"
 #include "impl/group_adapter_combine.h"
 #include "impl/login_manager_rvzt.h"
 #include "ip_block/store.h"
@@ -90,7 +91,8 @@ worker::_main() {
     // Networking worker thread must own the reactor so that it can be
     // signalled to wake up
     _reactor->owner(ACE_Thread::self());
-    net_report.instance(new reporter::client(_reactor));
+    // net_report.instance(new reporter::client(_reactor));
+    net_report.instance(new reporter::client_nop());
 
     _group_adapter =
         new group_adapter_combine(_reactor);

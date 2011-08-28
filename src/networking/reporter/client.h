@@ -11,12 +11,14 @@
 #include <ace/SOCK_Connector.h>
 #include <ace/Reactor_Notification_Strategy.h>
 
+#include "client_interface.h"
+
 #include "../../common.h"
 #include "../../chat_gaming/user.h"
 
 namespace networking {
 namespace reporter {
-    class client {
+    class client : public client_interface {
         chat_gaming::user _self;
     protected:
         ACE_Reactor *_reactor;
@@ -56,10 +58,7 @@ namespace reporter {
         client(ACE_Reactor *r = NULL);
         virtual ~client();
         
-        inline void user_self(const chat_gaming::user &s) { 
-            _self = s; 
-            _self.id(s.id());
-        }
+        void user_self(const chat_gaming::user &s);
         void new_user(const chat_gaming::user &u, int grp);
         void user_updated(const chat_gaming::user &oldu, 
                           const chat_gaming::user &newu, int grp);

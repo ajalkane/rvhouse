@@ -65,6 +65,12 @@ client::~client() {
 }
 
 void 
+client::user_self(const chat_gaming::user &s) {
+    _self = s;
+    _self.id(s.id());
+}
+
+void
 client::new_user(const chat_gaming::user &u, int grp) {
 #if 0
     _send_user_report(u, grp);

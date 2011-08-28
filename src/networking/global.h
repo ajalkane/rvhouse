@@ -9,7 +9,7 @@ namespace networking {
 
 // Forward declarations
 namespace reporter {
-    class client;
+    class client_interface;
 }
 
 namespace ip_block {
@@ -17,7 +17,7 @@ namespace ip_block {
 }
 
 extern accessor<class config_memory *>    net_conf;
-extern accessor<class reporter::client *> net_report;
+extern accessor<class reporter::client_interface *> net_report;
 extern accessor<class ip_block::store *>  net_ip_block;
 
 }
