@@ -249,7 +249,7 @@ settings_advanced::load_settings() {
     std::string cmdline_switch = pref()->get<std::string>("advanced", cmdline_pref_switch_key, cmdline_pref_switch_default);
     _set_cmdline_switch_state(cmdline_switch);
 
-    std::string cmdline = pref()->get<std::string>("advanced", cmdline_pref_key);
+    std::string cmdline = pref()->get<std::string>("advanced", cmdline_pref_key, "");
     _cmdline_field->setText(cmdline.c_str());
 
     for (size_t i = 0; i < array_sizeof(advanced_check_order); i++) {

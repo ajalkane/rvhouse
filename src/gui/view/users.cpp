@@ -253,11 +253,11 @@ users::users(QWidget *parent, const chat_gaming::room::id_type &rid)
     this->setColumnCount(1);
     this->header()->hide();
 
-    _group_items[user_item::group_chatting] = _parent_item(langstr("status/chatting"));
-    _group_items[user_item::group_in_room]  = _parent_item(langstr("status/waiting"));
-    _group_items[user_item::group_playing]  = _parent_item(langstr("status/playing"));
-    _group_items[user_item::group_away]     = _parent_item(langstr("status/away"));
-    _group_items[user_item::group_dnd]      = _parent_item(langstr("status/dont_disturb"));
+    _group_items[user_item::group_chatting] = _create_group_item(langstr("status/chatting"));
+    _group_items[user_item::group_in_room]  = _create_group_item(langstr("status/waiting"));
+    _group_items[user_item::group_playing]  = _create_group_item(langstr("status/playing"));
+    _group_items[user_item::group_away]     = _create_group_item(langstr("status/away"));
+    _group_items[user_item::group_dnd]      = _create_group_item(langstr("status/dont_disturb"));
 
     _create_actions();
     _create_context_menu();
@@ -275,6 +275,16 @@ users::users(QWidget *parent, const chat_gaming::room::id_type &rid)
     }
 }
 
+users::tree_item_type *
+users::_create_group_item(const char *display_group) {
+    tree_item_type *item = new tree_item_type(this);
+    item->setText(0, display_group);
+    this->addTopLevelItem(item);
+
+    item->setExpanded(true);
+    item->setHidden(true);
+    return item;
+}
 
 void
 users::_create_actions() {
@@ -539,30 +549,33 @@ void
 users::_add_user_item(user_item *item, int dgrp) {
     ACE_DEBUG((LM_DEBUG, "users::_add_user_item: dgrp %d\n", dgrp));
     if (dgrp == -1) dgrp = item->display_group();
-    tree_item_type *parent = _reserve_place_for_item_in_group(dgrp);
-    _add_user_to_group(parent, item);
+    tree_item_type *group_item = _get_group_item(dgrp);
+    group_item->addChild(item);
+    _resolve_group_item_state(dgrp);
+
 }
 
 void
-users::_add_user_to_group(tree_item_type *parent, item_type *item) {
-    parent->addChild(item);
-    item->setDisabled(false);
+users::_resolve_group_item_state(int dgrp) {
+    tree_item_type *group_item = _get_group_item(dgrp);
+
+    group_item->setHidden(group_item->childCount() <= 0);
 }
 
-users::tree_item_type *
-users::_reserve_place_for_item_in_group(int dgrp) {
-    ACE_DEBUG((LM_DEBUG, "users::_reserve_place_for_item_in_group: dgrp %d\n", dgrp));
-        
-    _parent_item &parent = _get_group_item(dgrp);
-
-    ACE_DEBUG((LM_DEBUG, "users::_reserve_place_for_item_in_group: dgrp %d children %d\n",
-               dgrp, parent.children));
-    if (!parent.item) {
-        _add_group_item(parent, dgrp);
-    }
-    parent.children++;
-    return parent.item;
-}
+//users::tree_item_type *
+//users::_reserve_place_for_item_in_group(int dgrp) {
+//    ACE_DEBUG((LM_DEBUG, "users::_reserve_place_for_item_in_group: dgrp %d\n", dgrp));
+//
+//    _parent_item &parent = _get_group_item(dgrp);
+//
+//    ACE_DEBUG((LM_DEBUG, "users::_reserve_place_for_item_in_group: dgrp %d children %d\n",
+//               dgrp, parent.children));
+//    if (!parent.item) {
+//        _add_group_item(parent, dgrp);
+//    }
+//    parent.children++;
+//    return parent.item;
+//}
 
 void
 users::_del_user_item(user_item *item, int dgrp) {
@@ -570,19 +583,19 @@ users::_del_user_item(user_item *item, int dgrp) {
     if (dgrp == -1) dgrp = item->display_group();   
     this->removeItemWidget(item, 0);
     delete item;
-    _remove_place_for_item_in_group(dgrp);
+    _resolve_group_item_state(dgrp);
 }
 
-void
-users::_remove_place_for_item_in_group(int dgrp) {
-    ACE_DEBUG((LM_DEBUG, "users::_remove_place_for_item_in_group: dgrp %d\n", dgrp));
-    _parent_item &parent = _get_group_item(dgrp);
-    ACE_DEBUG((LM_DEBUG, "users::_remove_place_for_item_in_group: dgrp %d children %d\n",
-               dgrp, parent.children));
-    if (--parent.children <= 0) {
-        _del_group_item(parent);
-    }
-}
+//void
+//users::_remove_place_for_item_in_group(int dgrp) {
+//    ACE_DEBUG((LM_DEBUG, "users::_remove_place_for_item_in_group: dgrp %d\n", dgrp));
+//    _parent_item &parent = _get_group_item(dgrp);
+//    ACE_DEBUG((LM_DEBUG, "users::_remove_place_for_item_in_group: dgrp %d children %d\n",
+//               dgrp, parent.children));
+//    if (--parent.children <= 0) {
+//        _del_group_item(parent);
+//    }
+//}
 
 void
 users::_update_user_item(user_item *item, int old_dgrp) {
@@ -595,38 +608,37 @@ users::_update_user_item(user_item *item, int old_dgrp) {
     // Move the item under new father (no tree operations done)
     // Add is before delete so that the existence of the target
     // tree item is quaranteed
-    _reserve_place_for_item_in_group(new_dgrp);
-    _parent_item &old_group = _get_group_item(old_dgrp);
-    _parent_item &new_group = _get_group_item(new_dgrp);
+    tree_item_type *old_group = _get_group_item(old_dgrp);
+    tree_item_type *new_group = _get_group_item(new_dgrp);
     // Do move
-    old_group.item->removeChild(item);
-    _add_user_to_group(new_group.item, item);
+    old_group->removeChild(item);
+    new_group->addChild(item);
     
-    // Delete without removing the item (possibly deletes the old group)
-    _remove_place_for_item_in_group(old_dgrp);
+    _resolve_group_item_state(old_dgrp);
+    _resolve_group_item_state(new_dgrp);
 }
 
-void 
-users::_add_group_item(_parent_item &group_item, int dgrp) {
-    ACE_DEBUG((LM_DEBUG, "users::_add_group_item dgrp %s/%d\n",
-              group_item.text, dgrp));
+//void
+//users::_add_group_item(_parent_item &group_item, int dgrp) {
+//    ACE_DEBUG((LM_DEBUG, "users::_add_group_item dgrp %s/%d\n",
+//              group_item.text, dgrp));
+//
+//    tree_item_type *item = new tree_item_type(this);
+//    item->setText(0, group_item.text);
+//    this->insertTopLevelItem(dgrp, item);
+//
+//    group_item.item = item;
+//    item->setExpanded(true);
+//}
 
-    tree_item_type *item = new tree_item_type(this);
-    item->setText(0, group_item.text);
-    this->insertTopLevelItem(dgrp, item);
-
-    group_item.item = item;
-   item->setExpanded(true);
-}
-
-void
-users::_del_group_item(_parent_item &group_item) {
-    ACE_DEBUG((LM_DEBUG, "users::_del_group_item '%s'\n", group_item.text));
-    this->removeItemWidget(group_item.item, 0);
-    delete group_item.item;
-    group_item.item     = NULL;
-    group_item.children = 0;
-}
+//void
+//users::_del_group_item(_parent_item &group_item) {
+//    ACE_DEBUG((LM_DEBUG, "users::_del_group_item '%s'\n", group_item.text));
+//    this->removeItemWidget(group_item.item, 0);
+//    delete group_item.item;
+//    group_item.item     = NULL;
+//    group_item.children = 0;
+//}
 
 bool
 users::eventFilter(QObject *obj, QEvent *event) {

@@ -154,10 +154,10 @@ login::_login_message() {
     else if (_pass_field->text().isEmpty()) {
         error = langstr("login_win/fill_pass");
     }
-    else if (!validate_user_id(_user_field->text().toLatin1().constData())) {
+    else if (!validate_user_id(_user_field->text().toLatin1().constData(), true)) {
         error = langstr("login_win/invalid_user");
     }
-    else if (!validate_password(_pass_field->text().toLatin1().constData())) {
+    else if (!validate_password(_pass_field->text().toLatin1().constData(), true)) {
         error = langstr("login_win/invalid_pass");
     }
 

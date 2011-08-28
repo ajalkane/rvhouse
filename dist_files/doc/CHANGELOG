@@ -1,9 +1,11 @@
 RV House change log
-Version 0.93.4 (XX.08.2012)
+Version 0.93.4 (XX.09.2011)
 - Selecting text in chat automatically copies to clipboard
 - New RVZ registration limits
-
-Version 0.93.3 (4.07.2012)
+- Fixed ordering status (Chatting, Away ...) in users view
+- Fixed Settings/advanced to show the command-line
+ 
+Version 0.93.3 (4.07.2011)
 - Fix: Close main window closes RV House, even if private message windows open
 - Fix: users with both P2P / server connection should appear dark blue
 - Fix: Message field keeps focus
@@ -12,7 +14,7 @@ Version 0.93.3 (4.07.2012)
 - Sensible defaults for room column widths
 - Dutch translation
 
-Version 0.93.2 (2.07.2012)
+Version 0.93.2 (2.07.2011)
 - Fix: number of players not written to RV registry to avoid crashes when more than 12 players
 - Fix: Double clicking on user sections crashed RV House
 - Fix: Room settings selecting "All versions" did not return number of players to maximum 12

@@ -124,6 +124,8 @@ public:
     users(QWidget *parent, const chat_gaming::room::id_type &rid = std::string());
     virtual ~users();
 
+    tree_item_type *_create_group_item(const char *display_group);
+
     inline item_type *find_item(const chat_gaming::room::id_type &id) {
         return _user_item_map.find(id);
     }
@@ -154,15 +156,7 @@ private:
 
     observer *_observer;
     
-    struct _parent_item {
-        tree_item_type *item;
-        int             children;
-        const char     *text;
-        _parent_item(const char *txt = NULL) 
-          : item(NULL), children(0), text(txt) {}
-        inline bool visible() const { return children > 0; }
-    };
-    _parent_item _group_items[user_item::group_size];
+    tree_item_type *_group_items[user_item::group_size];
     
     tree_item_type *_item_players; // only one category for now
     chat_gaming::room::id_type _room_id;    
@@ -174,22 +168,17 @@ private:
     void _create_signals();
 
     void _add_user_item(item_type *, int dgrp = -1);
-    void _add_user_to_group(tree_item_type *parent, item_type *item);
-
     void _del_user_item(item_type *,  int dgrp = -1);
-    tree_item_type *_reserve_place_for_item_in_group(int dgrp);
-    void _remove_place_for_item_in_group(int dgrp);
-
     void _update_user_item(item_type *,int old_dgrp);
     
-    inline _parent_item &_get_group_item(int dgrp) {
+    void _resolve_group_item_state(int dgrp);
+
+    inline tree_item_type *_get_group_item(int dgrp) {
         if (dgrp < 0 || dgrp >= (int)array_sizeof(_group_items)) {
             throw exceptionf(0, "users::_get_group_item unrecognized %d", dgrp);
         }
         return _group_items[dgrp];      
     }
-    void _add_group_item(_parent_item &group_item, int dgrp);
-    void _del_group_item(_parent_item &group_item);
     
     void _update_user(const chat_gaming::user::id_type &uid, int grp_base);
     void _update_user(const chat_gaming::user &u, int grp_base);
