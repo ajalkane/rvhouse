@@ -3,8 +3,8 @@
 
 bool validate_user_id (const std::string &u, bool no_size_validation) {
     if (!no_size_validation && u.size() < 4) return false;
-    //Hmm really no upper limit?
-    //if (u.size() > 20) return false;
+
+    if (u.size() > 20) return false;
     
     return regexp::match("^[a-zA-Z0-9_\\-\\[\\]=]+$", u);
 }
@@ -12,8 +12,7 @@ bool validate_user_id (const std::string &u, bool no_size_validation) {
 bool validate_password(const std::string &p, bool no_size_validation) {
     if (!no_size_validation && p.size() < 6) return false;
 
-    //Hmm really no upper limit?
-    //if (p.size() > 255) return false;
+    if (p.size() > 255) return false;
     
     return regexp::match("^[a-zA-Z0-9_]+$", p);
 }
