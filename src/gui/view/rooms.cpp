@@ -174,9 +174,14 @@ rooms::_create_header() {
 
     this->setColumnWidth(0, 200);
     this->setColumnWidth(1, 100);
-    this->setColumnWidth(2, 50);
-    this->setColumnWidth(3, 35);
-    this->setColumnWidth(4, 50);
+//    this->setColumnWidth(2, 50);
+//    this->setColumnWidth(3, 35);
+//    this->setColumnWidth(4, 50);
+
+    // These are small columns so size them according to how much the language requires
+    this->resizeColumnToContents(2);
+    this->resizeColumnToContents(3);
+    this->resizeColumnToContents(4);
 }
 
 void

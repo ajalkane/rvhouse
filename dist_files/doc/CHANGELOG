@@ -4,7 +4,8 @@ Version 0.93.4 (XX.09.2011)
 - New RVZ registration limits
 - Fixed ordering status (Chatting, Away ...) in users view
 - Fixed Settings/advanced to show the command-line
- 
+- Rooms view's small columns size set according how much space required by language
+
 Version 0.93.3 (4.07.2011)
 - Fix: Close main window closes RV House, even if private message windows open
 - Fix: users with both P2P / server connection should appear dark blue
