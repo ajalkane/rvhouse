@@ -45,7 +45,7 @@ about_house     = "About RV House"
 title           = "Login"
 user_id         = "&User ID:"
 password        = "&Password:"
-uses_rvzt_login = "Uses RVZT login"
+uses_rvzt_login = "Uses RVZ(T) login"
 login           = "&Login"
 register        = "&Register"
 quit            = "&Quit"
@@ -79,7 +79,7 @@ invalid_email   = "Invalid E-mail address. Must be more than 7 characters"
 server_down     = "Could not contact server, can't register"
 user_reserved   = "The User ID you tried to register is reserved, please choose another one"
 mail_reserved   = "The e-mail address you tried to register is reserved, please choose another one"
-reg_ok          = "Registered successfully, you can login now with your User ID and password"
+reg_ok          = "Registered successfully. If you can't login with your User ID and password, check your e-mail for validation confirmation before logging in."
 
 
 [about_win]

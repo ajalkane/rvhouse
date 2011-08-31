@@ -138,7 +138,7 @@ login_manager_rvzt::_fetch_handler::handle_response(const http::response &resp)
         ACE_DEBUG((LM_DEBUG, "login_manager_rvzt: could not parse response: %s\n",
         resp.content()));
         gui_messenger()->send_msg(
-          new message(LOGIN_MESSAGE(message::login_err)));
+          new message_login_fail(LOGIN_MESSAGE(message::login_err), "N"));
     }
 
     return 0;
