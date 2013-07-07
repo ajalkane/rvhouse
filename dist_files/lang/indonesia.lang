@@ -1,0 +1,352 @@
+[common]
+ok_button       = "&OK"
+cancel_button   = "&Batal"
+apply_button    = "&Terapkan"
+
+[menu_file]
+title           = "&File"
+quit            = "&Keluar\tCtl-Q"
+
+[menu_edit]
+title           = "&Ubah"
+settings        = "&Pengaturan...\tAlt-S"
+
+[menu_player]
+title           = "&Pemain"
+status          = "Status"
+create_room     = "Buat ruangan...\tCtl-R"
+join_room       = "Masuk ruangan"
+chatting        = "Sedang chat\tShift-Alt-C"
+playing         = "Sedang main\tShift-Alt-P"
+away            = "Sibuk\tShift-Alt-A"
+dont_disturb    = "Jangan diganggu\tShift-Alt-D"
+
+[menu_comp]
+title           = "&Kompetisi"
+rvl             = "RV League"
+rvl_home        = "WWW-site"
+rvl_champ       = "Championship"
+rvl_cup         = "Cup"
+
+rvr             = "Re-Volt Race"
+rvr_home        = "WWW-site"
+rvr_1vs1        = "1 vs 1 Championship"
+rvr_players     = "Player profiles"
+rvr_teams       = "Teams"
+
+[menu_help]
+title           = "&Bantuan"
+router_help     = "Bantuan Router/Firewall"
+faq             = "RV House FAQ"
+conn_help       = "Connection Help doc"
+about_house     = "Tentang RV House"
+
+[login_win]
+title           = "Log masuk"
+user_id         = "&ID Pengguna:"
+password        = "&Kata Sandi:"
+uses_rvzt_login = "Via RVZ(T)"
+login           = "&Log masuk"
+register        = "&Daftar"
+quit            = "&Keluar"
+
+login_err_topic = "Tidak bisa log masuk"
+fill_user       = "Isi kolom ID pengguna"
+fill_pass       = "Isi kolom kata sandi"
+invalid_user    = "ID pengguna tidak sah, panjangnya antara 4 - 20 karakter dan bisa mengandung karakter a-z, A-Z, 1-9 dan _"
+invalid_pass    = "Kata sandi tidak sah, panjangnya paling sedikit 6 karakter dan bisa mengandung karakter a-z, A-Z, 1-9 dan _"
+server_down     = "Server login tidak bisa dikontak, ID pengguna Anda belum diotentikasi. Lanjutkan?"
+validation_err  = "ID pengguna atau kata sandi salah"
+
+
+[register_win]
+title           = "Daftar"
+user_id         = "&ID Pengguna:"
+password        = "&Kata Sandi:"
+repassword      = "&Ketik ulang Kata Sandi:"
+email           = "&E-mail:"
+register        = "Daftar"
+cancel          = "&Batalkan"
+
+reg_err_topic   = "Tidak bisa terdaftar"
+reg_ok_topic    = "Terdaftar"
+fill_user       = "Isi kolom ID pengguna"
+fill_pass       = "Isi kolom kata sandi"
+pass_mismatch   = "Kedua kata sandi tidak sama!"
+invalid_user    = "ID pengguna tidak sah, panjangnya antara 4 - 20 karakter dan bisa mengandung karakter a-z, A-Z, 1-9 dan _"
+invalid_pass    = "Kata sandi tidak sah, panjangnya paling sedikit 6 karakter dan bisa mengandung karakter a-z, A-Z, 1-9 dan _"
+invalid_email   = "Alamat E-mail tidak sah. Panjangnya harus lebih dari 7 karakter"
+server_down     = "Tidak bisa menghubungi server, tidak terdaftar"
+user_reserved   = "ID pengguna yang Anda akan daftarkan sudah terpakai, gunakan yang lain"
+mail_reserved   = "Alamat E-mail yang Anda akan daftarkan sudah terpakai, gunakan yang lain"
+reg_ok          = "Sukses terdaftar. Jika Anda tidak bisa log masuk dengan ID penngguna dan password Anda, periksa E-mail Anda untuk validasi konfirmasi."
+
+
+[about_win]
+title         = "Tentang"
+; %1 is replace with the license. Example: Released under GPL
+license       = "Dikeluarkan dibawah lisensi %1"
+; %1 is replaced by the author of used icons. Icons by ADX
+icons_by      = "Ikon oleh %1"
+; %1 is replaced by the author of RV House icon. RV House icon by Pigasque
+house_icon_by = "Ikon RV House oleh %1"
+other_sites   = "Beberapa situs komunitas RV yang terkenal:"
+using         = "Menggunakan:"
+; %1 is replaced by the library name, %2 by library author
+; ACE network library (by Douglas C. Schmidt)
+using_lib     = "%1 (oleh %2)"
+translations  = "Terjemahan:"
+; %1 is replaced by the language name, %2 by author of translation
+; %3 by translation authors name %4 by the version of translation
+; Example:
+; Spanish by ADX <the.adx@gmail.com> for v0.81
+translation   = "%1 oleh %2 <%3> untuk v%4"
+
+[app]
+rv_not_found_title = "Re-Volt sudah terpasang?"
+rv_not_found       = "Re-Volt tidak ditemukan di registri\nSudahkah Anda memasang dan menjalankan\npermainannya sebelum menjalankan\naplikasi ini?"
+rv_house_running   = "RV House sudah berjalan!"
+join_room_full     = "Ruangan sudah penuh!"
+join_invalid_pass  = "Kata sandi salah!"
+join_refused       = "Host menolak masuk ruangan"
+join_err_topic     = "Tidak bisa masuk ruangan"
+dht_connect_err1   = "Tidak bisa terhubung ke server terpusat"
+dht_connect_err2   = "Ini disebabkan pengaturan router/firewall"
+dht_connect_err3   = "tidak benar.\n"
+dht_connect_err4   = "Penting untuk memperbaiki ini karena jika tidak"
+dht_connect_err5   = "Anda tidak akan bisa melihat pemain lain.\n"
+dht_connect_err6   = "Dan, dengan jaringan terpusat Anda bisa"
+dht_connect_err7   = "main dengan pemain lain bahkan jika server terputus.\n"
+dht_connect_err8   = "Pada saat Anda menekan tombol OK, Anda akan dialihkan"
+dht_connect_err9   = "ke halaman bantuan router/firewall."
+dht_connect_err_title = "Gangguan koneksi"
+
+self_on_global_ignore_topic = "Anda ada di daftar abaikan global"
+self_on_global_ignore = "IP Anda ada di daftar abaikan global.\nHasilnya kebanyakan orang tidak dapat melihat Anda.\nJika Anda berpikir tidak melakukan hal yang salah\ndan harus dihapus dari daftar abaikan global\nkirim post di RV Pub tentang hal ini\ndi alamat berikut"
+
+[new_version_win]
+title     = "Versi RV House terbaru"
+force_msg = "Anda harus memperbarui RV House! Versi lama tidak kompatibel!"
+; %1 is replaced by latest RV House version number, %2 by
+; users RV House version.
+msg       = "RV House versi %1 tersedia, versi Anda %2"
+new_since = "Baru sejak versi Anda:"
+download  = "Unduh versi baru di sini:"
+
+[rvtm_err]
+title     = "Gagal menjalankan RV Track Manager"
+not_found = "Tidak bisa menemukan RV Track Manager.\nSupaya bisa membagi dan mengunduh track\ndari orang lain, Anda butuh setidaknya\nversi 1.5.0 dari RV Track Manager\nAnda bisa unduh di sini:"
+running   = "RV Track Manager sudah dijalankan"
+other     = "Tidak bisa menjalankan RV Track manager"
+
+[message_box]
+ok     = "&OK"
+cancel = "&Batal"
+yes    = "&Ya"
+no     = "&Tidak"
+quit   = "&Keluar"
+save   = "&Simpan"
+
+[main_win]
+exit        = "Keluar"
+create_room = "Buat Ruangan"
+join_room   = "Masuk Ruangan"
+refresh     = "Muat ulang"
+cancel      = "Batalkan"
+about       = "Tentang"
+
+ask_room_pass_title = "Ruangan yang terkunci kata sandi"
+ask_room_pass       = "Masukkan kata sandi"
+
+joining_room  = "Joining room"
+
+dht_connecting        = "Menghubungkan ke P2P"
+dht_connected         = "P2P terhubung"
+dht_disconnecting     = "Memutuskan dari P2P"
+dht_disconnected      = "P2P terputus"
+dht_upding_contacts   = "Memperbarui noda kontak P2P..."
+dht_upd_contacts      = "Noda kontak P2P diperbarui"
+dht_upd_contacts_fail = "Tidak bisa memperbarui noda kontakP2P"
+dht_joining           = "Mencoba masuk P2P"
+dht_joined            = "Sudah masuk ke P2P"
+dht_leaving           = "Mencoba keluar P2P"
+dht_left              = "Sudah keluar dari P2P"
+dht_searching         = "Mencari pengguna P2P"
+dht_announcing        = "Mengumumkan P2P"
+
+ctz_connecting        = "Menghubungkan ke server terpusat"
+ctz_connected         = "Terhubung ke server terpusat"
+ctz_disconnecting     = "Memutuskan dari server terpusat"
+ctz_disconnected      = "Terputus dari server terpusat"
+
+; %1 is replacedwith the site where user's IP is fetched from
+ip_detecting = "Mendeteksi IP dari: %1"
+; %1 is replaced with the IP obtained
+ip_detected  = "IP terdeteksi: %1"
+; %1 is replaced with the error reason
+ip_failed    = "Deteksi IP gagal: %1"
+
+[chat]
+; %1 is replaced with user name
+user_entered = "%1 masuk"
+user_exited  = "%1 keluar"
+; %1 is replaced with room name
+room_created = "Ruangan baru dibuat (%1)"
+room_closed  = "Ruangan ditutup (%1)"
+
+host_kicked_host = "Host yang aneh mengeluarkan dirinya sendiri dari ruangan %1"
+host_kicks_user  = "Host mengeluarkan %1 dari ruangan"
+host_kicks_you   = "Host mengeluarkan Anda dari ruangan %1"
+
+; %1 is replaced with user name
+user_joined_room         = "%1 masuk ruangan"
+user_exited_room         = "%1 keluar ruangan"
+user_shares_tracks       = "%1 sedang berbagi track"
+user_shares_tracks_stops = "%1 berhenti membagi track"
+user_dloads_tracks       = "%1 mengunduh track"
+user_dloads_tracks_stops = "%1 berhenti mengunduh track"
+user_ignored             = "Mengabaikan %1. Daftar abaikan bisa dihapus dengan mengulang RV House."
+user_ignores             = "Anda diabaikan oleh %1"
+
+; %1 = "the message that was refused/not received."
+; Caused because of user is playing or in do not disturb
+; mode so no windows are wanted to be opened.
+private_msg_refused      = "Pengguna ini menolak pesan anda: %1"
+
+flood_control = "Flood control"
+
+global_ignore = "Pengguna ini ada di daftar abaikan global karena perlakuan yang kurang baik, dan otomatis diabaikan oleh Anda. Anda bisa mematikannya jika Anda mau."
+; %1 is replaced by user name
+; %2 is replaced with reason
+user_global_ignore = "Pengguna '%1' diabaikan secara global, alasan: %2"
+
+host_ip = "IP saya %1. Anda mungkin butuh ini jika Anda menggunakan Windows Vista."
+
+[room_settings_win]
+title       = "Pengaturan Ruangan"
+topic       = "&Topik:"
+password    = "&Kata Sandi:"
+pickups     = "P&ickup"
+laps        = "&Putaran:"
+players     = "Pem&ain:"
+
+version         = "Versi"
+version_all     = "Semua"
+version_12_only = "RV 1.2 saja"
+version_tip     = "Atur kompabilitas koneksi untuk Re-Volt 1.2"
+version_all_tip = "Bolehkan semua versi RV masuk"
+version_12_tip  = "Hanya RV Versi 1.2 yang bisa masuk"
+ 
+error_title    = "Pengaturan ruangan gagal"
+topic_missing  = "Isi topik ruangan"
+
+[room_win]
+leave         = "Keluar ruangan"
+settings      = "Ubah pengaturan ruangan"
+launch        = "Jalankan permainan"
+share_tracks  = "Bagikan track ke orang lain"
+dload_tracks  = "Download track dari host"
+
+host_launched = "Host menjalankan Re-Volt. Anda akan masuk ke permainan beberapa saat lagi"
+; %1 is replaced with the limit (in minutes)
+join_too_late = "Tidak bisa masuk ruangan karena sudah\nbermain lebih dari %1 menit."
+join_too_late_title = "Terlambat masuk"
+
+send_ip_info_title = "Pemberitahuan!";"
+send_ip_info = "IP Anda saat ini aka dikirim ke orang lain.\nIni mungkin sangat berguna bagi pengguna Vista yang akan ikut permainan.\n\nJika Anda tidak ingin IP Anda dikirim, Anda bisa matikan lewat Pengaturan\n\nPesan ini hanya muncul sekali saja!";"
+
+[private_message_win]
+close = "Tutup pembicaraan"
+
+[rv_launch]
+title_err = "Gagal menjalankan permainan"
+not_found = "Tidak dapat menemukan Re-Volt. Silahkan pasang (dan jalankan sekali) Re-Volt, lalu ulangi aplikasi ini."
+other     = "Tidak bisa menjalankan Re-Volt"
+
+title     = "Menjalankan Re-Volt"
+text      = "Klik OK jika Anda ingin kembali."
+
+
+[words]
+topic   = "Topik"
+host    = "Host"
+; For example, Note: room is password protected
+note    = "Catatan"
+players = "Pemain"
+laps    = "Putaran"
+pickups = "Pickup"
+user_id = "ID Pengguna"
+warning = "Perhatian"
+status  = "Status"
+room    = "Ruangan"
+yes     = "Ya"
+no      = "Tidak"
+creating = "Membuat"
+
+minutes_short = "men."
+dht           = "P2P"
+ctz           = "Terpusat"
+connected     = "Terhubung"
+disconnected  = "Terputus"
+
+
+[users_view]
+shares_tracks = "Pengguna sedang berbagi track"
+dloads_tracks = "Pengguna sedang mengunduh track"
+dht_not_found = "Tidak ditemukan di server terpusat"
+natted        = "Koneksi pengguna sepertinya ada di belakang NAT"
+
+[user_popup]
+user_name     = "Nama pengguna"
+share_tracks  = "Bagi track"
+dload_tracks  = "Unduh track"
+kick          = "Keluarkan"
+private_msg   = "Kirim pesan pribadi"
+ignore_user   = "Abaikan"
+
+[status]
+chatting      = "Sedang chat"
+waiting       = "Menunggu di ruangan"
+playing       = "Sedang main"
+away          = "Sibuk"
+dont_disturb  = "Jangan Diganggu"
+unknown       = "tdk diketahui"
+
+[misc]
+user_not_validated = "ID pengguna tidak dipercaya (tidak divalidasi)"
+pass_needed        = "Kata sandi dibutuhkan"
+
+
+[settings_win]
+title           = "Pengaturan RV House"
+general_tab     = "Umum"
+colors_tab      = "Warna"
+advanced_tab    = "Tambahan"
+
+flash_main_chat = "Kedipkan jika ada pesan di chat utama"
+flash_room_chat = "Kedipkan jika ada pesan di chat ruangan"
+flash_new_room  = "Kedipkan jika ada ruangan baru"
+flash_new_user  = "Kedipkan jika pengguna masuk"
+flash_new_user_in_room  = "Kedipkan jika pengguna masuk ke ruangan"
+flash_nick      = "Kedipkan jika nama Anda terlihat di chat utama"
+away_minimize   = "Jadikan sibuk jika jendela disembunyikan"
+global_ignore   = "Gunakan daftar abaikan global"
+send_ip         = "Kirim IP jika menjadi host"
+
+base_color      = "Warna Dasar"
+border_color    = "Warna Bordir"
+text_color      = "Warna Teks"
+bg_color        = "Warna Latar Belakang"
+sel_text_color  = "Warna Teks Terpilih"
+sel_bg_color    = "Warna Latar Belakang Terpilih"
+sel_mt_color    = "Warna Menu Terpilih"
+sel_mbg_color   = "Warna Latar Belakang Menu Terpilih"
+tip_text_color  = "Warna Teks Tips"
+tip_bg_color    = "Warna Latar Belakang Tips"
+
+cmdline_title   = "Perintah Multiplayer"
+cmdline_autoset = "Atur otomatis"
+cmdline_dontset = "Jangan diatur"
+cmdline_manual  = "Spesifikasi perintah:"
+
+allow_started_race_join = "Bolehkan mencoba masuk ke balapan yang baru mulai"
