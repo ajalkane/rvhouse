@@ -44,7 +44,9 @@ bool login_manager_rvzt::_check_auth_url(const http::url &u)
 {
     if (u.host() == "rvzt.zackattackgames.com" ||
         u.host() == "rvzone.zackattackgames.com" ||
-        u.host() == "www.revoltrace.com") {
+        u.host() == "www.revoltrace.com" ||
+        u.host() == "revoltzone.net" ||
+        u.host() == "www.revoltzone.net") {
         return true;
     }
     return false;
