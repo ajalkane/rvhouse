@@ -6,7 +6,7 @@
 #define NETCOMGRP_SERVERLESS_DEFAULT_PORT 2301
 #define DEFAULT_LANGUAGE "English"
 #define ROUTER_FW_HELP_URL \
-    "http://rvhouse.zackattackgames.com/index.php?section=router_fw_help"
+    "http://rvhouse.revoltzone.net/index.php?section=router_fw_help"
 
 #define ACCESSOR(Type, Name) \
 private:\
