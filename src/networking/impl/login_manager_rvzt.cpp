@@ -20,13 +20,13 @@ login_manager_rvzt::login_manager_rvzt(ACE_Reactor *r)
     _http_fetcher(new http::fetcher)
 {
     _base_validate_url = net_conf()->get<std::string>(
-        "auth", "validate", "http://rvzt.zackattackgames.com/main/user_validate.php"
+        "auth", "validate", "http://revoltzone.net/sitescripts/rvhouse_val.php"
     );
     _base_register_url = net_conf()->get<std::string>(
-        "auth", "register", "http://rvzt.zackattackgames.com/main/user_register.php"
+        "auth", "register", "http://revoltzone.net/sitescripts/rvhouse_reg.php"
     );
 
-    // Ensure only expected authentiraztion urls are used
+    // Ensure only expected authentication urls are used
     ACE_ERROR((LM_DEBUG, "login_manager_rvzt: _base_validate_url %s)\n",
               _base_validate_url.c_str()));
 

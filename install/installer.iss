@@ -2,9 +2,9 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "RV House"
-#define MyAppVerName "RV House 0.93.3"
+#define MyAppVerName "RV House 0.93.5"
 #define MyAppPublisher "Arto Jalkanen"
-#define MyAppURL "http://house.rvzt.net"
+#define MyAppURL "http://rvhouse.revoltzone.net"
 #define MyAppExeName "rv_house.exe"
 
 ; Todo remove this for the next version, removes the old
