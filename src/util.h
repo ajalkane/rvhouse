@@ -3,6 +3,8 @@
 
 #include <string>
 #include <locale>
+#include <string.h>
+#include <stdlib.h>
 
 // #include "os_util.h"
 
