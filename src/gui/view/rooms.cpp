@@ -351,7 +351,7 @@ rooms::eventFilter(QObject *obj, QEvent *event) {
         // see QTBUG-16638 http://bugreports.qt.nokia.com/browse/QTBUG-16638
         QPoint viewport_pos = this->viewport()->mapFromGlobal(help_event->globalPos());
 
-        QTreeWidgetItem *item_raw = this->itemAt(viewport_pos);
+        //QTreeWidgetItem *item_raw = this->itemAt(viewport_pos);
         item_type *item = static_cast<item_type *>(this->itemAt(viewport_pos));
         //ACE_DEBUG((LM_DEBUG, "rooms::eventFilter: item_raw %d, item %d\n", item_raw, item));
         // Returns null if item is not of type item_type (basically is a group item)
