@@ -1,5 +1,5 @@
-#ifndef _EXECUTABLE_IMPL_LAUNCHER_RVTM_H_
-#define _EXECUTABLE_IMPL_LAUNCHER_RVTM_H_
+#ifndef _EXECUTABLE_IMPL_LAUNCHER_RVGL_H_
+#define _EXECUTABLE_IMPL_LAUNCHER_RVGL_H_
 
 #include <ace/Event_Handler.h>
 
@@ -32,4 +32,4 @@ public:
 
 } // ns executable
 
-#endif //_EXECUTABLE_IMPL_LAUNCHER_RVTM_H_
+#endif //_EXECUTABLE_IMPL_LAUNCHER_RVGL_H_
