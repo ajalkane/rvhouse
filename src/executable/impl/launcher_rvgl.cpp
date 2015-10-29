@@ -47,6 +47,12 @@ launcher_rvgl::_launch(const std::string &host_id) {
     std::string dir = pref()->get<std::string>("advanced/rvgl_path", "");
     std::string params = pref()->get<std::string>("advanced/rvgl_cmdline", "");
 
+    if (dir.empty()) {
+        win_registry r(win_registry::id_dplay, "", "Re-Volt");
+        dir = r.get<std::string>("Path", "");
+        pref()->set("advanced/rvgl_path", dir.c_str());
+    }
+
     std::string cmd(dir);
 #ifdef WIN32
     cmd += "/rvgl.exe";
