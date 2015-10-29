@@ -86,6 +86,9 @@ class settings_advanced : public sub_settings {
 
     void _set_cmdline_switch_state(const std::string &cmdline_switch);
 
+    QLineEdit *_rvgl_path_field;
+    QLineEdit *_rvgl_cmdline_field;
+
 public:
     settings_advanced();
     const char *title();

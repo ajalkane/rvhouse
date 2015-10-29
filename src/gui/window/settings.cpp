@@ -50,6 +50,9 @@ namespace {
     const char *cmdline_pref_switch_default = cmdline_autoset_key;
     const char *cmdline_pref_switch_key = "cmdline_switch";
     const char *cmdline_pref_key = "cmdline";
+
+    const char *rvgl_path_key = "rvgl_path";
+    const char *rvgl_cmdline_key = "rvgl_cmdline";
 }
 
 sub_settings::~sub_settings() {}
@@ -214,6 +217,24 @@ settings_advanced::settings_advanced() {
         l->addWidget(check);
     }
 
+    // RVGL settings, perhaps move to a new tab?
+    QGroupBox   *rvgl_group  = new QGroupBox(langstr("settings_win/rvgl_title"));
+    QVBoxLayout *rvgl_layout = new QVBoxLayout;
+
+    _rvgl_path_field    = new QLineEdit;
+    _rvgl_path_field->setEnabled(true);
+    _rvgl_cmdline_field = new QLineEdit;
+    _rvgl_cmdline_field->setEnabled(true);
+
+    rvgl_layout->addWidget(new QLabel(langstr("settings_win/rvgl_path")));
+    rvgl_layout->addWidget(_rvgl_path_field);
+    rvgl_layout->addWidget(new QLabel(langstr("settings_win/rvgl_cmdline")));
+    rvgl_layout->addWidget(_rvgl_cmdline_field);
+
+    rvgl_group->setLayout(rvgl_layout);
+
+    l->addWidget(rvgl_group);
+
     l->addStretch(1);
 
     this->setLayout(l);
@@ -242,6 +263,9 @@ settings_advanced::save_settings() {
         bool        val = _check_map[key]->isChecked();
         pref()->set<bool>("advanced", key, val);
     }
+
+    pref()->set<std::string>("advanced", rvgl_path_key, _rvgl_path_field->text().toLatin1().constData());
+    pref()->set<std::string>("advanced", rvgl_cmdline_key, _rvgl_cmdline_field->text().toLatin1().constData());
 }
 
 void
@@ -258,6 +282,12 @@ settings_advanced::load_settings() {
         bool        val = pref()->get<bool>("advanced", key, def_val);
         _check_map[key]->setChecked(val);
     }
+
+    std::string rvgl_path = pref()->get<std::string>("advanced", rvgl_path_key, "");
+    _rvgl_path_field->setText(rvgl_path.c_str());
+
+    std::string rvgl_cmdline = pref()->get<std::string>("advanced", rvgl_cmdline_key, "");
+    _rvgl_cmdline_field->setText(rvgl_cmdline.c_str());
 }
 
 void
