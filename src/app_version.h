@@ -1,8 +1,8 @@
 #ifndef _APP_VERSION_H_
 #define _APP_VERSION_H_
 
-#define APP_NAME    "RV House (No more Tea Edition)"
-#define APP_VERSION_ONLY "0.93.6"
+#define APP_NAME    "RV House (Dinosaur Edition)"
+#define APP_VERSION_ONLY "0.93.7"
 #define APP_VERSION APP_VERSION_ONLY
 
 // Needed for example by QSettings to organize where settings are stored
