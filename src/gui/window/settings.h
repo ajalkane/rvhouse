@@ -77,7 +77,7 @@ class settings_advanced : public sub_settings {
     Q_OBJECT
 
     typedef std::map<std::string, QCheckBox *> _check_map_type;
-     _check_map_type _check_map;
+    _check_map_type _check_map;
 
     typedef std::map<std::string, QRadioButton *> _cmdline_switch_map_type;
     _cmdline_switch_map_type _cmdline_switch_map;

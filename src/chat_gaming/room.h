@@ -70,7 +70,7 @@ namespace chat_gaming {
         inline size_t max_players(int m)  { return _max_players = m; }
 
         inline bool pickups() const { return _pickups; }
-        inline bool pickups(bool p)  { return _pickups = p; }
+        inline bool pickups(bool p) { return _pickups = p; }
 
         inline bool version_rvgl() const { return _version_rvgl; }
         inline bool version_rvgl(bool v) { return _version_rvgl = v; }
