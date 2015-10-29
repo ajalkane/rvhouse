@@ -40,6 +40,7 @@ class room_settings : public QDialog {
     QActionGroup *_version_group;
     QRadioButton *_version_all;
     QRadioButton *_version_12_only;
+    QRadioButton *_version_rvgl;
     QPushButton  *_ok_button;
     QPushButton  *_cancel_button;
 

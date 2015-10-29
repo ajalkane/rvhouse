@@ -518,7 +518,12 @@ room::_handle_room_kick(::message *msg) {
 void
 room::_launch_host() {
     if (conf()->get<bool>("play/no_launch", false) == false) {
-        int ret = launcher_game()->start_host();
+        int ret;
+        if (self_model()->room_version() && self_model()->room_version_rvgl()) {
+            ret = launcher_rvgl()->start_host();
+        } else {
+            ret = launcher_game()->start_host();
+        }
         if (ret) {
             _launcher_error(ret);
             return;
@@ -542,7 +547,23 @@ room::_launch_host() {
 void
 room::_launch_join(chat_gaming::house::user_iterator host_ui) {
     if (conf()->get<bool>("play/no_launch", false) == false) {
-        int ret = launcher_game()->start_client(host_ui->ip_as_string());
+        model::house::room_iterator ri = house_model()->room_find(_room_id);
+        if (ri == house_model()->room_end()) {
+            ACE_DEBUG((LM_ERROR, "room::_launch_join no room found "
+            "for id %s\n", _room_id.c_str()));
+            return;
+        }
+
+        int ret;
+        if (ri->version_rvgl()) {
+            if (self_model()->user().ip_as_string() == host_ui->ip_as_string()) {
+                ret = launcher_rvgl()->start_client(std::string("0"));
+            } else {
+                ret = launcher_rvgl()->start_client(host_ui->ip_as_string());
+            }
+        } else {
+            ret = launcher_game()->start_client(host_ui->ip_as_string());
+        }
         if (ret) {
             _launcher_error(ret);
             return;
