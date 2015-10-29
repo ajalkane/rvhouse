@@ -171,9 +171,11 @@ room_settings::_registry_to_room(chat_gaming::room &r) const
     // RV doesn't read it so using it doesn't matter. Furthermore
     // RV can crash when it's more than 12, which is supported by
     // RV 1.2. The solution is to remember the setting in user prefs.
-    r.laps       (game_registry()->get<int>("NLaps", 10));
-    r.pickups    (game_registry()->get<int>("Pickups", 0));
-    r.max_players(pref()->get<int>("room_settings/cars", 10));
+    //r.laps       (game_registry()->get<int>("NLaps", 10));
+    //r.pickups    (game_registry()->get<int>("Pickups", 0));
+    r.laps       (pref()->get<int>("room_settings/laps", 3));
+    r.pickups    (pref()->get<int>("room_settings/pickups", 1));
+    r.max_players(pref()->get<int>("room_settings/cars", 8));
 
     ACE_DEBUG((LM_DEBUG, "room_settings::_registry_to_room cars %d\n", r.max_players()));
 
@@ -186,9 +188,11 @@ room_settings::_room_to_registry(const chat_gaming::room &r) const
     // RV doesn't read it so using it doesn't matter. Furthermore
     // RV can crash when it's more than 12, which is supported by
     // RV 1.2. The solution is to remember the setting in user prefs.
-    game_registry()->set("NLaps",     r.laps());
-    game_registry()->set("Pickups",   r.pickups() ? 1 : 0);
-    pref()->set("room_settings/cars", r.max_players());
+    //game_registry()->set("NLaps",     r.laps());
+    //game_registry()->set("Pickups",   r.pickups() ? 1 : 0);
+    pref()->set("room_settings/laps",    r.laps());
+    pref()->set("room_settings/pickups", r.pickups() ? 1 : 0);
+    pref()->set("room_settings/cars",    r.max_players());
 
     ACE_DEBUG((LM_DEBUG, "room_settings::_room_to_registry cars %d\n", r.max_players()));
 }
