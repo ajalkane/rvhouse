@@ -66,6 +66,7 @@ house_app::house_app(int &argc, char **argv)
 
     self_model.instance(new model::self);
     launcher_game.instance(executable::factory().create_launcher("Re-Volt"));
+    launcher_rvgl.instance(executable::factory().create_launcher("RVGL"));
     launcher_file.instance(executable::factory().create_launcher("File"));
     launcher_rvtm.instance(executable::factory().create_launcher("RVTM"));
 
@@ -115,6 +116,7 @@ house_app::~house_app() {
     delete house_model_prev(); house_model_prev.instance(NULL);
     delete self_model();    self_model.instance(NULL);
     delete launcher_game(); launcher_game.instance(NULL);
+    delete launcher_rvgl(); launcher_rvgl.instance(NULL);
     delete launcher_file(); launcher_file.instance(NULL);
     delete launcher_rvtm(); launcher_rvtm.instance(NULL);
     delete game_registry(); game_registry.instance(NULL);

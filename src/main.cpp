@@ -48,6 +48,7 @@ accessor<model::house *>   house_model(NULL);
 accessor<model::house *>   house_model_prev(NULL);
 accessor<model::self *>    self_model(NULL);
 accessor<executable::launcher *> launcher_game(NULL);
+accessor<executable::launcher *> launcher_rvgl(NULL);
 accessor<executable::launcher *> launcher_file(NULL);
 accessor<executable::launcher *> launcher_rvtm(NULL);
 accessor<win_registry *>  game_registry(NULL);

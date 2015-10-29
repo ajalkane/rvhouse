@@ -37,6 +37,7 @@ extern accessor<class model::house *> house_model;
 extern accessor<class model::house *> house_model_prev;
 extern accessor<class model::self  *> self_model;
 extern accessor<class executable::launcher *> launcher_game;
+extern accessor<class executable::launcher *> launcher_rvgl;
 extern accessor<class executable::launcher *> launcher_file;
 extern accessor<class executable::launcher *> launcher_rvtm;
 extern accessor<class win_registry *>  game_registry;
