@@ -164,8 +164,6 @@ room::_init() {
                    " room id %s\n", _room_id.c_str()));
     }
 
-    _buttons_state();
-
     if (_hosting &&
         pref()->get("general/send_ip", true) &&
         pref()->get("one_time_alert/send_ip", true))
@@ -187,9 +185,9 @@ room::_init() {
         // If not host, disable Edit and Launch buttons
         _action_settings->setDisabled(true);
         _action_launch->setDisabled(true);
-
     }
 
+    _buttons_state();
 }
 
 room::~room() {
