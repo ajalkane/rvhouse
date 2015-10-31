@@ -21,6 +21,7 @@ namespace chat_gaming {
         size_t      _max_players;
         bool        _pickups;
         bool        _has_password;
+        bool        _version_rvgl;
         
         friend class boost::serialization::access;
         
@@ -38,6 +39,7 @@ namespace chat_gaming {
             ar & _max_players;
             ar & _pickups;
             ar & _has_password;
+            ar & _version_rvgl;
         }       
         
     public: 
@@ -68,7 +70,10 @@ namespace chat_gaming {
         inline size_t max_players(int m)  { return _max_players = m; }
 
         inline bool pickups() const { return _pickups; }
-        inline bool pickups(bool p)  { return _pickups = p; }
+        inline bool pickups(bool p) { return _pickups = p; }
+
+        inline bool version_rvgl() const { return _version_rvgl; }
+        inline bool version_rvgl(bool v) { return _version_rvgl = v; }
         
         // Generates and sets user::id from owner and timestamp
         void generate_id();         

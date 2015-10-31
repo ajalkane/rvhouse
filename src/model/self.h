@@ -52,6 +52,8 @@ public:
     inline const bool &room_version_all() const { return _room_version_all; }
     inline const bool &room_version_12_only(bool room_version_12_only) { return _room_version_12_only = room_version_12_only; }
     inline const bool &room_version_12_only() const { return _room_version_12_only; }
+    inline const bool &room_version_rvgl(bool room_version_rvgl) { return _room_version_rvgl = room_version_rvgl; }
+    inline const bool &room_version_rvgl() const { return _room_version_rvgl; }
     
     inline unsigned sequence() { 
         unsigned s = _seq++;
@@ -71,6 +73,7 @@ private:
     bool _room_version;
     bool _room_version_all;
     bool _room_version_12_only;
+    bool _room_version_rvgl;
 
 };
 

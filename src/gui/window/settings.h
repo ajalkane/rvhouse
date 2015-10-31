@@ -77,7 +77,7 @@ class settings_advanced : public sub_settings {
     Q_OBJECT
 
     typedef std::map<std::string, QCheckBox *> _check_map_type;
-     _check_map_type _check_map;
+    _check_map_type _check_map;
 
     typedef std::map<std::string, QRadioButton *> _cmdline_switch_map_type;
     _cmdline_switch_map_type _cmdline_switch_map;
@@ -85,6 +85,9 @@ class settings_advanced : public sub_settings {
     QLineEdit *_cmdline_field;
 
     void _set_cmdline_switch_state(const std::string &cmdline_switch);
+
+    QLineEdit *_rvgl_path_field;
+    QLineEdit *_rvgl_cmdline_field;
 
 public:
     settings_advanced();

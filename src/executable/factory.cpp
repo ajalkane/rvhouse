@@ -1,9 +1,11 @@
 #include "../exception.h"
 #ifdef WIN32
 #include "impl/launcher_dx7.h"
+#include "impl/launcher_rvgl.h"
 #include "impl/launcher_filetype_win32.h"
 #include "impl/launcher_rvtm.h"
 #else
+#include "impl/launcher_rvgl.h"
 #include "impl/launcher_filetype_unix.h"
 #include "impl/launcher_dummy.h"
 #endif
@@ -18,6 +20,8 @@ factory::create_launcher(const std::string &app_id) {
 #ifdef WIN32
     if (app_id == "Re-Volt")
         l = new launcher_dx7("Re-Volt");
+    else if (app_id == "RVGL")
+        l = new launcher_rvgl;
     else if (app_id == "File")
         l = new launcher_filetype_win32;
     else if (app_id == "RVTM")
@@ -25,6 +29,8 @@ factory::create_launcher(const std::string &app_id) {
 #else
     if (app_id == "Re-Volt")
         l = new launcher_dummy;
+    else if (app_id == "RVGL")
+        l = new launcher_rvgl;
     else if (app_id == "File")
         l = new launcher_filetype_unix;
     else if (app_id == "RVTM")

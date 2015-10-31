@@ -58,6 +58,7 @@ room_settings::_create_widgets() {
     _version_check   = new QCheckBox(langstr("room_settings_win/version"));
     _version_all     = new QRadioButton(langstr("room_settings_win/version_all"));
     _version_12_only = new QRadioButton(langstr("room_settings_win/version_12_only"));
+    _version_rvgl = new QRadioButton(langstr("room_settings_win/version_rvgl"));
 
     _laps_field->setMinimum(1);
     _laps_field->setMaximum(20);
@@ -66,6 +67,7 @@ room_settings::_create_widgets() {
     _version_check->setToolTip(langstr("room_settings_win/version_tip"));
     _version_all->setToolTip(langstr("room_settings_win/version_all_tip"));
     _version_12_only->setToolTip(langstr("room_settings_win/version_12_tip"));
+    _version_rvgl->setToolTip(langstr("room_settings_win/version_rvgl_tip"));
 
     _ok_button      = new QPushButton(langstr("common/ok_button"));
     _cancel_button  = new QPushButton(langstr("common/cancel_button"));
@@ -78,6 +80,7 @@ room_settings::_connect_signals() {
     connect(_version_check,   SIGNAL(stateChanged(int)), this, SLOT(version_state_changed(int)));
     connect(_version_all,     SIGNAL(toggled(bool)), this, SLOT(version_state_changed(bool)));
     connect(_version_12_only, SIGNAL(toggled(bool)), this, SLOT(version_state_changed(bool)));
+    connect(_version_rvgl,    SIGNAL(toggled(bool)), this, SLOT(version_state_changed(bool)));
 
     connect(_ok_button,     SIGNAL(clicked()), this, SLOT(accept()));
     connect(_cancel_button, SIGNAL(clicked()), this, SLOT(reject()));
@@ -110,6 +113,7 @@ room_settings::_create_layout() {
     l_version->addWidget(_version_check);
     l_version->addWidget(_version_all);
     l_version->addWidget(_version_12_only);
+    l_version->addWidget(_version_rvgl);
     g_version->setLayout(l_version);
 
     l_game_version->addWidget(g_game);
@@ -154,6 +158,7 @@ room_settings::_form_to_room(chat_gaming::room &r) const
     r.laps(_laps_field->value());
     r.max_players(_players_field->value());
     r.pickups(_pickups_check->checkState() == Qt::Checked);
+    r.version_rvgl(_version_check->isChecked() && _version_rvgl->isChecked());
 
     ACE_DEBUG((LM_DEBUG, "room_settings::_form_to_room cars %d\n", r.max_players()));
 
@@ -166,9 +171,11 @@ room_settings::_registry_to_room(chat_gaming::room &r) const
     // RV doesn't read it so using it doesn't matter. Furthermore
     // RV can crash when it's more than 12, which is supported by
     // RV 1.2. The solution is to remember the setting in user prefs.
-    r.laps       (game_registry()->get<int>("NLaps", 10));
-    r.pickups    (game_registry()->get<int>("Pickups", 0));
-    r.max_players(pref()->get<int>("room_settings/cars", 10));
+    //r.laps       (game_registry()->get<int>("NLaps", 10));
+    //r.pickups    (game_registry()->get<int>("Pickups", 0));
+    r.laps       (pref()->get<int>("room_settings/laps", 3));
+    r.pickups    (pref()->get<int>("room_settings/pickups", 1));
+    r.max_players(pref()->get<int>("room_settings/cars", 8));
 
     ACE_DEBUG((LM_DEBUG, "room_settings::_registry_to_room cars %d\n", r.max_players()));
 
@@ -181,9 +188,11 @@ room_settings::_room_to_registry(const chat_gaming::room &r) const
     // RV doesn't read it so using it doesn't matter. Furthermore
     // RV can crash when it's more than 12, which is supported by
     // RV 1.2. The solution is to remember the setting in user prefs.
-    game_registry()->set("NLaps",     r.laps());
-    game_registry()->set("Pickups",   r.pickups() ? 1 : 0);
-    pref()->set("room_settings/cars", r.max_players());
+    //game_registry()->set("NLaps",     r.laps());
+    //game_registry()->set("Pickups",   r.pickups() ? 1 : 0);
+    pref()->set("room_settings/laps",    r.laps());
+    pref()->set("room_settings/pickups", r.pickups() ? 1 : 0);
+    pref()->set("room_settings/cars",    r.max_players());
 
     ACE_DEBUG((LM_DEBUG, "room_settings::_room_to_registry cars %d\n", r.max_players()));
 }
@@ -238,13 +247,22 @@ room_settings::version_state_changed() {
         _version_12_only->setChecked(false);
         _version_12_only->setCheckable(false);
         _version_12_only->update();
+        _version_rvgl->setEnabled(false);
+        _version_rvgl->setChecked(false);
+        _version_rvgl->setCheckable(false);
+        _version_rvgl->update();
         _players_field->setMaximum(max_rv_players);
     } else {
         _version_all->setEnabled(true);
         _version_all->setCheckable(true);
         _version_12_only->setEnabled(true);
         _version_12_only->setCheckable(true);
-        if (!_version_all->isChecked() && !_version_12_only->isChecked()) {
+        _version_rvgl->setEnabled(true);
+        _version_rvgl->setCheckable(true);
+        if (!_version_all->isChecked() &&
+            !_version_12_only->isChecked() &&
+            !_version_rvgl->isChecked())
+        {
             _version_all->setChecked(true);
         }
 
@@ -266,6 +284,7 @@ room_settings::_from_settings_to_form() {
     _version_check->setChecked(self_model()->room_version());
     _version_all->setChecked(self_model()->room_version_all());
     _version_12_only->setChecked(self_model()->room_version_12_only());
+    _version_rvgl->setChecked(self_model()->room_version_rvgl());
 
     _registry_to_room(target_room);
     _room_id_prev = target_room.id();
@@ -300,6 +319,7 @@ room_settings::_to_settings_and_form_room_message() {
     self_model()->room_version(_version_check->isChecked());
     self_model()->room_version_all(_version_all->isChecked());
     self_model()->room_version_12_only(_version_12_only->isChecked());
+    self_model()->room_version_rvgl(_version_rvgl->isChecked());
 
     return self_model()->hosting_room_as_message();
 }
