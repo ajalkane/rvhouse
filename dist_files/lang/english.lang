@@ -24,21 +24,31 @@ dont_disturb    = "Do Not Disturb\tShift-Alt-D"
 [menu_comp]
 title           = "&Competitions"
 rvl             = "RV League"
-rvl_home        = "WWW-site"
+rvl_home        = "Home Page"
 rvl_champ       = "Championship"
 rvl_cup         = "Cup"
 
 rvr             = "Re-Volt Race"
-rvr_home        = "WWW-site"
-rvr_1vs1        = "1 vs 1 Championship"
-rvr_players     = "Player profiles"
-rvr_teams       = "Teams"
+rvr_home        = "Home Page"
+rvr_best3       = "Best 3 Laps"
+rvr_best4       = "Best 4 Laps"
+rvr_month       = "Month Tracks"
+
+[menu_dloads]
+title           = "&Downloads"
+rvgl            = "RVGL (latest version)"
+rv12            = "Re-Volt 1.2 Patch"
+rvzone          = "Re-Volt Zone (tracks and cars)"
+xtg             = "Re-Volt XTG"
+jigebren        = "jigebren's Re-Volt stuff"
 
 [menu_help]
 title           = "&Help"
 router_help     = "Router/Firewall Help"
 faq             = "RV House FAQ"
-conn_help       = "Connection Help doc"
+wiki            = "Re-Volt Wiki"
+pub_forum       = "Our Revolt Pub"
+rvl_forum       = "Revolt Live"
 about_house     = "About RV House"
 
 [login_win]
