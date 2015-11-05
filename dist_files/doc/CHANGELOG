@@ -1,5 +1,22 @@
 RV House change log
 
+Version 0.94.0 (03.11.2015)
+- Updated the Competition menu, added a new Downloads menu, added forum link in Help menu.
+- Updated config ini to look for new versions from the rv12 domain.
+- Updated french and spanish language files for 0.93.7.
+- Provide helpful error message when launching fails because of game already running.
+- Show whether the room is using RVGL version or not in the rooms list column.
+- Fix: https links are now supported and clickable.
+
+Version 0.93.7 (31.10.2015)
+- Changed to new centralized server
+- Changed to new build system (updated compiler and libraries)
+- Support for RVGL cross-platform Re-Volt port on Windows and Linux
+- RVGL path and command-lines can be configured from settings (attempts to auto-detect path if blank)
+- Disabled "Re-Volt not found from registry" prompt on Linux
+- Does not take number of players & pickups from registry, uses proper default values
+- Fix: Launch button sometimes disabled when late-joining a started room
+
 Version 0.93.6 (02.11.2013)
 - Changed to new centralized server
 
