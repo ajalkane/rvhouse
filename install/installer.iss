@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "RV House"
-#define MyAppVerName "RV House 0.93.6"
+#define MyAppVerName "RV House 0.94.0"
 #define MyAppPublisher "Arto Jalkanen"
 #define MyAppURL "http://rvhouse.revoltzone.net"
 #define MyAppExeName "rv_house.exe"
@@ -37,7 +37,14 @@ Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:Ad
 
 [Files]
 Source: ..\build\win32\Release\rv_house.exe; DestDir: {app}; Flags: ignoreversion
-Source: ..\dist_files\pthreadGC.dll; DestDir: {sys}; Flags: onlyifdoesntexist uninsneveruninstall
+Source: ..\dist_files\libACE.dll; DestDir: {app}; Flags: ignoreversion
+Source: ..\dist_files\QtCore4.dll; DestDir: {app}; Flags: ignoreversion
+Source: ..\dist_files\QtGui4.dll; DestDir: {app}; Flags: ignoreversion
+Source: ..\dist_files\libgcc_s_dw2-1.dll; DestDir: {sys}; Flags: onlyifdoesntexist uninsneveruninstall
+Source: ..\dist_files\libstdc++-6.dll; DestDir: {sys}; Flags: onlyifdoesntexist uninsneveruninstall
+Source: ..\dist_files\libwinpthread-1.dll; DestDir: {sys}; Flags: onlyifdoesntexist uninsneveruninstall
+;Source: ..\dist_files\pthreadGC.dll; DestDir: {sys}; Flags: onlyifdoesntexist uninsneveruninstall
+Source: ..\dist_files\imageformats\*; DestDir: {app}\imageformats; Flags: ignoreversion
 Source: ..\dist_files\conf\*; DestDir: {app}\conf; Flags: ignoreversion
 Source: ..\dist_files\lang\*; DestDir: {app}\lang; Flags: ignoreversion
 Source: ..\dist_files\data\*; DestDir: {app}\data; Flags: ignoreversion
