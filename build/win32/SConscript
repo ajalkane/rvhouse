@@ -1,9 +1,15 @@
 # import these variables from the parent build script
 Import('env', 'sources', 'target_name', 'resource')
 
+extra_libs = [
+        'comctl32','ws2_32','winspool','mpr','m',
+        'dpnlobby','dxguid','ole32'
+        ]
+
 # env.RES(resource)
+env.Append(LIBS=extra_libs)
 env.Append(CPPFLAGS = '-mthreads')
-env.Append(LINKFLAGS = '-mwindows')
+env.Append(LINKFLAGS = ['-mwindows','-static'])
 env.Program(target=target_name, source=sources)
 
 # Needed to get around a problem with too long command line on

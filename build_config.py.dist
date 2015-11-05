@@ -44,15 +44,10 @@ include_search_path =  ['#../../../libs/ACE_wrappers',
 
 libs = ['netcomgrp','reudp','dht','ACE',
         'KadC','pthreadGC','z',
-        'liblibboost_serialization-mgw-s',
-         # Needed by Qt (platform dependent?)
-		'png',
-		'tiff',
-		'rt'
-        
-        # Win32 libs, TODO maybe put to build/win32
-        'comctl32','ws2_32','winspool','mpr','m',
-        'dpnlobby','dxguid','ole32']
+        'boost_serialization',
+        # Needed by Qt (platform dependent?)
+        #'png','tiff','rt'
+        ]
 defs = ['ACE_AS_STATIC_LIBS', ('ACE_NTRACE', 1),
         '__KADC_DO_NOT_REDEFINE_ALLOC_MACROS__',
         '_REENTRANT']
