@@ -55,7 +55,7 @@ launcher_rvgl::_launch(const std::string &host_id) {
 
     std::string cmd(dir);
 #ifdef WIN32
-    cmd += "/rvgl.exe";
+    cmd += "\\rvgl.exe";
 #else
     cmd += "/rvgl";
 #endif
