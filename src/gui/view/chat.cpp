@@ -342,6 +342,10 @@ chat::_styled_content(const std::string &msg, enum _style text_style) {
 void
 chat::_insert_url(const char *url, size_t len) {
     std::string stdurl(url, len);
+    // Note: clicking on links starting with www clear the chat
+    if (!stdurl.substr(0, 3).compare("www")) {
+        stdurl = "http://" + stdurl;
+    }
     ACE_DEBUG((LM_DEBUG, "chat::_insert_url: raw url '%s'\n", stdurl.c_str()));
     QTextCharFormat url_style(_styles[style_url]);
     url_style.setAnchor(true);
