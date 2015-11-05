@@ -84,6 +84,10 @@ room_item::_resolve_tip() {
                 room_value_accessor(&room_type::pickups, 
                 bool_to_yes_no_string()))
            )
+        << _tip(header_value(rf, langstr("words/rvgl"), 
+                room_value_accessor(&room_type::version_rvgl, 
+                bool_to_yes_no_string()))
+           )
         << _tip_participants();
         
 
@@ -128,6 +132,8 @@ room_item::_resolve_columns() {
                                                                     streamable_to_string<size_t>())).c_str());
     setText(rooms::column_pickups, value(rf, room_value_accessor(&room_type::pickups,
                                                                     bool_to_yes_no_string())).c_str());
+    setText(rooms::column_rvgl,    value(rf, room_value_accessor(&room_type::version_rvgl,
+                                                                    bool_to_yes_no_string())).c_str());
 
     // Check if password is on
     multi_feed::feed_value_map_type vm;
@@ -154,7 +160,7 @@ room_item::_resolve_columns() {
 rooms::rooms(QWidget *parent)
   : super(parent), _observer(NULL)
 {
-    this->setColumnCount(5);
+    this->setColumnCount(column_count);
     this->setRootIsDecorated(false);
     this->installEventFilter(this);
 
@@ -169,6 +175,7 @@ rooms::_create_header() {
     headers.append(langstr("words/players"));
     headers.append(langstr("words/laps"));
     headers.append(langstr("words/pickups"));
+    headers.append(langstr("words/rvgl"));
 
     this->setHeaderLabels(headers);
 
@@ -182,6 +189,7 @@ rooms::_create_header() {
     this->resizeColumnToContents(2);
     this->resizeColumnToContents(3);
     this->resizeColumnToContents(4);
+    this->resizeColumnToContents(5);
 }
 
 void
