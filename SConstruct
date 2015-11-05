@@ -9,18 +9,38 @@ from build_config import *
 variables = Variables('custom.py')
 variables.Add(EnumVariable('debug', 'Build with debug symbols', 'no',
                     ['yes','no']))
+variables.Add(EnumVariable('win32', 'Build for win32 target', 'no',
+                    ['yes','no']))
 env = Environment(options=variables) #  = variables, tools=['mingw','qt4'])
 # env = Environment()
+Help(variables.GenerateHelpText(env))
+
+platform = None
+env['BUILD_PLATFORM'] = sys.platform
 env['QT4DIR'] = qt_dir
 env['ENV']['PKG_CONFIG_PATH'] = qt_pkg_config_path
-env.Tool('mingw');
-env.Tool('qt4');
+env.Tool('qt4')
 
-Help(variables.GenerateHelpText(env))
+if (sys.platform == 'win32'):
+    env.Tool('mingw')
+    env['QT4DIR'] = qt_dir
+elif (env.get('win32') == 'yes'):
+    env.Tool('mingw')
+    env['CC'] = 'i686-w64-mingw32-gcc'
+    env['CXX'] = 'i686-w64-mingw32-g++'
+    env['AR'] = 'i686-w64-mingw32-ar'
+    env['RANLIB'] = 'i686-w64-mingw32-ranlib'
+    env['BUILD_PLATFORM'] = 'win32'
+    env['QT4DIR'] = qt_dir
+    platform = 'win32'
+else:
+    env.Tool('gcc')
+    env['QT4DIR'] = ''
 
 mode = "Release"
 env.Append(CPPFLAGS = flgs)
 print "env debug: " + env.get('debug')
+print "env win32: " + env.get('win32')
 
 if (env.get('debug') == 'yes'):
     print "Debug build"
@@ -34,19 +54,20 @@ else:
 # Build_config can use variables to denote the platform and
 # build variant
 env['BUILD_VARIANT']  = mode
-env['BUILD_PLATFORM'] = sys.platform
+#env['BUILD_PLATFORM'] = sys.platform
 #env['QT4DIR'] = qt_dir
 #env['ENV']['PKG_CONFIG_PATH'] = qt_pkg_config_path
 
 # Qt4 setup
 env.EnableQt4Modules(['QtGui', 
                       'QtCore'
-                     ])
+                     ],
+                     crosscompiling = (platform == 'win32'))
                      
 # Construct target directories and names. Since the
 # build specific SConscript file is one level above
 # the build dir, some trickery is required.
-target_dir_base = '#' + SelectBuildDir(build_base_dir)
+target_dir_base = '#' + SelectBuildDir(build_base_dir, platform)
 target_dir      = os.sep.join([target_dir_base, mode])
 target_name     = os.sep.join([mode, target_name])
 
