@@ -18,6 +18,7 @@ public:
     enum {
         err_app_not_found = 1,
         err_could_not_launch,
+        err_could_not_launch_rvgl,
         err_not_supported,
         err_already_running,
         err_other,

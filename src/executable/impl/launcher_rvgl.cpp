@@ -78,7 +78,7 @@ launcher_rvgl::_launch(const std::string &host_id) {
     if (_rvgl_pid == ACE_INVALID_PID) {
         ACE_ERROR((LM_ERROR, "launcher_rvgl: failed to launch: %s\n",
                   cmd.c_str()));
-        return err_could_not_launch;
+        return err_could_not_launch_rvgl;
     }
     
     _running = true;
