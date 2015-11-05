@@ -9,40 +9,43 @@ namespace {
     // recognizes URL:s of the form:
     // ftp://blabla
     // http://balblab
+    // https://balblab
     // www.blabla.doh
     const int TOKEN_H     = 0;
     const int TOKEN_T     = 1;
     const int TOKEN_P     = 2;
-    const int TOKEN_COLON = 3;
-    const int TOKEN_SLASH = 4;
-    const int TOKEN_F     = 5;
-    const int TOKEN_W     = 6;
-    const int TOKEN_DOT   = 7;
-    const int TOKEN_TERM  = 8;
-    const int TOKEN_OTHER = 9;
+    const int TOKEN_S     = 3;
+    const int TOKEN_COLON = 4;
+    const int TOKEN_SLASH = 5;
+    const int TOKEN_F     = 6;
+    const int TOKEN_W     = 7;
+    const int TOKEN_DOT   = 8;
+    const int TOKEN_TERM  = 9;
+    const int TOKEN_OTHER = 10;
 
-    const int TOKEN_REMOVE_END = 10;
+    const int TOKEN_REMOVE_END = 11;
     
-    int _table[][11] =
-//   h    t   p   :  /   f    w,  . TERM  OTHER REMOVE_END
+    int _table[][12] =
+//    h   t   p   s   :   /   f   w   . TERM OTHER REMOVE_END
 { 
    // Start rule
-   {  1, -1, -1, -1, -1, 2,  7, -1,  -1, -1, -1  },
-   // Rule for http
-   { -1,  2, -1, -1, -1, -1, -1, -1, -1, -1, -1  },
-   { -1,  3, -1, -1, -1, -1, -1, -1, -1, -1, -1  },
-   { -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1  },
+   {  1, -1, -1, -1, -1, -1,  2,  8, -1, -1, -1, -1 },
+   // Rule for http(s)
+   { -1,  2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+   { -1,  3, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+   { -1, -1,  4, -1, -1, -1, -1, -1, -1, -1, -1, -1 },
+   { -1, -1, -1,  5,  6, -1, -1, -1, -1, -1, -1, -1 },
    // Rule for start of ://
-   { -1, -1, -1,  5, -1, -1, -1, -1, -1, -1, -1  },
-   { -1, -1, -1, -1,  6, -1, -1, -1, -1, -1, -1  },
-   { -1, -1, -1, -1, 10, -1, -1, -1, -1, -1, -1  },
+   { -1, -1, -1, -1,  6, -1, -1, -1, -1, -1, -1, -1 },
+   { -1, -1, -1, -1, -1,  7, -1, -1, -1, -1, -1, -1 },
+   { -1, -1, -1, -1, -1, 11, -1, -1, -1, -1, -1, -1 },
    // Rule for www.something.what
-   { -1, -1, -1, -1, -1, -1,  8, -1, -1, -1, -1  },
-   { -1, -1, -1, -1, -1, -1,  9, -1, -1, -1, -1  },
-   { -1, -1, -1, -1, -1, -1, -1, 10, -1, -1, -1  },
+   { -1, -1, -1, -1, -1, -1, -1,  9, -1, -1, -1, -1 },
+   { -1, -1, -1, -1, -1, -1, -1, 10, -1, -1, -1, -1 },
+   { -1, -1, -1, -1, -1, -1, -1, -1, 11, -1, -1, -1 },
    
    // Rule for the URL portion, basically anything goes now
-   {  10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 },
+   { 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11 },
 };
 
     inline int tokenize(char a) {
@@ -50,6 +53,7 @@ namespace {
         case 'h': return TOKEN_H;
         case 't': return TOKEN_T;
         case 'p': return TOKEN_P;
+        case 's': return TOKEN_S;
         case ':': return TOKEN_COLON;
         case '/': return TOKEN_SLASH;
         case 'f': return TOKEN_F;
