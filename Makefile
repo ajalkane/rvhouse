@@ -1,5 +1,7 @@
 DIST_BASENAME=rv_house
 DIST_FILES=LICENSE README Makefile SConstruct build_config.py.dist build_support.py src build install dist_files
+DIST_INNO="$(HOME)/.wine/drive_c/Program Files/Inno Setup 5/Compil32.exe"
+DIST_PATH=install.bin
 
 default: release
 
@@ -36,16 +38,19 @@ dist: clean_all
 # TODO: to scons file generalized method of creating
 # tar package of the binary distribution
 linux_bin_dist:
-	strip build/linux2/Release/rv_house
-	upx build/linux2/Release/rv_house
-	mkdir -p linux_bin_dist/rv_house
-	cp -rp dist_files/* linux_bin_dist/rv_house
-	rm linux_bin_dist/rv_house/pthreadGC.dll
-	cp -p build/linux2/Release/rv_house linux_bin_dist/rv_house
-	cd linux_bin_dist; tar -cvf rv_house_linux.tar --exclude '.*' rv_house; gzip rv_house_linux.tar
+	#strip build/linux2/Release/rv_house
+	#upx build/linux2/Release/rv_house
+	rm -rf $(DIST_PATH)/rv_house
+	mkdir -p $(DIST_PATH)/rv_house
+	cp -rp dist_files/* $(DIST_PATH)/rv_house
+	rm $(DIST_PATH)/rv_house/*.dll
+	rm -rf $(DIST_PATH)/rv_house/imageformats
+	cp -p dist_files/gpl.txt $(DIST_PATH)/rv_house
+	cp -p build/linux2/Release/rv_house $(DIST_PATH)/rv_house
+	cd $(DIST_PATH); tar -cvf rv_house_linux.tar --exclude '.*' rv_house; gzip -f rv_house_linux.tar
 
 win_bin_dist:
-	strip build/win32/Release/rv_house.exe
-	upx --force build/win32/Release/rv_house.exe
-	start install/installer.iss
-	
+	#strip build/win32/Release/rv_house.exe
+	#upx --force build/win32/Release/rv_house.exe
+	#start install/installer.iss
+	$(DIST_INNO) /cc "install\installer.iss"
