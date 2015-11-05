@@ -88,7 +88,7 @@ launcher_rvgl::_launch(const std::string &host_id) {
 
 int 
 launcher_rvgl::handle_exit(ACE_Process *proc) {
-    ACE_DEBUG((LM_INFO, "launcher_rvtm::handle_exit: called from thread %t\n"));
+    ACE_DEBUG((LM_INFO, "launcher_rvgl::handle_exit: called from thread %t\n"));
     // There's a potential risk here since handle_exit is called from 
     // different thread than _launch. But since integer operations are
     // usually atomic and the risk is at most theoretical, no locking done.
