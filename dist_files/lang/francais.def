@@ -1,5 +1,8 @@
 [info]
 language = Français
-author   = cd090580 & SebR
-email    = christian.dandoy@skynet.be & seb.remy@wanadoo.fr
-version  = 0.92.0
+author   = SebR
+email    = seb.remy@wanadoo.fr
+version  = 0.93.7
+
+;author   = cd090580
+;email    = christian.dandoy@skynet.be

@@ -338,5 +338,10 @@ tip_bg_color    = "Couleur d'Arrière-Plan des Infobulles"
 
 cmdline_autoset = "Auto-configuration ligne de commande"
 cmdline_dontset = "Pas de ligne de commande"
-cmdline_manual  = "Préciser vos lignes de commandes"
+cmdline_manual  = "Précisez vos lignes de commandes"
 
+allow_started_race_join = "Essayer de rejoindre une course déjà lancée"
+
+rvgl_title      = "RVGL"
+rvgl_path       = "Localisation de rvgl.exe"
+rvgl_cmdline    = "Précisez vos lignes de commandes"
