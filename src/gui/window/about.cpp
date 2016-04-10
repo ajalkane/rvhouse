@@ -24,7 +24,8 @@ about::about(QWidget *parent)
     l->setSpacing(0);
     l->addWidget(new QLabel(APP_NAME " " APP_VERSION));
     l->addWidget(new QLabel);
-    l->addWidget(new QLabel("Copyright (C) 2006-2015 Arto Jalkanen"));
+    l->addWidget(new QLabel("Copyright (C) 2006-2016 Arto Jalkanen"));
+    l->addWidget(new QLabel("Maintained by Huki"));
     l->addWidget(new QLabel);
     l->addWidget(new QLabel(langstr("about_win/license", "GPL").c_str()));
     l->addWidget(new QLabel);
