@@ -1,5 +1,11 @@
 RV House change log
 
+Version 0.94.1 (10.04.2016)
+- New centralized server.
+- Allow special symbols in user id and password when logging in.
+- Show the proper download link for Linux in update dialog.
+- Updated info in the about dialog.
+
 Version 0.94.1 (16.12.2015)
 - Updated the menu links again based on forum suggestions.
 - Minor change to let RVGL path use backslash under Windows.
