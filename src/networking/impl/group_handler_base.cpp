@@ -591,8 +591,11 @@ group_handler_base::user_update(chat_gaming::user &old, chat_gaming::user &upd, 
     // Check if the user's update will close some room
     if (!old.room_id().empty() && old.room_id() != upd.room_id()) {
         _house_type::room_iterator ri = _house.room_find(old.room_id());
-        if (ri->owner_id() == upd.id())
-            _room_closed_update(old.room_id(),upd.id());
+        if (ri != _house.room_end() &&
+            ri->owner_id() == upd.id())
+        {
+            _room_closed_update(old.room_id(), upd.id());
+        }
     }
     gui_messenger()->send_msg(
         new message_user(message::user, upd, upd.sequence(), _grp_msg_base));
