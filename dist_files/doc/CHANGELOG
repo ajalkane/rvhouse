@@ -1,6 +1,10 @@
 RV House change log
 
-Version 0.94.1 (10.04.2016)
+Version 0.94.3 (30.05.2016)
+- Disabled the Kadc memory allocation assert.
+- Fix: crash when a room is closed.
+
+Version 0.94.2 (10.04.2016)
 - New centralized server.
 - Allow special symbols in user id and password when logging in.
 - Show the proper download link for Linux in update dialog.
