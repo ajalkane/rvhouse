@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
 
 #include "../../main.h"
 #include "../../config_file.h"
@@ -55,9 +56,12 @@ launcher_rvgl::_launch(const std::string &host_id) {
 
     std::string cmd(dir);
 #ifdef WIN32
-    cmd += "\\rvgl.exe";
+    std::replace(cmd.begin(), cmd.end(), '/', '\\');
+    if (!cmd.empty() && *cmd.rbegin() != '\\') cmd += "\\";
+    cmd += "rvgl.exe";
 #else
-    cmd += "/rvgl";
+    if (!cmd.empty() && *cmd.rbegin() != '/') cmd += "/";
+    cmd += "rvgl";
 #endif
     cmd = "\"" + cmd + "\"";
     if (!params.empty()) cmd += " " + params;
