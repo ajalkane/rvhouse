@@ -1,5 +1,16 @@
 RV House change log
 
+Version 0.94.4 (20.04.2018)
+- IP detection for P2P now uses revoltzone.net server.
+- Up to 24 players for RVGL version rooms.
+- RVGL is the default version for new rooms.
+- New Browse button in RVGL settings dialog.
+- Show timestamp along with chat messages.
+- Updated the links under Downloads and Help menus.
+- Disabled "Re-Volt not detected" registry warning on Windows.
+- Better reconnection attempts on central server timeout.
+- Fix: handle trailing slash in the RVGL launch path.
+
 Version 0.94.3 (30.05.2016)
 - Disabled the Kadc memory allocation assert.
 - Fix: crash when a room is closed.
