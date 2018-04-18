@@ -844,12 +844,16 @@ house::handle_ctz_message(::message *msg) {
         // The more times reconnect has been tried without getting
         // a connection, the longer time to wait. Give up
         // altogether if more than 5 times tried.
-        if (_conn_tries < 5) {
-            int conn_in_secs = 30 * _conn_tries;
-            ACE_DEBUG((LM_DEBUG, "house::installing reconnect timer %d secs\n",
-                       conn_in_secs));
-            QTimer::singleShot(conn_in_secs*1000, this, SLOT(reconnect()));
-        }
+
+        // NOTE(huki): I've disabled limit on retry attempts as we would
+        // need to attempt a reconnection in case the server disconnects
+        // the user because of inactivity.
+        //if (_conn_tries < 5) {
+        int conn_in_secs = 30; // * _conn_tries;
+        ACE_DEBUG((LM_DEBUG, "house::installing reconnect timer %d secs\n",
+                   conn_in_secs));
+        QTimer::singleShot(conn_in_secs*1000, this, SLOT(reconnect()));
+        //}
     }
         break;
     case message::ctz_group_server_unreachable:
