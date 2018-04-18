@@ -184,11 +184,12 @@ house_app::start() {
 
     _house_win->show();
 
-#ifdef WIN32
-    if (!game_registry()->is_open()) {
-        QMessageBox::warning(_house_win, langstr("app/rv_not_found_title"), langstr("app/rv_not_found"));
-    }
-#endif
+// NOTE(huki): Removed since registry not used by RVGL.
+//#ifdef WIN32
+//    if (!game_registry()->is_open()) {
+//        QMessageBox::warning(_house_win, langstr("app/rv_not_found_title"), langstr("app/rv_not_found"));
+//    }
+//#endif
 
     ACE_DEBUG((LM_DEBUG, "house_app::start main/gui_test: %d\n",
               conf()->get<bool>("main/gui_test", false)));
