@@ -372,4 +372,7 @@ allow_started_race_join = "Allow trying to join started races"
 
 rvgl_title      = "RVGL"
 rvgl_path       = "Path to installation:"
+rvgl_browse     = "Browse"
+rvgl_browse_desc    = "Locate the RVGL executable file"
+rvgl_browse_filter  = "RVGL Executable"
 rvgl_cmdline    = "Additional command-lines:"

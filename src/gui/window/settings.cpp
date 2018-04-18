@@ -223,11 +223,13 @@ settings_advanced::settings_advanced() {
 
     _rvgl_path_field    = new QLineEdit;
     _rvgl_path_field->setEnabled(true);
+    _rvgl_path_browse   = new QPushButton(langstr("settings_win/rvgl_browse"));
     _rvgl_cmdline_field = new QLineEdit;
     _rvgl_cmdline_field->setEnabled(true);
 
     rvgl_layout->addWidget(new QLabel(langstr("settings_win/rvgl_path")));
     rvgl_layout->addWidget(_rvgl_path_field);
+    rvgl_layout->addWidget(_rvgl_path_browse);
     rvgl_layout->addWidget(new QLabel(langstr("settings_win/rvgl_cmdline")));
     rvgl_layout->addWidget(_rvgl_cmdline_field);
 
@@ -239,7 +241,8 @@ settings_advanced::settings_advanced() {
 
     this->setLayout(l);
 
-    connect(_cmdline_switch_map[cmdline_manual_key],     SIGNAL(toggled(bool)), _cmdline_field, SLOT(setEnabled(bool)));
+    connect(_cmdline_switch_map[cmdline_manual_key], SIGNAL(toggled(bool)), _cmdline_field, SLOT(setEnabled(bool)));
+    connect(_rvgl_path_browse, SIGNAL(clicked()), this, SLOT(getPath()));
 }
 
 const char *
@@ -288,6 +291,27 @@ settings_advanced::load_settings() {
 
     std::string rvgl_cmdline = pref()->get<std::string>("advanced", rvgl_cmdline_key, "");
     _rvgl_cmdline_field->setText(rvgl_cmdline.c_str());
+}
+
+void
+settings_advanced::getPath() {
+    QString filter = langstr("settings_win/rvgl_browse_filter");
+    filter += " (rvgl.exe rvgl.32 rvgl.64 rvgl)";
+
+    QString path = QFileDialog::getOpenFileName(this, langstr("settings_win/rvgl_browse_desc"), _rvgl_path_field->text(), filter);
+    if (path.isEmpty()) return;
+
+#ifdef WIN32
+    path.replace('/', '\\');
+    int pos = path.lastIndexOf('\\');
+#else
+    int pos = path.lastIndexOf('/');
+#endif
+    if (pos != -1) {
+        path = path.left(pos);
+    }
+
+    _rvgl_path_field->setText(path);
 }
 
 void
