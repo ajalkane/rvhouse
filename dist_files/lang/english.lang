@@ -28,6 +28,8 @@ rvl_home        = "Home Page"
 rvl_champ       = "Championship"
 rvl_cup         = "Cup"
 
+rvio            = "Re-Volt I/O"
+
 rvr             = "Re-Volt Race"
 rvr_home        = "Home Page"
 rvr_best3       = "Best 3 Laps"
@@ -39,6 +41,7 @@ title           = "&Downloads"
 rvgl            = "RVGL (latest version)"
 rv12            = "Re-Volt 1.2 Patch"
 rvzone          = "Re-Volt Zone (tracks and cars)"
+rvio            = "Re-Volt I/O"
 xtg             = "Re-Volt XTG"
 jigebren        = "jigebren's Re-Volt stuff"
 
@@ -47,8 +50,9 @@ title           = "&Help"
 router_help     = "Router/Firewall Help"
 faq             = "RV House FAQ"
 wiki            = "Re-Volt Wiki"
+trh_forum       = "Re-Volt Hideout"
 pub_forum       = "Our Revolt Pub"
-rvl_forum       = "Revolt Live"
+rvl_forum       = "Re-Volt Live"
 about_house     = "About RV House"
 
 [login_win]
