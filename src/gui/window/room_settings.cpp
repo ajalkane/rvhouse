@@ -19,6 +19,7 @@
 namespace {
     const int max_rv_players = 12;
     const int max_rv12_players = 16;
+    const int max_rvgl_players = 24;
 }
 namespace gui {
 namespace window {
@@ -270,10 +271,11 @@ room_settings::version_state_changed() {
 
         if (_version_all->isChecked()) {
             _players_field->setMaximum(max_rv_players);
-        } else {
+        } else if (_version_12_only->isChecked()) {
             _players_field->setMaximum(max_rv12_players);
+        } else {
+            _players_field->setMaximum(max_rvgl_players);
         }
-
     }
     ACE_DEBUG((LM_DEBUG, "room_settings::/version_state_changed\n"));
 
