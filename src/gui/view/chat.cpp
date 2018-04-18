@@ -186,6 +186,8 @@ chat::public_message(
     {
         _insert_text("<", style_name_tag);
         _insert_text(from.display_id().c_str(), s_name);
+        _insert_text("@", style_name_tag);
+        _insert_text(QTime::currentTime().toString().toLatin1().constData(), s_name);
         _insert_text(">", style_name_tag);
         _insert_text(" ", s_text);
         _styled_content(msg, s_text);
@@ -342,7 +344,7 @@ chat::_styled_content(const std::string &msg, enum _style text_style) {
 void
 chat::_insert_url(const char *url, size_t len) {
     std::string stdurl(url, len);
-    // Note: clicking on links starting with www clear the chat
+    // NOTE(huki): clicking on links starting with www clears the chat
     if (!stdurl.substr(0, 3).compare("www")) {
         stdurl = "http://" + stdurl;
     }
