@@ -72,11 +72,11 @@ class house :
     QAction *_action_rvr_month_tracks;
 
     QAction *_action_dload_rvgl;
-    QAction *_action_dload_rv12;
+    //QAction *_action_dload_rv12;
     QAction *_action_dload_rvzone;
     QAction *_action_dload_rvio;
     QAction *_action_dload_xtg;
-    QAction *_action_dload_jigebren;
+    //QAction *_action_dload_jigebren;
 
     QAction *_action_routerfw_help;
     QAction *_action_rvh_faq;

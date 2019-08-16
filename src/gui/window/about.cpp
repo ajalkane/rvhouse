@@ -24,7 +24,7 @@ about::about(QWidget *parent)
     l->setSpacing(0);
     l->addWidget(new QLabel(APP_NAME " " APP_VERSION));
     l->addWidget(new QLabel);
-    l->addWidget(new QLabel("Copyright (C) 2006-2018 Arto Jalkanen"));
+    l->addWidget(new QLabel("Copyright (C) 2006-2019 Arto Jalkanen"));
     l->addWidget(new QLabel("Maintained by Huki"));
     l->addWidget(new QLabel);
     l->addWidget(new QLabel(langstr("about_win/license", "GPL").c_str()));
@@ -37,11 +37,9 @@ about::about(QWidget *parent)
     l->addWidget(new QLabel);
 
     std::list<const char *> urls;
-    urls.push_back("http://revoltzone.net");
-    urls.push_back("http://rv12.revoltzone.net");
-    urls.push_back("http://rvhouse.revoltzone.net");
-    urls.push_back("http://www.revoltrace.net");
     urls.push_back("http://www.re-volt.io");
+    urls.push_back("http://www.revoltzone.net");
+    urls.push_back("http://www.revoltrace.net");
     for (std::list<const char *>::iterator i = urls.begin(); i != urls.end(); ++i) {
         std::string ahref = "<a href=\"";
         ahref.append(*i);

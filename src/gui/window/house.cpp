@@ -108,11 +108,11 @@ house::_create_actions() {
     _action_rvr_month_tracks = new QAction(langstr("menu_comp/rvr_month"), this);
 
     _action_dload_rvgl = new QAction(langstr("menu_dloads/rvgl"), this);
-    _action_dload_rv12 = new QAction(langstr("menu_dloads/rv12"), this);
+    //_action_dload_rv12 = new QAction(langstr("menu_dloads/rv12"), this);
     _action_dload_rvzone = new QAction(langstr("menu_dloads/rvzone"), this);
     _action_dload_rvio = new QAction(langstr("menu_dloads/rvio"), this);
     _action_dload_xtg = new QAction(langstr("menu_dloads/xtg"), this);
-    _action_dload_jigebren = new QAction(langstr("menu_dloads/jigebren"), this);
+    //_action_dload_jigebren = new QAction(langstr("menu_dloads/jigebren"), this);
 
     _action_routerfw_help = new QAction(langstr("menu_help/router_help"), this);
     _action_rvh_faq = new QAction(langstr("menu_help/faq"), this);
@@ -159,11 +159,11 @@ house::_create_menus() {
     // Downloads menu
     _menu_dloads = new QMenu(langstr("menu_dloads/title"), this);
     _menu_dloads->addAction(_action_dload_rvgl);
-    _menu_dloads->addAction(_action_dload_rv12);
+    //_menu_dloads->addAction(_action_dload_rv12);
     _menu_dloads->addAction(_action_dload_rvzone);
     _menu_dloads->addAction(_action_dload_rvio);
     _menu_dloads->addAction(_action_dload_xtg);
-    _menu_dloads->addAction(_action_dload_jigebren);
+    //_menu_dloads->addAction(_action_dload_jigebren);
 
     // Help menu
     _menu_help = new QMenu(langstr("menu_help/title"), this);
@@ -249,11 +249,11 @@ house::_connect_signals() {
     openUrlSignalMapper->setMapping(_action_rvr_month_tracks, conf()->get_value("www/rvr_month").c_str());
 
     openUrlSignalMapper->setMapping(_action_dload_rvgl,     conf()->get_value("www/dloads_rvgl").c_str());
-    openUrlSignalMapper->setMapping(_action_dload_rv12,     conf()->get_value("www/dloads_rv12").c_str());
+    //openUrlSignalMapper->setMapping(_action_dload_rv12,     conf()->get_value("www/dloads_rv12").c_str());
     openUrlSignalMapper->setMapping(_action_dload_rvzone,   conf()->get_value("www/dloads_rvz").c_str());
     openUrlSignalMapper->setMapping(_action_dload_rvio,     conf()->get_value("www/dloads_rvio").c_str());
     openUrlSignalMapper->setMapping(_action_dload_xtg,      conf()->get_value("www/dloads_xtg").c_str());
-    openUrlSignalMapper->setMapping(_action_dload_jigebren, conf()->get_value("www/dloads_jig").c_str());
+    //openUrlSignalMapper->setMapping(_action_dload_jigebren, conf()->get_value("www/dloads_jig").c_str());
 
     openUrlSignalMapper->setMapping(_action_routerfw_help,  conf()->get_value("www/help_router").c_str());
     openUrlSignalMapper->setMapping(_action_rvh_faq,        conf()->get_value("www/help_faq").c_str());
@@ -269,11 +269,11 @@ house::_connect_signals() {
     connect(_action_rvr_month_tracks, SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
 
     connect(_action_dload_rvgl,      SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
-    connect(_action_dload_rv12,      SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+    //connect(_action_dload_rv12,      SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
     connect(_action_dload_rvzone,    SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
     connect(_action_dload_rvio,      SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
     connect(_action_dload_xtg,       SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
-    connect(_action_dload_jigebren,  SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+    //connect(_action_dload_jigebren,  SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
 
     connect(_action_routerfw_help,   SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
     connect(_action_rvh_faq,         SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
