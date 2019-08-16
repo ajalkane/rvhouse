@@ -1,6 +1,6 @@
 DIST_BASENAME=rv_house
 DIST_FILES=LICENSE README Makefile SConstruct build_config.py.dist build_support.py src build install dist_files
-DIST_INNO="$(HOME)/.wine/drive_c/Program Files/Inno Setup 5/Compil32.exe"
+DIST_INNO="$(HOME)/.wine/drive_c/Program Files (x86)/Inno Setup 5/Compil32.exe"
 DIST_PATH=install.bin
 
 default: release

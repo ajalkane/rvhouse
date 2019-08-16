@@ -2,8 +2,6 @@
 *.cc
 *.pyc
 *.dblite
-*.dll
-*.so
 build_config.py
 /install.bin*
 /linux_bin_dist*
