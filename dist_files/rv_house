@@ -1,0 +1,15 @@
+#!/bin/bash
+
+DIR="$(dirname "$(readlink -f "$0")")"
+
+cd "$DIR"
+
+LIB_DIR="$DIR/lib"
+
+exec="./rv_house.32"
+
+export LD_LIBRARY_PATH=$LIB_DIR:$LD_LIBRARY_PATH
+export QT_PLUGIN_PATH=$LIB_DIR/qt4/plugins
+export GTK_PATH=$LIB_DIR/gtk-2.0/2.10.0
+
+$exec $@

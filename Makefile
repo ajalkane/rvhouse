@@ -46,7 +46,7 @@ linux_bin_dist:
 	rm $(DIST_PATH)/rv_house/*.dll
 	rm -rf $(DIST_PATH)/rv_house/imageformats
 	cp -p dist_files/gpl.txt $(DIST_PATH)/rv_house
-	cp -p build/linux2/Release/rv_house $(DIST_PATH)/rv_house
+	cp -p build/linux2/Release/rv_house $(DIST_PATH)/rv_house.32
 	cd $(DIST_PATH); tar -cvf rv_house_linux.tar --exclude '.*' rv_house; gzip -f rv_house_linux.tar
 
 win_bin_dist:
