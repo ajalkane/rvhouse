@@ -51,7 +51,7 @@ client::handle_response(const http::response &resp)
     const char *str_e = strchr(str_s, '\n');
 
     message_global_ignore *m = new message_global_ignore(message::global_ignore_list);
-    auto_ptr<message_global_ignore> m_guard(m);
+    std::auto_ptr<message_global_ignore> m_guard(m);
     // Go through the file line by line
     for (; str_e; str_s = str_e + 1, str_e = strchr(str_s, '\n')) {
         if (str_e > str_s && *(str_e-1) == '\r') --str_e;

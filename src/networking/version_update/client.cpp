@@ -51,7 +51,7 @@ client::handle_response(const http::response &resp)
     const char *str_e = strchr(str_s, '\n');
 
     message_version *m = new message_version(message::version);
-    auto_ptr<message_version> m_guard(m);
+    std::auto_ptr<message_version> m_guard(m);
     // Go through the file line by line
     for (; str_e; str_s = str_e + 1, str_e = strchr(str_s, '\n')) {
         const char *end_of_cr = strchr(str_s, '\r');
