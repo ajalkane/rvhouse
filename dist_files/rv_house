@@ -6,7 +6,27 @@ cd "$DIR"
 
 LIB_DIR="$DIR/lib"
 
-exec="./rv_house.32"
+exec="./$(basename $0).32"
+
+launcher="$HOME/.local/share/applications/RV House.desktop"
+if [ ! -e "$launcher" ]; then
+  echo "Creating launcher..."
+  mkdir -p "$HOME/.local/share/applications"
+  echo "[Desktop Entry]" > "$launcher"
+  echo "Comment=Lobby and chat client for Re-Volt" >> "$launcher"
+  echo "Terminal=false" >> "$launcher"
+  echo "Name=RV House" >> "$launcher"
+  echo "Type=Application" >> "$launcher"
+  echo "Categories=Network;" >> "$launcher"
+  echo -n "Path=" >> "$launcher"
+  echo "$DIR" >> "$launcher"
+  echo -n "Exec=" >> "$launcher"
+  echo -n "$DIR" >> "$launcher"
+  echo "/rv_house" >> "$launcher"
+  echo -n "Icon=" >> "$launcher"
+  echo -n "$DIR" >> "$launcher"
+  echo "/img/rv_house.png" >> "$launcher"
+fi
 
 export LD_LIBRARY_PATH=$LIB_DIR:$LD_LIBRARY_PATH
 export QT_PLUGIN_PATH=$LIB_DIR/qt4/plugins
