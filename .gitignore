@@ -6,7 +6,6 @@ build_config.py
 /install.bin*
 /linux_bin_dist*
 /patches*
-/server*
 /build/win32/Debug*
 /build/win32/Release*
 /build/linux/Debug*
