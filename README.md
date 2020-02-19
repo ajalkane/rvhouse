@@ -3,7 +3,7 @@ RV House
 
 Lobby application for Re-Volt multiplayer games.
 
-The source is licensed fully under GPL.
+The source is licensed fully under GPL.  
 See LICENSE for details.
 
 Building
@@ -35,7 +35,7 @@ To create a Windows installer:
 To create a Linux tarball:  
 `make linux_dist`
 
-For needed libraries and other installation details, see also:
+For needed libraries and other installation details, see also:  
 <http://rvhouse.revoltzone.net/index.php?section=sources>
 
 Dependencies
@@ -71,5 +71,5 @@ Dependencies
 Contact
 -------
 
-Arto Jalkanen (ajalkane@gmail.com)
+Arto Jalkanen (ajalkane@gmail.com)  
 Huki (gk7huki@gmail.com)
