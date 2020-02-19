@@ -9,5 +9,6 @@ build_config.py
 /server*
 /build/win32/Debug*
 /build/win32/Release*
-/build/linux2/Debug*
-/build/linux2/Release*
+/build/linux/Debug*
+/build/linux/Release*
+/external*

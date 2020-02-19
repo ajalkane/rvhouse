@@ -15,7 +15,8 @@ import glob
 ## libz (needed by KadC)
 ## pthreadGC (needed by KadC)
 
-qt_dir = '/path/to/qt_install'
+# Only needed under Windows
+qt_dir = '#external/$BUILD_PLATFORM/Qt-4.8.7' # '/path/to/qt_install'
 # Only needed under Linux
 # qt_pkg_config_path = os.path.join(qt_dir, 'lib/pkgconfig')
 # Under windows can be empty:
@@ -25,33 +26,34 @@ qt_pkg_config_path = '';
 ## Use convention <platform>/[Debug|Release]/library for the libs
 ## that support it
 ## Modify to suit your compiling environment
-lib_search_path = ['#../../../libs/build/$BUILD_VARIANT',
-                   'c:/Boost/lib',
-                   '#../../libreudp/trunk/build/$BUILD_PLATFORM/$BUILD_VARIANT',
-                   '#../../libdht/trunk/build/$BUILD_PLATFORM/$BUILD_VARIANT',
-                   '#../../netcomgrp/build/$BUILD_PLATFORM/$BUILD_VARIANT']
+lib_search_path = ['#external/$BUILD_PLATFORM/ACE_wrappers/lib',
+                   '#external/$BUILD_PLATFORM/boost_1_55_0/lib',
+                   '#external/$BUILD_PLATFORM/KadC',
+                   '#external/libreudp/build/$BUILD_PLATFORM/$BUILD_VARIANT',
+                   '#external/libdht/build/$BUILD_PLATFORM/$BUILD_VARIANT',
+                   '#external/libnetcomgrp/build/$BUILD_PLATFORM/$BUILD_VARIANT']
 
 ## Where we should find things to include
 ## Modify to suit your compiling environment
-include_search_path =  ['#../../../libs/ACE_wrappers',
-                        'c:/Boost/include/boost-1_33',
-                         # For KadC
-                        '#../../../libs',
-                        '#./src',
-                        '#../../libreudp/trunk/src',
-                        '#../../libdht/trunk/src',
-                        '#../../netcomgrp/src']
+include_search_path =  ['#external/$BUILD_PLATFORM/ACE_wrappers',
+                        '#external/$BUILD_PLATFORM/boost_1_55_0',
+                        '#external/$BUILD_PLATFORM', # For KadC
+                        '#external/libreudp/src',
+                        '#external/libdht/src',
+                        '#external/libnetcomgrp/src',
+                        '#src']
 
-libs = ['netcomgrp','reudp','dht','ACE',
-        'KadC','pthreadGC','z',
+libs = ['netcomgrp','reudp','dht','KadC',
+        'ACE','pthread','z',
         'boost_serialization',
         # Needed by Qt (platform dependent?)
         #'png','tiff','rt'
         ]
-defs = ['ACE_AS_STATIC_LIBS', ('ACE_NTRACE', 1),
+defs = [('ACE_NTRACE', 1), #'ACE_AS_STATIC_LIBS',
         '__KADC_DO_NOT_REDEFINE_ALLOC_MACROS__',
-        '_REENTRANT']
-flgs = ['-Wall']
+        '_REENTRANT', ('_GLIBCXX_USE_CXX11_ABI', 0)]
+cflags = ['-Wall', '-m32', '-fno-pie', '-std=gnu++98']
+lflags = ['-m32', '-no-pie']
 
 #### You should not change these.  These are only here
 #### If you want to start your own build setup with a
@@ -60,5 +62,3 @@ source_base_dir = 'src'
 resource_file   = 'resource.res'
 build_base_dir = 'build'
 target_name = 'rv_house'
-
-

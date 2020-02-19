@@ -11,7 +11,7 @@ def SelectBuildDir(build_dir, platform=None):
     if not(platform):
         platform = sys.platform
 
-    print "Looking for build directory for platform '%s'" % platform
+    print("Looking for build directory for platform '%s'" % platform)
 
     # setup where we start looking at first
     test_dir = build_dir + os.sep + platform
@@ -24,7 +24,7 @@ def SelectBuildDir(build_dir, platform=None):
         # make sure it is a directory
         target_dir = test_dir
     else:
-        print "Exact match not found, finding closest guess"
+        print("Exact match not found, finding closest guess")
 
         # looks like there isn't an exact match
         # find the closest matching directory
@@ -37,17 +37,17 @@ def SelectBuildDir(build_dir, platform=None):
                  found_match = 1
                  break
         if not(found_match):
-            print "No match found, looking for 'default' directory"
+            print("No match found, looking for 'default' directory")
             # looks like this platform isn't available
             # try the default target
             if os.path.exists(default_dir):
                 target_dir = default_dir
             else:
                 # bad, nothing is available, tell the user
-                print "No build directories found for your platform '%s'" % platform
+                print("No build directories found for your platform '%s'" % platform)
                 return None
 
-    print "Found directory %s, will build there" % target_dir
+    print("Found directory %s, will build there" % target_dir)
     return target_dir
 
 
@@ -55,10 +55,10 @@ def RequireFiles(files, found_files, search_path):
     i = 0
     for file in found_files:
         if not(file):
-            print "ERROR:  Could not find the %s file in:" % files[i]
-            print "ERROR:  \t%s" % search_path
-            print "ERROR:  Edit the build_config.py file and add"
-            print "ERROR:  the location of this file to the appropriate variable."
+            print("ERROR:  Could not find the %s file in:" % files[i])
+            print("ERROR:  \t%s" % search_path)
+            print("ERROR:  Edit the build_config.py file and add")
+            print("ERROR:  the location of this file to the appropriate variable.")
 
             sys.exit(1)
 

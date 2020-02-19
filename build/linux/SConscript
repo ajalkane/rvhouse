@@ -1,0 +1,14 @@
+# import these variables from the parent build script
+Import('env', 'sources', 'target_name', 'resource', 'mode', 'libs')
+
+env.Append(LINKFLAGS = ['-static-libstdc++'])
+#env.Append(LIBS = ['dl'])
+
+# env.RES(resource)
+#env.Append(CPPFLAGS = '-mthreads')
+#env.Append(LINKFLAGS = '-mwindows')
+sources.remove("#build/linux/" + mode + "/executable/impl/launcher_dx7.cpp")
+sources.remove("#build/linux/" + mode + "/executable/impl/launcher_filetype_win32.cpp")
+sources.remove("#build/linux/" + mode + "/executable/impl/launcher_rvtm.cpp")
+sources.remove("#build/linux/" + mode + "/resource.o")
+env.Program(target=target_name, source=sources)
