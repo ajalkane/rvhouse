@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "RV House"
-#define MyAppVerName "RV House 0.94.4"
+#define MyAppVersion "0.94.4"
 #define MyAppPublisher "Arto Jalkanen"
 #define MyAppURL "http://rvhouse.revoltzone.net"
 #define MyAppExeName "rv_house.exe"
@@ -14,7 +14,8 @@
 
 [Setup]
 AppName={#MyAppName}
-AppVerName={#MyAppVerName}
+AppVersion={#MyAppVersion}
+AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
@@ -28,12 +29,15 @@ OutputDir=..\install.bin
 Compression=lzma
 SolidCompression=yes
 SetupIconFile=..\dist_files\img\rv_house_win_installer.ico
+UninstallDisplayIcon={app}\rv_house.exe
+DisableWelcomePage=no
+DisableDirPage=no
 
 [Languages]
 Name: english; MessagesFile: compiler:Default.isl
 
 [Tasks]
-Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
+Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons};
 
 [Files]
 Source: ..\build\win32\Release\rv_house.exe; DestDir: {app}; Flags: ignoreversion
