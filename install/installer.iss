@@ -30,6 +30,7 @@ Compression=lzma
 SolidCompression=yes
 SetupIconFile=..\dist_files\img\rv_house_win_installer.ico
 UninstallDisplayIcon={app}\rv_house.exe
+VersionInfoVersion={#MyAppVersion}
 DisableWelcomePage=no
 DisableDirPage=no
 
