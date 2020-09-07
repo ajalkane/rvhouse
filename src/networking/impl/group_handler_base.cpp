@@ -6,6 +6,7 @@
 #include "../../chat_gaming/pdu/message.h"
 #include "../../chat_gaming/pdu/room_join.h"
 #include "../../chat_gaming/pdu/room_command.h"
+#include "../../messaging/message_string.h"
 #include "../../messaging/message_user.h"
 #include "../../messaging/message_room.h"
 #include "../../messaging/message_room_join.h"
@@ -312,6 +313,13 @@ group_handler_base::node_added(const netcomgrp::node *n) {
             ACE_ERROR((LM_ERROR, "group_handler_base: user self, not found " \
                       "from house\n"));
             return 0;
+        }
+
+        // set the user's public IP from centralized server
+        const std::string &ipstr = n->addr().get_host_addr();
+        if (s.ip_as_string().empty() && !ipstr.empty()) {
+            ACE_DEBUG((LM_DEBUG, "group_handler_base::node_added setting ip string: %s\n", ipstr.c_str()));
+            gui_messenger()->send_msg(new message_string(message::external_ip_fetch_done, ipstr));
         }
 
         user_update(*ui, self_ref, n);
