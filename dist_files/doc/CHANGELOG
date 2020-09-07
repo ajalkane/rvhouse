@@ -1,5 +1,10 @@
 RV House change log
 
+Version 0.94.6 (08.09.2020)
+- Disabled P2P in config file (no longer working since Overnet peers are dead).
+- Detect IP from centralized server when joined.
+- Windows: Upgrade ACE to 6.3.3.
+
 Version 0.94.5 (20.02.2020)
 - New centralized server.
 - Updated about page and links.
