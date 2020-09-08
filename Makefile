@@ -48,6 +48,7 @@ linux_dist:
 	cp -p dist_files/gpl.txt $(DIST_PATH)/rv_house
 	cp -p build/linux/Release/rv_house $(DIST_PATH)/rv_house/rv_house.32
 	cd $(DIST_PATH); tar -cvf rv_house_linux.tar --exclude '.*' rv_house; gzip -f rv_house_linux.tar
+	rm -rf $(DIST_PATH)/rv_house
 
 win32_dist:
 	#strip build/win32/Release/rv_house.exe
