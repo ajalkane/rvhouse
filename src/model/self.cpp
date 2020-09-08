@@ -14,9 +14,10 @@ namespace model {
 self::self()
   : _seq(1),
     _user(NULL),
-    _room_version(false),
+    _room_version(true),
     _room_version_all(false),
-    _room_version_12_only(false) {}
+    _room_version_12_only(false),
+    _room_version_rvgl(true) {}
 
 message *
 self::user_as_message() {
@@ -54,9 +55,10 @@ self::clear() {
     _user = user_type(NULL);
     _room = room_type();
     _joining_room = room_type::id_type();
-    _room_version = false;
+    _room_version = true;
     _room_version_all = false;
     _room_version_12_only = false;
+    _room_version_rvgl = true;
 }
     
 } // ns model

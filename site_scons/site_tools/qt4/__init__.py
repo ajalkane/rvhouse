@@ -189,29 +189,29 @@ class _Automoc:
             h = find_file(hname, [cpp.get_dir()]+moc_options['cpppaths'], env.File)
             if h:
                 if moc_options['debug']:
-                    print "scons: qt4: Scanning '%s' (header of '%s')" % (str(h), str(cpp))
-                h_contents = h.get_contents()
+                    print("scons: qt4: Scanning '%s' (header of '%s')" % (str(h), str(cpp)))
+                h_contents = h.get_contents().decode('utf-8')
                 if moc_options['gobble_comments']:
                     h_contents = self.ccomment.sub('', h_contents)
                     h_contents = self.cxxcomment.sub('', h_contents)
                 h_contents = self.literal_qobject.sub('""', h_contents)
                 break
         if not h and moc_options['debug']:
-            print "scons: qt4: no header for '%s'." % (str(cpp))
+            print("scons: qt4: no header for '%s'." % (str(cpp)))
         if h and self.qo_search.search(h_contents):
             # h file with the Q_OBJECT macro found -> add moc_cpp
             moc_cpp = env.Moc4(h)
             moc_o = self.objBuilder(moc_cpp)
             out_sources.extend(moc_o)
             if moc_options['debug']:
-                print "scons: qt4: found Q_OBJECT macro in '%s', moc'ing to '%s'" % (str(h), str(moc_cpp))
+                print("scons: qt4: found Q_OBJECT macro in '%s', moc'ing to '%s'" % (str(h), str(moc_cpp)))
         if cpp and self.qo_search.search(cpp_contents):
             # cpp file with Q_OBJECT macro found -> add moc
             # (to be included in cpp)
             moc = env.Moc4(cpp)
             env.Ignore(moc, moc)
             if moc_options['debug']:
-                print "scons: qt4: found Q_OBJECT macro in '%s', moc'ing to '%s'" % (str(cpp), str(moc))
+                print("scons: qt4: found Q_OBJECT macro in '%s', moc'ing to '%s'" % (str(cpp), str(moc)))
 
     def __automoc_strategy_include_driven(self, env, moc_options,
                                           cpp, cpp_contents, out_sources):
@@ -246,15 +246,15 @@ class _Automoc:
                     h = find_file(hname, [cpp.get_dir()]+moc_options['cpppaths'], env.File)
                     if h:
                         if moc_options['debug']:
-                            print "scons: qt4: Scanning '%s' (header of '%s')" % (str(h), str(cpp))
-                        h_contents = h.get_contents()
+                            print("scons: qt4: Scanning '%s' (header of '%s')" % (str(h), str(cpp)))
+                        h_contents = h.get_contents().decode('utf-8')
                         if moc_options['gobble_comments']:
                             h_contents = self.ccomment.sub('', h_contents)
                             h_contents = self.cxxcomment.sub('', h_contents)
                         h_contents = self.literal_qobject.sub('""', h_contents)
                         break
                 if not h and moc_options['debug']:
-                    print "scons: qt4: no header for '%s'." % (str(cpp))
+                    print("scons: qt4: no header for '%s'." % (str(cpp)))
                 if h and self.qo_search.search(h_contents):
                     # h file with the Q_OBJECT macro found -> add moc_cpp
                     moc_cpp = env.XMoc4(h)
@@ -268,10 +268,10 @@ class _Automoc:
                                 out_sources.pop(idx)
                                 break
                     if moc_options['debug']:
-                        print "scons: qt4: found Q_OBJECT macro in '%s', moc'ing to '%s'" % (str(h), str(h_moc))
+                        print("scons: qt4: found Q_OBJECT macro in '%s', moc'ing to '%s'" % (str(h), str(h_moc)))
                 else:
                     if moc_options['debug']:
-                        print "scons: qt4: found no Q_OBJECT macro in '%s', but a moc'ed version '%s' gets included in '%s'" % (str(h), inc_h_moc, cpp.name)
+                        print("scons: qt4: found no Q_OBJECT macro in '%s', but a moc'ed version '%s' gets included in '%s'" % (str(h), inc_h_moc, cpp.name))
 
             if cpp and re.search(inc_cxx_moc, cpp_contents):
                 # cpp file with #include directive for a MOCed cxx file found -> add moc
@@ -280,10 +280,10 @@ class _Automoc:
                     env.Ignore(moc, moc)
                     added = True
                     if moc_options['debug']:
-                        print "scons: qt4: found Q_OBJECT macro in '%s', moc'ing to '%s'" % (str(cpp), str(moc))
+                        print("scons: qt4: found Q_OBJECT macro in '%s', moc'ing to '%s'" % (str(cpp), str(moc)))
                 else:
                     if moc_options['debug']:
-                        print "scons: qt4: found no Q_OBJECT macro in '%s', although a moc'ed version '%s' of itself gets included" % (cpp.name, inc_cxx_moc)
+                        print("scons: qt4: found no Q_OBJECT macro in '%s', although a moc'ed version '%s' of itself gets included" % (cpp.name, inc_cxx_moc))
 
             if not added:
                 # Fallback to default Automoc strategy (Q_OBJECT driven)
@@ -315,27 +315,28 @@ class _Automoc:
         for obj in source:
             if not moc_options['auto_scan']:
                 break
-            if isinstance(obj,basestring):  # big kludge!
-                print "scons: qt4: '%s' MAYBE USING AN OLD SCONS VERSION AND NOT CONVERTED TO 'File'. Discarded." % str(obj)
+            if isinstance(obj,str):  # big kludge!
+                print("scons: qt4: '%s' MAYBE USING AN OLD SCONS VERSION AND NOT CONVERTED TO 'File'. Discarded." % str(obj))
                 continue
             if not obj.has_builder():
                 # binary obj file provided
                 if moc_options['debug']:
-                    print "scons: qt4: '%s' seems to be a binary. Discarded." % str(obj)
+                    print("scons: qt4: '%s' seems to be a binary. Discarded." % str(obj))
                 continue
             cpp = obj.sources[0]
             if not self.splitext(str(cpp))[1] in cxx_suffixes:
                 if moc_options['debug']:
-                    print "scons: qt4: '%s' is no cxx file. Discarded." % str(cpp) 
+                    print("scons: qt4: '%s' is no cxx file. Discarded." % str(cpp))
                 # c or fortran source
                 continue
             try:
-                cpp_contents = cpp.get_contents()
+                cpp_contents = cpp.get_contents().decode('utf-8')
                 if moc_options['gobble_comments']:
                     cpp_contents = self.ccomment.sub('', cpp_contents)
                     cpp_contents = self.cxxcomment.sub('', cpp_contents)
                 cpp_contents = self.literal_qobject.sub('""', cpp_contents)
-            except: continue # may be an still not generated source
+            except:
+                continue # may be an still not generated source
             
             if moc_options['auto_scan_strategy'] == 0:
                 # Default Automoc strategy (Q_OBJECT driven)
@@ -398,7 +399,7 @@ def __scanResources(node, env, path, arg):
             else:
                 result.append(itemPath)
         return result
-    contents = node.get_contents()
+    contents = node.get_contents().decode('utf-8')
     includes = qrcinclude_re.findall(contents)
     qrcpath = os.path.dirname(node.path)
     dirs = [included for included in includes if os.path.isdir(os.path.join(qrcpath,included))]
@@ -882,7 +883,7 @@ def enable_modules(self, modules, debug=False, crosscompiling=False) :
         try : self.AppendUnique(CPPDEFINES=moduleDefines[module])
         except: pass
     debugSuffix = ''
-    if sys.platform in ["darwin", "linux2"] and not crosscompiling :
+    if sys.platform in ["darwin", "linux"] and not crosscompiling :
         if debug : debugSuffix = '_debug'
         for module in modules :
             if module not in pclessModules : continue
@@ -901,9 +902,12 @@ def enable_modules(self, modules, debug=False, crosscompiling=False) :
         self["QT4_MOCCPPPATH"] = self["CPPPATH"]
         return
     if sys.platform == "win32" or crosscompiling :
-        if crosscompiling:
-            transformedQtdir = transformToWinePath(self['QT4DIR'])
-            self['QT4_MOC'] = "QT4DIR=%s %s"%( transformedQtdir, self['QT4_MOC'])
+        # NOTE(Huki 19.02.2020): Disabled this for now since scons format relative paths cannot
+        # be transformed properly. Cross-compiling should work by using host's native moc-qt4
+        # as long as those binaries are not present in the win32 Qt4/bin folder.
+        #if crosscompiling:
+        #    transformedQtdir = transformToWinePath(self['QT4DIR'])
+        #    self['QT4_MOC'] = "QT4DIR=%s %s"%( transformedQtdir, self['QT4_MOC'])
         self.AppendUnique(CPPPATH=[os.path.join("$QT4DIR","include")])
         try: modules.remove("QtDBus")
         except: pass
@@ -914,20 +918,21 @@ def enable_modules(self, modules, debug=False, crosscompiling=False) :
             modules.append("QtAssistantClient")
         self.AppendUnique(LIBS=['qtmain'+debugSuffix])
         # NOTE: ajalkane@gmail 19.06.2011: replaced this without +4 version, at least in mingw there's no such appending of 4 to the lib name
-        # self.AppendUnique(LIBS=[lib+debugSuffix+'4' for lib in modules if lib not in staticModules])
-        self.AppendUnique(LIBS=[lib+debugSuffix for lib in modules if lib not in staticModules])
+        # NOTE(Huki 30.10.2015): restored the +4 as the pre-built mingw binaries from the qt website do have the suffix
+        self.AppendUnique(LIBS=[lib+debugSuffix+'4' for lib in modules if lib not in staticModules])
         self.PrependUnique(LIBS=[lib+debugSuffix for lib in modules if lib in staticModules])
         if 'QtOpenGL' in modules:
             self.AppendUnique(LIBS=['opengl32'])
         self.AppendUnique(CPPPATH=[ '$QT4DIR/include/'])
         self.AppendUnique(CPPPATH=[ '$QT4DIR/include/'+module for module in modules])
-        if crosscompiling :
-            self["QT4_MOCCPPPATH"] = [
-                path.replace('$QT4DIR', transformedQtdir)
-                    for path in self['CPPPATH'] ]
-        else :
-            self["QT4_MOCCPPPATH"] = self["CPPPATH"]
+        #if crosscompiling :
+        #    self["QT4_MOCCPPPATH"] = [
+        #        path.replace('$QT4DIR', transformedQtdir)
+        #            for path in self['CPPPATH'] ]
+        #else :
+        #    self["QT4_MOCCPPPATH"] = self["CPPPATH"]
         self.AppendUnique(LIBPATH=[os.path.join('$QT4DIR','lib')])
+        self["QT4_MOCCPPPATH"] = self["CPPPATH"]
         return
     """
     if sys.platform=="darwin" :

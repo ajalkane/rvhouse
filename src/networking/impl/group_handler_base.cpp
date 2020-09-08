@@ -6,6 +6,7 @@
 #include "../../chat_gaming/pdu/message.h"
 #include "../../chat_gaming/pdu/room_join.h"
 #include "../../chat_gaming/pdu/room_command.h"
+#include "../../messaging/message_string.h"
 #include "../../messaging/message_user.h"
 #include "../../messaging/message_room.h"
 #include "../../messaging/message_room_join.h"
@@ -314,6 +315,13 @@ group_handler_base::node_added(const netcomgrp::node *n) {
             return 0;
         }
 
+        // set the user's public IP from centralized server
+        const std::string &ipstr = n->addr().get_host_addr();
+        if (s.ip_as_string().empty() && !ipstr.empty()) {
+            ACE_DEBUG((LM_DEBUG, "group_handler_base::node_added setting ip string: %s\n", ipstr.c_str()));
+            gui_messenger()->send_msg(new message_string(message::external_ip_fetch_done, ipstr));
+        }
+
         user_update(*ui, self_ref, n);
 
         ACE_DEBUG((LM_DEBUG, "group_handler_base::node_added user self2 now %s (room_id %s) grp %d\n",
@@ -591,8 +599,11 @@ group_handler_base::user_update(chat_gaming::user &old, chat_gaming::user &upd, 
     // Check if the user's update will close some room
     if (!old.room_id().empty() && old.room_id() != upd.room_id()) {
         _house_type::room_iterator ri = _house.room_find(old.room_id());
-        if (ri->owner_id() == upd.id())
-            _room_closed_update(old.room_id(),upd.id());
+        if (ri != _house.room_end() &&
+            ri->owner_id() == upd.id())
+        {
+            _room_closed_update(old.room_id(), upd.id());
+        }
     }
     gui_messenger()->send_msg(
         new message_user(message::user, upd, upd.sequence(), _grp_msg_base));

@@ -101,15 +101,25 @@ house::_create_actions() {
     _actiongroup_status->addAction(_action_donotdisturb);
     _action_chatting->setChecked(true);
 
-    _action_rvr = new QAction(langstr("menu_comp/rvr"), this);
-    _action_rvr->setDisabled(true);
-    _action_rvr_wwwsite = new QAction(langstr("menu_comp/rvr_home"), this);
-    _action_rvr_1vs1 = new QAction(langstr("menu_comp/rvr_1vs1"), this);
-    _action_rvr_player_profiles = new QAction(langstr("menu_comp/rvr_players"), this);
+    _action_rvio_online = new QAction(langstr("menu_comp/rvio"), this);
+    _action_rvr_home = new QAction(langstr("menu_comp/rvr"), this);
+    _action_rvr_best3_laps = new QAction(langstr("menu_comp/rvr_best3"), this);
+    _action_rvr_best4_laps = new QAction(langstr("menu_comp/rvr_best4"), this);
+    _action_rvr_month_tracks = new QAction(langstr("menu_comp/rvr_month"), this);
+
+    _action_dload_rvgl = new QAction(langstr("menu_dloads/rvgl"), this);
+    //_action_dload_rv12 = new QAction(langstr("menu_dloads/rv12"), this);
+    _action_dload_rvzone = new QAction(langstr("menu_dloads/rvzone"), this);
+    _action_dload_rvio = new QAction(langstr("menu_dloads/rvio"), this);
+    _action_dload_xtg = new QAction(langstr("menu_dloads/xtg"), this);
+    //_action_dload_jigebren = new QAction(langstr("menu_dloads/jigebren"), this);
 
     _action_routerfw_help = new QAction(langstr("menu_help/router_help"), this);
     _action_rvh_faq = new QAction(langstr("menu_help/faq"), this);
-    _action_connection_help = new QAction(langstr("menu_help/conn_help"), this);
+    _action_rv_wiki = new QAction(langstr("menu_help/wiki"), this);
+    _action_trh_forum = new QAction(langstr("menu_help/trh_forum"), this);
+    //_action_pub_forum = new QAction(langstr("menu_help/pub_forum"), this);
+    //_action_rvl_forum = new QAction(langstr("menu_help/rvl_forum"), this);
     _action_about_rvh = new QAction(app_icons()->get("about"), langstr("menu_help/about_house"), this);
 
     _action_create_room = new QAction(app_icons()->get("room_create"), langstr("menu_player/create_room"), this);
@@ -139,17 +149,30 @@ house::_create_menus() {
 
     // Competitions menu
     _menu_comp = new QMenu(langstr("menu_comp/title"), this);
-    _menu_comp->addAction(_action_rvr);
+    _menu_comp->addAction(_action_rvio_online);
+    _menu_comp->addAction(_action_rvr_home);
     _menu_comp->addSeparator();
-    _menu_comp->addAction(_action_rvr_wwwsite);
-    _menu_comp->addAction(_action_rvr_1vs1);
-    _menu_comp->addAction(_action_rvr_player_profiles);
+    _menu_comp->addAction(_action_rvr_best3_laps);
+    _menu_comp->addAction(_action_rvr_best4_laps);
+    _menu_comp->addAction(_action_rvr_month_tracks);
+
+    // Downloads menu
+    _menu_dloads = new QMenu(langstr("menu_dloads/title"), this);
+    _menu_dloads->addAction(_action_dload_rvgl);
+    //_menu_dloads->addAction(_action_dload_rv12);
+    _menu_dloads->addAction(_action_dload_rvzone);
+    _menu_dloads->addAction(_action_dload_rvio);
+    _menu_dloads->addAction(_action_dload_xtg);
+    //_menu_dloads->addAction(_action_dload_jigebren);
 
     // Help menu
     _menu_help = new QMenu(langstr("menu_help/title"), this);
     _menu_help->addAction(_action_routerfw_help);
     _menu_help->addAction(_action_rvh_faq);
-    _menu_help->addAction(_action_connection_help);
+    _menu_help->addAction(_action_rv_wiki);
+    _menu_help->addAction(_action_trh_forum);
+    //_menu_help->addAction(_action_pub_forum);
+    //_menu_help->addAction(_action_rvl_forum);
     _menu_help->addSeparator();
     _menu_help->addAction(_action_about_rvh);
 
@@ -157,6 +180,7 @@ house::_create_menus() {
     menuBar()->addMenu(_menu_edit);
     menuBar()->addMenu(_menu_player);
     menuBar()->addMenu(_menu_comp);
+    menuBar()->addMenu(_menu_dloads);
     menuBar()->addMenu(_menu_help);
 }
 
@@ -213,29 +237,50 @@ house::_connect_signals() {
 
     connect(_action_settings,  SIGNAL(triggered()), this, SLOT(open_settings()));
 
-    _menu_comp->addAction(_action_rvr_1vs1);
-    _menu_comp->addAction(_action_rvr_player_profiles);
-
     connect(_action_about_rvh, SIGNAL(triggered()), this, SLOT(open_about()));
     connect(_rooms_view,       SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(room_join_selected(QTreeWidgetItem *, int)));
     connect(_users_view,       SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(open_private_room(QTreeWidgetItem *, int)));
 
     QSignalMapper *openUrlSignalMapper = new QSignalMapper(this);
-    openUrlSignalMapper->setMapping(_action_rvr_wwwsite,         conf()->get_value("www/rvr_home").c_str());
-    openUrlSignalMapper->setMapping(_action_rvr_1vs1,            conf()->get_value("www/rvr_1vs1").c_str());
-    openUrlSignalMapper->setMapping(_action_rvr_player_profiles, conf()->get_value("www/rvr_players").c_str());
+    openUrlSignalMapper->setMapping(_action_rvio_online,      conf()->get_value("www/rvio_online").c_str());
+    openUrlSignalMapper->setMapping(_action_rvr_home,         conf()->get_value("www/rvr_home").c_str());
+    openUrlSignalMapper->setMapping(_action_rvr_best3_laps,   conf()->get_value("www/rvr_best3").c_str());
+    openUrlSignalMapper->setMapping(_action_rvr_best4_laps,   conf()->get_value("www/rvr_best4").c_str());
+    openUrlSignalMapper->setMapping(_action_rvr_month_tracks, conf()->get_value("www/rvr_month").c_str());
 
-    openUrlSignalMapper->setMapping(_action_routerfw_help,   conf()->get_value("www/help_router").c_str());
-    openUrlSignalMapper->setMapping(_action_connection_help, conf()->get_value("www/help_connection").c_str());
-    openUrlSignalMapper->setMapping(_action_rvh_faq,         conf()->get_value("www/help_faq").c_str());
+    openUrlSignalMapper->setMapping(_action_dload_rvgl,     conf()->get_value("www/dloads_rvgl").c_str());
+    //openUrlSignalMapper->setMapping(_action_dload_rv12,     conf()->get_value("www/dloads_rv12").c_str());
+    openUrlSignalMapper->setMapping(_action_dload_rvzone,   conf()->get_value("www/dloads_rvz").c_str());
+    openUrlSignalMapper->setMapping(_action_dload_rvio,     conf()->get_value("www/dloads_rvio").c_str());
+    openUrlSignalMapper->setMapping(_action_dload_xtg,      conf()->get_value("www/dloads_xtg").c_str());
+    //openUrlSignalMapper->setMapping(_action_dload_jigebren, conf()->get_value("www/dloads_jig").c_str());
 
-    connect(_action_rvr_wwwsite,         SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
-    connect(_action_rvr_1vs1,            SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
-    connect(_action_rvr_player_profiles, SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+    openUrlSignalMapper->setMapping(_action_routerfw_help,  conf()->get_value("www/help_router").c_str());
+    openUrlSignalMapper->setMapping(_action_rvh_faq,        conf()->get_value("www/help_faq").c_str());
+    openUrlSignalMapper->setMapping(_action_rv_wiki,        conf()->get_value("www/help_wiki").c_str());
+    openUrlSignalMapper->setMapping(_action_trh_forum,      conf()->get_value("www/forum_trh").c_str());
+    //openUrlSignalMapper->setMapping(_action_pub_forum,      conf()->get_value("www/forum_pub").c_str());
+    //openUrlSignalMapper->setMapping(_action_rvl_forum,      conf()->get_value("www/forum_rvl").c_str());
+
+    connect(_action_rvio_online,      SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+    connect(_action_rvr_home,         SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+    connect(_action_rvr_best3_laps,   SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+    connect(_action_rvr_best4_laps,   SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+    connect(_action_rvr_month_tracks, SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+
+    connect(_action_dload_rvgl,      SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+    //connect(_action_dload_rv12,      SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+    connect(_action_dload_rvzone,    SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+    connect(_action_dload_rvio,      SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+    connect(_action_dload_xtg,       SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+    //connect(_action_dload_jigebren,  SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
 
     connect(_action_routerfw_help,   SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
-    connect(_action_connection_help, SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
     connect(_action_rvh_faq,         SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+    connect(_action_rv_wiki,         SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+    connect(_action_trh_forum,       SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+    //connect(_action_pub_forum,       SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
+    //connect(_action_rvl_forum,       SIGNAL(triggered()), openUrlSignalMapper, SLOT(map()));
 
     connect(openUrlSignalMapper, SIGNAL(mapped(QString)), this, SLOT(open_url(QString)));
 
@@ -799,12 +844,16 @@ house::handle_ctz_message(::message *msg) {
         // The more times reconnect has been tried without getting
         // a connection, the longer time to wait. Give up
         // altogether if more than 5 times tried.
-        if (_conn_tries < 5) {
-            int conn_in_secs = 30 * _conn_tries;
-            ACE_DEBUG((LM_DEBUG, "house::installing reconnect timer %d secs\n",
-                       conn_in_secs));
-            QTimer::singleShot(conn_in_secs*1000, this, SLOT(reconnect()));
-        }
+
+        // NOTE(huki): I've disabled limit on retry attempts as we would
+        // need to attempt a reconnection in case the server disconnects
+        // the user because of inactivity.
+        //if (_conn_tries < 5) {
+        int conn_in_secs = 30; // * _conn_tries;
+        ACE_DEBUG((LM_DEBUG, "house::installing reconnect timer %d secs\n",
+                   conn_in_secs));
+        QTimer::singleShot(conn_in_secs*1000, this, SLOT(reconnect()));
+        //}
     }
         break;
     case message::ctz_group_server_unreachable:

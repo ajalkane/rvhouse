@@ -321,11 +321,17 @@ room::_set_room_cmdline(rv_cmdline_builder &builder) {
 
 void
 room::_launcher_error(int err) {
-    const char *topic   = langstr("rv_launch/title");
+    const char *topic   = langstr("rv_launch/title_err");
     const char *content = "Could not launch";
     switch(err) {
+    case executable::launcher::err_already_running:
+        content = langstr("rv_launch/already_running");
+        break;
     case executable::launcher::err_app_not_found:
         content = langstr("rv_launch/not_found");
+        break;
+    case executable::launcher::err_could_not_launch_rvgl:
+        content = langstr("rv_launch/not_found_rvgl");
         break;
     case executable::launcher::err_could_not_launch:
     default:

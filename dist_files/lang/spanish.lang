@@ -1,22 +1,61 @@
 [common]
-ok_button       = " &Aceptar "
-cancel_button   = " &Cancelar "
+ok_button       = "&Aceptar"
+cancel_button   = "&Cancelar"
+apply_button    = "&Aplicar"
+
+[menu_file]
+title           = "&Archivo"
+quit            = "&Salir\tCtl-Q"
+
+[menu_edit]
+title           = "&Editar"
+settings        = "&Ajustes...\tAlt-S"
+
+[menu_player]
+title           = "&Jugador"
+status          = "Estado"
+create_room     = "Crear Sala...\tCtl-R"
+join_room       = "Unirse a la sala"
+chatting        = "En línea\tShift-Alt-C"
+playing         = "Jugando\tShift-Alt-P"
+away            = "Ausente\tShift-Alt-A"
+dont_disturb    = "No Molestar\tShift-Alt-D"
+
+[menu_comp]
+title           = "&Competiciones"
+rvl             = "RV League"
+rvl_home        = "WWW-site"
+rvl_champ       = "Championship"
+rvl_cup         = "Cup"
+
+rvr             = "Re-Volt Race"
+rvr_home        = "WWW-site"
+rvr_1vs1        = "1 vs 1 Championship"
+rvr_players     = "Player profiles"
+rvr_teams       = "Teams"
+
+[menu_help]
+title           = "&Ayuda"
+router_help     = "Ayuda del Router/Firewall"
+faq             = "RV House FAQ"
+conn_help       = "Ayuda de Conexión documento"
+about_house     = "Acerca de RV House"
 
 [login_win]
 title           = "Logearse"
 user_id         = "&Usuario:"
 password        = "&Contraseña:"
-uses_rvzt_login = "Usa los datos de RVZ"
-login           = "&Loguearse"
+uses_rvzt_login = "Usa los datos de Revolt Zone"
+login           = "&Entrar"
 register        = "&Registrarse"
 quit            = "&Salir"
 
 login_err_topic = "No se puede loguear"
-fill_user       = "Pon un usuario"
-fill_pass       = "Pon una contraseña"
+fill_user       = "Pone un usuario"
+fill_pass       = "Pone una contraseña"
 invalid_user    = "Usuario invalido, debe ser de 4 a 20 caracteres y puede contener a-z, A-Z y _"
 invalid_pass    = "Contraseña invalida, debe ser apartir de 6 caracteres y puede contener a-z, A-Z y _"
-server_down     = "Servidor de logeo sin respuesta, tu cuenta no ha podido ser autentificada. Continuar de todas formas?"
+server_down     = "Servidor de logeo sin respuesta, tu cuenta no ha podido ser autentificada. Continuar de todos modos?"
 validation_err  = "Usuario o contraseña invalidos"
 
 
@@ -24,7 +63,7 @@ validation_err  = "Usuario o contraseña invalidos"
 title           = "Registrarse"
 user_id         = "&Usuario:"
 password        = "&Contraseña:"
-repassword      = "&Repite contraseña:"
+repassword      = "&Repite la contraseña:"
 email           = "&E-mail:"
 register        = "Registrar"
 cancel          = "&Cancelar"
@@ -38,7 +77,8 @@ invalid_user    = "Usuario invalido, debe ser de 4 a 20 caracteres y puede conte
 invalid_pass    = "Contraseña invalida, debe ser apartir de 6 caracteres y puede contener a-z, A-Z y _"
 invalid_email   = "Dirección de e-mail invalida"
 server_down     = "Error registrando en el servidor, prueba más tarde"
-user_reserved   = "El usuario elegido esta reservado, coje otro"
+user_reserved   = "El usuario elegido esta reservado, elegi otro"
+mail_reserved   = "La dirección de correo electrónico que ha intentado registrar está reservado, por favor elija otro"
 reg_ok          = "Registro correcto! Ya puedes logearte"
 
 
@@ -54,25 +94,39 @@ translations  = "Traducciones:"
 translation   = "%1 by %2 <%3>"
 
 [app]
-rv_not_found_title = "Re-Volt instalado?"
-rv_not_found       = "Re-Volt no encontrado en el registro\nHas instalado Re-Volt\nAntes de abrir RVHouse?"
-join_room_full     = "Sala completa!"
+rv_not_found_title = "¿Re-Volt esta instalado?"
+rv_not_found       = "Re-Volt no se ha encontrado en el registro\nHas instalado Re-Volt\nAntes de abrir RVHouse?"
+rv_house_running   = "RV House está abierto!"
+join_room_full     = "Sala llena!"
 join_invalid_pass  = "Contraseña invalida!"
-join_refused       = "Host refusado mientras entrabas en la sala"
-join_err_topic     = "Error entrando en la sala"
+join_refused       = "Anfitrión refusado mientras entrabas a la sala"
+join_err_topic     = "Error entrando a la sala"
+dht_connect_err1   = "No se pudo conectar a la red descentralizada"
+dht_connect_err2   = "Esto es probablemente debido a su router o firewall"
+dht_connect_err3   = "no está configurado correctamente.\n"
+dht_connect_err4   = "Corregir esto es importante porque"
+dht_connect_err5   = "de lo contrario es posible que no vea todos los jugadores.\n"
+dht_connect_err6   = "Además, con la red descentralizada que trabaja puede"
+dht_connect_err7   = "jugar con otras personas, incluso si el servidor no funciona\n"
+dht_connect_err8   = "Al pulsar Aceptar , será dirigido"
+dht_connect_err9   = "a la configuración de un router/firewall a la dirección de web."
+dht_connect_err_title = "Error al conectar"
+
+self_on_global_ignore_topic = "Usted está en la lista de ignorados mundialmente"
+self_on_global_ignore = "Su IP se ha encontrado de la lista global de ignoro.\nComo resultado la mayoría de la gente no puede verte.\nSi usted piensa que no ha hecho nada malo\ny debe ser eliminado del ignoro Mundial\nTiene que avisar al Foro de Our RV Pub sobre el ignoro\na la siguiente dirección"
 
 [new_version_win]
 title     = "Nueva versión!"
-force_msg = "DEBES actualizar RVHouse! Las versiones viejas no son compatibles!"
+force_msg = "Debes actualizar RVHouse! Las versiones viejas no son compatibles!"
 msg       = "Versión %1 disponible, tu versión es %2"
 new_since = "Nuevo desde tu versión:"
 download  = "Baja la nueva versión de:"
 
 [rvtm_err]
-title     = "Failed to launch RV Track Manager"
-not_found = "Could not find RV Track Manager.\nTo be able to share and download tracks\nfrom others, you need at least\nversion 1.5.0 of RV Track Manager\nYou can download it from here:"
-running   = "RV Track Manager has already been launched"
-other     = "Could not launch RV Track manager"
+title     = "Error al abrir RV Track Manager"
+not_found = "No se encontró RV Track Manager.\nPara ser capaz de compartir y descargar Pistas\nde los demas, necesita por lo menos\nla version 1.5.0 de RV Track Manager\nPuede descargarlo desde aquí:"
+running   = "RV Track Manager se ha lanzado"
+other     = "No se pudo abrir RV Track manager"
 
 [message_box]
 ok     = "&Aceptar"
@@ -85,13 +139,13 @@ save   = "&Guardar"
 [main_win]
 exit        = "Salir"
 create_room = "Crear Sala"
-join_room   = "Entrar en sala"
+join_room   = "Entrar a la sala"
 refresh     = "Actualizar"
 cancel      = "Cancelar"
 about       = "Acerca de"
 
 ask_room_pass_title = "Protegido con contraseña"
-ask_room_pass       = "Introduze la contraseña"
+ask_room_pass       = "Introduce la contraseña"
 
 joining_room  = "Unirse al cuarto"
 
@@ -113,8 +167,11 @@ ctz_connected         = "Conexión centralizada"
 ctz_disconnecting     = "Desconectando centralizado"
 ctz_disconnected      = "Desconexión centralizada"
 
-ip_detecting = "Detectando IP de: %1"
+; %1 is replacewith the site where user's IP is fetched from
+ip_detecting = "Detectando IP Desde: %1"
+; %1 is replaced with the IP obtained
 ip_detected  = "IP detectada: %1"
+; %1 is replaced with the error reason
 ip_failed    = "Detección de IP fallida: %1"
 
 [chat]
@@ -123,17 +180,33 @@ user_exited  = "%1 ha salido"
 room_created = "Nueva sala creada (%1)"
 room_closed  = "Sala cerrada (%1)"
 
-host_kicked_host = "Host se ha autokikeado %1"
-host_kicks_user  = "Host esta kikeando %1 de la sala"
-host_kicks_you   = "Host te ha kikeado de la sala %1"
+host_kicked_host = "Dumbass host kicked himself from room %1"
+host_kicks_user  = "El Anfitrión Expulso a %1 de la sala"
+host_kicks_you   = "El Anfitrión te ha Expulsado de la sala %1"
 
-user_joined_room         = "%1 se une a la sala"
-user_exited_room         = "%1 sale de la sala"
-user_shares_tracks       = "%1 esta compartiendo tracks"
-user_shares_tracks_stops = "%1 ha parado de compartir tracks"
-user_dloads_tracks       = "%1 esta descargando tracks"
-user_dloads_tracks_stops = "%1 ha parado de descargar tracks"
+; %1 is replaced with user name
+user_joined_room         = "%1 ha entrado a la sala"
+user_exited_room         = "%1 ha salido de la sala"
+user_shares_tracks       = "%1 esta compartiendo Pistas"
+user_shares_tracks_stops = "%1 paro de compartir Pistas"
+user_dloads_tracks       = "%1 esta descargando Pisras"
+user_dloads_tracks_stops = "%1 paro de descargar Pistas"
+user_ignored             = "Ignoraste al usuario %1. El Ignoro sera eliminado reiniciando RV House."
+user_ignores             = "Fuiste ignorado por %1"
+
+; %1 = "the message that was refused/not received."
+; Caused because of user is playing or in do not disturb
+; mode so no windows are wanted to be opened.
 private_msg_refused      = "El usuario %1 rechazó tu mensaje."
+
+flood_control = "Control de Spam"
+
+global_ignore = "Siguiendo los usuarios están en la lista de ignorados mundial debido a la mala conducta y son ignorados por usted automáticamente. Puede desactivar el ignoro mundial en la Configuración si desea."
+; %1 is replaced by user name
+; %2 is replaced with reason
+user_global_ignore = "Ignoro Mundial en Usuario '%1', reason: %2"
+
+host_ip = "Mi IP es %1. Puede que lo necesite si utiliza Windows Vista."
 
 [room_settings_win]
 title       = "Opciones de la sala"
@@ -143,33 +216,45 @@ pickups     = "P&ickups"
 laps        = "&Vueltas:"
 players     = "&Jugadores:"
 
+version         = "Version"
+version_all     = "Todas"
+version_12_only = "Solo RV 1.2"
+version_tip     = "Establezca la compatibilidad en línea para Re-Volt 1.2"
+version_all_tip = "Permitir todas las versiones RV Para Unirse"
+version_12_tip  = "Sólo versiones de RV 1.2 pueden unirse"
+
 error_title    = "Error en las opciones de sala"
 topic_missing  = "Rellena el nombre"
 
 [room_win]
-leave         = "Dejar sala"
-settings      = "Editar opciones de sala"
-launch        = "Lanzar juego"
-share_tracks  = "Compartir tracks con otros"
-dload_tracks  = "Descargar tracks del host"
+leave         = "Dejar la sala"
+settings      = "Editar opciones de la sala"
+launch        = "Lanzar el juego"
+share_tracks  = "Compartir pistas con otros"
+dload_tracks  = "Descargar Pistas del Anfitrión"
 
-host_launched = "El host ha ejecutado Re-Volt. La partida dará comienzo en pocos segundos..."
+host_launched = "El Anfitrión ha entrado a Re-Volt. La Carrera empieza en pocos segundos..."
+join_too_late = "No se puede entrar en la carrera si el anfitrión esta\njugando más de %1 minutos."
+join_too_late_title = "Demasiado tarde para unirse"
 
-
-[rv_launch]
-title_err = "Error abriendo Re-Volt"
-not_found = "No se encontró Re-Volt. Instalalo (y abrelo) y vuelve a abrir RVHouse"
-other     = "No se pudo abrir Re-Volt"
-
-title     = "Lanzando Re-Volt"
-text      = "Pulsa Aceptar cuando quieras volver."
+send_ip_info_title = "Aviso!";"
+send_ip_info = "Su IP detectada será enviado automáticamente a las personas que se unen a la Sala.\nEsto es principalmente para ayudar a los usuarios que puedan necesitar para unirse al juego.\n\nSi usted no desea que su IP que se envíe puede desactivarlo desde Ajustes\n\nEste mensaje sólo aparece una vez!";"
 
 [private_message_win]
-close = "Cerrar chat"
+close = "Cerrar Chat"
+
+[rv_launch]
+title_err = "Error abriendo el Juego"
+not_found = "No se encontró Re-Volt. Instalalo (y abrelo) y vuelve a abrir RVHouse"
+other     = "No se pudo abrir el Juego"
+
+title     = "Lanzando el Juego"
+text      = "Pulsa Aceptar cuando quieras volver."
+
 
 [words]
 topic   = "Nombre"
-host    = "Host"
+host    = "Anfitrión"
 ; For example, Note: room is password protected
 note    = "Nota"
 players = "Jugadores"
@@ -183,7 +268,7 @@ yes     = "Si"
 no      = "No"
 creating = "Creando"
 
-minutes_short = "mins"
+minutes_short = "Mins"
 dht           = "P2P"
 ctz           = "Centralizado"
 connected     = "Conectado"
@@ -200,16 +285,57 @@ natted        = "La conexion del usuario parece estar bajo NAT"
 user_name     = "Usuario"
 share_tracks  = "Compartir Tracks"
 dload_tracks  = "Descargar Tracks"
-kick          = "Kickear"
+kick          = "Expulsar"
 private_msg   = "Chat Privado"
+ignore_user   = "Ignorar"
 
 [status]
-chatting      = "Chateando"
-waiting       = "Esperando en sala"
+chatting      = "En línea"
+waiting       = "Esperando en la sala"
 playing       = "Jugando"
 away          = "Ausente"
+dont_disturb  = "No Molestar"
 unknown       = "Desconocido"
 
 [misc]
 user_not_validated = "ID de usuario no validada"
 pass_needed        = "Contraseña requerida"
+
+
+[settings_win]
+title           = "Ajustes de RV House"
+general_tab     = "General"
+colors_tab      = "Colores"
+advanced_tab    = "Avanzado"
+
+flash_main_chat = "Parpadeará el programa si el mensaje llega al chat principal"
+flash_room_chat = "Parpadeará si el mensaje llega al chat de la sala"
+flash_new_room  = "Parpadeará si se crea nueva sala"
+flash_new_user  = "Parpadeará si un usuario se conecta"
+flash_new_user_in_room  = "Parpadeará si un usuario se conecta a la sala"
+flash_nick      = "Parpadeará si tu nick esta visto en el chat principal"
+away_minimize   = "Ausente cuando la ventana principal este minimizada"
+global_ignore   = "Utilice la lista global de ignorados"
+send_ip         = "Enviar IP cuando Hostea"
+
+base_color      = "Base Color"
+border_color    = "Color del borde"
+text_color      = "Color del texto"
+bg_color        = "Color De Fondo"
+sel_text_color  = "Texto De Color seleccionado"
+sel_bg_color    = "Fondo De Color seleccionado"
+sel_mt_color    = "Texto del Menu de Color seleccionado"
+sel_mbg_color   = "Fondo del Menu de Color seleccionado"
+tip_text_color  = "Sugerencia Color del texto"
+tip_bg_color    = "Sugerencia Fondo del Texto"
+
+cmdline_title   = "Multijugador línea de comandos"
+cmdline_autoset = "Auto-Elegir línea de comandos"
+cmdline_dontset = "No ajuste línea de comandos"
+cmdline_manual  = "Especifique línea de comandos:"
+
+allow_started_race_join = "Permitir tratar de unirse a las carreras iniciadas"
+
+rvgl_title      = "RVGL"
+rvgl_path       = "Directorio de Instalación:"
+rvgl_cmdline    = "Línea de Comandos Adicional:"

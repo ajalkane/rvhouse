@@ -95,7 +95,7 @@ fetcher::fetch(const std::string &remote_location,
     http::url     remote_url(remote_location);
     http::request http_req(remote_url);
     
-    auto_ptr<http_handler> h(new http_handler(n, local_location));
+    std::auto_ptr<http_handler> h(new http_handler(n, local_location));
     _http_fetcher.fetch(http_req, h.get());
     h.release();
 }

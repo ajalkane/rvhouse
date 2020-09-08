@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "RV House"
-#define MyAppVerName "RV House 0.93.6"
+#define MyAppVersion "0.94.6"
 #define MyAppPublisher "Arto Jalkanen"
 #define MyAppURL "http://rvhouse.revoltzone.net"
 #define MyAppExeName "rv_house.exe"
@@ -14,7 +14,8 @@
 
 [Setup]
 AppName={#MyAppName}
-AppVerName={#MyAppVerName}
+AppVersion={#MyAppVersion}
+AppVerName={#MyAppName} {#MyAppVersion}
 AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
@@ -28,16 +29,26 @@ OutputDir=..\install.bin
 Compression=lzma
 SolidCompression=yes
 SetupIconFile=..\dist_files\img\rv_house_win_installer.ico
+UninstallDisplayIcon={app}\rv_house.exe
+VersionInfoVersion={#MyAppVersion}
+DisableWelcomePage=no
+DisableDirPage=no
 
 [Languages]
 Name: english; MessagesFile: compiler:Default.isl
 
 [Tasks]
-Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}; Flags: unchecked
+Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons};
 
 [Files]
 Source: ..\build\win32\Release\rv_house.exe; DestDir: {app}; Flags: ignoreversion
-Source: ..\dist_files\pthreadGC.dll; DestDir: {sys}; Flags: onlyifdoesntexist uninsneveruninstall
+Source: ..\dist_files\libACE.dll; DestDir: {app}; Flags: ignoreversion
+Source: ..\dist_files\QtCore4.dll; DestDir: {app}; Flags: ignoreversion
+Source: ..\dist_files\QtGui4.dll; DestDir: {app}; Flags: ignoreversion
+Source: ..\dist_files\libgcc_s_dw2-1.dll; DestDir: {sys}; Flags: onlyifdoesntexist uninsneveruninstall
+Source: ..\dist_files\libstdc++-6.dll; DestDir: {sys}; Flags: onlyifdoesntexist uninsneveruninstall
+Source: ..\dist_files\libwinpthread-1.dll; DestDir: {sys}; Flags: onlyifdoesntexist uninsneveruninstall
+Source: ..\dist_files\imageformats\*; DestDir: {app}\imageformats; Flags: ignoreversion
 Source: ..\dist_files\conf\*; DestDir: {app}\conf; Flags: ignoreversion
 Source: ..\dist_files\lang\*; DestDir: {app}\lang; Flags: ignoreversion
 Source: ..\dist_files\data\*; DestDir: {app}\data; Flags: ignoreversion

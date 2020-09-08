@@ -51,6 +51,7 @@ class house :
     QMenu *_menu_edit;
     QMenu *_menu_player;
     QMenu *_menu_comp;
+    QMenu *_menu_dloads;
     QMenu *_menu_help;
 
     QAction *_action_quit;
@@ -63,14 +64,26 @@ class house :
     QAction *_action_away;
     QAction *_action_donotdisturb;
 
-    QAction *_action_rvr;
-    QAction *_action_rvr_wwwsite;
-    QAction *_action_rvr_1vs1;
-    QAction *_action_rvr_player_profiles;
+    //QAction *_action_rvr;
+    QAction *_action_rvio_online;
+    QAction *_action_rvr_home;
+    QAction *_action_rvr_best3_laps;
+    QAction *_action_rvr_best4_laps;
+    QAction *_action_rvr_month_tracks;
+
+    QAction *_action_dload_rvgl;
+    //QAction *_action_dload_rv12;
+    QAction *_action_dload_rvzone;
+    QAction *_action_dload_rvio;
+    QAction *_action_dload_xtg;
+    //QAction *_action_dload_jigebren;
 
     QAction *_action_routerfw_help;
     QAction *_action_rvh_faq;
-    QAction *_action_connection_help;
+    QAction *_action_rv_wiki;
+    QAction *_action_trh_forum;
+    //QAction *_action_pub_forum;
+    //QAction *_action_rvl_forum;
     QAction *_action_about_rvh;
 
     QAction *_action_create_room;

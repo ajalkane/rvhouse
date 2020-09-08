@@ -1,0 +1,13 @@
+*.o
+*.cc
+*.pyc
+*.dblite
+build_config.py
+/install.bin*
+/linux_bin_dist*
+/patches*
+/build/win32/Debug*
+/build/win32/Release*
+/build/linux/Debug*
+/build/linux/Release*
+/external*

@@ -41,10 +41,17 @@ version_update::version_update(::message_version *m, QWidget *parent)
     
     l->addWidget(new QLabel(langstr("new_version_win/download")));
 
+#ifdef WIN32
+    std::string suffix = "_setup.exe";
+#else
+    std::string suffix = "_linux.tar.gz";
+#endif
     std::string ahref = "<a href=\"";
     ahref.append(m->current_url());
+    ahref.append(suffix);
     ahref.append("\">");
     ahref.append(m->current_url());
+    ahref.append(suffix);
     ahref.append("</a>");
 
     QLabel *label = new QLabel(ahref.c_str());

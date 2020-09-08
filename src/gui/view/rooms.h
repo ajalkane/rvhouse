@@ -73,7 +73,10 @@ public:
         column_host,
         column_players,
         column_laps,
-        column_pickups
+        column_pickups,
+        column_rvgl,
+
+        column_count
     };
 
     typedef QTreeWidget super;

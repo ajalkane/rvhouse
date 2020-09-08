@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <algorithm>
 
 #include "../../main.h"
 #include "../../config_file.h"
@@ -55,9 +56,12 @@ launcher_rvgl::_launch(const std::string &host_id) {
 
     std::string cmd(dir);
 #ifdef WIN32
-    cmd += "/rvgl.exe";
+    std::replace(cmd.begin(), cmd.end(), '/', '\\');
+    if (!cmd.empty() && *cmd.rbegin() != '\\') cmd += "\\";
+    cmd += "rvgl.exe";
 #else
-    cmd += "/rvgl";
+    if (!cmd.empty() && *cmd.rbegin() != '/') cmd += "/";
+    cmd += "rvgl";
 #endif
     cmd = "\"" + cmd + "\"";
     if (!params.empty()) cmd += " " + params;
@@ -78,7 +82,7 @@ launcher_rvgl::_launch(const std::string &host_id) {
     if (_rvgl_pid == ACE_INVALID_PID) {
         ACE_ERROR((LM_ERROR, "launcher_rvgl: failed to launch: %s\n",
                   cmd.c_str()));
-        return err_could_not_launch;
+        return err_could_not_launch_rvgl;
     }
     
     _running = true;
@@ -88,7 +92,7 @@ launcher_rvgl::_launch(const std::string &host_id) {
 
 int 
 launcher_rvgl::handle_exit(ACE_Process *proc) {
-    ACE_DEBUG((LM_INFO, "launcher_rvtm::handle_exit: called from thread %t\n"));
+    ACE_DEBUG((LM_INFO, "launcher_rvgl::handle_exit: called from thread %t\n"));
     // There's a potential risk here since handle_exit is called from 
     // different thread than _launch. But since integer operations are
     // usually atomic and the risk is at most theoretical, no locking done.
